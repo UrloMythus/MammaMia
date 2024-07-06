@@ -12,10 +12,7 @@ from dotenv import load_dotenv
 load_dotenv(".env")
 
 TMDB_KEY = os.getenv('TMDB_KEY')
-<<<<<<< HEAD
 DOMAIN = os.getenv('DOMAIN')
-=======
->>>>>>> e81f20e92a7c35f5b8dcbb683c746a0aea7795d4
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.10; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
@@ -94,11 +91,8 @@ def search(query,date):
         # Extract the href attribute from the link
         href = link['href']
         #replace base url for easier scraping
-<<<<<<< HEAD
         href = href.replace('definizionealta.com', f'filmpertutti.{DOMAIN}')
-=======
         href = href.replace('definizionealta.com', 'filmpertutti.casino')
->>>>>>> e81f20e92a7c35f5b8dcbb683c746a0aea7795d4
         #Get the correct serie by checking if the date is equals
         series_response = requests.get(href, headers=headers)
         series_soup = BeautifulSoup(series_response.text, 'html.parser')
