@@ -28,7 +28,7 @@ def addon_manifest():
 def addon_stream(type, id):
     if type not in MANIFEST['types']:
         abort(404)
-
+        
     url = get_stream_link(id)  # call the function to dynamically get stream links
     
 

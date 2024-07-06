@@ -92,7 +92,6 @@ def search(query,date):
         href = link['href']
         #replace base url for easier scraping
         href = href.replace('definizionealta.com', f'filmpertutti.{DOMAIN}')
-        href = href.replace('definizionealta.com', 'filmpertutti.casino')
         #Get the correct serie by checking if the date is equals
         series_response = requests.get(href, headers=headers)
         series_soup = BeautifulSoup(series_response.text, 'html.parser')
