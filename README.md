@@ -2,6 +2,7 @@
 A Stremio Addon for HTTPS Stream in Italian
 
 # Installation
+Install required packages
 `` 
 pip install -r requirements.txt
 ``
