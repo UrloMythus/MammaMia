@@ -14,4 +14,5 @@ python3 run.py
 ``
 # Enviroment Variables
 TMDB_KEY = "Your key here"
+
 domain = "domain here"
