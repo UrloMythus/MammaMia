@@ -1,5 +1,5 @@
 bs4
 tmdbv3api
 dateparser
-dotenv
+python-dotenv
 flask
