@@ -24,6 +24,12 @@ def respond_with(data):
 def addon_manifest():
     return respond_with(MANIFEST)
 
+@app.route('/')
+def root():
+    return "Hello, this is a Stremio Addon providing HTTPS Stream for Italian Movies/Series, to install it add /manifest.json to the url and then add it into the Stremio search bar"
+
+
+
 @app.route('/stream/<type>/<id>.json')
 def addon_stream(type, id):
     if type not in MANIFEST['types']:
