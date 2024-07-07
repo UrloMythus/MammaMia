@@ -89,7 +89,8 @@ def search(showname2,date):
          title = post['title']['rendered']
          date2 = post['date'].split('T')[0]  # remove the time part
          tid = post['id']
-         if  date2 == date: 
+         if  date2 == date:
+            print("HERE THE ID",tid) 
             return tid
     
 def get_episode_link(season,episode,tid,base_url): 
@@ -105,11 +106,11 @@ def get_film(url):
 
 def get_real_link(tlink):
     page = requests.get(tlink, headers=headers)
-    soup = BeautifulSoup(page.content, features="html.parser")
+    soup = BeautifulSoup(page.content, features="lxml")
     iframe_src = soup.find('iframe')['src']
 
     iframe_page = requests.get(iframe_src, headers=headers)
-    iframe_soup = BeautifulSoup(iframe_page.content, features="html.parser")
+    iframe_soup = BeautifulSoup(iframe_page.content, features="lxml")
 
     mega_button = iframe_soup.find('div', attrs={'class': 'megaButton', 'rel': 'nofollow'}, string='MIXDROP')
     if mega_button:
