@@ -3,3 +3,4 @@ tmdbv3api
 dateparser
 python-dotenv
 flask
+lxml
