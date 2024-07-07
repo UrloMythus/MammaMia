@@ -92,8 +92,7 @@ def search(showname2,date):
          if  date2 == date: 
             return tid
     
-def get_episode_link(season,episode,tid): 
-    base_url = f'https://filmpertutti.{DOMAIN}/'
+def get_episode_link(season,episode,tid,base_url): 
     episode = int(episode)
     season = int(season)
     tlink = f'{base_url}?show_video=true&post_id={tid}&season_id={season-1}&episode_id={episode-1}'
@@ -144,8 +143,9 @@ def get_stream_link(imbd):
     print(showname2)
     print(date)
     tid = search(showname2,date)
+    base_url= f'https://filmpertutti.{DOMAIN}/'
     if ismovie == 0:
-        episode_link = get_episode_link(season,episode,tid)
+        episode_link = get_episode_link(season,episode,tid,base_url)
         print(episode_link)
         #Let's get mixdrop link 
         real_link = get_real_link(episode_link)
@@ -153,7 +153,7 @@ def get_stream_link(imbd):
         streaming_link = get_true_link(real_link)
         return streaming_link
     elif ismovie == 1:
-        film_link = get_film(url)
+        film_link = get_film(base_url)
         print(film_link)
         #Let's get mixdrop link
         real_link = get_real_link(film_link)
