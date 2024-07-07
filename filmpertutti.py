@@ -34,6 +34,14 @@ def convert_US_date(date):
             date = latest_release_date.split('T')[0]
             print('Latest US theatrical release date:', date)
             return date
+        else:   
+            us_release_dates_type_4 = [rd for rd in us_data['release_dates'] if rd['type'] == 4]
+            us_release_dates_type_4.sort(key = lambda x: x['release_date'], reverse=True)
+            if len(us_release_dates_type_4) > 0:
+                latest_release_date = us_release_dates_type_4[0]['release_date']
+                date = latest_release_date.split('T')[0]
+                print('Latest US theatrical release date (type 4):', date)
+                return date
 def get_TMDb_id_from_IMDb_id(imdb_id):
     if ":" in imdb_id:
         season = imdb_id.split(":")[1]
