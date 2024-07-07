@@ -160,4 +160,3 @@ def get_stream_link(imbd):
         #let's get delivery link, streaming link
         streaming_link = get_true_link(real_link)
         return streaming_link
-get_stream_link("tt16288804:1:1")
