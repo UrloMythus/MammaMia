@@ -77,7 +77,7 @@ def get_mamma(tmbda,ismovie):
         return showname,date
 
 def search(query,date):
-   
+    response = requests.get(query, headers=headers)
     soup = BeautifulSoup(response.text, 'html.parser')
     test= soup.find('div', class_='elementor-posts-container elementor-posts elementor-posts--skin-classic elementor-grid')
     # Find all articles
@@ -131,11 +131,11 @@ def get_film(url):
 
 def get_real_link(tlink):
     page = requests.get(tlink, headers=headers)
-    soup = BeautifulSoup(page.content, features="lxml")
+    soup = BeautifulSoup(page.content, features="html.parser")
     iframe_src = soup.find('iframe')['src']
 
     iframe_page = requests.get(iframe_src, headers=headers)
-    iframe_soup = BeautifulSoup(iframe_page.content, features="lxml")
+    iframe_soup = BeautifulSoup(iframe_page.content, features="html.parser")
 
     mega_button = iframe_soup.find('div', attrs={'class': 'megaButton', 'rel': 'nofollow'}, string='MIXDROP')
     if mega_button:
