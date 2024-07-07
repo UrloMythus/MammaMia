@@ -76,27 +76,51 @@ def get_mamma(tmbda,ismovie):
     else:
         return showname,date
 
-def search(showname2,date):
-    base_url = f'https://filmpertutti.{DOMAIN}/wp-json/wp/v2/posts'
-    params = {
-    "search": showname2,
-    "page": "1",
-    "_fields": "title,date,id"  # Only fetch the 'title' and 'date' fields
-    }
-    response = requests.get(base_url, params=params)
-    all_fields = response.json()
-    for post in all_fields:
-         title = post['title']['rendered']
-         date2 = post['date'].split('T')[0]  # remove the time part
-         tid = post['id']
-         if  date2 == date:
-            print("HERE THE ID",tid) 
-            return tid
-    
-def get_episode_link(season,episode,tid,base_url): 
+def search(query,date):
+    response = requests.get(query)
+    soup = BeautifulSoup(response.text, 'lxml')
+    test= soup.find('div', class_='elementor-posts-container elementor-posts elementor-posts--skin-classic elementor-grid')
+    # Find all articles
+    articles = test.select('article', class_='elementor-post elementor-grid-item post-629565')
+
+    # Loop through each article
+    for article in articles:
+        # Find the link inside the article
+        link = article.find('a', class_='elementor-post__thumbnail__link')
+
+        # Extract the href attribute from the link
+        href = link['href']
+        #replace base url for easier scraping
+        #Get the correct serie by checking if the date is equals
+        series_response = requests.get(href, headers=headers)
+        series_soup = BeautifulSoup(series_response.text, 'lxml')
+        release_span = series_soup.find('span', class_='released')  
+        if release_span:
+            if release_span.text != "Data di uscita: N/A":
+                date_string = release_span.text.split(': ')[-1]  # Get the date part
+            for eng, ita in month_mapping.items():
+                date_string = re.sub(rf'\b{eng}\b', ita, date_string)
+
+    # Swap to YY-MM-DD formatting using dateparser
+        release_date = dateparser.parse(date_string, languages=['it']).strftime("%Y-%m-%d")
+        print(release_date)
+        if release_date == date:
+            url = href
+            break
+    return url
+
+def get_episode_link(season,episode,url): 
+    response = requests.get(url)
+    # Extract the 'link' field from the headers
+    link_field = response.headers.get('Link')
+    links = link_field.split(',')
+    links = [link.split(';')[0].strip('<>') for link in links]
+    second_link = links[2]
+    #Get the ID of the serie (not tmbd  or imbd)
+    tid = second_link.split("=")[1]
     episode = int(episode)
     season = int(season)
-    tlink = f'{base_url}?show_video=true&post_id={tid}&season_id={season-1}&episode_id={episode-1}'
+    tlink = f'{url}?show_video=true&post_id={tid}&season_id={season-1}&episode_id={episode-1}'
     return tlink
 
 
@@ -140,13 +164,15 @@ def get_stream_link(imbd):
     else:
         tmdba,ismovie = info
     showname,date = get_mamma(tmdba,ismovie)
-    showname2 = showname.replace("–", "+").replace("—","+")
-    print(showname2)
-    print(date)
-    tid = search(showname2,date)
-    base_url= f'https://filmpertutti.{DOMAIN}/'
+    
+    query = f'https://filmpertutti.{DOMAIN}/?s=+{showname}'
+    query = query.replace(" ", "+").replace("–", "+").replace("—","+")
+    print(query)
+    url = search(query,date)
+    print(ismovie)
+    print(url)
     if ismovie == 0:
-        episode_link = get_episode_link(season,episode,tid,base_url)
+        episode_link = get_episode_link(season,episode,url)
         print(episode_link)
         #Let's get mixdrop link 
         real_link = get_real_link(episode_link)
@@ -154,7 +180,7 @@ def get_stream_link(imbd):
         streaming_link = get_true_link(real_link)
         return streaming_link
     elif ismovie == 1:
-        film_link = get_film(base_url)
+        film_link = get_film(url)
         print(film_link)
         #Let's get mixdrop link
         real_link = get_real_link(film_link)
