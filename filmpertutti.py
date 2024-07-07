@@ -77,7 +77,7 @@ def get_mamma(tmbda,ismovie):
         return showname,date
 
 def search(query,date):
-    response = requests.get(query)
+   
     soup = BeautifulSoup(response.text, 'html.parser')
     test= soup.find('div', class_='elementor-posts-container elementor-posts elementor-posts--skin-classic elementor-grid')
     # Find all articles
@@ -166,7 +166,7 @@ def get_stream_link(imbd):
         tmdba,ismovie = info
     showname,date = get_mamma(tmdba,ismovie)
     
-    query = "https://definizionealta.com/?s=" + f"{showname}"
+    query = f"https://filmpertutti.{DOMAIN}/?s=+{showname}"
     query = query.replace(" ", "+").replace("–", "+").replace("—","+")
     print(query)
     url = search(query,date)
