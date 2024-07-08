@@ -1,5 +1,7 @@
 from flask import Flask, jsonify, abort
 from filmpertutti import get_stream_link
+from loadenv import load_env
+TMDB_KEY, DOMAIN, FILMPERTUTTI, STREAMINGCOMMUNITY = load_env()
 
 app = Flask(__name__)
 
@@ -34,8 +36,10 @@ def root():
 def addon_stream(type, id):
     if type not in MANIFEST['types']:
         abort(404)
-        
-    url = get_stream_link(id)  # call the function to dynamically get stream links
+    if FILMPERTUTTI == 1:    
+        url = get_stream_link(id)  # call the function to dynamically get stream links
+    elif STREAMINGCOMMUNITY == 1:
+        return "Not implemented yet"
     
 
     streams = {'streams': [{'title': 'Stream URL', 'url': url}]}

@@ -1,9 +1,9 @@
 from loadenv import load_env
 from tmdbv3api import TMDb, Movie, TV
-from US_date import convert_US_date
-TMDB_KEY, DOMAIN = load_env()
+from convert_date import convert_US_date, convert_IT_date
+TMDB_KEY, DOMAIN, FILMPERTUTTI,STREAMINGCOMMUNITY = load_env()
 
-def get_info(tmbda,ismovie):
+def get_info(tmbda,ismovie,type):
     tmdb = TMDb()
     tmdb.api_key = f'{TMDB_KEY}'
     tmdb.language = 'it'
@@ -11,15 +11,23 @@ def get_info(tmbda,ismovie):
         tv = TV()
         show= tv.details(tmbda)
         showname = show.name
-        date= show.first_air_date
+        if type == "Filmpertutti":
+            date= show.first_air_date
+        elif type == "StreamingCommunity":
+            date = show.last_air_date
+            print("Real date",date)
     else:
         movie = Movie()
         show= movie.details(tmbda)
         showname= show.title
         #Get all release dates
         date = show.release_dates
-        #GET US RELEASE DATE because filmpertutti somewhy uses US release date
-        date = convert_US_date(date)
+        if type == "Filmpertutti":
+            #GET US RELEASE DATE because filmpertutti somewhy uses US release date
+            date = convert_US_date(date)
+        elif type == "StreamingCommunity":
+            date = convert_IT_date(date)
+            print (date)
     if ismovie==0:
         return showname,date
     else:

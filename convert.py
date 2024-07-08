@@ -22,5 +22,3 @@ def get_TMDb_id_from_IMDb_id(imdb_id):
         return tmbda['tv_results'][0]['id'], season, episode , ismovie 
     else:
         return None
-    
-get_TMDb_id_from_IMDb_id("tt1839578:1:1")

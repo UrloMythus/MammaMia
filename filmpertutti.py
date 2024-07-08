@@ -9,7 +9,7 @@ import dateparser
 from convert import get_TMDb_id_from_IMDb_id
 from loadenv import load_env
 from info import get_info
-from US_date import convert_US_date
+from convert_date import convert_US_date
 
 TMDB_KEY, DOMAIN = load_env()
 headers = {
@@ -86,12 +86,13 @@ def get_true_link(real_link):
     return s
 
 def get_stream_link(imbd):
-    info  = get_TMDb_id_from_IMDb_id(imbd)
-    if len(info)==4 : 
-        tmdba,season,episode,ismovie = info
+    general  = get_TMDb_id_from_IMDb_id(imbd)
+    if len(general)==4 : 
+        tmdba,season,episode,ismovie = general
     else:
-        tmdba,ismovie = info
-    showname,date = get_info(tmdba,ismovie)
+        tmdba,ismovie = general
+    type = "Filmpertutti"
+    showname,date = get_info(tmdba,ismovie,type)
     showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
     query = f'https://filmpertutti.{DOMAIN}/wp-json/wp/v2/posts?search={showname}&page=1&_fields=link,id'
     print(query)
