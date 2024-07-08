@@ -6,14 +6,12 @@ import string
 import re
 from datetime import datetime
 import dateparser
-import os
-from dotenv import load_dotenv
+from convert import get_TMDb_id_from_IMDb_id
+from loadenv import load_env
+from info import get_info
+from US_date import convert_US_date
 
-load_dotenv(".env")
-
-TMDB_KEY = os.getenv('TMDB_KEY')
-DOMAIN = os.getenv('DOMAIN')
-
+TMDB_KEY, DOMAIN = load_env()
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.10; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
     'Accept-Language': 'en-US,en;q=0.5'
@@ -23,66 +21,6 @@ month_mapping = {
     'May': 'Maggio', 'Jun': 'Giugno', 'Jul': 'Luglio', 'Aug': 'Agosto',
     'Sep': 'Settembre', 'Oct': 'Ottobre', 'Nov': 'Novembre', 'Dec': 'Dicembre'
 }
-def convert_US_date(date):
-    us_data = next((country_data for country_data in date['results'] if country_data["iso_3166_1"] == "US"), None)
-    if us_data:
-        us_release_dates_type_3 = [rd for rd in us_data['release_dates'] if rd['type'] == 3]
-        # Sort the list of release dates and get the latest
-        us_release_dates_type_3.sort(key = lambda x: x['release_date'], reverse=True)
-        if len(us_release_dates_type_3) > 0:
-            latest_release_date = us_release_dates_type_3[0]['release_date']
-            date = latest_release_date.split('T')[0]
-            print('Latest US theatrical release date:', date)
-            return date
-        else:   
-            us_release_dates_type_4 = [rd for rd in us_data['release_dates'] if rd['type'] == 4]
-            us_release_dates_type_4.sort(key = lambda x: x['release_date'], reverse=True)
-            if len(us_release_dates_type_4) > 0:
-                latest_release_date = us_release_dates_type_4[0]['release_date']
-                date = latest_release_date.split('T')[0]
-                print('Latest US theatrical release date (type 4):', date)
-                return date
-def get_TMDb_id_from_IMDb_id(imdb_id):
-    if ":" in imdb_id:
-        season = imdb_id.split(":")[1]
-        episode = imdb_id[-1]
-        ismovie = 0
-        imdb_id = imdb_id.split(":")[0]
-    else:
-        ismovie = 1
-    response = requests.get(f'https://api.themoviedb.org/3/find/{imdb_id}', 
-                            params={'external_source': 'imdb_id', 'api_key': f'{TMDB_KEY}'})
-    tmbda = response.json()
-    if tmbda['movie_results']:
-        print(tmbda)
-        return tmbda['movie_results'][0]['id'], ismovie
-    elif tmbda['tv_results']:
-        print(tmbda['tv_results'][0]['id'])
-        return tmbda['tv_results'][0]['id'], season, episode , ismovie 
-    else:
-        return None
-
-def get_mamma(tmbda,ismovie):
-    tmdb = TMDb()
-    tmdb.api_key = f'{TMDB_KEY}'
-    tmdb.language = 'it'
-    if ismovie == 0:
-        tv = TV()
-        show= tv.details(tmbda)
-        showname = show.name
-        date= show.first_air_date
-    else:
-        movie = Movie()
-        show= movie.details(tmbda)
-        showname= show.title
-        #Get all release dates
-        date = show.release_dates
-        #GET US RELEASE DATE because filmpertutti somewhy uses US release date
-        date = convert_US_date(date)
-    if ismovie==0:
-        return showname,date
-    else:
-        return showname,date
 
 def search(query,date):
     response = requests.get(query).json()
@@ -153,7 +91,7 @@ def get_stream_link(imbd):
         tmdba,season,episode,ismovie = info
     else:
         tmdba,ismovie = info
-    showname,date = get_mamma(tmdba,ismovie)
+    showname,date = get_info(tmdba,ismovie)
     showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
     query = f'https://filmpertutti.{DOMAIN}/wp-json/wp/v2/posts?search={showname}&page=1&_fields=link,id'
     print(query)
@@ -176,4 +114,3 @@ def get_stream_link(imbd):
         #let's get delivery link, streaming link
         streaming_link = get_true_link(real_link)
         return streaming_link
-
