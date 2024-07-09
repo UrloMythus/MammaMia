@@ -3,7 +3,7 @@
 A Stremio Addon for high quality HTTPS Stream in Italian
 
 While hosting, this project, remember that Filmpertutti uses Mixdrop. Mixdrop only allows seeing the videos only from the same IP where they were generated so, if you want to scrape filmpertutti, you have to host this project locally. Else, you can only scrape streamingcommunity.  
-
+Hosting your own instance is suggested but you can use the public instance [linked](https://mammamia-urlo-mammamia.hf.space/) in the About Page of the repo. 
   
 
 # Installation
