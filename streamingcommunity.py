@@ -15,7 +15,7 @@ headers = {
     'Accept-Language': 'en-US,en;q=0.5'
 }
 
-def search(query,date,ismovie):
+def search(query):
     #Do a request to get the ID of serie/move and it's slug in the URL
     response = requests.get(query).json()
     for item in response['data']:
@@ -81,14 +81,17 @@ def streaming_community(imdb):
     if "tt" in imdb:
         #If it is a imbd then conver it to tmbd
         tmdba  = get_TMDb_id_from_IMDb_id(imdb_id)
+        showname = requests.get(f'https://v3.sg.media-imdb.com/suggestion/a/{imdb_id}.json')
+        showname = showname.json()
+        showname = showname['d'][0]['l']
     else:
         #else just equals them
         tmdba = imdb_id.replace("tmdb:","")
-    type = "StreamingCommunity"
-    showname,date = get_info(tmdba,ismovie,type)
+        type = "StreamingCommunity"
+        showname = get_info(tmdba,ismovie,type)
     showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
     query = f'https://streamingcommunity.{SC_DOMAIN}/api/search?q={showname}'
-    tid,slug = search(query,date,ismovie)
+    tid,slug = search(query)
     if ismovie == 1:
         #TID means temporaly ID
         url = get_film(tid)
