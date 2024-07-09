@@ -1,7 +1,9 @@
 from flask import Flask, jsonify, abort
-from filmpertutti import get_stream_link
+from filmpertutti import filmpertutti
+from streamingcommunity import streaming_community
 from loadenv import load_env
-TMDB_KEY, DOMAIN, FILMPERTUTTI, STREAMINGCOMMUNITY = load_env()
+TMDB_KEY, FT_DOMAIN, SC_DOMAIN, FILMPERTUTTI, STREAMINGCOMMUNITY = load_env()
+
 
 app = Flask(__name__)
 
@@ -35,16 +37,27 @@ def root():
 @app.route('/stream/<type>/<id>.json')
 def addon_stream(type, id):
     if type not in MANIFEST['types']:
-        abort(404)
-    if FILMPERTUTTI == 1:    
-        url = get_stream_link(id)  # call the function to dynamically get stream links
-    elif STREAMINGCOMMUNITY == 1:
-        return "Not implemented yet"
+        abort(404) 
+    streams = {'streams': []}
+    if STREAMINGCOMMUNITY == "1":
+        url_streaming_community = streaming_community(id)
+        print(url_streaming_community)
+        if url_streaming_community is not None:
+            streams['streams'].append({'title': 'StreamingCommunity 1080p', 'url': f'{url_streaming_community}?rendition=1080p'})
+            streams['streams'].append({'title': 'StreamingCommunity 720p', 'url': f'{url_streaming_community}?rendition=720p'})
+            
+    # If FILMPERTUTTI == 1, scrape that site      
+    if FILMPERTUTTI == "1":
+        url_filmpertutti = filmpertutti(id)
+        if url_filmpertutti is not None:
+            streams['streams'].append({'title': 'Filmpertutti', 'url': url_filmpertutti})
     
-
-    streams = {'streams': [{'title': 'Stream URL', 'url': url}]}
+    # If no streams were added, abort with a 404 error
+    if not streams['streams']:
+        abort(404)
 
     return respond_with(streams)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)

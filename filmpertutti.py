@@ -1,21 +1,24 @@
 
 from tmdbv3api import TMDb, Movie, TV
 import requests 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup,SoupStrainer
 import string
 import re
 from datetime import datetime
 import dateparser
 from convert import get_TMDb_id_from_IMDb_id
 from loadenv import load_env
-from info import get_info
+from info import get_info, is_movie
 from convert_date import convert_US_date
+import logging
 
-TMDB_KEY, DOMAIN = load_env()
+_, FT_DOMAIN,_,_ ,_= load_env()
+#Some basic headers
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.10; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
     'Accept-Language': 'en-US,en;q=0.5'
 }
+#Map months to check if date = date
 month_mapping = {
     'Jan': 'Gennaio', 'Feb': 'Febbraio', 'Mar': 'Marzo', 'Apr': 'Aprile',
     'May': 'Maggio', 'Jun': 'Giugno', 'Jul': 'Luglio', 'Aug': 'Agosto',
@@ -24,6 +27,7 @@ month_mapping = {
 
 def search(query,date):
     response = requests.get(query).json()
+    #Get link tid of every item and then open the link to see if the date = date
     for json in response:
         link = json['link']
         tid = json['id']
@@ -38,7 +42,6 @@ def search(query,date):
 
     # Swap to YY-MM-DD formatting using dateparser
         release_date = dateparser.parse(date_string, languages=['it']).strftime("%Y-%m-%d")
-        print(release_date)
         if release_date == date:
             url = link
             tid = tid
@@ -46,19 +49,20 @@ def search(query,date):
     return url, tid  
 
 def get_episode_link(season,episode,tid,url): 
-    episode = int(episode)
-    season = int(season)
+    #Get the link from where we have to obtain mixdrop link
     tlink = f'{url}?show_video=true&post_id={tid}&season_id={season-1}&episode_id={episode-1}'
     return tlink
 
 
 def get_film(url):
+    #Get the link from where we have to obtain mixdrop link
     tlink = url + "?show_video=true"
     return tlink
 
 def get_real_link(tlink):
+    #Some basic code to get the mixdrop link
     page = requests.get(tlink, headers=headers)
-    soup = BeautifulSoup(page.content, features="lxml")
+    soup = BeautifulSoup(page.content, features="lxml",parse_only=SoupStrainer('iframe'))
     iframe_src = soup.find('iframe')['src']
 
     iframe_page = requests.get(iframe_src, headers=headers)
@@ -67,7 +71,6 @@ def get_real_link(tlink):
     mega_button = iframe_soup.find('div', attrs={'class': 'megaButton', 'rel': 'nofollow'}, string='MIXDROP')
     if mega_button:
         real_link = mega_button.get('meta-link')
-        print(f'Real link: {real_link}')
         return real_link
     
 def get_true_link(real_link):
@@ -82,36 +85,35 @@ def get_true_link(real_link):
     s = 'https:'
     for c in schema:
         s += d[c] if c in d else c
-    print(s)
     return s
 
-def get_stream_link(imbd):
-    general  = get_TMDb_id_from_IMDb_id(imbd)
-    if len(general)==4 : 
-        tmdba,season,episode,ismovie = general
-    else:
-        tmdba,ismovie = general
+def filmpertutti(imdb):
+    general = is_movie(imdb)
+    ismovie = general[0]
+    imdb_id = general[1]
+    if ismovie == 0 : 
+        season = int(general[2])
+        episode = int(general[3])
+    tmdba  = get_TMDb_id_from_IMDb_id(imdb_id)
     type = "Filmpertutti"
     showname,date = get_info(tmdba,ismovie,type)
     showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
-    query = f'https://filmpertutti.{DOMAIN}/wp-json/wp/v2/posts?search={showname}&page=1&_fields=link,id'
-    print(query)
+    #Build the query
+    query = f'https://filmpertutti.{FT_DOMAIN}/wp-json/wp/v2/posts?search={showname}&page=1&_fields=link,id'
     url,tid = search(query,date)
-    print(ismovie)
-    print(url)
     if ismovie == 0:
         episode_link = get_episode_link(season,episode,tid,url)
-        print(episode_link)
         #Let's get mixdrop link 
         real_link = get_real_link(episode_link)
         #let's get delivery link, streaming link
         streaming_link = get_true_link(real_link)
+        print(streaming_link)
         return streaming_link
     elif ismovie == 1:
         film_link = get_film(url)
-        print(film_link)
         #Let's get mixdrop link
         real_link = get_real_link(film_link)
         #let's get delivery link, streaming link
         streaming_link = get_true_link(real_link)
+        print(streaming_link)
         return streaming_link
