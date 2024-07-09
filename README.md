@@ -7,7 +7,7 @@ While hosting, this project, remember that Filmpertutti uses Mixdrop. Mixdrop on
   
 
 # Installation
-
+## Local
 Install required packages
 
 ``
@@ -18,6 +18,30 @@ Then to start the Flask server just execute:
 ``
 python3 run.py
 ``
+## Hugging Face
+To host this project with Hugging Face, go to the  [linked](https://huggingface.co/spaces/MammaMia-Urlo/MammaMia/) page and follow these steps
+
+ 1. Create an Hugging Face Account
+ 2. Click on three dots on the top (right) part of the screen
+ 3. Click Duplicate this Space
+ 4. Insert TMDB Key
+ 5. Clone the Project
+ 6. You are done! 
+ 7. To install it on Stremio altought, you will need the Direct URL. It can be found on three dots --> Embed This Space --> Direct URL
+ 8. Do not forget to add /manifest.json
+ On Hugging Face you are forced to use the 8080 port because it is the only one allowed to send/get network requests.
+## Render
+To install this project on [Render](https://render.com/) follow these steps:
+ 1. Create an Account
+ 2. Create a Web Service
+ 3. Clone the repo
+ 4. Among the other environment variables, put PORT = 8080. This is needed because render needs the Port given as an environment variable. 
+ 5. As build command put `` pip install -r requirements `` and as run command put ``python3 run.py ``
+ 6. Then just finish Render Setup and you are done :)
+
+ 
+ 
+
 # How to add to Stremio
 Just paste the URL/manifest.json in your search bar.
 # Enviroment Variables
@@ -33,3 +57,6 @@ Just paste the URL/manifest.json in your search bar.
 
 
 Here is [linked](https://developer.themoviedb.org/docs/getting-started) a tutorial about how to get a TMDB KEY
+
+
+
