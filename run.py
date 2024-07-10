@@ -1,8 +1,12 @@
 from flask import Flask, jsonify, abort
 from filmpertutti import filmpertutti
 from streamingcommunity import streaming_community
-from loadenv import load_env
-TMDB_KEY, FT_DOMAIN, SC_DOMAIN, FILMPERTUTTI, STREAMINGCOMMUNITY = load_env()
+import json
+import config
+
+FILMPERTUTTI = config.FILMPERTUTTI
+STREAMINGCOMMUNITY = config.STREAMINGCOMMUNITY
+
 
 
 app = Flask(__name__)

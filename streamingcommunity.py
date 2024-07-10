@@ -5,10 +5,10 @@ from bs4 import BeautifulSoup,SoupStrainer
 from datetime import datetime
 import dateparser
 from convert import get_TMDb_id_from_IMDb_id
-from loadenv import load_env
 from info import get_info, is_movie
+import config
 #Get domain
-_, _,SC_DOMAIN,_ ,_= load_env()
+SC_DOMAIN= config.SC_DOMAIN
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.10; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
@@ -83,7 +83,7 @@ def streaming_community(imdb):
         tmdba  = get_TMDb_id_from_IMDb_id(imdb_id)
         showname = requests.get(f'https://v3.sg.media-imdb.com/suggestion/a/{imdb_id}.json')
         showname = showname.json()
-        showname = showname['d'][0]['l']
+        showname = showname['d'][-1]['l']
     else:
         #else just equals them
         tmdba = imdb_id.replace("tmdb:","")

@@ -7,12 +7,13 @@ import re
 from datetime import datetime
 import dateparser
 from convert import get_TMDb_id_from_IMDb_id
-from loadenv import load_env
 from info import get_info, is_movie
 from convert_date import convert_US_date
 import logging
+import config
 
-_, FT_DOMAIN,_,_ ,_= load_env()
+FT_DOMAIN = config.FT_DOMAIN
+
 #Some basic headers
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.10; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',

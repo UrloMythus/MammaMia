@@ -1,7 +1,7 @@
 from loadenv import load_env
 from tmdbv3api import TMDb, Movie, TV
 from convert_date import convert_US_date, convert_IT_date
-TMDB_KEY,_,_,FILMPERTUTTI,STREAMINGCOMMUNITY = load_env()
+TMDB_KEY= load_env()
 
 def get_info(tmbda,ismovie,type):
     tmdb = TMDb()

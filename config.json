@@ -1,0 +1,21 @@
+{
+    "Siti": {
+           "StreamingCommunity": {
+               "enabled": "1",    
+               "domain": "boston"
+           },
+           "Filmpertutti": {
+               "enabled": "1",    
+               "domain": "casino"
+           },
+           "Tuttifilm":{
+               "enabled": "1",    
+               "domain": "bond",
+               "fast_search": "0"
+           }
+   },
+   "General":{
+       "load_env": "1"
+   }
+   }
+   
