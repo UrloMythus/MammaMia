@@ -35,35 +35,13 @@ Install required packages
 
   
 
-  
+``pip install -r requirements.txt ``
 
-``
-
-  
-
-pip install -r requirements.txt
-
-  
-
-``
-
-  
-
-  
 
 Then to start the Flask server just execute:
 
-  
 
-``
-
-  
-
-python3 run.py
-
-  
-
-``
+``python3 run.py``
 
   
 
@@ -166,9 +144,7 @@ Just paste the URL/manifest.json in your search bar.
   
 
 | Enviroment Variable | Value |
-
 |-------------------------|---|
-
 |TMDB_KEY|INSERT YOUR API KEY HERE|
 
   
