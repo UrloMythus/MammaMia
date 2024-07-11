@@ -6,6 +6,8 @@ import config
 
 FILMPERTUTTI = config.FILMPERTUTTI
 STREAMINGCOMMUNITY = config.STREAMINGCOMMUNITY
+HOST = config.HOST
+PORT = int(config.PORT)
 
 
 
@@ -64,4 +66,4 @@ def addon_stream(type, id):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host=HOST, port=PORT)

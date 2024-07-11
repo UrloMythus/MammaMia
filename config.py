@@ -16,3 +16,5 @@ STREAMINGCOMMUNITY = SITE["StreamingCommunity"]['enabled']
 #General
 GENERAL = config['General']
 dotenv = GENERAL["load_env"]
+HOST = GENERAL["HOST"]
+PORT = GENERAL["PORT"]
