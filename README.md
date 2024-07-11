@@ -1,7 +1,11 @@
 
   
 
+  
+
 # MammaMia
+
+  
 
   
 
@@ -13,7 +17,11 @@ A Stremio Addon for high quality HTTPS Stream in Italian
 
   
 
+  
+
 While hosting, this project, remember that Filmpertutti uses Mixdrop. Mixdrop only allows seeing the videos only from the same IP where they were generated so, if you want to scrape filmpertutti, you have to host this project locally. Else, you can only scrape streamingcommunity.
+
+  
 
   
 
@@ -23,7 +31,11 @@ Hosting your own instance is suggested but you can use the public instance [link
 
   
 
+  
+
 # Installation
+
+  
 
   
 
@@ -31,21 +43,33 @@ Hosting your own instance is suggested but you can use the public instance [link
 
   
 
+  
+
 Install required packages
+
+  
 
   
 
 ``pip install -r requirements.txt ``
 
+  
+  
 
 Then to start the Flask server just execute:
 
+  
+  
 
 ``python3 run.py``
 
   
 
+  
+
 ## Hugging Face
+
+  
 
   
 
@@ -55,7 +79,11 @@ To host this project with Hugging Face, go to the [linked](https://huggingface.c
 
   
 
+  
+
 1. Create an Hugging Face Account
+
+  
 
   
 
@@ -63,7 +91,11 @@ To host this project with Hugging Face, go to the [linked](https://huggingface.c
 
   
 
+  
+
 3. Click Duplicate this Space
+
+  
 
   
 
@@ -71,7 +103,11 @@ To host this project with Hugging Face, go to the [linked](https://huggingface.c
 
   
 
+  
+
 5. Clone the Project
+
+  
 
   
 
@@ -79,15 +115,23 @@ To host this project with Hugging Face, go to the [linked](https://huggingface.c
 
   
 
+  
+
 7. To install it on Stremio altought, you will need the Direct URL. It can be found on three dots --> Embed This Space --> Direct URL
+
+  
 
   
 
 8. Do not forget to add /manifest.json
 
+  9. To update the remote server, you can either upload files manually, or you can connect the [repository locally](https://huggingface.co/docs/hub/en/repositories-getting-started) and use your file manager to do so. If you know how a Dockerfile works you could even clone the repository every time, although you will  need to modify the config.json (by disabling both load_dotenv and FILMPERTUTTI). Plus remember that the README.MD of Hugging Face MUST NOT be overrided or the app won't run. 
+
   
 
-On Hugging Face you are forced to use the 8080 port because it is the only one allowed to send/get network requests. Moreover remember that load_env needs to be disabled (it should be by default if you clone the project from HF)
+On Hugging Face you are forced to use the 8080 port because it is the only one allowed to send/get network requests. Moreover, remember that load_env needs to be disabled (it should be by default if you clone the project from HF)
+
+  
 
   
 
@@ -95,7 +139,11 @@ On Hugging Face you are forced to use the 8080 port because it is the only one a
 
   
 
+  
+
 To install this project on [Render](https://render.com/) follow these steps:
+
+  
 
   
 
@@ -103,11 +151,17 @@ To install this project on [Render](https://render.com/) follow these steps:
 
   
 
+  
+
 2. Create a Web Service
 
   
 
-3. Clone the repo
+  
+
+3. Fork the repo and then connect it to Render
+
+  
 
   
 
@@ -115,13 +169,21 @@ To install this project on [Render](https://render.com/) follow these steps:
 
   
 
+  
+
 5. As build command put `` pip install -r requirements `` and as run command put ``python3 run.py ``
+
+  
 
   
 
 6. Then just finish Render Setup and you are done :)
 
+  
+
 Remember, load_env needs to be disabled in the config.json
+
+  
 
   
 
@@ -133,7 +195,11 @@ Remember, load_env needs to be disabled in the config.json
 
   
 
+  
+
 Just paste the URL/manifest.json in your search bar.
+
+  
 
   
 
@@ -143,9 +209,15 @@ Just paste the URL/manifest.json in your search bar.
 
   
 
+  
+
 | Enviroment Variable | Value |
+
 |-------------------------|---|
+
 |TMDB_KEY|INSERT YOUR API KEY HERE|
+
+  
 
   
 
@@ -153,21 +225,39 @@ Here is [linked](https://developer.themoviedb.org/docs/getting-started) a tutori
 
   
 
+  
+
 # Config
+
+  
 
 In the repo there is a config.json that you can modify to change some aspects of the addon like the domains of the sites. Down here all explained:
 
+  
+
 | Config | Value |
+
 |-------------------------|---|
+
 | Domain | The domain of the site, must be a string |
+
 |enabled | If the site is enabled or not. "1" means true. "0" means false. Remember there is no point in enabling filmpertutti on a remote server since it's IP-LOCKED|
+
 |fast_search|"1" for enabled, "0" for disabled. It enables a faster search for TuttiFilm Provider but in case there are two movies/series with the exactly same name then it might take the wrong one|
+
 |load_env|Put "1" if enabled, "0" if disabled. It needs to be enable if you need to load a .env file. On remote hosting services, like Hugging Face or Render, it needs to be disabled. |
+
 |HOST| The host for the Flask APP|
+
 |PORT| The port for the Flask APP. Default: 8080 |
 
+  
+  
 
 Check those links to get the new Domain for the providers.
+
 [FILMPERTUTTI](https://filmpertuttiiii.nuovo.live/)
+
 [STREAMINGCOMMUNITY](https://t.me/+jlXmmprhtakxYWJh)
+
 [TANTIFILM](https://tantinuovo.com/tantifilm-nuovo-indirizzo/)
