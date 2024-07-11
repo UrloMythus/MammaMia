@@ -2,6 +2,8 @@ from loadenv import load_env
 from tmdbv3api import TMDb, Movie, TV
 from convert_date import convert_US_date, convert_IT_date
 import requests
+import config
+SC_FAST_SEARCH = config.SC_FAST_SEARCH
 TMDB_KEY= load_env()
 
 def get_info_tmdb(tmbda,ismovie,type):
@@ -14,9 +16,13 @@ def get_info_tmdb(tmbda,ismovie,type):
         showname = show.name
         if type == "Filmpertutti":
             date= show.first_air_date
-        elif type == "StreamingCommunity":
-            date = show.last_air_date
             print("Real date",date)
+            return showname,date
+        elif type == "StreamingCommunity":
+            if SC_FAST_SEARCH == "0":
+                n_season = show.number_of_seasons
+                return showname,n_season
+            
     else:
         movie = Movie()
         show= movie.details(tmbda)
@@ -51,7 +57,6 @@ def get_info_imdb(imdb_id, ismovie, type):
         elif type == "StreamingCommunity":
             return showname
             
-
 
 
 

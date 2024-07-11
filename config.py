@@ -13,6 +13,7 @@ SC_DOMAIN = SITE["StreamingCommunity"]['domain']
 TF_DOMAIN = SITE["Filmpertutti"]['enabled']
 FILMPERTUTTI = SITE["Filmpertutti"]['enabled']
 STREAMINGCOMMUNITY = SITE["StreamingCommunity"]['enabled']
+SC_FAST_SEARCH = SITE["StreamingCommunity"]['fast_search']
 #General
 GENERAL = config['General']
 dotenv = GENERAL["load_env"]
