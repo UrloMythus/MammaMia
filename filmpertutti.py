@@ -134,4 +134,3 @@ def filmpertutti(imdb):
         streaming_link = get_true_link(real_link)
         print(streaming_link)
         return streaming_link
-filmpertutti("tt16426418")
