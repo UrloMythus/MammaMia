@@ -46,8 +46,9 @@ def search(query,date):
         if release_date == date:
             url = link
             tid = tid
-            break
-    return url, tid  
+            return url, tid 
+        else:
+            print("Date are not equals")
 
 def get_episode_link(season,episode,tid,url): 
     #Get the link from where we have to obtain mixdrop link
@@ -101,7 +102,11 @@ def filmpertutti(imdb):
     showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
     #Build the query
     query = f'https://filmpertutti.{FT_DOMAIN}/wp-json/wp/v2/posts?search={showname}&page=1&_fields=link,id'
-    url,tid = search(query,date)
+    try:
+        url,tid = search(query,date)
+    except:
+        print("No results found")
+        return None
     if ismovie == 0:
         episode_link = get_episode_link(season,episode,tid,url)
         #Let's get mixdrop link 

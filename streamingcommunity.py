@@ -7,6 +7,7 @@ import dateparser
 from convert import get_TMDb_id_from_IMDb_id
 from info import get_info, is_movie
 import config
+import json
 #Get domain
 SC_DOMAIN= config.SC_DOMAIN
 
@@ -14,6 +15,25 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.10; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
     'Accept-Language': 'en-US,en;q=0.5'
 }
+
+#GET VERSION OF STREAMING COMMUNITY:
+def get_version():
+    #Extract the version from the main page of the site
+
+
+    try:
+        base_url = f'https://streamingcommunity.{SC_DOMAIN}/richiedi-un-titolo'
+        response = requests.get(base_url, headers=headers)
+        #Soup the response
+        soup = BeautifulSoup(response.text, "lxml")
+
+        # Extract version
+        version = json.loads(soup.find("div", {"id": "app"}).get("data-page"))['version']
+        return version
+    except:
+        print("Couldn't find the version")
+        version = "65e52dcf34d64173542cd2dc6b8bb75b"
+        return version
 
 def search(query):
     #Do a request to get the ID of serie/move and it's slug in the URL
@@ -37,13 +57,13 @@ def get_film(tid):
     url = f'https://vixcloud.co/playlist/{vixid}'
     return url
 
-def get_season_episode_id(tid,slug,season,episode):
+def get_season_episode_id(tid,slug,season,episode,version):
     #Set some basic headers for the request
     headers = {
             'user-agent': "Mozilla/5.0 (Windows NT 10.10; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
             'x-inertia': 'true', 
             #Version of streaming community
-            'x-inertia-version': 'c1bdf1189cb68fca28151c8e909bd053'
+            'x-inertia-version': version
         }   
       #Get episode ID 
     response = requests.get(f'https://streamingcommunity.{SC_DOMAIN}/titles/{tid}-{slug}/stagione-{season}', headers=headers)
@@ -99,7 +119,8 @@ def streaming_community(imdb):
         return url
     if ismovie == 0:
         #Uid = URL ID
-        episode_id = get_season_episode_id(tid,slug,season,episode)
+        version = get_version()
+        episode_id = get_season_episode_id(tid,slug,season,episode,version)
         url = get_episode_link(episode_id,tid)
         print(url)
         return url
