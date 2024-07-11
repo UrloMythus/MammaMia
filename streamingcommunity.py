@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup,SoupStrainer
 from datetime import datetime
 import dateparser
 from convert import get_TMDb_id_from_IMDb_id
-from info import get_info, is_movie
+from info import get_info_tmdb, is_movie, get_info_imdb
 import config
 import json
 #Get domain
@@ -99,16 +99,13 @@ def streaming_community(imdb):
         season = int(general[2])
         episode = int(general[3])
     if "tt" in imdb:
-        #If it is a imbd then conver it to tmbd
-        tmdba  = get_TMDb_id_from_IMDb_id(imdb_id)
-        showname = requests.get(f'https://v3.sg.media-imdb.com/suggestion/a/{imdb_id}.json')
-        showname = showname.json()
-        showname = showname['d'][-1]['l']
+        #Get showname
+        showname = get_info_imdb(imdb_id,ismovie,"StreamingCommunity")
     else:
         #else just equals them
         tmdba = imdb_id.replace("tmdb:","")
         type = "StreamingCommunity"
-        showname = get_info(tmdba,ismovie,type)
+        showname = get_info_tmdb(tmdba,ismovie,type)
     showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
     query = f'https://streamingcommunity.{SC_DOMAIN}/api/search?q={showname}'
     tid,slug = search(query)

@@ -7,7 +7,7 @@ import re
 from datetime import datetime
 import dateparser
 from convert import get_TMDb_id_from_IMDb_id
-from info import get_info, is_movie
+from info import get_info_tmdb, is_movie, get_info_imdb
 from convert_date import convert_US_date
 import logging
 import config
@@ -93,12 +93,23 @@ def filmpertutti(imdb):
     general = is_movie(imdb)
     ismovie = general[0]
     imdb_id = general[1]
+    type = "Filmpertutti"
     if ismovie == 0 : 
         season = int(general[2])
         episode = int(general[3])
-    tmdba  = get_TMDb_id_from_IMDb_id(imdb_id)
-    type = "Filmpertutti"
-    showname,date = get_info(tmdba,ismovie,type)
+    if "tt" in imdb:
+        if ismovie == 0:
+        #Get showname and date
+            showname,date = get_info_imdb(imdb_id,ismovie,type)
+        else:
+            #THIS IS needed cause the only way to get all releases dates is by giving a tmdb ID not a IMDB
+            tmdba = get_TMDb_id_from_IMDb_id(imdb_id)
+            showname,date = get_info_tmdb(tmdba,ismovie,type)
+
+    elif "tmdb" in imdb:
+        #Get showname and date
+        tmdba = imdb_id.replace("tmdb:","")
+        showname,date = get_info_tmdb(tmdba,ismovie,type)
     showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
     #Build the query
     query = f'https://filmpertutti.{FT_DOMAIN}/wp-json/wp/v2/posts?search={showname}&page=1&_fields=link,id'
@@ -123,3 +134,4 @@ def filmpertutti(imdb):
         streaming_link = get_true_link(real_link)
         print(streaming_link)
         return streaming_link
+filmpertutti("tt16426418")
