@@ -1,15 +1,15 @@
 {
     "Siti": {
            "StreamingCommunity": {
-               "enabled": "1",    
+               "enabled": "0",    
                "domain": "boston",
-               "fast_search": "0"
+               "fast_search": "1"
            },
            "Filmpertutti": {
                "enabled": "1",    
                "domain": "makeup"
            },
-           "Tantifilm":{
+           "Tuttifilm":{
                "enabled": "1",    
                "domain": "bond",
                "fast_search": "0"

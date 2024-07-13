@@ -4,6 +4,7 @@ from convert_date import convert_US_date, convert_IT_date
 import requests
 import config
 SC_FAST_SEARCH = config.SC_FAST_SEARCH
+TF_FAST_SEARCH = config.TF_FAST_SEARCH
 TMDB_KEY= load_env()
 
 def get_info_tmdb(tmbda,ismovie,type):
@@ -22,19 +23,38 @@ def get_info_tmdb(tmbda,ismovie,type):
             if SC_FAST_SEARCH == "0":
                 n_season = show.number_of_seasons
                 return showname,n_season
+            else:
+                return showname
+        elif type == "Tuttifilm":
+            if TF_FAST_SEARCH == "0":
+                date = show.first_air_date
+                date = date.split("-")[0]
+                print("Real date",date)
+                return showname,date
+            else:
+                return showname
             
-    else:
+    elif ismovie == 1:
         movie = Movie()
         show= movie.details(tmbda)
         showname= show.title
         #Get all release dates
-        date = show.release_dates
         if type == "Filmpertutti":
+            date = show.release_dates
             #GET US RELEASE DATE because filmpertutti somewhy uses US release date
             date = convert_US_date(date)
-    return showname,date
-
-
+            return showname,date
+        elif type == "StreamingCommunity":
+            return showname
+        elif type == "Tuttifilm":
+            if TF_FAST_SEARCH == "0":
+                date = show.release_date
+                date = date.split("-")[0]
+                print("Real date",date)
+                return showname,date
+            else:
+                return showname
+    
 
 
 def get_info_imdb(imdb_id, ismovie, type):
@@ -49,6 +69,10 @@ def get_info_imdb(imdb_id, ismovie, type):
             return showname, date
         elif type == "StreamingCommunity":
             return showname
+        elif type == "Tuttifilm":
+            date = data['tv_results'][0]['first_air_date']
+            date = date.split("-")[0]
+            return showname,date
 
     elif ismovie == 1:
         showname= data['movie_results'][0]['title']
@@ -56,6 +80,12 @@ def get_info_imdb(imdb_id, ismovie, type):
             return
         elif type == "StreamingCommunity":
             return showname
+        elif type == "Tuttifilm":
+            date = data['movie_results'][0]['release_date']
+            date = date.split("-")[0]
+            print("Real date",date)
+            return showname,date
+
             
 
 

@@ -10,10 +10,11 @@ with open('config.json') as f:
 SITE = config["Siti"]
 FT_DOMAIN = SITE["Filmpertutti"]['domain']
 SC_DOMAIN = SITE["StreamingCommunity"]['domain']
-TF_DOMAIN = SITE["Filmpertutti"]['enabled']
+TF_DOMAIN = SITE["Tuttifilm"]['enabled']
 FILMPERTUTTI = SITE["Filmpertutti"]['enabled']
 STREAMINGCOMMUNITY = SITE["StreamingCommunity"]['enabled']
 SC_FAST_SEARCH = SITE["StreamingCommunity"]['fast_search']
+TF_FAST_SEARCH = SITE["Tuttifilm"]['fast_search']
 #General
 GENERAL = config['General']
 dotenv = GENERAL["load_env"]

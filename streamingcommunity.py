@@ -36,15 +36,19 @@ def get_version():
         version = "65e52dcf34d64173542cd2dc6b8bb75b"
         return version
 
-def search(query,n_season):
+def search(query,n_season,ismovie):
     #Do a request to get the ID of serie/move and it's slug in the URL
     response = requests.get(query).json()
     for item in response['data']:
         tid = item['id']
         slug = item['slug']
-        number_of_seasons = item['seasons_count']
+        idk = item['seasons_count'] 
         if SC_FAST_SEARCH == "0":
-            if number_of_seasons == n_season:
+            if ismovie == 0:
+                seasons_count = item['seasons_count']
+                if seasons_count == n_season:
+                    return tid,slug
+            elif ismovie == 1:
                 return tid,slug
         elif SC_FAST_SEARCH == "1":
             return tid,slug
@@ -119,10 +123,23 @@ def streaming_community(imdb):
                 showname = get_info_tmdb(tmdba,ismovie,type)
         elif SC_FAST_SEARCH == "0":
             tmdba = get_TMDb_id_from_IMDb_id(imdb_id)
-            showname,n_season = get_info_tmdb(tmdba,ismovie,type)   
+            showname,n_season = get_info_tmdb(tmdba,ismovie,type)  
+    #HERE THE CASE IF IT IS A MOVIE
+    else:
+        if "tt" in imdb:
+            #Get showname
+            n_season = None
+            showname = get_info_imdb(imdb_id,ismovie,type)
+        else:
+                #I just set n season to None to avoid bugs, but it is not needed if Fast search is enabled
+                #else just equals them
+                n_season = None
+                tmdba = imdb_id.replace("tmdb:","")
+                showname = get_info_tmdb(tmdba,ismovie,type) 
+
     showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
     query = f'https://streamingcommunity.{SC_DOMAIN}/api/search?q={showname}'
-    tid,slug = search(query,n_season)
+    tid,slug = search(query,n_season,ismovie)
     if ismovie == 1:
         #TID means temporaly ID
         url = get_film(tid)
