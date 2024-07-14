@@ -5,7 +5,11 @@ import requests
 import config
 SC_FAST_SEARCH = config.SC_FAST_SEARCH
 TF_FAST_SEARCH = config.TF_FAST_SEARCH
-TMDB_KEY,_= load_env()
+MYSTERIUS = config.MYSTERIUS
+if MYSTERIUS == "1":
+    TMDB_KEY,_= load_env()
+else:
+    TMDB_KEY= load_env()
 
 def get_info_tmdb(tmbda,ismovie,type):
     tmdb = TMDb()
