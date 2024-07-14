@@ -1,7 +1,7 @@
 {
     "Siti": {
            "StreamingCommunity": {
-               "enabled": "0",    
+               "enabled": "1",    
                "domain": "boston",
                "fast_search": "1"
            },
@@ -13,6 +13,9 @@
                "enabled": "1",    
                "domain": "bond",
                "fast_search": "0"
+           },
+           "Mysterius":{
+               "enabled": "0"    
            }
    },
    "General":{

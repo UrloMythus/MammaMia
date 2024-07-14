@@ -243,7 +243,7 @@ In the repo there is a config.json that you can modify to change some aspects of
 |HOST| The host for the Flask APP|
 |PORT| The port for the Flask APP. Default: 8080 |
 
-  
+  For now Mysterius must be kept disabled if you do not know what you are doing.
   
 
 Check those links to get the new Domain for the providers.

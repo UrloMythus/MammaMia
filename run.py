@@ -1,14 +1,17 @@
 from flask import Flask, jsonify, abort
 from filmpertutti import filmpertutti
 from streamingcommunity import streaming_community
+from tantifilm import tantifilm
 import json
 import config
-
 FILMPERTUTTI = config.FILMPERTUTTI
 STREAMINGCOMMUNITY = config.STREAMINGCOMMUNITY
+MYSTERIUS = config.MYSTERIUS
+TUTTIFILM = config.TUTTIFILM
 HOST = config.HOST
 PORT = int(config.PORT)
-
+if MYSTERIUS == "1":
+    from cool import cool
 
 
 app = Flask(__name__)
@@ -45,6 +48,11 @@ def addon_stream(type, id):
     if type not in MANIFEST['types']:
         abort(404) 
     streams = {'streams': []}
+    if MYSTERIUS == "1":
+        results = cool(id)
+        if results:
+            for resolution, link in results.items():
+                streams['streams'].append({'title': f'Mysterious {resolution}', 'url': link})
     if STREAMINGCOMMUNITY == "1":
         url_streaming_community = streaming_community(id)
         print(url_streaming_community)
@@ -57,7 +65,9 @@ def addon_stream(type, id):
         url_filmpertutti = filmpertutti(id)
         if url_filmpertutti is not None:
             streams['streams'].append({'title': 'Filmpertutti', 'url': url_filmpertutti})
-    
+    if TUTTIFILM == "1":
+        url_tuttifilm = tantifilm(id)
+        streams['streams'].append({'title': 'Tantifilm', 'url': url_tuttifilm,'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}},'notWebReady': True}})
     # If no streams were added, abort with a 404 error
     if not streams['streams']:
         abort(404)

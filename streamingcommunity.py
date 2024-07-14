@@ -102,53 +102,56 @@ def get_episode_link(episode_id,tid):
 
 
 def streaming_community(imdb):
-    general = is_movie(imdb)
-    ismovie = general[0]
-    imdb_id = general[1]
-    type = "StreamingCommunity"
-    if ismovie == 0 : 
-        season = int(general[2])
-        episode = int(general[3])
-        #Check if fast search is enabled or disabled
-        if SC_FAST_SEARCH == "1":
-            if "tt" in imdb:
-            #Get showname
-                showname = get_info_imdb(imdb_id,ismovie,type)
-                n_season = None
-            else:
-                #I just set n season to None to avoid bugs, but it is not needed if Fast search is enabled
-                n_season = None
-                #else just equals them
-                tmdba = imdb_id.replace("tmdb:","")
-                showname = get_info_tmdb(tmdba,ismovie,type)
-        elif SC_FAST_SEARCH == "0":
-            tmdba = get_TMDb_id_from_IMDb_id(imdb_id)
-            showname,n_season = get_info_tmdb(tmdba,ismovie,type)  
-    #HERE THE CASE IF IT IS A MOVIE
-    else:
-        if "tt" in imdb:
-            #Get showname
-            n_season = None
-            showname = get_info_imdb(imdb_id,ismovie,type)
+    try:
+        general = is_movie(imdb)
+        ismovie = general[0]
+        imdb_id = general[1]
+        type = "StreamingCommunity"
+        if ismovie == 0 : 
+            season = int(general[2])
+            episode = int(general[3])
+            #Check if fast search is enabled or disabled
+            if SC_FAST_SEARCH == "1":
+                if "tt" in imdb:
+                #Get showname
+                    showname = get_info_imdb(imdb_id,ismovie,type)
+                    n_season = None
+                else:
+                    #I just set n season to None to avoid bugs, but it is not needed if Fast search is enabled
+                    n_season = None
+                    #else just equals them
+                    tmdba = imdb_id.replace("tmdb:","")
+                    showname = get_info_tmdb(tmdba,ismovie,type)
+            elif SC_FAST_SEARCH == "0":
+                tmdba = get_TMDb_id_from_IMDb_id(imdb_id)
+                showname,n_season = get_info_tmdb(tmdba,ismovie,type)  
+        #HERE THE CASE IF IT IS A MOVIE
         else:
-                #I just set n season to None to avoid bugs, but it is not needed if Fast search is enabled
-                #else just equals them
+            if "tt" in imdb:
+                #Get showname
                 n_season = None
-                tmdba = imdb_id.replace("tmdb:","")
-                showname = get_info_tmdb(tmdba,ismovie,type) 
+                showname = get_info_imdb(imdb_id,ismovie,type)
+            else:
+                    #I just set n season to None to avoid bugs, but it is not needed if Fast search is enabled
+                    #else just equals them
+                    n_season = None
+                    tmdba = imdb_id.replace("tmdb:","")
+                    showname = get_info_tmdb(tmdba,ismovie,type) 
 
-    showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
-    query = f'https://streamingcommunity.{SC_DOMAIN}/api/search?q={showname}'
-    tid,slug = search(query,n_season,ismovie)
-    if ismovie == 1:
-        #TID means temporaly ID
-        url = get_film(tid)
-        print(url)
-        return url
-    if ismovie == 0:
-        #Uid = URL ID
-        version = get_version()
-        episode_id = get_season_episode_id(tid,slug,season,episode,version)
-        url = get_episode_link(episode_id,tid)
-        print(url)
-        return url
+        showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
+        query = f'https://streamingcommunity.{SC_DOMAIN}/api/search?q={showname}'
+        tid,slug = search(query,n_season,ismovie)
+        if ismovie == 1:
+            #TID means temporaly ID
+            url = get_film(tid)
+            print(url)
+            return url
+        if ismovie == 0:
+            #Uid = URL ID
+            version = get_version()
+            episode_id = get_season_episode_id(tid,slug,season,episode,version)
+            url = get_episode_link(episode_id,tid)
+            print(url)
+            return url
+    except Exception as e:
+        print("Nope It failed")

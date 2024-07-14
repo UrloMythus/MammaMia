@@ -87,7 +87,7 @@ def true_url(protect_link):
             rebobo = requests.get(url, headers=headers)
             real_url = f'{rebobo.text}123456789{match[2]}{real_time}'
             print(real_url)
-            return 
+            return real_url
         else:
             print("No match found in the text.")
             return None
@@ -99,57 +99,59 @@ def true_url(protect_link):
 
 
 #Get temporaly ID
-def tuttifilm(imdb):
-    general = is_movie(imdb)
-    ismovie = general[0]
-    imdb_id = general[1]
-    type = "Tuttifilm"
-    if ismovie == 0 : 
-        season = int(general[2])
-        episode = int(general[3])
-        if "tt" in imdb:
-            if TF_FAST_SEARCH == "0":
-                showname,date = get_info_imdb(imdb_id,ismovie,type)
-            elif TF_FAST_SEARCH == "1":
-                showname = get_info_imdb(imdb_id,ismovie,type)
-                date = None
-        else:
-                #else just equals them
-                tmdba = imdb_id.replace("tmdb:","")
-                if TF_FAST_SEARCH == "0":
-                    showname = get_info_tmdb(tmdba,ismovie,type)
-                    date = None
-    elif ismovie == 1:
-        season = None
-        episode = None
-        if "tt" in imdb:
-            #Get showname
+def tantifilm(imdb):
+    try:
+        general = is_movie(imdb)
+        ismovie = general[0]
+        imdb_id = general[1]
+        type = "Tuttifilm"
+        if ismovie == 0 : 
+            print("Series not supported yet")
+            return
+            season = int(general[2])
+            episode = int(general[3])
+            if "tt" in imdb:
                 if TF_FAST_SEARCH == "0":
                     showname,date = get_info_imdb(imdb_id,ismovie,type)
-                    
                 elif TF_FAST_SEARCH == "1":
                     showname = get_info_imdb(imdb_id,ismovie,type)
                     date = None
-        else:
-            
-            #else just equals them
-            tmdba = imdb_id.replace("tmdb:","")
+            else:
+                    #else just equals them
+                    tmdba = imdb_id.replace("tmdb:","")
+                    if TF_FAST_SEARCH == "0":
+                        showname = get_info_tmdb(tmdba,ismovie,type)
+                        date = None
+        elif ismovie == 1:
             season = None
             episode = None
-            if TF_FAST_SEARCH == "0":
-                showname,date = get_info_tmdb(tmdba,ismovie,type)
-                date = None
-            elif TF_FAST_SEARCH == "1":
-                showname = get_info_tmdb(tmdba,ismovie,type)
-                date = None
+            if "tt" in imdb:
+                #Get showname
+                    if TF_FAST_SEARCH == "0":
+                        showname,date = get_info_imdb(imdb_id,ismovie,type)
+                    
+                    elif TF_FAST_SEARCH == "1":
+                        showname = get_info_imdb(imdb_id,ismovie,type)
+                        date = None
+            else:
+            
+                #else just equals themtantifilm("tt2096673")
+
+                if TF_FAST_SEARCH == "0":
+                    showname,date = get_info_tmdb(imdb,ismovie,type)
+                    date = None
+                elif TF_FAST_SEARCH == "1":
+                    showname = get_info_tmdb(imdb,ismovie,type)
+                    date = None
     
-    tid = search(showname,ismovie,season,episode,date)
-    protect_link = get_protect_link(tid)
-    url = true_url(protect_link)
+        tid = search(showname,ismovie,season,episode,date)
+        protect_link = get_protect_link(tid)
+        url = true_url(protect_link)
+        return url
 
-tuttifilm("tt16426418")
-
-
+    except Exception as e:
+        print("Tantifilm Error")
+ 
 
 
 

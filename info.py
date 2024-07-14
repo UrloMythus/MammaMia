@@ -5,7 +5,7 @@ import requests
 import config
 SC_FAST_SEARCH = config.SC_FAST_SEARCH
 TF_FAST_SEARCH = config.TF_FAST_SEARCH
-TMDB_KEY= load_env()
+TMDB_KEY,_= load_env()
 
 def get_info_tmdb(tmbda,ismovie,type):
     tmdb = TMDb()
@@ -33,6 +33,8 @@ def get_info_tmdb(tmbda,ismovie,type):
                 return showname,date
             else:
                 return showname
+        elif type == "Cool":
+            return showname
             
     elif ismovie == 1:
         movie = Movie()
@@ -54,7 +56,8 @@ def get_info_tmdb(tmbda,ismovie,type):
                 return showname,date
             else:
                 return showname
-    
+        elif type == "Cool":
+            return showname
 
 
 def get_info_imdb(imdb_id, ismovie, type):
@@ -73,6 +76,8 @@ def get_info_imdb(imdb_id, ismovie, type):
             date = data['tv_results'][0]['first_air_date']
             date = date.split("-")[0]
             return showname,date
+        elif type == "Cool":
+            return showname
 
     elif ismovie == 1:
         showname= data['movie_results'][0]['title']
@@ -85,6 +90,8 @@ def get_info_imdb(imdb_id, ismovie, type):
             date = date.split("-")[0]
             print("Real date",date)
             return showname,date
+        elif type == "Cool":
+            return showname
 
             
 

@@ -13,6 +13,8 @@ SC_DOMAIN = SITE["StreamingCommunity"]['domain']
 TF_DOMAIN = SITE["Tuttifilm"]['enabled']
 FILMPERTUTTI = SITE["Filmpertutti"]['enabled']
 STREAMINGCOMMUNITY = SITE["StreamingCommunity"]['enabled']
+MYSTERIUS = SITE["Mysterius"]['enabled']
+TUTTIFILM = SITE["Tuttifilm"]['enabled']
 SC_FAST_SEARCH = SITE["StreamingCommunity"]['fast_search']
 TF_FAST_SEARCH = SITE["Tuttifilm"]['fast_search']
 #General
