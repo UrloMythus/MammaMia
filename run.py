@@ -4,6 +4,11 @@ from streamingcommunity import streaming_community
 from tantifilm import tantifilm
 import json
 import config
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+
 FILMPERTUTTI = config.FILMPERTUTTI
 STREAMINGCOMMUNITY = config.STREAMINGCOMMUNITY
 MYSTERIUS = config.MYSTERIUS
@@ -13,18 +18,105 @@ PORT = int(config.PORT)
 if MYSTERIUS == "1":
     from cool import cool
 
-
 app = Flask(__name__)
 
 MANIFEST = {
     "id": "org.stremio.mammamia",
     "version": "1.0.0",
-    "catalogs": [],
-    "resources": ["stream"],
-    "types": ["movie", "series"],
+    "catalogs": [
+        {"type": "tv", "id": "tv_channels", "name": "TV Channels"}
+    ],
+    "resources": ["stream", "catalog"],
+    "types": ["movie", "series", "tv"],
     "name": "Mamma Mia",
     "description": "Addon providing HTTPS Stream for Italian Movies/Series",
-    "logo":"https://creazilla-store.fra1.digitaloceanspaces.com/emojis/49647/pizza-emoji-clipart-md.png"
+    "logo": "https://creazilla-store.fra1.digitaloceanspaces.com/emojis/49647/pizza-emoji-clipart-md.png"
+}
+
+STREAMS = {
+    "tv": {
+        "skysport24": [
+            {
+                "title": "Sky Sport 24",
+                "poster": "https://www.tanti.bond/public/upload/channel/sky-sport-24.webp",
+                "url": "https://07-24.mizhls.ru/fls/cdn/calcioXskysport24/playlist.m3u8",
+                "behaviorHints": {
+                    "notWebReady": True,
+                    "proxyHeaders": {
+                        "request": {
+                            "Referer": "https://claplivehdplay.ru/",
+                            "Origin": "https://claplivehdplay.ru",
+                            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+                        }
+                    }
+                }
+            }
+        ],
+        "Skyuno": [
+            {
+                "title": "Sky Uno",
+                "url": "https://07-24.mizhls.ru/fls/cdn/calcioXskyuno/playlist.m3u8",
+                "behaviorHints": {
+                    "notWebReady": True,
+                    "proxyHeaders": {
+                        "request": {
+                            "Referer": "https://claplivehdplay.ru/",
+                            "Origin": "https://claplivehdplay.ru",
+                            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+                        }
+                    }
+                }
+            }
+        ],
+        "skyserie": [
+            {
+                "title": "Sky Serie",
+                "url": "https://07-24.mizhls.ru/fls/cdn/calcioXskyserie/playlist.m3u8",
+                "behaviorHints": {
+                    "notWebReady": True,
+                    "proxyHeaders": {
+                        "request": {
+                            "Referer": "https://claplivehdplay.ru/",
+                            "Origin": "https://claplivehdplay.ru",
+                            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+                        }
+                    }
+                }
+            }
+        ],
+        "Sky Nature": [
+            {
+                "title": "Sky Nature",
+                "url": "https://07-24.mizhls.ru/fls/cdn/calcioXskynature/playlist.m3u8",
+                "behaviorHints": {
+                    "notWebReady": True,
+                    "proxyHeaders": {
+                        "request": {
+                            "Referer": "https://claplivehdplay.ru/",
+                            "Origin": "https://claplivehdplay.ru",
+                            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+                        }
+                    }
+                }
+            }
+        ],
+        "skyinvestigation": [
+            {
+                "title": "skyinvestigation",
+                "url": "https://07-24.mizhls.ru/fls/cdn/calcioXskyinvestigation/playlist.m3u8",
+                "behaviorHints": {
+                    "notWebReady": True,
+                    "proxyHeaders": {
+                        "request": {
+                            "Referer": "https://claplivehdplay.ru/",
+                            "Origin": "https://claplivehdplay.ru",
+                            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+                        }
+                    }
+                }
+            }
+        ]
+    }
 }
 
 def respond_with(data):
@@ -41,39 +133,57 @@ def addon_manifest():
 def root():
     return "Hello, this is a Stremio Addon providing HTTPS Stream for Italian Movies/Series, to install it add /manifest.json to the url and then add it into the Stremio search bar"
 
-
+@app.route('/catalog/<type>/<id>.json')
+def addon_catalog(type, id):
+    if type not in MANIFEST['types']:
+        abort(404)
+    catalog = {'metas': []}
+    if type in STREAMS:
+        for stream_id in STREAMS[type]:
+            for item in STREAMS[type][stream_id]:
+                meta_item = {
+                    "id": stream_id,
+                    "type": type,
+                    "name": item['title'],
+                    "poster": item.get('poster', "https://via.placeholder.com/150")
+                }
+                catalog['metas'].append(meta_item)
+    return respond_with(catalog)
 
 @app.route('/stream/<type>/<id>.json')
 def addon_stream(type, id):
     if type not in MANIFEST['types']:
-        abort(404) 
+        abort(404)
     streams = {'streams': []}
-    if MYSTERIUS == "1":
-        results = cool(id)
-        if results:
-            for resolution, link in results.items():
-                streams['streams'].append({'title': f'Mysterious {resolution}', 'url': link})
-    if STREAMINGCOMMUNITY == "1":
-        url_streaming_community = streaming_community(id)
-        print(url_streaming_community)
-        if url_streaming_community is not None:
-            streams['streams'].append({'title': 'StreamingCommunity 1080p', 'url': f'{url_streaming_community}?rendition=1080p'})
-            streams['streams'].append({'title': 'StreamingCommunity 720p', 'url': f'{url_streaming_community}?rendition=720p'})
-            
-    # If FILMPERTUTTI == 1, scrape that site      
-    if FILMPERTUTTI == "1":
-        url_filmpertutti = filmpertutti(id)
-        if url_filmpertutti is not None:
-            streams['streams'].append({'title': 'Filmpertutti', 'url': url_filmpertutti})
-    if TUTTIFILM == "1":
-        url_tuttifilm = tantifilm(id)
-        streams['streams'].append({'title': 'Tantifilm', 'url': url_tuttifilm,'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}},'notWebReady': True}})
-    # If no streams were added, abort with a 404 error
+
+    if type in STREAMS and id in STREAMS[type]:
+        logging.debug(f"Found TV channel: {id}")
+        streams['streams'] = STREAMS[type][id]
+    else:
+        logging.debug(f"Handling movie or series: {id}")
+        if MYSTERIUS == "1":
+            results = cool(id)
+            if results:
+                for resolution, link in results.items():
+                    streams['streams'].append({'title': f'Mysterious {resolution}', 'url': link})
+        if STREAMINGCOMMUNITY == "1":
+            url_streaming_community = streaming_community(id)
+            print(url_streaming_community)
+            if url_streaming_community is not None:
+                streams['streams'].append({'title': 'StreamingCommunity 1080p', 'url': f'{url_streaming_community}?rendition=1080p'})
+                streams['streams'].append({'title': 'StreamingCommunity 720p', 'url': f'{url_streaming_community}?rendition=720p'})
+        if FILMPERTUTTI == "1":
+            url_filmpertutti = filmpertutti(id)
+            if url_filmpertutti is not None:
+                streams['streams'].append({'title': 'Filmpertutti', 'url': url_filmpertutti})
+        if TUTTIFILM == "1":
+            url_tuttifilm = tantifilm(id)
+            streams['streams'].append({'title': 'Tantifilm', 'url': url_tuttifilm, 'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True}})
+
     if not streams['streams']:
         abort(404)
 
     return respond_with(streams)
-
 
 if __name__ == '__main__':
     app.run(host=HOST, port=PORT)
