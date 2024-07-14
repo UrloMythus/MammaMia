@@ -7,7 +7,6 @@ import config
 import logging
 
 # Configure logging
-logging.basicConfig(level=logging.DEBUG)
 
 FILMPERTUTTI = config.FILMPERTUTTI
 STREAMINGCOMMUNITY = config.STREAMINGCOMMUNITY

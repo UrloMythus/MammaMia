@@ -9,8 +9,7 @@ def get_links(slug,season,episode,ismovie):
         headers = {
             "x-api-key": MYSTERIUS_KEY
         }
-        response = requests.get("https://mythus-ulala1243.hf.space/api/cookie", headers=headers)
-        print(response.text)
+        response = requests.get("https://mammamia-urlo-ulala12431.hf.space/api/cookie", headers=headers)
         Auths = response.json()
         Bearer = Auths.get('cookie')
         ap_session = Auths.get('auth')
@@ -29,7 +28,11 @@ def get_links(slug,season,episode,ismovie):
 
             response = requests.get(f'https://altadefinizione-originale.com/api/post/urls/stream/{slug}',cookies=cookies,headers=headers)
         elif ismovie == 0:
-            response = requests.get(f'https://altadefinizione-originale.com/api/post/urls/stream/{slug}/{{season}}/{{episode}}',cookies=cookies,headers=headers)
+            print("HERE SEASON",season)
+            print("HERE EPISODE",episode)
+            request_url =f'https://altadefinizione-originale.com/api/post/urls/stream/{slug}/{season}/{episode}'
+            print(request_url)
+            response = requests.get(request_url,cookies=cookies,headers=headers)
         try:
             video_data = response.json()  # Assuming this is the JSON response containing video streams
 
@@ -109,8 +112,8 @@ def cool(imdb):
         ismovie = general[0]
         imdb_id = general[1]
         if ismovie == 0 : 
-            season = int(general[2])
-            episode = int(general[3])
+            episode = int(general[2])
+            season = int(general[3])
         
         if "tt" in imdb:
                 #Get showname
@@ -122,6 +125,7 @@ def cool(imdb):
         
 
         slug = search_imdb(showname,tmdba)
+        print(ismovie)
         if ismovie == 1:
             season = None
             episode = None
