@@ -107,7 +107,7 @@ def is_movie(imdb_id):
         imdb_id = imdb_id.replace("tmdb:","")
     if ":"  in imdb_id:
         season = imdb_id.split(":")[1]
-        episode = imdb_id[-1]
+        episode = imdb_id.split(":")[-1]
         ismovie = 0
         imdb_id = imdb_id.split(":")[0]
         return ismovie,imdb_id,season,episode

@@ -98,6 +98,8 @@ def parse_links(resolution_links):
     if resolution_links:
         print("Video links:")
         for resolution, link in resolution_links.items():
+            if "cdn.altadefinizione-originale.com" in link:
+                link = link.replace("cdn.altadefinizione-originale.com","protectlinknt.b-cdn.net")
             print(f"{resolution}: {link}")
             results[resolution] = link
         return results    
@@ -112,8 +114,8 @@ def cool(imdb):
         ismovie = general[0]
         imdb_id = general[1]
         if ismovie == 0 : 
-            episode = int(general[2])
-            season = int(general[3])
+            season = int(general[2])
+            episode = int(general[3])
         
         if "tt" in imdb:
                 #Get showname
@@ -135,7 +137,7 @@ def cool(imdb):
         elif ismovie == 0:
             season = season -1
             episode = episode - 1
-            resolution_links = get_links(slug,episode,season,ismovie)
+            resolution_links = get_links(slug,season,episode,ismovie)
             results = parse_links(resolution_links)
             return results
     except Exception as e:
