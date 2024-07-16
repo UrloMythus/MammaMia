@@ -26,7 +26,10 @@ def get_info_tmdb(tmbda,ismovie,type):
         elif type == "StreamingCommunity":
             if SC_FAST_SEARCH == "0":
                 n_season = show.number_of_seasons
-                return showname,n_season
+                full_date = show.first_air_date
+                date = full_date.split("-")[0]
+                print(date)
+                return showname,date
             else:
                 return showname
         elif type == "Tuttifilm":
@@ -39,7 +42,7 @@ def get_info_tmdb(tmbda,ismovie,type):
                 return showname
         elif type == "Cool":
             return showname
-            
+    
     elif ismovie == 1:
         movie = Movie()
         show= movie.details(tmbda)

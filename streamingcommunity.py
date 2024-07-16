@@ -8,6 +8,7 @@ from convert import get_TMDb_id_from_IMDb_id
 from info import get_info_tmdb, is_movie, get_info_imdb
 import config
 import json
+import re
 #Get domain
 SC_DOMAIN= config.SC_DOMAIN
 SC_FAST_SEARCH = config.SC_FAST_SEARCH
@@ -36,22 +37,44 @@ def get_version():
         version = "65e52dcf34d64173542cd2dc6b8bb75b"
         return version
 
-def search(query,n_season,ismovie):
+def search(query,date,ismovie):
     #Do a request to get the ID of serie/move and it's slug in the URL
     response = requests.get(query).json()
     for item in response['data']:
         tid = item['id']
         slug = item['slug']
-        idk = item['seasons_count'] 
-        if SC_FAST_SEARCH == "0":
-            if ismovie == 0:
-                seasons_count = item['seasons_count']
-                if seasons_count == n_season:
+        type = item['type']
+        if type == "tv":
+            type = 0
+        elif type == "movie":
+            type = 1
+        if type == ismovie: 
+            #Added a Check to see if the result is what it is supposed to be
+            if SC_FAST_SEARCH == "0":
+                if ismovie == 0:
+                    seasons_count = item['seasons_count']
+                    #Do not ask me why but somewhy streaming community call the first air date the last air date
+                    first_air_date = item['last_air_date']
+                    if first_air_date:
+                        first_air_year = first_air_date.split("-")[0]
+                        if first_air_year == date:
+                            return tid,slug
+                    else:
+                        response = requests.get ( f'https://streamingcommunity.boston/titles/{tid}-{slug}')
+                        pattern = r'<div[^>]*class="features"[^>]*>.*?<span[^>]*>(.*?)<\/span>'
+                        match = re.search(pattern, response.text)
+                        print(match.group(1).split("-")[0])
+                        first_air_year = match.group(1).split("-")[0]
+                        date = int(date)
+                        first_air_year = int(first_air_year)
+                        if first_air_year == date:
+                            return tid,slug
+                elif ismovie == 1:
                     return tid,slug
-            elif ismovie == 1:
+            elif SC_FAST_SEARCH == "1":
                 return tid,slug
-        elif SC_FAST_SEARCH == "1":
-            return tid,slug
+        else:
+            print("Couldn't find anything")
 
         
 def get_film(tid):
@@ -115,32 +138,32 @@ def streaming_community(imdb):
                 if "tt" in imdb:
                 #Get showname
                     showname = get_info_imdb(imdb_id,ismovie,type)
-                    n_season = None
+                    date = None
                 else:
                     #I just set n season to None to avoid bugs, but it is not needed if Fast search is enabled
-                    n_season = None
+                    date = None
                     #else just equals them
                     tmdba = imdb_id.replace("tmdb:","")
                     showname = get_info_tmdb(tmdba,ismovie,type)
             elif SC_FAST_SEARCH == "0":
                 tmdba = get_TMDb_id_from_IMDb_id(imdb_id)
-                showname,n_season = get_info_tmdb(tmdba,ismovie,type)  
+                showname,date = get_info_tmdb(tmdba,ismovie,type)  
         #HERE THE CASE IF IT IS A MOVIE
         else:
             if "tt" in imdb:
                 #Get showname
-                n_season = None
+                date = None
                 showname = get_info_imdb(imdb_id,ismovie,type)
             else:
                     #I just set n season to None to avoid bugs, but it is not needed if Fast search is enabled
                     #else just equals them
-                    n_season = None
+                    date = None
                     tmdba = imdb_id.replace("tmdb:","")
                     showname = get_info_tmdb(tmdba,ismovie,type) 
 
         showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
         query = f'https://streamingcommunity.{SC_DOMAIN}/api/search?q={showname}'
-        tid,slug = search(query,n_season,ismovie)
+        tid,slug = search(query,date,ismovie)
         if ismovie == 1:
             #TID means temporaly ID
             url = get_film(tid)
@@ -155,3 +178,5 @@ def streaming_community(imdb):
             return url
     except Exception as e:
         print("Nope It failed")
+
+streaming_community("tt0158552:3:2")

@@ -14,7 +14,6 @@ def get_TMDb_id_from_IMDb_id(imdb_id):
     if tmbda['movie_results']:
         return tmbda['movie_results'][0]['id']
     elif tmbda['tv_results']:
-        print(tmbda['tv_results'][0]['id'])
         return tmbda['tv_results'][0]['id']
     else:
         return None

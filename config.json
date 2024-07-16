@@ -3,7 +3,7 @@
            "StreamingCommunity": {
                "enabled": "1",    
                "domain": "boston",
-               "fast_search": "1"
+               "fast_search": "0"
            },
            "Filmpertutti": {
                "enabled": "0",    
@@ -15,7 +15,7 @@
                "fast_search": "0"
            },
            "Mysterius":{
-               "enabled": "0"    
+               "enabled": "1"    
            }
    },
    "General":{
