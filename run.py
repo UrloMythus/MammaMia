@@ -185,7 +185,7 @@ def addon_stream(type, id):
     return respond_with(streams)
 
 @app.route('/meta/<type>/<id>.json')
-def addon_meta(type, id):
+def meta(type, id):
     if type not in MANIFEST['types']:
         abort(404)
 
@@ -206,6 +206,5 @@ def addon_meta(type, id):
         abort(404)
 
     return respond_with({"meta": meta})
-
 if __name__ == '__main__':
     app.run(host=HOST, port=PORT)
