@@ -178,5 +178,3 @@ def streaming_community(imdb):
             return url
     except Exception as e:
         print("Nope It failed")
-
-streaming_community("tt0158552:3:2")

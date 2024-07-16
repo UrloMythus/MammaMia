@@ -25,7 +25,7 @@ MANIFEST = {
     "catalogs": [
         {"type": "tv", "id": "tv_channels", "name": "TV Channels"}
     ],
-    "resources": ["stream", "catalog"],
+    "resources": ["stream", "catalog","meta"],
     "types": ["movie", "series", "tv"],
     "name": "Mamma Mia",
     "description": "Addon providing HTTPS Stream for Italian Movies/Series",
@@ -183,6 +183,29 @@ def addon_stream(type, id):
         abort(404)
 
     return respond_with(streams)
+
+@app.route('/meta/<type>/<id>.json')
+def addon_meta(type, id):
+    if type not in MANIFEST['types']:
+        abort(404)
+
+    meta = {}
+    for stream_id in STREAMS.get(type, {}):
+        if stream_id == id:
+            item = STREAMS[type][stream_id][0]  # Assuming there's at least one item
+            meta = {
+                "id": stream_id,
+                "type": type,
+                "name": item['title'],
+                "poster": item.get('poster', "https://via.placeholder.com/150"),
+                "background": item.get('background', "https://via.placeholder.com/800x450")
+            }
+            break
+
+    if not meta:
+        abort(404)
+
+    return respond_with({"meta": meta})
 
 if __name__ == '__main__':
     app.run(host=HOST, port=PORT)
