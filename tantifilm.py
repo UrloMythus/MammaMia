@@ -190,7 +190,6 @@ def true_url(protect_link):
 
 
 
-
 #Get temporaly ID
 def tantifilm(imdb):
     urls = None
@@ -247,13 +246,12 @@ def tantifilm(imdb):
                 if urls:
                     return urls
                 else:
-                    print("Tantifilm Error")
-            url = true_url(protect_link)
-            return url
+                    print("Tantifilm Error v2")
+            else:
+                url = true_url(protect_link)
+                if url:
+                    return url
 
     except Exception as e:
-        try:
-            urls
-            url
-        except Exception as e:
-                print("Tantifilm Error")
+        print("Tantifilm Error: ", e)
+        return None 
