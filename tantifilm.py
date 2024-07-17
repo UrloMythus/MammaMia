@@ -244,10 +244,16 @@ def tantifilm(imdb):
             protect_link = get_protect_link(tid,url)
             if not isinstance(protect_link, str):
                 urls = protect_link
-                return urls
+                if urls:
+                    return urls
+                else:
+                    print("Tantifilm Error")
             url = true_url(protect_link)
             return url
 
     except Exception as e:
-        if urls or url == None:
-            print("Tantifilm Error")
+        try:
+            urls
+            url
+        except Exception as e:
+                print("Tantifilm Error")
