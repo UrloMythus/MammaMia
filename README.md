@@ -238,13 +238,13 @@ In the repo there is a config.json that you can modify to change some aspects of
 |-------------------------|---|
 | Domain | The domain of the site, must be a string |
 |enabled | If the site is enabled or not. "1" means true. "0" means false. Remember there is no point in enabling filmpertutti on a remote server since it's IP-LOCKED|
-|fast_search|"1" for enabled, "0" for disabled. It enables a faster search for TantiFilm Provider but in case there are two movies/series with the exactly same name then it might take the wrong one|
+|fast_search|"1" for enabled, "0" for disabled. It enables a faster search for TantiFilm and StreamingCommunity Providers but in case there are two movies/series with the exactly same name then they might take the wrong one|
 |load_env|Put "1" if enabled, "0" if disabled. It needs to be enable if you need to load a .env file. On remote hosting services, like Hugging Face or Render, it needs to be disabled. |
 |HOST| The host for the Flask APP|
 |PORT| The port for the Flask APP. Default: 8080 |
 
   For now Mysterius must be kept disabled if you do not know what you are doing.
-  
+  For now Tantifilm, even if it's player is not IP-Locked, does not work on Hugging Face.
 
 Check those links to get the new Domain for the providers.
 
