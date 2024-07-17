@@ -80,9 +80,12 @@ def get_info_imdb(imdb_id, ismovie, type):
         elif type == "StreamingCommunity":
             return showname
         elif type == "Tuttifilm":
-            date = data['tv_results'][0]['first_air_date']
-            date = date.split("-")[0]
-            return showname,date
+            if TF_FAST_SEARCH == "0":
+                date = data['tv_results'][0]['first_air_date']
+                date = date.split("-")[0]
+                return showname,date
+            elif TF_FAST_SEARCH == "1":
+                return showname
         elif type == "Cool":
             return showname
 
@@ -95,7 +98,6 @@ def get_info_imdb(imdb_id, ismovie, type):
         elif type == "Tuttifilm":
             date = data['movie_results'][0]['release_date']
             date = date.split("-")[0]
-            print("Real date",date)
             return showname,date
         elif type == "Cool":
             return showname

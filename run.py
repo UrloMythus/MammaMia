@@ -12,8 +12,15 @@ FILMPERTUTTI = config.FILMPERTUTTI
 STREAMINGCOMMUNITY = config.STREAMINGCOMMUNITY
 MYSTERIUS = config.MYSTERIUS
 TUTTIFILM = config.TUTTIFILM
+TF_DOMAIN = config.TF_DOMAIN
 HOST = config.HOST
 PORT = int(config.PORT)
+HF = config.HF
+if HF == "1":
+    HF = "🤗️"
+    #Cool code to set the hugging face if the service is hosted there.
+else:
+    HF = ""
 if MYSTERIUS == "1":
     from cool import cool
 
@@ -37,7 +44,7 @@ STREAMS = {
         "skysport24": [
             {
                 "title": "Sky Sport 24",
-                "poster": "https://www.tanti.bond/public/upload/channel/sky-sport-24.webp",
+                "poster": f"https://www.tanti.{TF_DOMAIN}/public/upload/channel/sky-sport-24.webp",
                 "url": "https://07-24.mizhls.ru/fls/cdn/calcioXskysport24/playlist.m3u8",
                 "behaviorHints": {
                     "notWebReady": True,
@@ -54,6 +61,7 @@ STREAMS = {
         "Skyuno": [
             {
                 "title": "Sky Uno",
+                "poster": f"https://www.tanti.{TF_DOMAIN}/public/upload/channel/sky-uno.webp",
                 "url": "https://07-24.mizhls.ru/fls/cdn/calcioXskyuno/playlist.m3u8",
                 "behaviorHints": {
                     "notWebReady": True,
@@ -70,6 +78,7 @@ STREAMS = {
         "skyserie": [
             {
                 "title": "Sky Serie",
+                "poster": f"https://www.tanti.{TF_DOMAIN}/public/upload/channel/sky-serie.webp",
                 "url": "https://07-24.mizhls.ru/fls/cdn/calcioXskyserie/playlist.m3u8",
                 "behaviorHints": {
                     "notWebReady": True,
@@ -86,6 +95,7 @@ STREAMS = {
         "Sky Nature": [
             {
                 "title": "Sky Nature",
+                "poster": f"https://www.tanti.{TF_DOMAIN}/public/upload/channel/sky-nature.webp",
                 "url": "https://07-24.mizhls.ru/fls/cdn/calcioXskynature/playlist.m3u8",
                 "behaviorHints": {
                     "notWebReady": True,
@@ -102,6 +112,7 @@ STREAMS = {
         "skyinvestigation": [
             {
                 "title": "skyinvestigation",
+                "poster": f"https://www.tanti.{TF_DOMAIN}/public/upload/channel/sky-nature.webp",
                 "url": "https://07-24.mizhls.ru/fls/cdn/calcioXskyinvestigation/playlist.m3u8",
                 "behaviorHints": {
                     "notWebReady": True,
@@ -164,20 +175,23 @@ def addon_stream(type, id):
             results = cool(id)
             if results:
                 for resolution, link in results.items():
-                    streams['streams'].append({'title': f'Mysterious {resolution}', 'url': link})
+                    streams['streams'].append({'title': f'{HF}Mysterious {resolution}', 'url': link})
         if STREAMINGCOMMUNITY == "1":
             url_streaming_community = streaming_community(id)
-            print(url_streaming_community)
             if url_streaming_community is not None:
-                streams['streams'].append({'title': 'StreamingCommunity 1080p', 'url': f'{url_streaming_community}?rendition=1080p'})
-                streams['streams'].append({'title': 'StreamingCommunity 720p', 'url': f'{url_streaming_community}?rendition=720p'})
+                streams['streams'].append({'title': f'{HF}StreamingCommunity 1080p', 'url': f'{url_streaming_community}?rendition=1080p'})
+                streams['streams'].append({'title': f'{HF}StreamingCommunity 720p', 'url': f'{url_streaming_community}?rendition=720p'})
         if FILMPERTUTTI == "1":
             url_filmpertutti = filmpertutti(id)
             if url_filmpertutti is not None:
                 streams['streams'].append({'title': 'Filmpertutti', 'url': url_filmpertutti})
         if TUTTIFILM == "1":
             url_tuttifilm = tantifilm(id)
-            streams['streams'].append({'title': 'Tantifilm', 'url': url_tuttifilm, 'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True}})
+            if not isinstance(url_tuttifilm, str):
+                for title, url in url_tuttifilm.items():    
+                    streams['streams'].append({'title': f'{HF}Tantifilm {title}', 'url': url,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True}})
+            else:
+                streams['streams'].append({'title': f'{HF}Tantifilm', 'url': url_tuttifilm, 'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True}})
 
     if not streams['streams']:
         abort(404)
@@ -197,8 +211,8 @@ def meta(type, id):
                 "id": stream_id,
                 "type": type,
                 "name": item['title'],
-                "poster": item.get('poster', "https://via.placeholder.com/150"),
-                "background": item.get('background', "https://via.placeholder.com/800x450")
+                "poster": item.get('poster', "https://icons.iconarchive.com/icons/designbolts/free-multimedia/256/TV-icon.png"),
+                "background": item.get('background', "https://icons.iconarchive.com/icons/designbolts/free-multimedia/256/TV-icon.png")
             }
             break
 
