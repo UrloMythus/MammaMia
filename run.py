@@ -187,11 +187,12 @@ def addon_stream(type, id):
                 streams['streams'].append({'title': 'Filmpertutti', 'url': url_filmpertutti})
         if TUTTIFILM == "1":
             url_tuttifilm = tantifilm(id)
-            if not isinstance(url_tuttifilm, str):
-                for title, url in url_tuttifilm.items():    
-                    streams['streams'].append({'title': f'{HF}Tantifilm {title}', 'url': url,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True}})
-            else:
-                streams['streams'].append({'title': f'{HF}Tantifilm', 'url': url_tuttifilm, 'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True}})
+            if url_tuttifilm is:
+                if not isinstance(url_tuttifilm, str):
+                    for title, url in url_tuttifilm.items():    
+                        streams['streams'].append({'title': f'{HF}Tantifilm {title}', 'url': url,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True}})
+                else:
+                    streams['streams'].append({'title': f'{HF}Tantifilm', 'url': url_tuttifilm, 'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True}})
     if not streams['streams']:
         abort(404)
 
