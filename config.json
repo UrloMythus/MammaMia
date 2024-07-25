@@ -2,7 +2,7 @@
     "Siti": {
            "StreamingCommunity": {
                "enabled": "1",    
-               "domain": "boston",
+               "domain": "photos",
                "fast_search": "0"
            },
            "Filmpertutti": {
