@@ -177,10 +177,13 @@ def addon_stream(type, id):
                 for resolution, link in results.items():
                     streams['streams'].append({'title': f'{HF}Mysterious {resolution}', 'url': link})
         if STREAMINGCOMMUNITY == "1":
-            url_streaming_community = streaming_community(id)
+            url_streaming_community,url_720_streaming_community,quality_sc = streaming_community(id)
             if url_streaming_community is not None:
-                streams['streams'].append({'title': f'{HF}StreamingCommunity 1080p', 'url': f'{url_streaming_community}?rendition=1080p'})
-                streams['streams'].append({'title': f'{HF}StreamingCommunity 720p', 'url': f'{url_streaming_community}?rendition=720p'})
+                if quality_sc == "1080":
+                    streams['streams'].append({'title': f'{HF}StreamingCommunity 1080p Max', 'url': url_streaming_community})
+                    streams['streams'].append({'title': f'{HF}StreamingCommunity 720p Max', 'url': url_720_streaming_community})
+                else:
+                    streams['streams'].append({'title': f'{HF}StreamingCommunity 720p Max', 'url': url_streaming_community})
         if FILMPERTUTTI == "1":
             url_filmpertutti = filmpertutti(id)
             if url_filmpertutti is not None:
