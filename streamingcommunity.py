@@ -54,23 +54,16 @@ def search(query,date,ismovie):
             #Added a Check to see if the result is what it is supposed to be
             if SC_FAST_SEARCH == "0":
                 if ismovie == 0:
-                    seasons_count = item['seasons_count']
-                    #Do not ask me why but somewhy streaming community call the first air date the last air date
-                    first_air_date = item['last_air_date']
-                    if first_air_date:
-                        first_air_year = first_air_date.split("-")[0]
-                        if first_air_year == date:
-                            return tid,slug
-                    else:
-                        response = requests.get ( f'https://streamingcommunity.boston/titles/{tid}-{slug}')
-                        pattern = r'<div[^>]*class="features"[^>]*>.*?<span[^>]*>(.*?)<\/span>'
-                        match = re.search(pattern, response.text)
-                        print(match.group(1).split("-")[0])
-                        first_air_year = match.group(1).split("-")[0]
-                        date = int(date)
-                        first_air_year = int(first_air_year)
-                        if first_air_year == date:
-                            return tid,slug
+                    #
+                    response = requests.get ( f'https://streamingcommunity.boston/titles/{tid}-{slug}')
+                    pattern = r'<div[^>]*class="features"[^>]*>.*?<span[^>]*>(.*?)<\/span>'
+                    match = re.search(pattern, response.text)
+                    print(match.group(1).split("-")[0])
+                    first_air_year = match.group(1).split("-")[0]
+                    date = int(date)
+                    first_air_year = int(first_air_year)
+                    if first_air_year == date:
+                        return tid,slug
                 elif ismovie == 1:
                     return tid,slug
             elif SC_FAST_SEARCH == "1":
