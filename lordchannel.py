@@ -9,7 +9,6 @@ from info import get_info_tmdb, is_movie, get_info_imdb
 import config
 import re
 LC_DOMAIN = config.LC_DOMAIN
-print(LC_DOMAIN)
 def search(query,date,season,episode,ismovie):
     response = requests.get(query)
     soup = BeautifulSoup(response.text,"lxml")
@@ -61,11 +60,8 @@ def lordchannel(imdb):
             episode = int(general[3])
             if "tt" in imdb:
                 tmdba = get_TMDb_id_from_IMDb_id(imdb_id)
-                print(tmdba)
             else:
                 tmdba = imdb_id
-                print("HEY")
-                print(tmdba)
         else:
             season = None
             episode = None
@@ -76,7 +72,6 @@ def lordchannel(imdb):
         showname,date = get_info_tmdb(tmdba,ismovie,type)
         showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
         query = f'https://lordchannel.{LC_DOMAIN}/cerca/?q={showname}'
-        print("HERE QUERY",query)
         video_url,quality = search(query,date,season,episode,ismovie)
         url = get_m3u8(video_url)
         url = url.replace('"','')
@@ -84,3 +79,4 @@ def lordchannel(imdb):
         return url,quality
     except:
         print("Lordchannel Failed")
+        return None,None
