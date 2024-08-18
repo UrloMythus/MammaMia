@@ -10,13 +10,17 @@
                "domain": "makeup"
            },
            "Tuttifilm":{
-               "enabled": "1",    
+               "enabled": "0",    
                "domain": "bond",
                "fast_search": "0"
            },
            "Mysterius":{
                "enabled": "0"    
-           }
+           },
+          "LordChannel":{
+               "enabled":"1",
+               "domain":"com"
+          }
    },
    "General":{
        "load_env": "0",
