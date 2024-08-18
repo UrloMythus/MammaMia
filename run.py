@@ -2,6 +2,7 @@ from flask import Flask, jsonify, abort
 from filmpertutti import filmpertutti
 from streamingcommunity import streaming_community
 from tantifilm import tantifilm
+from lordchannel import lordchannel
 import json
 import config
 import logging
@@ -13,6 +14,7 @@ STREAMINGCOMMUNITY = config.STREAMINGCOMMUNITY
 MYSTERIUS = config.MYSTERIUS
 TUTTIFILM = config.TUTTIFILM
 TF_DOMAIN = config.TF_DOMAIN
+LORDCHANNEL = config.LORDCHANNEL
 HOST = config.HOST
 PORT = int(config.PORT)
 HF = config.HF
@@ -184,6 +186,12 @@ def addon_stream(type, id):
                     streams['streams'].append({'title': f'{HF}StreamingCommunity 720p Max', 'url': url_720_streaming_community})
                 else:
                     streams['streams'].append({'title': f'{HF}StreamingCommunity 720p Max', 'url': url_streaming_community})
+        if LORDCHANNEL == "1":
+           url_lordchannel,quality_lordchannel =lordchannel(id)
+           if quality_lordchannel == "FULL HD":
+              streams['streams'].append({'title': f'{HF}LordChannel 1080p', 'url': url_lordchannel}) 
+           else:
+              streams['streams'].append({'title': f'{HF}LordChannel 720p', 'url': url_lordchannel})
         if FILMPERTUTTI == "1":
             url_filmpertutti = filmpertutti(id)
             if url_filmpertutti is not None:
