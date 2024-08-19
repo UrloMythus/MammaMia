@@ -58,7 +58,6 @@ def search(showname,season,episode,date,ismovie):
         for entry in data:
             if f"stagione-{season}-episodio-{episode}" in entry["slug"]:
                 content = entry["content"]["rendered"]
-                print(content)
                 #"content":{
 #    "rendered":"<p><!--baslik:PRO--><iframe loading=\"lazy\" src=\"https:\/\/hdplayer.gives\/embed\/YErLVq64uNTZRNz\" frameborder=\"0\" width=\"700\" height=\"400\" allowfullscreen><\/iframe><\/p>\n","protected":false}
                 start = content.find('src="') + len('src="') #start of url
