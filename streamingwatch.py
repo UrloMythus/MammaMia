@@ -51,18 +51,19 @@ def search(showname,season,episode,date,ismovie):
 
            return hdplayer
     elif ismovie == 0:
-        query = f'https://streamingwatch.{SW_DOMAIN}/wp-json/wp/v2/posts?search={showname}'
+        query = f'https://streamingwatch.{SW_DOMAIN}/wp-json/wp/v2/posts?search={showname}&per_page=100'
         response = requests.get(query)
         data_json = response.text
         data = json.loads(data_json)
         for entry in data:
             if f"stagione-{season}-episodio-{episode}" in entry["slug"]:
                 content = entry["content"]["rendered"]
+                print(content)
                 #"content":{
 #    "rendered":"<p><!--baslik:PRO--><iframe loading=\"lazy\" src=\"https:\/\/hdplayer.gives\/embed\/YErLVq64uNTZRNz\" frameborder=\"0\" width=\"700\" height=\"400\" allowfullscreen><\/iframe><\/p>\n","protected":false}
-                hdplayer = content[48:]
-                end = hdplayer.find('"')
-                hdplayer = hdplayer[:end]
+                start = content.find('src="') + len('src="') #start of url
+                end = content.find('"', start) #end of url
+                hdplayer = content[start:end]
                 return hdplayer
 def hls_url(hdplayer):
     response = requests.get(hdplayer)
