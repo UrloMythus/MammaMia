@@ -47,6 +47,11 @@ def get_info_tmdb(tmbda,ismovie,type):
             date = date.split("-")[0]
             print("Real date",date)
        	    return showname,date
+        elif type == "StreamingWatch":
+            date = show.first_air_date
+            date = date.split("-")[0]
+            print("Real date",date)
+            return showname,date
     
     elif ismovie == 1:
         movie = Movie()
@@ -71,6 +76,11 @@ def get_info_tmdb(tmbda,ismovie,type):
         elif type == "Cool":
             return showname
         elif type == "LordChannel":
+            date = show.release_date
+            date = date.split("-")[0]
+            print("Real date",date)
+            return showname,date
+        elif type == "StreamingWatch":
             date = show.release_date
             date = date.split("-")[0]
             print("Real date",date)
