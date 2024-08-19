@@ -3,6 +3,7 @@ from filmpertutti import filmpertutti
 from streamingcommunity import streaming_community
 from tantifilm import tantifilm
 from lordchannel import lordchannel
+from streamingwatch import streamingwatch
 import json
 import config
 import logging
@@ -15,6 +16,7 @@ MYSTERIUS = config.MYSTERIUS
 TUTTIFILM = config.TUTTIFILM
 TF_DOMAIN = config.TF_DOMAIN
 LORDCHANNEL = config.LORDCHANNEL
+STREAMINGWATCH= config.STREAMINGWATCH
 HOST = config.HOST
 PORT = int(config.PORT)
 HF = config.HF
@@ -188,9 +190,9 @@ def addon_stream(type, id):
                     streams['streams'].append({'title': f'{HF}StreamingCommunity 720p Max', 'url': url_streaming_community})
         if LORDCHANNEL == "1":
            url_lordchannel,quality_lordchannel =lordchannel(id)
-           if quality_lordchannel == "FULL HD":
+           if quality_lordchannel == "FULL HD" and url_lordchannel !=  None:
               streams['streams'].append({'title': f'{HF}LordChannel 1080p', 'url': url_lordchannel}) 
-           else:
+           elif url_lordchannel !=  None:
               streams['streams'].append({'title': f'{HF}LordChannel 720p', 'url': url_lordchannel})
         if FILMPERTUTTI == "1":
             url_filmpertutti = filmpertutti(id)
@@ -204,6 +206,10 @@ def addon_stream(type, id):
                         streams['streams'].append({'title': f'{HF}Tantifilm {title}', 'url': url,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True}})
                 else:
                     streams['streams'].append({'title': f'{HF}Tantifilm', 'url': url_tuttifilm, 'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True}})
+        if STREAMINGWATCH == "1":
+            url_streamingwatch = streamingwatch(id)
+            if url_streamingwatch:
+                streams['streams'].append({'title': 'StreamingWatch 720p', 'url': url_streamingwatch})
     if not streams['streams']:
         abort(404)
 
