@@ -20,6 +20,10 @@
           "LordChannel":{
                "enabled":"1",
                "domain":"com"
+          },
+          "StreamingWatch":{
+              "enabled":"1",
+              "domain":"org"
           }
    },
    "General":{
