@@ -39,7 +39,6 @@ def search(showname,season,episode,date,ismovie):
              'wordpress_test_cookie': 'WP%20Cookie%20check',
         }
         response = requests.post(query,cookies=cookies, headers=headers, data=data)
-        print(response.content)
         soup = BeautifulSoup(response.content,'lxml')
         page_date = soup.find(id = 'search-cat-year').text.strip()
         if page_date == date:
@@ -51,7 +50,11 @@ def search(showname,season,episode,date,ismovie):
 
            return hdplayer
     elif ismovie == 0:
-        query = f'https://streamingwatch.{SW_DOMAIN}/wp-json/wp/v2/posts?search={showname}&per_page=100'
+        #Some series have the name in english so we first search with the categories option and then we use the obtained ID to get all the episodes
+        id_response = requests.get(f'https://streamingwatch.{SW_DOMAIN}/wp-json/wp/v2/categories?search={showname}&_fields=id')
+        data = json.loads(id_response.text)
+        category_id = data[0]['id']
+        query = f'https://streamingwatch.{SW_DOMAIN}/wp-json/wp/v2/posts?categories={category_id}&per_page=100'
         response = requests.get(query)
         data_json = response.text
         data = json.loads(data_json)
