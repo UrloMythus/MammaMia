@@ -7,9 +7,8 @@ from streamingwatch import streamingwatch
 import json
 import config
 import logging
-
+from okru import okru_get_url
 # Configure logging
-
 FILMPERTUTTI = config.FILMPERTUTTI
 STREAMINGCOMMUNITY = config.STREAMINGCOMMUNITY
 MYSTERIUS = config.MYSTERIUS
@@ -42,15 +41,46 @@ MANIFEST = {
     "description": "Addon providing HTTPS Stream for Italian Movies/Series",
     "logo": "https://creazilla-store.fra1.digitaloceanspaces.com/emojis/49647/pizza-emoji-clipart-md.png"
 }
-
-STREAMS = {
-    "tv": {
-        "skysport24": [
-            {
-                "title": "Sky Sport 24",
-                "poster": f"https://www.tanti.{TF_DOMAIN}/public/upload/channel/sky-sport-24.webp",
-                "url": "https://07-24.mizhls.ru/fls/cdn/calcioXskysport24/playlist.m3u8",
-                "behaviorHints": {
+STREAM = {
+    "channels": [
+        {
+            "id": "la7",
+            "title": "LA7",
+            "url": "https://d3749synfikwkv.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-74ylxpgd78bpb/Live.m3u8"
+        },
+        {
+            "id": "rai1",
+            "title": "Rai 1",
+            "url": "https://m3u.iranvids.com/rai01/output.m3u8",
+            "behaviorHints": {
+                    "notWebReady": True,
+                    "proxyHeaders": {
+                        "request": {
+                            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+                        }
+                    }
+                }
+        },
+        {
+            "id": "rai2",
+            "title": "Rai 2",
+            "url": "https://ddy6.mizhls.ru/ddy6/premium851/playlist.m3u8",
+            "behaviorHints": {
+                    "notWebReady": True,
+                    "proxyHeaders": {
+                        "request": {
+                            "Referer": "https://quest4play.xyz/",
+                            "Origin": "null",
+                            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+                        }
+                    }
+                }
+        },
+        {
+            "id": "sky24",
+            "title": "Sky News 24",
+            "url": "https://07-24.mizhls.ru/fls/cdn/calcioXskysport24/playlist.m3u8",
+            "behaviorHints": {
                     "notWebReady": True,
                     "proxyHeaders": {
                         "request": {
@@ -60,78 +90,17 @@ STREAMS = {
                         }
                     }
                 }
-            }
-        ],
-        "Skyuno": [
-            {
-                "title": "Sky Uno",
-                "poster": f"https://www.tanti.{TF_DOMAIN}/public/upload/channel/sky-uno.webp",
-                "url": "https://07-24.mizhls.ru/fls/cdn/calcioXskyuno/playlist.m3u8",
-                "behaviorHints": {
-                    "notWebReady": True,
-                    "proxyHeaders": {
-                        "request": {
-                            "Referer": "https://claplivehdplay.ru/",
-                            "Origin": "https://claplivehdplay.ru",
-                            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
-                        }
-                    }
-                }
-            }
-        ],
-        "skyserie": [
-            {
-                "title": "Sky Serie",
-                "poster": f"https://www.tanti.{TF_DOMAIN}/public/upload/channel/sky-serie.webp",
-                "url": "https://07-24.mizhls.ru/fls/cdn/calcioXskyserie/playlist.m3u8",
-                "behaviorHints": {
-                    "notWebReady": True,
-                    "proxyHeaders": {
-                        "request": {
-                            "Referer": "https://claplivehdplay.ru/",
-                            "Origin": "https://claplivehdplay.ru",
-                            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
-                        }
-                    }
-                }
-            }
-        ],
-        "Sky Nature": [
-            {
-                "title": "Sky Nature",
-                "poster": f"https://www.tanti.{TF_DOMAIN}/public/upload/channel/sky-nature.webp",
-                "url": "https://07-24.mizhls.ru/fls/cdn/calcioXskynature/playlist.m3u8",
-                "behaviorHints": {
-                    "notWebReady": True,
-                    "proxyHeaders": {
-                        "request": {
-                            "Referer": "https://claplivehdplay.ru/",
-                            "Origin": "https://claplivehdplay.ru",
-                            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
-                        }
-                    }
-                }
-            }
-        ],
-        "skyinvestigation": [
-            {
-                "title": "skyinvestigation",
-                "poster": f"https://www.tanti.{TF_DOMAIN}/public/upload/channel/sky-nature.webp",
-                "url": "https://07-24.mizhls.ru/fls/cdn/calcioXskyinvestigation/playlist.m3u8",
-                "behaviorHints": {
-                    "notWebReady": True,
-                    "proxyHeaders": {
-                        "request": {
-                            "Referer": "https://claplivehdplay.ru/",
-                            "Origin": "https://claplivehdplay.ru",
-                            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
-                        }
-                    }
-                }
-            }
-        ]
-    }
+        }
+    ]
 }
+
+okru = {
+    "rai1": "https://ok.ru/videoembed/7703488765552?nochat=1",
+    "rai2": "https://ok.ru/videoembed/7805618364016?nochat=1"
+}
+
+MANIFEST["catalogs"].append({"type": "tv", "id": "channels", "name": "Channels"})
+
 
 def respond_with(data):
     resp = jsonify(data)
@@ -149,30 +118,72 @@ def root():
 
 @app.route('/catalog/<type>/<id>.json')
 def addon_catalog(type, id):
-    if type not in MANIFEST['types']:
+    if type != "tv":
         abort(404)
-    catalog = {'metas': []}
-    if type in STREAMS:
-        for stream_id in STREAMS[type]:
-            for item in STREAMS[type][stream_id]:
-                meta_item = {
-                    "id": stream_id,
-                    "type": type,
-                    "name": item['title'],
-                    "poster": item.get('poster', "https://via.placeholder.com/150")
-                }
-                catalog['metas'].append(meta_item)
-    return respond_with(catalog)
+
+    catalogs = {"metas": []}
+    for channel in STREAM["channels"]:
+        catalogs["metas"].append({
+            "id": channel["id"],
+            "type": "tv",
+            "name": channel["title"],
+            "poster": "",  # Add poster URL if available
+            "description": f"Watch {channel['title']}"
+        })
+
+    return respond_with(catalogs)
+
+@app.route('/meta/<type>/<id>.json')
+def addon_meta(type, id):
+    if type != "tv":
+        abort(404)
+
+    for channel in STREAM["channels"]:
+        if channel["id"] == id:
+            meta = {
+                "id": id,
+                "type": "tv",
+                "name": channel["title"],
+                "poster": "",  # Add poster URL if available
+                "description": f"Watch {channel['title']}",
+                "background": "",  # Add background image URL if available
+                "logo": "",  # Add logo URL if available
+                "videos": [{
+                    "id": id,
+                    "title": channel["title"],
+                    "streams": [{
+                        "title": channel["title"],
+                        "url": channel["url"]
+                    }]
+                }]
+            }
+            return respond_with({"meta": meta})
+
+    abort(404)
+
 
 @app.route('/stream/<type>/<id>.json')
 def addon_stream(type, id):
     if type not in MANIFEST['types']:
         abort(404)
     streams = {'streams': []}
-
-    if type in STREAMS and id in STREAMS[type]:
-        logging.debug(f"Found TV channel: {id}")
-        streams['streams'] = STREAMS[type][id]
+    if type == "tv":
+        for channel in STREAM["channels"]:
+            if channel["id"] == id:
+                if id in okru:
+                    channel_url = okru_get_url(id)
+                    streams['streams'].append({
+                        'title': "okru"+channel['title'],
+                        'url': channel_url
+                    })
+                else:
+                    streams['streams'].append({
+                        'title': channel['title'],
+                        'url': channel['url']
+                    })
+        if not streams['streams']:
+            abort(404)
+        return respond_with(streams)
     else:
         logging.debug(f"Handling movie or series: {id}")
         if MYSTERIUS == "1":
@@ -191,9 +202,9 @@ def addon_stream(type, id):
         if LORDCHANNEL == "1":
            url_lordchannel,quality_lordchannel =lordchannel(id)
            if quality_lordchannel == "FULL HD" and url_lordchannel !=  None:
-              streams['streams'].append({'title': f'{HF}LordChannel 1080p', 'url': url_lordchannel}) 
+              streams['streams'].append({'title': f'{HF}LordChannel 1080p', 'url': url_lordchannel})
            elif url_lordchannel !=  None:
-              streams['streams'].append({'title': f'{HF}LordChannel 720p', 'url': url_lordchannel})
+              streams['streams'].append({'title': f'{HF}LordChannel 720p', 'url': url_lordchannel})            
         if FILMPERTUTTI == "1":
             url_filmpertutti = filmpertutti(id)
             if url_filmpertutti is not None:
@@ -204,37 +215,15 @@ def addon_stream(type, id):
                 if not isinstance(url_tuttifilm, str):
                     for title, url in url_tuttifilm.items():    
                         streams['streams'].append({'title': f'{HF}Tantifilm {title}', 'url': url,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True}})
-                else:
-                    streams['streams'].append({'title': f'{HF}Tantifilm', 'url': url_tuttifilm, 'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True}})
         if STREAMINGWATCH == "1":
             url_streamingwatch = streamingwatch(id)
             if url_streamingwatch:
-                streams['streams'].append({'title': 'StreamingWatch 720p', 'url': url_streamingwatch})
+                streams['streams'].append({'title': '{HF}StreamingWatch 720p', 'url': url_streamingwatch})
     if not streams['streams']:
         abort(404)
 
     return respond_with(streams)
 
-@app.route('/meta/<type>/<id>.json')
-def meta(type, id):
-    if type not in MANIFEST['types']:
-        abort(404)
-
-    meta = {}
-    for stream_id in STREAMS.get(type, {}):
-        if stream_id == id:
-            item = STREAMS[type][stream_id][0]  # Assuming there's at least one item
-            meta = {
-                "id": stream_id,
-                "type": type,
-                "name": item['title'],
-                "poster": item.get('poster', "https://icons.iconarchive.com/icons/designbolts/free-multimedia/256/TV-icon.png"),
-                "background": item.get('background', "https://icons.iconarchive.com/icons/designbolts/free-multimedia/256/TV-icon.png")
-            }
-            break
-
-    if not meta:
-        abort(404)
 
     return respond_with({"meta": meta})
 if __name__ == '__main__':
