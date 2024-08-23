@@ -8,6 +8,7 @@ import json
 import config
 import logging
 from okru import okru_get_url
+from animeworld import animeworld
 # Configure logging
 FILMPERTUTTI = config.FILMPERTUTTI
 STREAMINGCOMMUNITY = config.STREAMINGCOMMUNITY
@@ -16,6 +17,7 @@ TUTTIFILM = config.TUTTIFILM
 TF_DOMAIN = config.TF_DOMAIN
 LORDCHANNEL = config.LORDCHANNEL
 STREAMINGWATCH= config.STREAMINGWATCH
+ANIMEWORLD = config.ANIMEWORLD
 HOST = config.HOST
 PORT = int(config.PORT)
 HF = config.HF
@@ -53,46 +55,23 @@ STREAM = {
             "title": "Rai 1",
             "url": "https://m3u.iranvids.com/rai01/output.m3u8",
             "behaviorHints": {
-                    "notWebReady": True,
-                    "proxyHeaders": {
-                        "request": {
-                            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
-                        }
+                "notWebReady": True,
+                "proxyHeaders": {
+                    "request": {
+                        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
                     }
                 }
+            }
         },
         {
             "id": "rai2",
             "title": "Rai 2",
-            "url": "https://ddy6.mizhls.ru/ddy6/premium851/playlist.m3u8",
-            "behaviorHints": {
-                    "notWebReady": True,
-                    "proxyHeaders": {
-                        "request": {
-                            "Referer": "https://quest4play.xyz/",
-                            "Origin": "null",
-                            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
-                        }
-                    }
-                }
-        },
-        {
-            "id": "sky24",
-            "title": "Sky News 24",
-            "url": "https://07-24.mizhls.ru/fls/cdn/calcioXskysport24/playlist.m3u8",
-            "behaviorHints": {
-                    "notWebReady": True,
-                    "proxyHeaders": {
-                        "request": {
-                            "Referer": "https://claplivehdplay.ru/",
-                            "Origin": "https://claplivehdplay.ru",
-                            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
-                        }
-                    }
-                }
+            "url": "https://m3u.iranvids.com/rai02/output.m3u8"
         }
     ]
 }
+
+
 
 okru = {
     "rai1": "https://ok.ru/videoembed/7703488765552?nochat=1",
@@ -173,7 +152,7 @@ def addon_stream(type, id):
                 if id in okru:
                     channel_url = okru_get_url(id)
                     streams['streams'].append({
-                        'title': "okru"+channel['title'],
+                        'title': channel['title'] + "OKRU",
                         'url': channel_url
                     })
                 else:
@@ -186,41 +165,56 @@ def addon_stream(type, id):
         return respond_with(streams)
     else:
         logging.debug(f"Handling movie or series: {id}")
-        if MYSTERIUS == "1":
-            results = cool(id)
-            if results:
-                for resolution, link in results.items():
-                    streams['streams'].append({'title': f'{HF}Mysterious {resolution}', 'url': link})
-        if STREAMINGCOMMUNITY == "1":
-            url_streaming_community,url_720_streaming_community,quality_sc = streaming_community(id)
-            if url_streaming_community is not None:
-                if quality_sc == "1080":
-                    streams['streams'].append({'title': f'{HF}StreamingCommunity 1080p Max', 'url': url_streaming_community})
-                    streams['streams'].append({'title': f'{HF}StreamingCommunity 720p Max', 'url': url_720_streaming_community})
-                else:
-                    streams['streams'].append({'title': f'{HF}StreamingCommunity 720p Max', 'url': url_streaming_community})
-        if LORDCHANNEL == "1":
-           url_lordchannel,quality_lordchannel =lordchannel(id)
-           if quality_lordchannel == "FULL HD" and url_lordchannel !=  None:
-              streams['streams'].append({'title': f'{HF}LordChannel 1080p', 'url': url_lordchannel})
-           elif url_lordchannel !=  None:
-              streams['streams'].append({'title': f'{HF}LordChannel 720p', 'url': url_lordchannel})            
-        if FILMPERTUTTI == "1":
-            url_filmpertutti = filmpertutti(id)
-            if url_filmpertutti is not None:
-                streams['streams'].append({'title': 'Filmpertutti', 'url': url_filmpertutti})
-        if TUTTIFILM == "1":
-            url_tuttifilm = tantifilm(id)
-            if url_tuttifilm:
-                if not isinstance(url_tuttifilm, str):
-                    for title, url in url_tuttifilm.items():    
-                        streams['streams'].append({'title': f'{HF}Tantifilm {title}', 'url': url,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True}})
-        if STREAMINGWATCH == "1":
-            url_streamingwatch = streamingwatch(id)
-            if url_streamingwatch:
-                streams['streams'].append({'title': '{HF}StreamingWatch 720p', 'url': url_streamingwatch})
-    if not streams['streams']:
-        abort(404)
+        if "kitsu" in id:
+            if ANIMEWORLD == "1":
+                animeworld_urls = animeworld(id)
+                print(animeworld_urls)
+                if animeworld_urls:
+                    i = 0
+                    for url in animeworld_urls:
+                        if url:
+                            if i == 0:
+                                title = "Original"
+                            elif i == 1:
+                                 title = "Italian"
+                            streams['streams'].append({'title': f'{HF}Animeworld {title}', 'url': url})
+                            i+=1
+        else:
+            if MYSTERIUS == "1":
+                results = cool(id)
+                if results:
+                    for resolution, link in results.items():
+                        streams['streams'].append({'title': f'{HF}Mysterious {resolution}', 'url': link})
+            if STREAMINGCOMMUNITY == "1":
+                url_streaming_community,url_720_streaming_community,quality_sc = streaming_community(id)
+                if url_streaming_community is not None:
+                    if quality_sc == "1080":
+                        streams['streams'].append({'title': f'{HF}StreamingCommunity 1080p Max', 'url': url_streaming_community})
+                        streams['streams'].append({'title': f'{HF}StreamingCommunity 720p Max', 'url': url_720_streaming_community})
+                    else:
+                        streams['streams'].append({'title': f'{HF}StreamingCommunity 720p Max', 'url': url_streaming_community})
+            if LORDCHANNEL == "1":
+               url_lordchannel,quality_lordchannel =lordchannel(id)
+               if quality_lordchannel == "FULL HD" and url_lordchannel !=  None:
+                  streams['streams'].append({'title': f'{HF}LordChannel 1080p', 'url': url_lordchannel})
+               elif url_lordchannel !=  None:
+                  streams['streams'].append({'title': f'{HF}LordChannel 720p', 'url': url_lordchannel})            
+            if FILMPERTUTTI == "1":
+                url_filmpertutti = filmpertutti(id)
+                if url_filmpertutti is not None:
+                    streams['streams'].append({'title': 'Filmpertutti', 'url': url_filmpertutti})
+            if TUTTIFILM == "1":
+                url_tuttifilm = tantifilm(id)
+                if url_tuttifilm:
+                    if not isinstance(url_tuttifilm, str):
+                        for title, url in url_tuttifilm.items():    
+                            streams['streams'].append({'title': f'{HF}Tantifilm {title}', 'url': url,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True}})
+            if STREAMINGWATCH == "1":
+                url_streamingwatch = streamingwatch(id)
+                if url_streamingwatch:
+                    streams['streams'].append({'title': f'{HF}StreamingWatch 720p', 'url': url_streamingwatch})
+        if not streams['streams']:
+            abort(404)
 
     return respond_with(streams)
 
