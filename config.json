@@ -2,7 +2,7 @@
     "Siti": {
            "StreamingCommunity": {
                "enabled": "1",    
-               "domain": "buzz",
+               "domain": "photos",
                "fast_search": "0"
            },
            "Filmpertutti": {
@@ -24,6 +24,10 @@
           "StreamingWatch":{
               "enabled":"1",
               "domain":"org"
+          },
+          "AnimeWorld":{
+              "enabled":"1",
+              "domain":"so"
           }
    },
    "General":{
