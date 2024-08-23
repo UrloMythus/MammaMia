@@ -3,6 +3,7 @@ from tmdbv3api import TMDb, Movie, TV
 from convert_date import convert_US_date, convert_IT_date
 import requests
 import config
+import json
 SC_FAST_SEARCH = config.SC_FAST_SEARCH
 TF_FAST_SEARCH = config.TF_FAST_SEARCH
 MYSTERIUS = config.MYSTERIUS
@@ -121,7 +122,13 @@ def get_info_imdb(imdb_id, ismovie, type):
         elif type == "Cool":
             return showname
 
-            
+def get_info_kitsu(kitsu_id):
+    api_url = f'https://kitsu.io/api/edge/anime/{kitsu_id}'
+    response = requests.get(api_url)
+    data = json.loads(response.text)
+    showname = data['data']['attributes']['canonicalTitle']
+    date = data['data']['attributes']['startDate']
+    return showname,date           
 
 
 
