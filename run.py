@@ -52,7 +52,6 @@ okru = {
     "rai2": "https://ok.ru/videoembed/7805618364016?nochat=1"
 }
 
-MANIFEST["catalogs"].append({"type": "tv", "id": "channels", "name": "Channels"})
 
 
 def respond_with(data):
