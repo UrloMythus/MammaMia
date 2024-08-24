@@ -1,12 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-okru = {
-    "rai1": "https://ok.ru/videoembed/7703488765552?nochat=1",
-    "rai2": "https://ok.ru/videoembed/7805618364016?nochat=1"
-}
-
-
+from dictionaries import okru
 
 
 

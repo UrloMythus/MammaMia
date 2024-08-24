@@ -9,6 +9,7 @@ import config
 import logging
 from okru import okru_get_url
 from animeworld import animeworld
+from dictionaries import okru, STREAM
 # Configure logging
 FILMPERTUTTI = config.FILMPERTUTTI
 STREAMINGCOMMUNITY = config.STREAMINGCOMMUNITY
@@ -42,33 +43,6 @@ MANIFEST = {
     "name": "Mamma Mia",
     "description": "Addon providing HTTPS Stream for Italian Movies/Series",
     "logo": "https://creazilla-store.fra1.digitaloceanspaces.com/emojis/49647/pizza-emoji-clipart-md.png"
-}
-STREAM = {
-    "channels": [
-        {
-            "id": "la7",
-            "title": "LA7",
-            "url": "https://d3749synfikwkv.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-74ylxpgd78bpb/Live.m3u8"
-        },
-        {
-            "id": "rai1",
-            "title": "Rai 1",
-            "url": "https://m3u.iranvids.com/rai01/output.m3u8",
-            "behaviorHints": {
-                "notWebReady": True,
-                "proxyHeaders": {
-                    "request": {
-                        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
-                    }
-                }
-            }
-        },
-        {
-            "id": "rai2",
-            "title": "Rai 2",
-            "url": "https://m3u.iranvids.com/rai02/output.m3u8"
-        }
-    ]
 }
 
 

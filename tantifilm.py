@@ -10,7 +10,7 @@ TF_DOMAIN = config.TF_DOMAIN
 
 ##FOR NOW ONLY MOVIES WORK, I HOPE I CAN FIX SERIES
 def search(showname,ismovie,date):
-    url = f'https://www.tanti.bond/search/{showname}'
+    url = f'https://www.tanti.{TF_DOMAIN}/search/{showname}'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "lxml")
     if ismovie == 1:
@@ -44,7 +44,7 @@ def search(showname,ismovie,date):
                 return url,embed_id
             
 def fast_search(showname,ismovie):
-    url = f'https://www.tanti.bond/search/{showname}'
+    url = f'https://www.tanti.{TF_DOMAIN}/search/{showname}'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "lxml")
     if ismovie == 1:
@@ -85,7 +85,7 @@ def get_protect_link(id,url):
             data = {
             'id': embed_id
             }
-            ajax_url = "https://www.tanti.bond/ajax/embed"
+            ajax_url = f"https://www.tanti.{TF_DOMAIN}/ajax/embed"
             response = requests.post(ajax_url, headers=headers, data=data)
             hdplayer = response.text[43:-27]
             response = requests.get(hdplayer)
@@ -119,7 +119,7 @@ def get_nuovo_indirizzo_and_protect_link(url,embed_id,season,episode):
     data = {
     'id': embed_id
 }
-    ajax_url = "https://www.tanti.bond/ajax/embed"
+    ajax_url = f"https://www.tanti.{TF_DOMAIN}/ajax/embed"
     response = requests.post(ajax_url, headers=headers, data=data)
     nuovo_indirizzo = response.text[43:-27]
     response = requests.get(nuovo_indirizzo)
