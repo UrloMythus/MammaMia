@@ -125,7 +125,7 @@ To host this project with Hugging Face, go to the [linked](https://huggingface.c
 
 8. Do not forget to add /manifest.json
 
-  9. To update the remote server, you can either upload files manually, or you can connect the [repository locally](https://huggingface.co/docs/hub/en/repositories-getting-started) and use your file manager to do so. If you know how a Dockerfile works you could even clone the repository every time, although you will  need to modify the config.json (by disabling both load_dotenv and FILMPERTUTTI). Plus remember that the README.MD of Hugging Face MUST NOT be changed or the app won't run. 
+  9. The Addon will update everytime you restart the service but you will need to change the config.json manually each time if there are any changes. 
 If you just want to syncronize with the public instance then there is a button in the settings to do so.  
 
   
