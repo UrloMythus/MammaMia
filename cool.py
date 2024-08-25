@@ -3,7 +3,8 @@ import json
 from info import get_info_tmdb,is_movie
 from convert import get_TMDb_id_from_IMDb_id
 from loadenv import load_env
-_,MYSTERIUS_KEY = load_env()
+env_vars = load_env()
+MYSTERIUS_KEY = env_vars.get('MYSTERIUS_KEY')
 def get_links(slug,season,episode,ismovie):
     try:
         headers = {

@@ -218,4 +218,4 @@ def streaming_community(imdb):
             return url,url720,quality
     except Exception as e:
         print("StreamingCommunity failed")
-        return None,None
+        return None,None,None

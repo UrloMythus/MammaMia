@@ -101,4 +101,3 @@ def animeworld(id):
     except:
         print("Animeworld failed")
         return None
-animeworld("kitsi:12:10")

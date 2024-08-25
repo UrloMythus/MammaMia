@@ -4,11 +4,14 @@ import re
 import time
 from info import is_movie,get_info_imdb,get_info_tmdb
 import config
+from loadenv import load_env
 TF_FAST_SEARCH = config.TF_FAST_SEARCH
 TF_DOMAIN = config.TF_DOMAIN
+HF = config.HF
+env_vars = load_env()
+PROXY_CREDENTIALS = env_vars.get('PROXY_CREDENTIALS')
 
 
-##FOR NOW ONLY MOVIES WORK, I HOPE I CAN FIX SERIES
 def search(showname,ismovie,date):
     url = f'https://www.tanti.{TF_DOMAIN}/search/{showname}'
     response = requests.get(url)
@@ -157,11 +160,17 @@ def true_url(protect_link):
         "Range": "bytes=0-",
         "Referer": "https://d000d.com/",
     }
-    response = requests.get(protect_link)
+    if HF == "1":
+        proxy = PROXY_CREDENTIALS
+        proxies = {
+            "http": proxy,
+            "https": proxy
+        }
+        response = requests.get(protect_link, proxies=proxies)
+    else:
+        response = requests.get(protect_link)
     link = response.url
-    #Get the ID
-    doodstream_id = link.rsplit('/e/', 1)[-1]
-    # Make a GET request
+ 
     
     if response.status_code == 200:
         # Get unique timestamp for the request      
@@ -177,6 +186,7 @@ def true_url(protect_link):
         if match:
             # Create real link (match[0] includes all matched elements)
             url =f'https://d000d.com{match[1]}'
+            print("MD5: ", url)
             rebobo = requests.get(url, headers=headers)
             real_url = f'{rebobo.text}123456789{match[2]}{real_time}'
             print(real_url)

@@ -6,11 +6,9 @@ import config
 import json
 SC_FAST_SEARCH = config.SC_FAST_SEARCH
 TF_FAST_SEARCH = config.TF_FAST_SEARCH
-MYSTERIUS = config.MYSTERIUS
-if MYSTERIUS == "1":
-    TMDB_KEY,_= load_env()
-else:
-    TMDB_KEY= load_env()
+env_vars = load_env()
+TMDB_KEY = env_vars.get('TMDB_KEY')
+
 
 def get_info_tmdb(tmbda,ismovie,type):
     tmdb = TMDb()

@@ -9,7 +9,7 @@ import config
 import logging
 from okru import okru_get_url
 from animeworld import animeworld
-from dictionaries import okru, STREAM
+from dictionaries import okru,STREAM
 # Configure logging
 FILMPERTUTTI = config.FILMPERTUTTI
 STREAMINGCOMMUNITY = config.STREAMINGCOMMUNITY
@@ -47,14 +47,6 @@ MANIFEST = {
 
 
 
-okru = {
-    "rai1": "https://ok.ru/videoembed/7703488765552?nochat=1",
-    "rai2": "https://ok.ru/videoembed/7805618364016?nochat=1"
-}
-
-MANIFEST["catalogs"].append({"type": "tv", "id": "channels", "name": "Channels"})
-
-
 def respond_with(data):
     resp = jsonify(data)
     resp.headers['Access-Control-Allow-Origin'] = '*'
@@ -80,7 +72,7 @@ def addon_catalog(type, id):
             "id": channel["id"],
             "type": "tv",
             "name": channel["title"],
-            "poster": "",  # Add poster URL if available
+            "poster": channel["poster"],  # Add poster URL if available
             "description": f"Watch {channel['title']}"
         })
 
@@ -97,12 +89,11 @@ def addon_meta(type, id):
                 "id": id,
                 "type": "tv",
                 "name": channel["title"],
-                "poster": "",  # Add poster URL if available
+                "poster": channel["poster"],  # Add poster URL if available
                 "description": f"Watch {channel['title']}",
                 "background": "",  # Add background image URL if available
                 "logo": "",  # Add logo URL if available
                 "videos": [{
-                    "id": id,
                     "title": channel["title"],
                     "streams": [{
                         "title": channel["title"],
@@ -126,12 +117,12 @@ def addon_stream(type, id):
                 if id in okru:
                     channel_url = okru_get_url(id)
                     streams['streams'].append({
-                        'title': channel['title'] + "OKRU",
+                        'title': channel['name'] + "OKRU",
                         'url': channel_url
                     })
                 else:
                     streams['streams'].append({
-                        'title': channel['title'],
+                        'title': channel['name'],
                         'url': channel['url']
                     })
         if not streams['streams']:

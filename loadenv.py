@@ -3,6 +3,8 @@ import config
 import config
 MYSTERIUS = config.MYSTERIUS  
 dotenv = config.dotenv
+TUTTIFILM = config.TUTTIFILM
+HF = config.HF
 #You need to keep dotenv disabled on remote servers
 if dotenv == "1":
     from dotenv import load_dotenv
@@ -10,8 +12,11 @@ if dotenv == "1":
 
 
 def load_env():
-    TMDB_KEY = os.getenv('TMDB_KEY')
+    env_vars = {}
+    env_vars['TMDB_KEY'] = os.getenv('TMDB_KEY')
     if MYSTERIUS == "1":
-        MYSTERIUS_KEY = os.getenv('MYSTERIUS_KEY')
-        return TMDB_KEY, MYSTERIUS_KEY
-    return TMDB_KEY
+        env_vars['MYSTERIUS_KEY'] = os.getenv('MYSTERIUS_KEY')
+    if TUTTIFILM == "1":
+        if HF == "1":
+            env_vars['PROXY_CREDENTIALS'] = os.getenv('PROXY')
+    return env_vars
