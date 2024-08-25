@@ -114,16 +114,15 @@ def addon_stream(type, id):
     if type == "tv":
         for channel in STREAM["channels"]:
             if channel["id"] == id:
+                streams['streams'].append({
+                    'title': channel['name'],
+                    'url': channel['url']
+                    })
                 if id in okru:
                     channel_url = okru_get_url(id)
                     streams['streams'].append({
                         'title': channel['name'] + "OKRU",
                         'url': channel_url
-                    })
-                
-                streams['streams'].append({
-                    'title': channel['name'],
-                    'url': channel['url']
                     })
         if not streams['streams']:
             abort(404)
