@@ -34,14 +34,14 @@ app = Flask(__name__)
 
 MANIFEST = {
     "id": "org.stremio.mammamia",
-    "version": "1.0.0",
+    "version": "1.0.5",
     "catalogs": [
         {"type": "tv", "id": "tv_channels", "name": "TV Channels"}
     ],
     "resources": ["stream", "catalog","meta"],
     "types": ["movie", "series", "tv"],
     "name": "Mamma Mia",
-    "description": "Addon providing HTTPS Stream for Italian Movies/Series",
+    "description": "Addon providing HTTPS Streams for Italian Movies,Series and Live TV! Note that you need to have Kitsu Addon installed in order to watch Anime",
     "logo": "https://creazilla-store.fra1.digitaloceanspaces.com/emojis/49647/pizza-emoji-clipart-md.png"
 }
 
