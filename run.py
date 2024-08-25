@@ -120,10 +120,10 @@ def addon_stream(type, id):
                         'title': channel['name'] + "OKRU",
                         'url': channel_url
                     })
-                else:
-                    streams['streams'].append({
-                        'title': channel['name'],
-                        'url': channel['url']
+                
+                streams['streams'].append({
+                    'title': channel['name'],
+                    'url': channel['url']
                     })
         if not streams['streams']:
             abort(404)
