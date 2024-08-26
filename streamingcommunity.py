@@ -1,5 +1,4 @@
 from tmdbv3api import TMDb, Movie, TV
-import requests
 import logging 
 from bs4 import BeautifulSoup,SoupStrainer
 from datetime import datetime
@@ -21,13 +20,13 @@ headers = {
 }
 
 #GET VERSION OF STREAMING COMMUNITY:
-def get_version():
+async def get_version(client):
     #Extract the version from the main page of the site
 
 
     try:
         base_url = f'https://streamingcommunity.{SC_DOMAIN}/richiedi-un-titolo'
-        response = requests.get(base_url, headers=headers)
+        response = await client.get(base_url, headers=headers, follow_redirects=True)
         #Soup the response
         soup = BeautifulSoup(response.text, "lxml")
 
@@ -39,9 +38,11 @@ def get_version():
         version = "65e52dcf34d64173542cd2dc6b8bb75b"
         return version
 
-def search(query,date,ismovie):
+async def search(query,date,ismovie, client):
     #Do a request to get the ID of serie/move and it's slug in the URL
-    response = requests.get(query).json()
+    response = await client.get(query, follow_redirects=True)
+    response = response.json()
+
     for item in response['data']:
         tid = item['id']
         slug = item['slug']
@@ -54,8 +55,7 @@ def search(query,date,ismovie):
             #Added a Check to see if the result is what it is supposed to be
             if SC_FAST_SEARCH == "0":
                 if ismovie == 0:
-                    #
-                    response = requests.get ( f'https://streamingcommunity.boston/titles/{tid}-{slug}')
+                    response = await client.get ( f'https://streamingcommunity.{SC_DOMAIN}/titles/{tid}-{slug}', follow_redirects=True)
                     pattern = r'<div[^>]*class="features"[^>]*>.*?<span[^>]*>(.*?)<\/span>'
                     match = re.search(pattern, response.text)
                     print(match.group(1).split("-")[0])
@@ -72,7 +72,7 @@ def search(query,date,ismovie):
             print("Couldn't find anything")
 
         
-def get_film(tid,version):  
+async def get_film(tid,version,client):  
     headers = {
             'user-agent': "Mozilla/5.0 (Windows NT 10.10; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537",
             'x-inertia': 'true',
@@ -81,7 +81,7 @@ def get_film(tid,version):
         }
     #Access the iframe
     url = f'https://streamingcommunity.{SC_DOMAIN}/iframe/{tid}'
-    response = requests.get(url, headers=headers)
+    response = await client.get(url, headers=headers, follow_redirects=True)
     iframe = BeautifulSoup(response.text, 'lxml')
     #Get the link of iframe
     iframe = iframe.find('iframe').get("src")
@@ -90,7 +90,7 @@ def get_film(tid,version):
     parsed_url = urlparse(iframe)
     query_params = parse_qs(parsed_url.query)
     #Get real token and expires by looking at the page in the iframe, vixcloud/embed
-    resp = requests.get(iframe, headers = headers)
+    resp = await client.get(iframe, headers = headers, follow_redirects=True)
     soup=  BeautifulSoup(resp.text, "lxml")
     script = soup.find("body").find("script").text
     token = re.search(r"'token':\s*'(\w+)'", script).group(1)
@@ -107,7 +107,7 @@ def get_film(tid,version):
     url720 = f'https://vixcloud.co/playlist/{vixid}'
     return url,url720,quality,
 
-def get_season_episode_id(tid,slug,season,episode,version):
+async def get_season_episode_id(tid,slug,season,episode,version,client):
     #Set some basic headers for the request
     headers = {
             'user-agent': "Mozilla/5.0 (Windows NT 10.10; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
@@ -116,14 +116,14 @@ def get_season_episode_id(tid,slug,season,episode,version):
             'x-inertia-version': version
         }   
       #Get episode ID 
-    response = requests.get(f'https://streamingcommunity.{SC_DOMAIN}/titles/{tid}-{slug}/stagione-{season}', headers=headers)
+    response = await client.get(f'https://streamingcommunity.{SC_DOMAIN}/titles/{tid}-{slug}/stagione-{season}', headers=headers, follow_redirects=True)
     # Print the json got
     json_response = response.json().get('props', {}).get('loadedSeason', {}).get('episodes', [])
     for dict_episode in json_response:
         if dict_episode['number'] == episode:
             return dict_episode['id']
 
-def get_episode_link(episode_id,tid,version):
+async def get_episode_link(episode_id,tid,version,client):
     #The parameters for the request
     params = {
                 'episode_id': episode_id, 
@@ -131,7 +131,7 @@ def get_episode_link(episode_id,tid,version):
             }
     #Let's try to get the link from iframe source
         # Make a request to get iframe source
-    response = requests.get(f"https://streamingcommunity.{SC_DOMAIN}/iframe/{tid}", params=params)
+    response = await client.get(f"https://streamingcommunity.{SC_DOMAIN}/iframe/{tid}", params=params, follow_redirects=True)
 
     # Parse response with BeautifulSoup to get iframe source
     soup = BeautifulSoup(response.text, "lxml")
@@ -146,7 +146,7 @@ def get_episode_link(episode_id,tid,version):
     parsed_url = urlparse(iframe)
     query_params = parse_qs(parsed_url.query)
     #Get real token and expires by looking at the page in the iframe, vixcloud/embed
-    resp = requests.get(iframe, headers = headers)
+    resp = await client.get(iframe, headers = headers, follow_redirects=True)
     soup=  BeautifulSoup(resp.text, "lxml")
     script = soup.find("body").find("script").text
     token = re.search(r"'token':\s*'(\w+)'", script).group(1)
@@ -164,7 +164,7 @@ def get_episode_link(episode_id,tid,version):
     return url,url720,quality
 
 
-def streaming_community(imdb):
+async def streaming_community(imdb,client):
     try:
         general = is_movie(imdb)
         ismovie = general[0]
@@ -177,7 +177,7 @@ def streaming_community(imdb):
             if SC_FAST_SEARCH == "1":
                 if "tt" in imdb:
                 #Get showname
-                    showname = get_info_imdb(imdb_id,ismovie,type)
+                    showname = await get_info_imdb(imdb_id,ismovie,type,client)
                     date = None
                 else:
                     #I just set n season to None to avoid bugs, but it is not needed if Fast search is enabled
@@ -186,34 +186,32 @@ def streaming_community(imdb):
                     tmdba = imdb_id.replace("tmdb:","")
                     showname = get_info_tmdb(tmdba,ismovie,type)
             elif SC_FAST_SEARCH == "0":
-                tmdba = get_TMDb_id_from_IMDb_id(imdb_id)
+                tmdba = await get_TMDb_id_from_IMDb_id(imdb_id,client)
                 showname,date = get_info_tmdb(tmdba,ismovie,type) 
         #HERE THE CASE IF IT IS A MOVIE
         else:
             if "tt" in imdb:
                 #Get showname
                 date = None
-                showname = get_info_imdb(imdb_id,ismovie,type)
+                showname = await get_info_imdb(imdb_id,ismovie,type,client)
             else:
-                    #I just set n season to None to avoid bugs, but it is not needed if Fast search is enabled
-                    #else just equals them
                     date = None
                     tmdba = imdb_id.replace("tmdb:","")
                     showname = get_info_tmdb(tmdba,ismovie,type) 
-
+        
         showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
         query = f'https://streamingcommunity.{SC_DOMAIN}/api/search?q={showname}'
-        tid,slug = search(query,date,ismovie)
-        version = get_version()
+        tid,slug = await search(query,date,ismovie,client)
+        version = await get_version(client)
         if ismovie == 1:
             #TID means temporaly ID
-            url,url720,quality = get_film(tid,version)
+            url,url720,quality = await get_film(tid,version,client)
             print(url)
             return url,url720,quality
         if ismovie == 0:
             #Uid = URL ID
-            episode_id = get_season_episode_id(tid,slug,season,episode,version)
-            url,url720,quality = get_episode_link(episode_id,tid,version)
+            episode_id = await get_season_episode_id(tid,slug,season,episode,version,client)
+            url,url720,quality = await get_episode_link(episode_id,tid,version,client)
             print(url)
             return url,url720,quality
     except Exception as e:

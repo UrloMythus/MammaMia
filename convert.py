@@ -5,8 +5,8 @@ import config
 env_vars = load_env()
 
 TMDB_KEY = env_vars.get('TMDB_KEY')
-def get_TMDb_id_from_IMDb_id(imdb_id): 
-    response = requests.get(f'https://api.themoviedb.org/3/find/{imdb_id}', 
+async def get_TMDb_id_from_IMDb_id(imdb_id,client): 
+    response = await client.get(f'https://api.themoviedb.org/3/find/{imdb_id}', 
                             params={'external_source': 'imdb_id', 'api_key': f'{TMDB_KEY}'})
     tmbda = response.json()
     if tmbda['movie_results']:

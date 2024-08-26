@@ -26,13 +26,13 @@ month_mapping = {
     'Sep': 'Settembre', 'Oct': 'Ottobre', 'Nov': 'Novembre', 'Dec': 'Dicembre'
 }
 
-def search(query,date):
-    response = requests.get(query).json()
+async def search(query,date,client):
+    response = await client.get(query).json()
     #Get link tid of every item and then open the link to see if the date = date
     for json in response:
         link = json['link']
         tid = json['id']
-        series_response = requests.get(link, headers=headers)
+        series_response = await client.get(link, headers=headers, follow_redirects=True)
         series_soup = BeautifulSoup(series_response.text, 'lxml')
         release_span = series_soup.find('span', class_='released')
         if release_span:
@@ -61,22 +61,22 @@ def get_film(url):
     tlink = url + "?show_video=true"
     return tlink
 
-def get_real_link(tlink):
+async def get_real_link(tlink,client):
     #Some basic code to get the mixdrop link
-    page = requests.get(tlink, headers=headers)
-    soup = BeautifulSoup(page.content, features="lxml",parse_only=SoupStrainer('iframe'))
+    page = await client.get(tlink, headers=headers, follow_redirects=True)
+    soup = BeautifulSoup(page.content(), features="lxml",parse_only=SoupStrainer('iframe'))
     iframe_src = soup.find('iframe')['src']
 
-    iframe_page = requests.get(iframe_src, headers=headers)
-    iframe_soup = BeautifulSoup(iframe_page.content, features="lxml")
+    iframe_page = await client.get(iframe_src, headers=headers, follow_redirects=True)
+    iframe_soup = BeautifulSoup(iframe_page.content(), features="lxml")
 
     mega_button = iframe_soup.find('div', attrs={'class': 'megaButton', 'rel': 'nofollow'}, string='MIXDROP')
     if mega_button:
         real_link = mega_button.get('meta-link')
         return real_link
     
-def get_true_link(real_link):
-    response = requests.get(real_link, headers=headers)
+async def get_true_link(real_link,client):
+    response = await client.get(real_link, headers=headers, follow_redirects=True)
     [s1, s2] = re.search(r"\}\('(.+)',.+,'(.+)'\.split", response.text).group(1, 2)
     schema = s1.split(";")[2][5:-1]
     terms = s2.split("|")
@@ -89,7 +89,7 @@ def get_true_link(real_link):
         s += d[c] if c in d else c
     return s
 
-def filmpertutti(imdb):
+async def filmpertutti(imdb,client):
     general = is_movie(imdb)
     ismovie = general[0]
     imdb_id = general[1]
@@ -100,10 +100,10 @@ def filmpertutti(imdb):
     if "tt" in imdb:
         if ismovie == 0:
         #Get showname and date
-            showname,date = get_info_imdb(imdb_id,ismovie,type)
+            showname,date = await get_info_imdb(imdb_id,ismovie,type,client)
         else:
             #THIS IS needed cause the only way to get all releases dates is by giving a tmdb ID not a IMDB
-            tmdba = get_TMDb_id_from_IMDb_id(imdb_id)
+            tmdba = await get_TMDb_id_from_IMDb_id(imdb_id,client)
             showname,date = get_info_tmdb(tmdba,ismovie,type)
 
     elif "tmdb" in imdb:
@@ -114,23 +114,23 @@ def filmpertutti(imdb):
     #Build the query
     query = f'https://filmpertutti.{FT_DOMAIN}/wp-json/wp/v2/posts?search={showname}&page=1&_fields=link,id'
     try:
-        url,tid = search(query,date)
+        url,tid = await search(query,date,client)
     except:
         print("No results found")
         return None
     if ismovie == 0:
-        episode_link = get_episode_link(season,episode,tid,url)
+        episode_link =  get_episode_link(season,episode,tid,url)
         #Let's get mixdrop link 
-        real_link = get_real_link(episode_link)
+        real_link = await get_real_link(episode_link,client)
         #let's get delivery link, streaming link
-        streaming_link = get_true_link(real_link)
+        streaming_link = await get_true_link(real_link,client)
         print(streaming_link)
         return streaming_link
     elif ismovie == 1:
         film_link = get_film(url)
         #Let's get mixdrop link
-        real_link = get_real_link(film_link)
+        real_link = await get_real_link(film_link,client)
         #let's get delivery link, streaming link
-        streaming_link = get_true_link(real_link)
+        streaming_link = await get_true_link(real_link,client)
         print(streaming_link)
         return streaming_link

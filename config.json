@@ -2,15 +2,15 @@
     "Siti": {
            "StreamingCommunity": {
                "enabled": "1",    
-               "domain": "photos",
+               "domain": "buzz",
                "fast_search": "0"
            },
            "Filmpertutti": {
                "enabled": "0",    
-               "domain": "makeup"
+               "domain": "diy"
            },
            "Tuttifilm":{
-               "enabled": "1",    
+               "enabled": "0",    
                "domain": "bond",
                "fast_search": "0"
            },

@@ -5,16 +5,16 @@ import json
 from info import get_info_kitsu
 import config
 AW_DOMAIN = config.AW_DOMAIN
-def get_mp4(anime_url,ismovie,episode):
-   response = requests.get(anime_url)
+async def get_mp4(anime_url,ismovie,episode,client):
+   response = await client.get(anime_url,follow_redirects=True)
    soup = BeautifulSoup(response.text,'lxml')
    episode_page = soup.find('a', {'data-episode-num':episode })
    episode_page = f'https://animeworld.{AW_DOMAIN}{episode_page["href"]}'
-   response = requests.get(episode_page)
+   response = await client.get(episode_page,follow_redirects=True)
    soup = BeautifulSoup(response.text,'lxml')
    a_tag  = soup.find('a', {'id': 'alternativeDownloadLink', 'class': 'm-1 btn btn-sm btn-primary'}) 
    url = a_tag['href']
-   response = requests.head(url)
+   response = await client.head(url)
    if response.status_code == 404:
         url = None
    return url
@@ -25,7 +25,7 @@ def get_mp4(anime_url,ismovie,episode):
 
 
 
-def search(showname,date,ismovie,episode):
+async def search(showname,date,ismovie,episode,client):
     cookies = {
     'sessionId': 's%3AtGSRfYcsIoaeV0nqFJgN69Zxixb_-uJU.fcNz%2FsJBiiP8v8TwthMN9%2FmynWFciI5gezZuz8CltyQ',
     }
@@ -53,7 +53,7 @@ def search(showname,date,ismovie,episode):
         'keyword': showname,
     }
 
-    response = requests.post(f'https://www.animeworld.{AW_DOMAIN}/api/search/v2', params=params, cookies=cookies, headers=headers)
+    response = await client.post(f'https://www.animeworld.{AW_DOMAIN}/api/search/v2', params=params, cookies=cookies, headers=headers,follow_redirects=True)
     months = {
         "Gennaio": "January", "Febbraio": "February", "Marzo": "March", 
         "Aprile": "April", "Maggio": "May", "Giugno": "June", 
@@ -72,14 +72,14 @@ def search(showname,date,ismovie,episode):
             identifier = anime["identifier"]
             link = anime["link"]
             anime_url = f'https://animeworld.{AW_DOMAIN}/play/{link}.{identifier}'
-            final_url = get_mp4(anime_url,ismovie,episode)
+            final_url = await get_mp4(anime_url,ismovie,episode,client)
             final_urls.append(final_url)
             break
     showname = showname + " (ITA)"
     params = {
         'keyword': showname,
     }
-    response = requests.post(f'https://www.animeworld.{AW_DOMAIN}/api/search/v2', params=params, cookies=cookies, headers=headers)
+    response = await client.post(f'https://www.animeworld.{AW_DOMAIN}/api/search/v2', params=params, cookies=cookies, headers=headers, follow_redirects=True)
     data = json.loads(response.text)
     for anime in data["animes"]:
         release_date = anime["release"]
@@ -91,17 +91,18 @@ def search(showname,date,ismovie,episode):
             identifier = anime["identifier"]
             link = anime["link"]
             anime_url = f'https://animeworld.{AW_DOMAIN}/play/{link}.{identifier}'
-            final_url = get_mp4(anime_url,ismovie,episode)
+            final_url = await get_mp4(anime_url,ismovie,episode,client)
             final_urls.append(final_url)
             break
     return final_urls
-def animeworld(id):
+
+async def animeworld(id,client):
     try:
         kitsu_id = id.split(":")[1]
         episode = id.split(":")[2]
         ismovie = 1 if len(id.split(":")) == 2 else 0
-        showname,date = get_info_kitsu(kitsu_id)
-        final_urls = search(showname,date,ismovie,episode)
+        showname,date = await get_info_kitsu(kitsu_id,client)
+        final_urls = await search(showname,date,ismovie,episode,client)
         print(final_urls)
         return final_urls
     except:

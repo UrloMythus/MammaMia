@@ -85,9 +85,9 @@ def get_info_tmdb(tmbda,ismovie,type):
             print("Real date",date)
             return showname,date
 
-def get_info_imdb(imdb_id, ismovie, type):
+async def get_info_imdb(imdb_id, ismovie, type,client):
 
-    resp = requests.get(f'https://api.themoviedb.org/3/find/{imdb_id}?api_key={TMDB_KEY}&language=it&external_source=imdb_id')
+    resp = await client.get(f'https://api.themoviedb.org/3/find/{imdb_id}?api_key={TMDB_KEY}&language=it&external_source=imdb_id')
     data = resp.json()
     if ismovie == 0:     
         showname = data['tv_results'][0]['name']
@@ -120,9 +120,9 @@ def get_info_imdb(imdb_id, ismovie, type):
         elif type == "Cool":
             return showname
 
-def get_info_kitsu(kitsu_id):
+async def get_info_kitsu(kitsu_id,client):
     api_url = f'https://kitsu.io/api/edge/anime/{kitsu_id}'
-    response = requests.get(api_url)
+    response = await client.get(api_url)
     data = json.loads(response.text)
     showname = data['data']['attributes']['canonicalTitle']
     date = data['data']['attributes']['startDate']

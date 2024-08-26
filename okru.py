@@ -5,10 +5,10 @@ from dictionaries import okru
 
 
 
-def okru_get_url(id):
+async def okru_get_url(id,client):
     embed_link = okru[id]
     print(embed_link)
-    response = requests.get(embed_link)
+    response = await client.get(embed_link, follow_redirects=True)
     soup = BeautifulSoup(response.text, 'lxml')
     div = soup.find('div', {'data-module': 'OKVideo'})
     data_options = div.get('data-options')

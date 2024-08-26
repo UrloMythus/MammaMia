@@ -10,17 +10,17 @@ import config
 import re
 import json
 LC_DOMAIN = config.LC_DOMAIN
-def search(showname,date,season,episode,ismovie):
+async def search(showname,date,season,episode,ismovie,client):
     cookies = {
         'csrftoken': '7lvc502CZe8Zbx7iSX1xkZOBA1NbDxJZ',
     }
 
     headers = {
-        'authority': 'lordchannel.com',
+        'authority': f'lordchannel.{LC_DOMAIN}',
         'accept': '*/*',
         'accept-language': 'it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7',
         # 'cookie': 'csrftoken=7lvc502CZe8Zbx7iSX1xkZOBA1NbDxJZ',
-        'referer': 'https://lordchannel.com/anime/anime-ita/',
+        'referer': f'https://lordchannel.{LC_DOMAIN}/anime/anime-ita/',
         'sec-ch-ua': '"Not-A.Brand";v="99", "Chromium";v="124"',
         'sec-ch-ua-mobile': '?0',
         'sec-ch-ua-platform': '"Android"',
@@ -36,14 +36,14 @@ def search(showname,date,season,episode,ismovie):
         '_': '1724421723999',
     }
 
-    response = requests.get('https://lordchannel.com/live_search/', params=params, cookies=cookies, headers=headers)
+    response = await client.get(f'https://lordchannel.{LC_DOMAIN}/live_search/', params=params, cookies=cookies, headers=headers, follow_redirects=True)
     data = json.loads(response.text)
     for entry in data['data']:
         if entry is not None:  # check if the a_tag exists
             href = entry['url']
             quality = entry['qualit\u00e0_video']
             link = f'https://lordchannel.{LC_DOMAIN}{href}'
-            response = requests.get(link)
+            response = await client.get(link, follow_redirects=True)
             soup2 = BeautifulSoup(response.text,'lxml')
             li_tag = soup2.select_one("ul.card__meta li:nth-of-type(2)")
             if li_tag is not None:  # check if the li_tag exists
@@ -63,8 +63,8 @@ def search(showname,date,season,episode,ismovie):
                     print("Sadly date are not equals")
                     continue
 
-def get_m3u8(video_url):
-    response = requests.get(video_url)
+async def get_m3u8(video_url,client):
+    response = await client.get(video_url, follow_redirects=True)
     pattern = r'const videoData = \[(.*?)\];'
     match = re.search(pattern, response.text)
 
@@ -73,7 +73,7 @@ def get_m3u8(video_url):
        url = video_data[0]
        return url
 
-def lordchannel(imdb):
+async def lordchannel(imdb,client):
     try:
         general = is_movie(imdb)
         ismovie = general[0]
@@ -83,19 +83,19 @@ def lordchannel(imdb):
             season  = int(general[2])
             episode = int(general[3])
             if "tt" in imdb:
-                tmdba = get_TMDb_id_from_IMDb_id(imdb_id)
+                tmdba =  await get_TMDb_id_from_IMDb_id(imdb_id,client)
             else:
                 tmdba = imdb_id
         else:
             season = None
             episode = None
             if "tt" in imdb:
-                tmdba = get_TMDb_id_from_IMDb_id(imdb_id)
+                tmdba = await get_TMDb_id_from_IMDb_id(imdb_id,client)
             else:
                 tmdba = imdb_id
         showname,date = get_info_tmdb(tmdba,ismovie,type)
-        video_url,quality = search(showname,date,season,episode,ismovie)
-        url = get_m3u8(video_url)
+        video_url,quality = await search(showname,date,season,episode,ismovie,client)
+        url = await get_m3u8(video_url,client)
         url = url.replace('"','')
         print(url)
         return url,quality

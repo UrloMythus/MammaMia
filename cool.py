@@ -5,12 +5,12 @@ from convert import get_TMDb_id_from_IMDb_id
 from loadenv import load_env
 env_vars = load_env()
 MYSTERIUS_KEY = env_vars.get('MYSTERIUS_KEY')
-def get_links(slug,season,episode,ismovie):
+async def get_links(slug,season,episode,ismovie,client):
     try:
         headers = {
             "x-api-key": MYSTERIUS_KEY
         }
-        response = requests.get("https://mammamia-urlo-ulala12431.hf.space/api/cookie", headers=headers)
+        response = await client.get("https://mammamia-urlo-ulala12431.hf.space/api/cookie", headers=headers)
         Auths = response.json()
         Bearer = Auths.get('cookie')
         ap_session = Auths.get('auth')
@@ -27,16 +27,15 @@ def get_links(slug,season,episode,ismovie):
         }
         if ismovie == 1:
 
-            response = requests.get(f'https://altadefinizione-originale.com/api/post/urls/stream/{slug}',cookies=cookies,headers=headers)
+            response = await client.get(f'https://altadefinizione-originale.com/api/post/urls/stream/{slug}',cookies=cookies,headers=headers)
         elif ismovie == 0:
             print("HERE SEASON",season)
             print("HERE EPISODE",episode)
             request_url =f'https://altadefinizione-originale.com/api/post/urls/stream/{slug}/{season}/{episode}'
             print(request_url)
-            response = requests.get(request_url,cookies=cookies,headers=headers)
+            response = await client.get(request_url,cookies=cookies,headers=headers)
         try:
             video_data = response.json()  # Assuming this is the JSON response containing video streams
-
             if 'streams' not in video_data:
                 print("Invalid JSON format: 'streams' key not found or incorrect structure")
                 return None
@@ -79,10 +78,10 @@ def get_links(slug,season,episode,ismovie):
 
 
 
-def search_imdb(showname,tmdba):
+async def search_imdb(showname,tmdba,client):
         tmdba = str(tmdba)
         query = f'https://altadefinizione-originale.com/api/search?search={showname}&page=1'
-        response = requests.get(query)
+        response = await client.get(query,follow_redirects=True)
         if response.status_code == 200:
             data = response.json()
             if 'data' in data:
@@ -108,7 +107,7 @@ def parse_links(resolution_links):
         print("Failed to fetch video links")
 
 
-def cool(imdb):
+async def cool(imdb,client):
     try:
         type = "Cool"    
         general = is_movie(imdb)
@@ -120,19 +119,19 @@ def cool(imdb):
         
         if "tt" in imdb:
                 #Get showname
-            tmdba = get_TMDb_id_from_IMDb_id(imdb_id)
+            tmdba = await get_TMDb_id_from_IMDb_id(imdb_id,client)
         else:
             tmdba = imdb_id.replace("tmdb:","")
 
         showname = get_info_tmdb(tmdba,ismovie,type)
         
 
-        slug = search_imdb(showname,tmdba)
+        slug = await search_imdb(showname,tmdba,client)
         print(ismovie)
         if ismovie == 1:
             season = None
             episode = None
-            resolution_links = get_links(slug,episode,season,ismovie)
+            resolution_links = await get_links(slug,episode,season,ismovie,client)
             results = parse_links(resolution_links)
             return results
         elif ismovie == 0:
@@ -142,5 +141,5 @@ def cool(imdb):
             results = parse_links(resolution_links)
             return results
     except Exception as e:
-        print("Cool Error")
+        print("Cool Error",e)
         return None
