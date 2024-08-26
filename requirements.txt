@@ -6,3 +6,4 @@ fastapi
 uvicorn
 tzdata
 lxml
+httpx
