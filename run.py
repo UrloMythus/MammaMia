@@ -1,6 +1,5 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
-from flask import Flask, jsonify, abort
 from filmpertutti import filmpertutti
 from streamingcommunity import streaming_community
 from tantifilm import tantifilm
