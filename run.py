@@ -1,3 +1,5 @@
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse
 from flask import Flask, jsonify, abort
 from filmpertutti import filmpertutti
 from streamingcommunity import streaming_community
@@ -10,6 +12,7 @@ import logging
 from okru import okru_get_url
 from animeworld import animeworld
 from dictionaries import okru,STREAM
+import httpx
 # Configure logging
 FILMPERTUTTI = config.FILMPERTUTTI
 STREAMINGCOMMUNITY = config.STREAMINGCOMMUNITY
@@ -30,8 +33,7 @@ else:
 if MYSTERIUS == "1":
     from cool import cool
 
-app = Flask(__name__)
-
+app = FastAPI()
 MANIFEST = {
     "id": "org.stremio.mammamia",
     "version": "1.0.5",
@@ -48,23 +50,23 @@ MANIFEST = {
 
 
 def respond_with(data):
-    resp = jsonify(data)
+    resp = JSONResponse(data)
     resp.headers['Access-Control-Allow-Origin'] = '*'
     resp.headers['Access-Control-Allow-Headers'] = '*'
     return resp
 
-@app.route('/manifest.json')
+@app.get('/manifest.json')
 def addon_manifest():
     return respond_with(MANIFEST)
 
-@app.route('/')
+@app.get('/')
 def root():
     return "Hello, this is a Stremio Addon providing HTTPS Stream for Italian Movies/Series, to install it add /manifest.json to the url and then add it into the Stremio search bar"
 
-@app.route('/catalog/<type>/<id>.json')
+@app.get('/catalog/<type>/<id>.json')
 def addon_catalog(type, id):
     if type != "tv":
-        abort(404)
+        raise HTTPException(status_code=404)
 
     catalogs = {"metas": []}
     for channel in STREAM["channels"]:
@@ -78,10 +80,10 @@ def addon_catalog(type, id):
 
     return respond_with(catalogs)
 
-@app.route('/meta/<type>/<id>.json')
+@app.get('/meta/<type>/<id>.json')
 def addon_meta(type, id):
     if type != "tv":
-        abort(404)
+        raise HTTPException(status_code=404)
 
     for channel in STREAM["channels"]:
         if channel["id"] == id:
@@ -106,10 +108,10 @@ def addon_meta(type, id):
     abort(404)
 
 
-@app.route('/stream/<type>/<id>.json')
+@app.get('/stream/{type}/{id}.json')
 def addon_stream(type, id):
     if type not in MANIFEST['types']:
-        abort(404)
+        raise HTTPException(status_code=404)
     streams = {'streams': []}
     if type == "tv":
         for channel in STREAM["channels"]:
@@ -125,7 +127,7 @@ def addon_stream(type, id):
                         'url': channel_url
                     })
         if not streams['streams']:
-            abort(404)
+            raise HTTPException(status_code=404)
         return respond_with(streams)
     else:
         logging.debug(f"Handling movie or series: {id}")
@@ -178,11 +180,11 @@ def addon_stream(type, id):
                 if url_streamingwatch:
                     streams['streams'].append({'title': f'{HF}StreamingWatch 720p', 'url': url_streamingwatch})
         if not streams['streams']:
-            abort(404)
+            raise HTTPException(status_code=404)
 
     return respond_with(streams)
 
 
-    return respond_with({"meta": meta})
 if __name__ == '__main__':
-    app.run(host=HOST, port=PORT)
+    import uvicorn
+    uvicorn.run("run:app", host=HOST, port=PORT, log_level="info")

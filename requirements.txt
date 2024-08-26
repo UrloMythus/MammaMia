@@ -2,5 +2,7 @@ bs4
 tmdbv3api
 dateparser
 python-dotenv
-flask
+fastapi
+uvicorn
+tzdata
 lxml

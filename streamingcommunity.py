@@ -187,7 +187,7 @@ def streaming_community(imdb):
                     showname = get_info_tmdb(tmdba,ismovie,type)
             elif SC_FAST_SEARCH == "0":
                 tmdba = get_TMDb_id_from_IMDb_id(imdb_id)
-                showname,date = get_info_tmdb(tmdba,ismovie,type)  
+                showname,date = get_info_tmdb(tmdba,ismovie,type) 
         #HERE THE CASE IF IT IS A MOVIE
         else:
             if "tt" in imdb:
