@@ -1,9 +1,19 @@
-import requests
+import httpx
+import asyncio
+
 from bs4 import BeautifulSoup
 import datetime
 import json
 from info import get_info_kitsu
 import config
+import re
+months = {
+        "Gennaio": "January", "Febbraio": "February", "Marzo": "March", 
+        "Aprile": "April", "Maggio": "May", "Giugno": "June", 
+        "Luglio": "July", "Agosto": "August", "Settembre": "September", 
+        "Ottobre": "October", "Novembre": "November", "Dicembre": "December"
+    }
+
 AW_DOMAIN = config.AW_DOMAIN
 async def get_mp4(anime_url,ismovie,episode,client):
    response = await client.get(anime_url,follow_redirects=True)
@@ -25,7 +35,7 @@ async def get_mp4(anime_url,ismovie,episode,client):
 
 
 
-async def search(showname,date,ismovie,episode,client):
+async def old_search(showname,date,ismovie,episode,client):
     cookies = {
     'sessionId': 's%3AtGSRfYcsIoaeV0nqFJgN69Zxixb_-uJU.fcNz%2FsJBiiP8v8TwthMN9%2FmynWFciI5gezZuz8CltyQ',
     }
@@ -54,12 +64,7 @@ async def search(showname,date,ismovie,episode,client):
     }
 
     response = await client.post(f'https://www.animeworld.{AW_DOMAIN}/api/search/v2', params=params, cookies=cookies, headers=headers,follow_redirects=True)
-    months = {
-        "Gennaio": "January", "Febbraio": "February", "Marzo": "March", 
-        "Aprile": "April", "Maggio": "May", "Giugno": "June", 
-        "Luglio": "July", "Agosto": "August", "Settembre": "September", 
-        "Ottobre": "October", "Novembre": "November", "Dicembre": "December"
-    }
+
     data = json.loads(response.text)
     final_urls = []
     for anime in data["animes"]:
@@ -96,15 +101,41 @@ async def search(showname,date,ismovie,episode,client):
             break
     return final_urls
 
+async def search(showname,date,ismovie,episode,client):
+    search_year = date[:4] 
+    response = await client.get(f'https://www.animeworld.so/filter?year={search_year}&sort=2&keyword={showname}',follow_redirects=True)
+    soup = BeautifulSoup(response.text,'lxml')
+    anime_list = soup.find_all('a', class_=['poster', 'tooltipstered'])
+    final_urls = []
+    for anime in anime_list:
+        anime_info_url = f'https://www.animeworld.{AW_DOMAIN}/{anime["data-tip"]}'
+        response = await client.get(anime_info_url,follow_redirects=True)
+        pattern = r'<label>Data di uscita:</label>\s*<span>\s*(.*?)\s*</span>'
+        match = re.search(pattern, response.text, re.S)
+        release_date = match.group(1).strip()
+        for ita, eng in months.items():
+            release_date = release_date.replace(ita, eng)
+        release_date = datetime.datetime.strptime(release_date, "%d %B %Y")
+        release_date = release_date.strftime("%Y-%m-%d")
+        print(release_date)
+        if release_date == date:
+            anime_url = f'https://www.animeworld.{AW_DOMAIN}{anime["href"]}'
+            final_url = await get_mp4(anime_url,ismovie,episode,client)
+            if final_url:
+                final_urls.append(final_url)
+
+    return final_urls
+
 async def animeworld(id,client):
     try:
+        print(id)
         kitsu_id = id.split(":")[1]
         episode = id.split(":")[2]
         ismovie = 1 if len(id.split(":")) == 2 else 0
         showname,date = await get_info_kitsu(kitsu_id,client)
         final_urls = await search(showname,date,ismovie,episode,client)
-        print(final_urls)
         return final_urls
     except:
         print("Animeworld failed")
         return None
+
