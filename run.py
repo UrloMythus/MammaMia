@@ -62,8 +62,9 @@ def addon_manifest():
 def root():
     return "Hello, this is a Stremio Addon providing HTTPS Stream for Italian Movies/Series, to install it add /manifest.json to the url and then add it into the Stremio search bar"
 
-@app.get('/catalog/<type>/<id>.json')
+@app.get('/catalog/{type}/{id}.json')
 def addon_catalog(type, id):
+    print("STA ANDANDO TUTTO MALE")
     if type != "tv":
         raise HTTPException(status_code=404)
 
@@ -79,7 +80,7 @@ def addon_catalog(type, id):
 
     return respond_with(catalogs)
 
-@app.get('/meta/<type>/<id>.json')
+@app.get('/meta/{type}/{id}.json')
 def addon_meta(type, id):
     if type != "tv":
         raise HTTPException(status_code=404)
