@@ -13,6 +13,9 @@ months = {
         "Luglio": "July", "Agosto": "August", "Settembre": "September", 
         "Ottobre": "October", "Novembre": "November", "Dicembre": "December"
     }
+showname_replace = {
+    "Attack on Titan": "L'attacco dei Giganti"
+}
 
 AW_DOMAIN = config.AW_DOMAIN
 async def get_mp4(anime_url,ismovie,episode,client):
@@ -133,6 +136,8 @@ async def animeworld(id,client):
         episode = id.split(":")[2]
         ismovie = 1 if len(id.split(":")) == 2 else 0
         showname,date = await get_info_kitsu(kitsu_id,client)
+        if showname in showname_replace:
+            showname = showname_replace[showname]
         final_urls = await search(showname,date,ismovie,episode,client)
         return final_urls
     except:
