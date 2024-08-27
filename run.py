@@ -80,32 +80,29 @@ def addon_catalog(type, id):
 
     return respond_with(catalogs)
 
-@app.get('/meta/{type}/{id}.json')
-def addon_meta(type, id):
-    if type != "tv":
-        raise HTTPException(status_code=404)
-
-    for channel in STREAM["channels"]:
-        if channel["id"] == id:
-            meta = {
-                "id": id,
-                "type": "tv",
-                "name": channel["title"],
-                "poster": channel["poster"],  # Add poster URL if available
-                "description": f"Watch {channel['title']}",
-                "background": "",  # Add background image URL if available
-                "logo": "",  # Add logo URL if available
-                "videos": [{
-                    "title": channel["title"],
-                    "streams": [{
-                        "title": channel["title"],
-                        "url": channel["url"]
-                    }]
-                }]
-            }
-            return respond_with({"meta": meta})
-
-    raise HTTPException(status_code=404)
+@app.get('/meta/tv/{id}.json')
+def addon_meta(id: str):
+    # Find the channel by ID
+    channel = next((ch for ch in STREAM['channels'] if ch['id'] == id), None)
+    
+    if not channel:
+        raise HTTPException(status_code=404, detail="Channel not found")
+    
+    meta = {
+        'meta': {
+            'id': channel['id'],
+            'type': 'tv',
+            'name': channel['name'],
+            'poster': channel['poster'],
+            'posterShape': 'landscape',
+            'description': channel['title'],
+            # Additional fields can be added here
+            'background': channel['poster'],  # Example of using the same poster as background
+            'logo': channel['poster'],  # Example of using the same poster as logo
+            'url': channel['url'],  # Using the stream URL as a website link
+        }
+    }
+    return respond_with(meta)
 
 
 @app.get('/stream/{type}/{id}.json')
