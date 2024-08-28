@@ -18,7 +18,6 @@ showname_replace = {
     "Season": "",
     "  ": " ",
     "Shippuuden": "Shippuden",
-    ":":"",
     " ": "+",
 }
 
@@ -146,6 +145,8 @@ async def animeworld(id,client):
         for key in showname_replace:
             if key in showname:  # Check if the key is a substring of showname
                 showname = showname.replace(key, showname_replace[key])
+                if "Naruto:" in showname:
+                    showname = showname.replace(":", "")
         final_urls = await search(showname,date,ismovie,episode,client)
         return final_urls
     except:
