@@ -35,7 +35,7 @@ async def search(showname,date,season,episode,ismovie,client):
         'media': showname,
         '_': '1724421723999',
     }
-
+    
     response = await client.get(f'https://lordchannel.{LC_DOMAIN}/live_search/', params=params, cookies=cookies, headers=headers, follow_redirects=True)
     data = json.loads(response.text)
     for entry in data['data']:
@@ -57,7 +57,7 @@ async def search(showname,date,season,episode,ismovie,client):
                          div = soup2.find('div', id=f'collapse{season}')
                          episode = episode -1 #Index start from 0 so I need to subtract 1
                          episode = div.select('tr')[2]  # index is 2 because we want the correct  element
-                         video_url = href = episode.find('a').get('href')
+                         video_url = episode.find('a').get('href')
                          return video_url,quality
                 else:
                     print("Sadly date are not equals")
@@ -65,9 +65,8 @@ async def search(showname,date,season,episode,ismovie,client):
 
 async def get_m3u8(video_url,client):
     response = await client.get(video_url, follow_redirects=True)
-    pattern = r'const videoData = \[(.*?)\];'
+    pattern = r'const\s+videoData\s*=\s*\[(.*?)\];'
     match = re.search(pattern, response.text)
-
     if match:
        video_data = match.group(1).strip().split(', ')
        url = video_data[0]
@@ -102,3 +101,15 @@ async def lordchannel(imdb,client):
     except:
         print("Lordchannel Failed")
         return None,None
+    
+
+
+async def test_animeworld():
+    async with httpx.AsyncClient() as client:
+        results = await lordchannel("tt16288804:1:1",client)
+      #  print(results)
+
+if __name__ == "__main__":
+    import httpx
+    import asyncio
+    asyncio.run(test_animeworld())  
