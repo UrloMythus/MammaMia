@@ -14,7 +14,12 @@ months = {
         "Ottobre": "October", "Novembre": "November", "Dicembre": "December"
     }
 showname_replace = {
-    "Attack on Titan": "L'attacco dei Giganti"
+    "Attack on Titan": "L'attacco dei Giganti",
+    "Season": "",
+    "  ": " ",
+    "Shippuuden": "Shippuden",
+    ":":"",
+    " ": "+",
 }
 
 AW_DOMAIN = config.AW_DOMAIN
@@ -22,6 +27,8 @@ async def get_mp4(anime_url,ismovie,episode,client):
    response = await client.get(anime_url,follow_redirects=True)
    soup = BeautifulSoup(response.text,'lxml')
    episode_page = soup.find('a', {'data-episode-num':episode })
+   if episode_page is None:
+       return None
    episode_page = f'https://animeworld.{AW_DOMAIN}{episode_page["href"]}'
    response = await client.get(episode_page,follow_redirects=True)
    soup = BeautifulSoup(response.text,'lxml')
@@ -136,11 +143,23 @@ async def animeworld(id,client):
         episode = id.split(":")[2]
         ismovie = 1 if len(id.split(":")) == 2 else 0
         showname,date = await get_info_kitsu(kitsu_id,client)
-        if showname in showname_replace:
-            showname = showname_replace[showname]
+        for key in showname_replace:
+            if key in showname:  # Check if the key is a substring of showname
+                showname = showname.replace(key, showname_replace[key])
         final_urls = await search(showname,date,ismovie,episode,client)
         return final_urls
     except:
         print("Animeworld failed")
         return None
 
+# async def test_animeworld():
+  #  async with httpx.AsyncClient() as client:
+   #     # Replace with actual id, for example 'anime_id:episode' format
+    #    test_id = "kitsu:1555:1"  # This is an example ID format
+     #   results = await animeworld(test_id, client)
+      #  print(results)
+
+#if __name__ == "__main__":
+ #   import httpx
+  #  import asyncio
+   # asyncio.run(test_animeworld())
