@@ -202,7 +202,9 @@ async def streaming_community(imdb,client):
         
         showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
         query = f'https://streamingcommunity.{SC_DOMAIN}/api/search?q={showname}'
+        print(query)
         tid,slug = await search(query,date,ismovie,client)
+        print(tid,slug)
         version = await get_version(client)
         if ismovie == 1:
             #TID means temporaly ID
