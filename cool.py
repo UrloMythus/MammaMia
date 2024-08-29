@@ -86,7 +86,9 @@ async def search_imdb(showname,tmdba,client):
             data = response.json()
             if 'data' in data:
                 for item in data['data']:
-                    if item.get('tmdb_id') == tmdba:
+                    tmdb_id = item.get('tmdb_id')
+                    tmdb_id = ''.join(char for char in tmdb_id if char.isdigit())
+                    if tmdb_id == tmdba:
                         slug = item.get('slug')
                         print(slug)
                         return slug
