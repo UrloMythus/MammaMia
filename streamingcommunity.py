@@ -63,6 +63,7 @@ async def search(query,date,ismovie, client):
                     date = int(date)
                     first_air_year = int(first_air_year)
                     if first_air_year == date:
+                        print("OH YEAH",first_air_year,date)
                         return tid,slug
                 elif ismovie == 1:
                     return tid,slug
