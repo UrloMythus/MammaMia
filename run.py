@@ -158,7 +158,6 @@ async def addon_stream(request: Request,config, type, id,):
         raise HTTPException(status_code=404)
     streams = {'streams': []}
     config_providers = config.split('|')
-    print(config_providers)
     provider_maps = {name: "0" for name in provider_map.values()}
     for provider in config_providers:
             if provider in provider_map:
@@ -195,8 +194,8 @@ async def addon_stream(request: Request,config, type, id,):
             if not streams['streams']:
                 raise HTTPException(status_code=404)
             return respond_with(streams)
-        else:
-            logging.info(f"Handling movie or series: {id}")
+        elif "tt" in id or "tmdb" in id or "kitsu" in id:
+            print(f"Handling movie or series: {id}")
             if "kitsu" in id:
                 if provider_maps['ANIMEWORLD'] == "1":
                     animeworld_urls = await animeworld(id,client)
@@ -218,6 +217,7 @@ async def addon_stream(request: Request,config, type, id,):
                         print(f"Mysterius Found Results for {id}")
                         for resolution, link in results.items():
                             streams['streams'].append({'title': f'{HF}Mysterious {resolution}', 'url': link})
+                print(provider_maps['STREAMINGCOMMUNITY'])
                 if provider_maps['STREAMINGCOMMUNITY'] == "1":
                     SC_FAST_SEARCH = provider_maps['SC_FAST_SEARCH']
                     url_streaming_community,url_720_streaming_community,quality_sc = await streaming_community(id,client,SC_FAST_SEARCH)
