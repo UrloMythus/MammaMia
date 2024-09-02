@@ -97,6 +97,8 @@ async def get_info_imdb(imdb_id, ismovie, type,client):
             date = data['tv_results'][0]['first_air_date']
             date = date.split("-")[0]
             return showname,date
+        elif type == "StreamingCommunityFS":
+            return showname
         elif type == "Tantifilm":
             date = data['tv_results'][0]['first_air_date']
             date = date.split("-")[0]
@@ -116,6 +118,8 @@ async def get_info_imdb(imdb_id, ismovie, type,client):
             date = data['movie_results'][0]['release_date']
             date = date.split("-")[0]
             return showname,date
+        elif type == "StreamingCommunityFS":
+            return showname
         elif type == "Tantifilm":
             date = data['movie_results'][0]['release_date']
             date = date.split("-")[0]
