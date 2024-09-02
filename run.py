@@ -79,6 +79,7 @@ def addon_manifest():
 @app.get('/', response_class=HTMLResponse)
 def root(request: Request):
     instance_url = f"{request.url.scheme}://{request.url.netloc}"
+    print(instance_url)
     html_content = HTML.replace("{instance_url}", instance_url)
     return html_content
 async def addon_catalog(type: str, id: str, genre: str = None):
