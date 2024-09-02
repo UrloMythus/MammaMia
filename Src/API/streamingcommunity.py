@@ -209,7 +209,7 @@ async def streaming_community(imdb,client,SC_FAST_SEARCH):
         #HERE THE CASE IF IT IS A MOVIE
         else:
             if SC_FAST_SEARCH == "1":
-                type = "StreamingCommunity"
+                type = "StreamingCommunityFS"
                 if "tt" in imdb:
                     #Get showname
                     date = None
@@ -219,6 +219,7 @@ async def streaming_community(imdb,client,SC_FAST_SEARCH):
                         tmdba = imdb_id.replace("tmdb:","")
                         showname = get_info_tmdb(tmdba,ismovie,type) 
             elif SC_FAST_SEARCH == "0":
+                type = "StreamingCommunity"
                 if "tt" in imdb:
                     #Get showname
                     showname,date = await get_info_imdb(imdb_id,ismovie,type,client)
@@ -244,7 +245,7 @@ async def streaming_community(imdb,client,SC_FAST_SEARCH):
     except Exception as e:
         print("MammaMia: StreamingCommunity failed",e)
         return None,None,None
-
+'''
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
@@ -255,3 +256,4 @@ async def test_animeworld():
 if __name__ == "__main__":
     import asyncio
     asyncio.run(test_animeworld())
+'''
