@@ -241,6 +241,7 @@ async def addon_stream(request: Request,config, type, id,):
                 if provider_maps['FILMPERTUTTI'] == "1":
                     url_filmpertutti = await filmpertutti(id,client)
                     if url_filmpertutti is not None:
+                        print(f"Filmpertutti Found Results for {id}")
                         streams['streams'].append({'title': 'Filmpertutti', 'url': url_filmpertutti})
                 if provider_maps['TANTIFILM'] == "1":
                     TF_FAST_SEARCH = provider_maps['TF_FAST_SEARCH']                    
@@ -250,9 +251,12 @@ async def addon_stream(request: Request,config, type, id,):
                         if not isinstance(url_tantifilm, str):
                             for title, url in url_tantifilm.items():    
                                 streams['streams'].append({'title': f'{HF}Tantifilm {title}', 'url': url,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True}})
+                        else:
+                            streams['streams'].append({'title': f'{HF}Tantifilm', 'url': url_tantifilm,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True}})
                 if provider_maps['STREAMINGWATCH'] == "1":
                     url_streamingwatch = await streamingwatch(id,client)
                     if url_streamingwatch:
+                        print(f"Streaming Watch Found Results for {id}")
                         streams['streams'].append({'title': f'{HF}StreamingWatch 720p', 'url': url_streamingwatch})
         if not streams['streams']:
             raise HTTPException(status_code=404)

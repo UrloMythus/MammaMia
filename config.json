@@ -26,7 +26,7 @@
        "load_env": "0",
        "HOST": "0.0.0.0",
        "PORT": "8080",
-       "HF": "1",
+       "HF": "0",
        "Public_Instance": "0",
        "MediaProxy":  ["https://lorempizza-mediamammamia1.hf.space/","https://lorempizza-mediamammamia2.hf.space/", "https://lorempizza-mediamammamia3.hf.space/", "https://lorempizza-mediamammamia4.hf.space/", "https://lorempizza-mediamammamia5.hf.space/", "https://lorempizza-mediamammamia6.hf.space/", "https://lorempizza-mediamammamia7.hf.space/", "https://lorempizza-mediamammamia8.hf.space/", "https://lorempizza-mediamammamia9.hf.space/", "https://lorempizza-mediamammamia10.hf.space/"]
    }
