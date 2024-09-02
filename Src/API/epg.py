@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-import httpx
 
 tivu = {
     "dazn-zona-a": "801",
