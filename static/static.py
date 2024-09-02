@@ -232,7 +232,7 @@ HTML = """
         <button id="installButton">INSTALL</button>
         <div id="manifestBox"></div>
     </div>
-    <script>
+       <script>
         function generateManifest() {
             let manifest = "|";
             const providers = {
@@ -252,18 +252,19 @@ HTML = """
                 }
             }
             const instanceUrl = "{instance_url}";  // Keep http in the URL
-            manifest += "|";
-            document.getElementById("manifestBox").innerText = manifest.replace(/\|+$/, "");
-            document.getElementById("manifestBox").style.display = "block";
+            const manifestUrl = instanceUrl + "/" + manifest + "/" + "manifest.json";
+            return manifestUrl;
         }
-        document.getElementById("generateManifestButton").addEventListener("click", generateManifest);
-        
-        document.getElementById("installButton").addEventListener("click", function() {
-            const manifestText = document.getElementById("manifestBox").innerText;
-            const anchor = document.createElement('a');
-            anchor.href = "http://127.0.0.1:8050/" + manifestText; // Correct URL format
-            anchor.target = "_blank";
-            anchor.click();
+        document.getElementById('generateManifestButton').addEventListener('click', function() {
+            const manifestUrl = generateManifest();
+            document.getElementById("manifestBox").style.display = "block";
+            document.getElementById("manifestBox").innerText = manifestUrl;
+        });
+        document.getElementById('installButton').addEventListener('click', function() {
+            let manifestUrl = generateManifest();
+            manifestUrl = manifestUrl.replace("http://", "");
+            const stremioUrl = "stremio://" + manifestUrl;
+            window.location.href = stremioUrl;
         });
     </script>
 </body>
