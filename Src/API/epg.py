@@ -181,7 +181,6 @@ async def tivu_get(id,client):
 
 
 async def epg_guide(id,client):
-    import httpx
     try:
         if id in convert_bho_1:
             new_id = convert_bho_1[id]
