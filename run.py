@@ -78,7 +78,9 @@ def addon_manifest():
 
 @app.get('/', response_class=HTMLResponse)
 def root(request: Request):
-    instance_url = f"{request.url.scheme}://{request.url.netloc}"
+    forwarded_proto = request.headers.get("x-forwarded-proto")
+    scheme = forwarded_proto if forwarded_proto else request.url.scheme
+    instance_url = f"{scheme}://{request.url.netloc}"
     print(instance_url)
     html_content = HTML.replace("{instance_url}", instance_url)
     return html_content
