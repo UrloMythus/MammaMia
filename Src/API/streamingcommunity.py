@@ -173,6 +173,7 @@ async def get_episode_link(episode_id,tid,version,client):
 
 
 async def streaming_community(imdb,client,SC_FAST_SEARCH):
+    print("I GOT HERE")
     try:
         if Public_Instance == "1":
             Weird_Link = json.loads(Alternative_Link)
