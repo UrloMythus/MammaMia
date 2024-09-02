@@ -158,6 +158,7 @@ async def addon_stream(request: Request,config, type, id,):
         raise HTTPException(status_code=404)
     streams = {'streams': []}
     config_providers = config.split('|')
+    print(config_providers)
     provider_maps = {name: "0" for name in provider_map.values()}
     for provider in config_providers:
             if provider in provider_map:
