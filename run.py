@@ -81,7 +81,6 @@ def root(request: Request):
     forwarded_proto = request.headers.get("x-forwarded-proto")
     scheme = forwarded_proto if forwarded_proto else request.url.scheme
     instance_url = f"{scheme}://{request.url.netloc}"
-    print(instance_url)
     html_content = HTML.replace("{instance_url}", instance_url)
     return html_content
 async def addon_catalog(type: str, id: str, genre: str = None):
