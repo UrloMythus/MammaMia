@@ -195,7 +195,7 @@ async def addon_stream(request: Request,config, type, id,):
                 raise HTTPException(status_code=404)
             return respond_with(streams)
         else:
-            logging.debug(f"Handling movie or series: {id}")
+            logging.info(f"Handling movie or series: {id}")
             if "kitsu" in id:
                 if provider_maps['ANIMEWORLD'] == "1":
                     animeworld_urls = await animeworld(id,client)
