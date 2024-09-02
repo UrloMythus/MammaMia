@@ -1,11 +1,8 @@
-from loadenv import load_env
+from Src.Utilities.loadenv import load_env
 from tmdbv3api import TMDb, Movie, TV
-from convert_date import convert_US_date, convert_IT_date
-import requests
-import config
+from Src.Utilities.convert_date import convert_US_date, convert_IT_date
+import Src.Utilities.config as config
 import json
-SC_FAST_SEARCH = config.SC_FAST_SEARCH
-TF_FAST_SEARCH = config.TF_FAST_SEARCH
 env_vars = load_env()
 TMDB_KEY = env_vars.get('TMDB_KEY')
 
@@ -20,25 +17,23 @@ def get_info_tmdb(tmbda,ismovie,type):
         showname = show.name
         if type == "Filmpertutti":
             date= show.first_air_date
+            date = date.split("-")[0]
             print("Real date",date)
             return showname,date
         elif type == "StreamingCommunity":
-            if SC_FAST_SEARCH == "0":
-                n_season = show.number_of_seasons
-                full_date = show.first_air_date
-                date = full_date.split("-")[0]
-                print(date)
-                return showname,date
-            else:
+            full_date = show.first_air_date
+            date = full_date.split("-")[0]
+            print(date)
+            return showname,date
+        elif type == "StreamingCommunityFS":
                 return showname
-        elif type == "Tuttifilm":
-            if TF_FAST_SEARCH == "0":
-                date = show.first_air_date
-                date = date.split("-")[0]
-                print("Real date",date)
-                return showname,date
-            else:
-                return showname
+        elif type == "Tantifilm":
+            date = show.first_air_date
+            date = date.split("-")[0]
+            print("Real date",date)
+            return showname,date
+        elif type == "TantifilmFS":
+            return showname
         elif type == "Cool":
             return showname
         elif type == "LordChannel":
@@ -59,18 +54,21 @@ def get_info_tmdb(tmbda,ismovie,type):
         #Get all release dates
         if type == "Filmpertutti":
             date = show.release_dates
+            date = date.split("-")[0]
             #GET US RELEASE DATE because filmpertutti somewhy uses US release date
-            date = convert_US_date(date)
             return showname,date
         elif type == "StreamingCommunity":
+            date = show.release_dates
+            date = date.split("-")[0]
             return showname
-        elif type == "Tuttifilm":
-            if TF_FAST_SEARCH == "0":
-                date = show.release_date
-                date = date.split("-")[0]
-                print("Real date",date)
-                return showname,date
-            else:
+        elif type == "StreamingCommunityFS":
+            return showname
+        elif type == "Tantifilm":
+            date = show.release_date
+            date = date.split("-")[0]
+            print("Real date",date)
+            return showname,date
+        elif type == "TantifilmFS":
                 return showname
         elif type == "Cool":
             return showname
@@ -86,23 +84,24 @@ def get_info_tmdb(tmbda,ismovie,type):
             return showname,date
 
 async def get_info_imdb(imdb_id, ismovie, type,client):
-
     resp = await client.get(f'https://api.themoviedb.org/3/find/{imdb_id}?api_key={TMDB_KEY}&language=it&external_source=imdb_id')
     data = resp.json()
     if ismovie == 0:     
         showname = data['tv_results'][0]['name']
         if type == "Filmpertutti":
             date= data['tv_results'][0]['first_air_date']
+            date = date.split("-")[0]
             print("Real date",date)
             return showname, date
         elif type == "StreamingCommunity":
-            return showname
-        elif type == "Tuttifilm":
-            if TF_FAST_SEARCH == "0":
-                date = data['tv_results'][0]['first_air_date']
-                date = date.split("-")[0]
-                return showname,date
-            elif TF_FAST_SEARCH == "1":
+            date = data['tv_results'][0]['first_air_date']
+            date = date.split("-")[0]
+            return showname,date
+        elif type == "Tantifilm":
+            date = data['tv_results'][0]['first_air_date']
+            date = date.split("-")[0]
+            return showname,date
+        elif type == "TantifilmFS":
                 return showname
         elif type == "Cool":
             return showname
@@ -110,10 +109,14 @@ async def get_info_imdb(imdb_id, ismovie, type,client):
     elif ismovie == 1:
         showname= data['movie_results'][0]['title']
         if type == "Filmpertutti":
-            return
+            date = data['movie_results'][0]['release_date']
+            date = date.split("-")[0]
+            return showname,date
         elif type == "StreamingCommunity":
-            return showname
-        elif type == "Tuttifilm":
+            date = data['movie_results'][0]['release_date']
+            date = date.split("-")[0]
+            return showname,date
+        elif type == "Tantifilm":
             date = data['movie_results'][0]['release_date']
             date = date.split("-")[0]
             return showname,date

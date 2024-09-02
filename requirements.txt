@@ -6,4 +6,6 @@ fastapi
 uvicorn
 tzdata
 lxml
-httpx
+slowapi
+curl_cffi
+fake-headers

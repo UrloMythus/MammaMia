@@ -1,26 +1,23 @@
-import requests
 from bs4 import BeautifulSoup,SoupStrainer
 import re
 import time
-from info import is_movie,get_info_imdb,get_info_tmdb
-import config
-from loadenv import load_env
-TF_FAST_SEARCH = config.TF_FAST_SEARCH
-TF_DOMAIN = config.TF_DOMAIN
+from Src.Utilities.info import is_movie,get_info_imdb,get_info_tmdb
+import Src.Utilities.config as config
+from Src.Utilities.loadenv import load_env
 HF = config.HF
 env_vars = load_env()
 PROXY_CREDENTIALS = env_vars.get('PROXY_CREDENTIALS')
-
+TF_DOMAIN = config.TF_DOMAIN
 
 async def search(showname,ismovie,date,client):
-    url = f'https://www.tanti.{TF_DOMAIN}/search/{showname}'
-    response =  await client.get(url, follow_redirects=True)
-    soup = BeautifulSoup(response.text, "lxml")
+    showname = showname.replace(" ","%20")
+    url = f'https://www.tanti.bond/ajax/posts?q={showname}'
+    response =  await client.post(url, allow_redirects=True, impersonate = "chrome120")
+    response = response.json()['data']
     if ismovie == 1:
-        all_link = soup.select('#movies .col .list-media')
-        for link in all_link:
-            url = link['href']
-            response = client.get(url, follow_redirects=True)
+        for link in response:
+            url = link['url']
+            response = client.get(url, allow_redirects=True, impersonate = "chrome120")
             pattern = r'Data di rilascio\s*</div>\s*<div class="text">\s*(\d{4})\s*</div>'
             found_date = re.search(pattern, response.text)
             release_date = str(found_date.group(1))
@@ -30,11 +27,10 @@ async def search(showname,ismovie,date,client):
                 #I try to get doodstream link inside this function so I do not have to get again the response
                 return tid,url
     elif ismovie == 0: 
-        all_link = soup.select('#series .col .list-media')
-        for link in all_link:
-            base_url = link['href']
+        for link in response:
+            base_url = link['url']
             url = f'{base_url}-1-season-1-episode'
-            response = await client.get(url, follow_redirects=True)
+            response = await client.get(url, allow_redirects=True, impersonate = "chrome120")
             pattern = r'Data di rilascio\s*</div>\s*<div class="text">\s*(\d{4})\s*</div>'
             found_date = re.search(pattern, response.text)
             release_date = str(found_date.group(1))
@@ -47,8 +43,9 @@ async def search(showname,ismovie,date,client):
                 return url,embed_id
             
 async def fast_search(showname,ismovie,client):
+    showname = showname.replace(" ","%20")
     url = f'https://www.tanti.{TF_DOMAIN}/search/{showname}'
-    response = await client.get(url, follow_redirects=True)
+    response = await client.get(url, allow_redirects=True, impersonate = "chrome120")
     soup = BeautifulSoup(response.text, "lxml")
     if ismovie == 1:
         first_link = soup.select_one('#movies .col .list-media')
@@ -59,7 +56,7 @@ async def fast_search(showname,ismovie,client):
         first_link = soup.select_one('#series .col .list-media')
         base_url = first_link['href']
         url = f'{base_url}-1-season-1-episode'
-        response = await client.get(url, follow_redirects=True)
+        response = await client.get(url, allow_redirects=True, impersonate = "chrome120")
         soup = BeautifulSoup(response.text, 'lxml')
         a_tag = soup.find('a', class_='dropdown-toggle btn-service selected')
         embed_id = a_tag['data-embed']
@@ -69,14 +66,14 @@ async def fast_search(showname,ismovie,client):
 
 async def get_protect_link(id,url,client):
         #Get the link where the Iframe is located, which contains the doodstream url kind of. 
-        response = await client.get(f"https://p.hdplayer.casa/myadmin/play.php?id={id}", follow_redirects=True)
+        response = await client.get(f"https://p.hdplayer.casa/myadmin/play.php?id={id}", allow_redirects=True, impersonate = "chrome120")
         soup = BeautifulSoup(response.text, "lxml", parse_only=SoupStrainer('iframe'))
         protect_link = soup.iframe['src'] 
         if "protect" in protect_link:
             return  protect_link
         else:
             #DO this in case the movie has  a 3D version etc
-            response = await client.get(url, follow_redirects=True)
+            response = await client.get(url, allow_redirects=True, impersonate = "chrome120")
             soup = BeautifulSoup(response.text, 'lxml')
             a_tag = soup.find('a', class_='dropdown-toggle btn-service selected')
             embed_id = a_tag['data-embed']
@@ -91,7 +88,7 @@ async def get_protect_link(id,url,client):
             ajax_url = f"https://www.tanti.{TF_DOMAIN}/ajax/embed"
             response = await client.post(ajax_url, headers=headers, data=data)
             hdplayer = response.text[43:-27]
-            response = await client.get(hdplayer, follow_redirects=True)
+            response = await client.get(hdplayer, allow_redirects=True, impersonate = "chrome120")
             soup = BeautifulSoup(response.text, 'lxml')
             links_dict = {}
             li_tags = soup.select('ul.nav.navbar-nav li.dropdown')
@@ -103,7 +100,7 @@ async def get_protect_link(id,url,client):
                     if title == "1" or "Tantifilm" in title:
                         continue # Get the text of the <a> tag
                     href = a_tag['href']  
-                    response = await client.get(href, follow_redirects=True)
+                    response = await client.get(href, allow_redirects=True, impersonate = "chrome120")
                     soup = BeautifulSoup(response.text, "lxml", parse_only=SoupStrainer('iframe'))
                     protect_link = soup.iframe['src'] 
                     if "protect" in protect_link:
@@ -125,19 +122,19 @@ async def get_nuovo_indirizzo_and_protect_link(url,embed_id,season,episode,clien
     ajax_url = f"https://www.tanti.{TF_DOMAIN}/ajax/embed"
     response = await client.post(ajax_url, headers=headers, data=data)
     nuovo_indirizzo = response.text[43:-27]
-    response = await client.get(nuovo_indirizzo, follow_redirects=True)
+    response = await client.get(nuovo_indirizzo, allow_redirects=True, impersonate = "chrome120")
     soup = BeautifulSoup(response.text, 'lxml')
     #Get season
     season = season - 1
     li_tags = soup.select('ul.nav.navbar-nav > li.dropdown')
     if len(li_tags) != 1:
         link = li_tags[season].find('a')['href']
-        response = await client.get(link, follow_redirects=True)
+        response = await client.get(link, allow_redirects=True, impersonate = "chrome120")
         soup = BeautifulSoup(response.text, 'lxml')
         option_tag = soup.select(f'select[name="ep_select"] > option:nth-of-type({episode})')[0]
         link = option_tag['value']
         #Let's find protect link now
-        response = await client.get(link, follow_redirects=True)
+        response = await client.get(link, allow_redirects=True, impersonate = "chrome120")
         soup = BeautifulSoup(response.text, "lxml", parse_only=SoupStrainer('iframe'))
         protect_link = soup.iframe['src'] 
         return  protect_link
@@ -147,14 +144,13 @@ async def get_nuovo_indirizzo_and_protect_link(url,embed_id,season,episode,clien
         option_tag = soup.select('select.dynamic_select > option')[episode]
         link = option_tag['value']
         #Let's find protect link now
-        response = await client.get(link, follow_redirects=True)
+        response = await client.get(link, allow_redirects=True, impersonate = "chrome120")
         soup = BeautifulSoup(response.text, "lxml", parse_only=SoupStrainer('iframe'))
         protect_link = soup.iframe['src'] 
         return  protect_link
 
 
 async def true_url(protect_link,client):
-    print(protect_link)
     # Define headers
     headers = {
         "Range": "bytes=0-",
@@ -166,9 +162,9 @@ async def true_url(protect_link,client):
             "http": proxy,
             "https": proxy
         }
-        response = await client.get(protect_link, proxies=proxies, follow_redirects=True)
+        response = await client.get(protect_link, proxies=proxies, allow_redirects=True, impersonate = "chrome120")
     else:
-        response = await client.get(protect_link, follow_redirects=True)
+        response = await client.get(protect_link, allow_redirects=True, impersonate = "chrome120")
     link = response.url
  
     
@@ -186,10 +182,9 @@ async def true_url(protect_link,client):
         if match:
             # Create real link (match[0] includes all matched elements)
             url =f'https://d000d.com{match[1]}'
-            print("MD5: ", url)
-            rebobo = await client.get(url, headers=headers, follow_redirects=True)
+            rebobo = await client.get(url, headers=headers, allow_redirects=True, impersonate = "chrome120")
             real_url = f'{rebobo.text}123456789{match[2]}{real_time}'
-            print(real_url)
+            print("MammaMia: Found results for Tantifilm")
             return real_url
         else:
             print("No match found in the text.")
@@ -201,30 +196,33 @@ async def true_url(protect_link,client):
 
 
 #Get temporaly ID
-async def tantifilm(imdb,client):
+async def tantifilm(imdb,client,TF_FAST_SEARCH):
     urls = None
     try:
         general = is_movie(imdb)
         ismovie = general[0]
         imdb_id = general[1]
-        type = "Tuttifilm"
         if ismovie == 0 : 
             season = int(general[2])
             episode = int(general[3])
             if "tt" in imdb:
                 if TF_FAST_SEARCH == "0":
+                    type = "Tantifilm"
                     showname,date = await get_info_imdb(imdb_id,ismovie,type,client)
                     url,embed_id = await search(showname,ismovie,date,client)
                 elif TF_FAST_SEARCH == "1":
+                    type = "TantifilmFS"
                     showname = await get_info_imdb(imdb_id,ismovie,type,client)
                     url,embed_id = await fast_search(showname,ismovie,client)
             else:
                     #else just equals them
                     tmdba = imdb_id.replace("tmdb:","")
                     if TF_FAST_SEARCH == "0":
+                        type = "Tantifilm" 
                         showname,date = get_info_tmdb(tmdba,ismovie,type)
                         url,embed_id = await search(showname,ismovie,date,client)
                     elif TF_FAST_SEARCH == "1":
+                        type = "TantifilmFS"
                         showname= get_info_tmdb(tmdba,ismovie,type)
                         url,embed_id = await fast_search(showname,ismovie,client)
             protect_link = await get_nuovo_indirizzo_and_protect_link(url,embed_id,season,episode,client)
@@ -234,20 +232,21 @@ async def tantifilm(imdb,client):
             if "tt" in imdb:
                 #Get showname
                     if TF_FAST_SEARCH == "0":
+                        type = "Tantifilm"
                         showname,date = await get_info_imdb(imdb_id,ismovie,type,client)
                         tid,url = await search(showname,ismovie,date,client)
                     elif TF_FAST_SEARCH == "1":
+                        type = "TantifilmFS"
                         showname = await get_info_imdb(imdb_id,ismovie,type,client)
                         date = None
                         tid,url = await fast_search(showname,ismovie,client)
             else:
-            
-                #else just equals themtantifilm("tt2096673")
-
                 if TF_FAST_SEARCH == "0":
+                    type = "Tantifilm"
                     showname,date = get_info_tmdb(imdb,ismovie,type)
                     tid,url = await search(showname,ismovie,date,client)
                 elif TF_FAST_SEARCH == "1":
+                    type = "TantifilmFS"
                     showname = get_info_tmdb(imdb,ismovie,type)
                     tid,url = await fast_search(showname,ismovie,client)
             protect_link = await get_protect_link(tid,url,client)
@@ -265,3 +264,19 @@ async def tantifilm(imdb,client):
     except Exception as e:
         print("Tantifilm Error: ", e)
         return None 
+    
+
+
+async def test_animeworld():
+    from curl_cffi.requests import AsyncSession
+    async with AsyncSession() as client:
+        # Replace with actual id, for example 'anime_id:episode' format
+        test_id = "tt6468322:1:1"  # This is an example ID format
+        results = await tantifilm(test_id, client,"0")
+
+if __name__ == "__main__":
+    import asyncio
+    asyncio.run(test_animeworld())
+
+
+

@@ -1,12 +1,7 @@
-from tmdbv3api import TMDb, Movie, TV
-import requests
-import logging 
-from bs4 import BeautifulSoup,SoupStrainer
-from datetime import datetime
-import dateparser
-from convert import get_TMDb_id_from_IMDb_id
-from info import get_info_tmdb, is_movie, get_info_imdb
-import config
+from bs4 import BeautifulSoup,SoupStrainer 
+from Src.Utilities.convert import get_TMDb_id_from_IMDb_id
+from Src.Utilities.info import get_info_tmdb, is_movie, get_info_imdb
+import Src.Utilities.config as config
 import re
 import json
 SW_DOMAIN = config.SW_DOMAIN
@@ -43,7 +38,7 @@ async def search(showname,season,episode,date,ismovie,client):
         page_date = soup.find(id = 'search-cat-year').text.strip()
         if page_date == date:
            href = soup.find('a')['href']
-           response = await client.get(href, follow_redirects=True)
+           response = await client.get(href, allow_redirects=True, impersonate = "chrome120")
            soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('iframe'))
            iframe = soup.find('iframe')
            hdplayer = iframe.get('data-lazy-src')
@@ -51,11 +46,11 @@ async def search(showname,season,episode,date,ismovie,client):
            return hdplayer
     elif ismovie == 0:
         #Some series have the name in english so we first search with the categories option and then we use the obtained ID to get all the episodes
-        id_response = await client.get(f'https://streamingwatch.{SW_DOMAIN}/wp-json/wp/v2/categories?search={showname}&_fields=id', follow_redirects=True)
+        id_response = await client.get(f'https://streamingwatch.{SW_DOMAIN}/wp-json/wp/v2/categories?search={showname}&_fields=id', allow_redirects=True, impersonate = "chrome120")
         data = json.loads(id_response.text)
         category_id = data[0]['id']
         query = f'https://streamingwatch.{SW_DOMAIN}/wp-json/wp/v2/posts?categories={category_id}&per_page=100'
-        response = await client.get(query, follow_redirects=True)
+        response = await client.get(query, allow_redirects=True, impersonate = "chrome120")
         data_json = response.text
         data = json.loads(data_json)
         for entry in data:
@@ -68,10 +63,9 @@ async def search(showname,season,episode,date,ismovie,client):
                 hdplayer = content[start:end]
                 return hdplayer
 async def hls_url(hdplayer,client):
-    response = await client.get(hdplayer, follow_redirects=True)
+    response = await client.get(hdplayer, allow_redirects=True, impersonate = "chrome120")
     match = re.search(r'sources:\s*\[\s*\{\s*file\s*:\s*"([^"]*)"', response.text)
     url = match.group(1)
-    print(url)
     return url
 async def streamingwatch(imdb,client):
     try:
@@ -97,7 +91,8 @@ async def streamingwatch(imdb,client):
        showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
        hdplayer = await search(showname,season,episode,date,ismovie,client)
        url = await hls_url(hdplayer,client)
+       print("MammaMia: StreamingWatch found results for StreamingCommunity")
        return url
     except:
-          print("StreamingWatch Failed")
+          print("MammaMia: StreamingWatch Failed")
           return None

@@ -1,8 +1,7 @@
-import requests
 import json
-from info import get_info_tmdb,is_movie
-from convert import get_TMDb_id_from_IMDb_id
-from loadenv import load_env
+from Src.Utilities.info import get_info_tmdb,is_movie
+from Src.Utilities.convert import get_TMDb_id_from_IMDb_id
+from Src.Utilities.loadenv import load_env
 env_vars = load_env()
 MYSTERIUS_KEY = env_vars.get('MYSTERIUS_KEY')
 async def get_links(slug,season,episode,ismovie,client):
@@ -64,7 +63,7 @@ async def get_links(slug,season,episode,ismovie,client):
             print(f"JSONDecodeError: {e}")
             return None
 
-    except requests.RequestException as e:
+    except client.RequestException as e:
         print(f"Request error: {e}")
         return None
     
@@ -81,7 +80,7 @@ async def get_links(slug,season,episode,ismovie,client):
 async def search_imdb(showname,tmdba,client):
         tmdba = str(tmdba)
         query = f'https://altadefinizione-originale.com/api/search?search={showname}&page=1'
-        response = await client.get(query,follow_redirects=True)
+        response = await client.get(query,allow_redirects=True, impersonate = "chrome120")
         if response.status_code == 200:
             data = response.json()
             if 'data' in data:

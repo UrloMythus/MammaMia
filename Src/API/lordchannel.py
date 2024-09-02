@@ -1,12 +1,8 @@
 from tmdbv3api import TMDb, Movie, TV
-import requests
-import logging 
 from bs4 import BeautifulSoup,SoupStrainer
-from datetime import datetime
-import dateparser
-from convert import get_TMDb_id_from_IMDb_id
-from info import get_info_tmdb, is_movie, get_info_imdb
-import config
+from Src.Utilities.convert import get_TMDb_id_from_IMDb_id
+from Src.Utilities.info import get_info_tmdb, is_movie, get_info_imdb
+import Src.Utilities.config as config
 import re
 import json
 LC_DOMAIN = config.LC_DOMAIN
@@ -36,14 +32,14 @@ async def search(showname,date,season,episode,ismovie,client):
         '_': '1724421723999',
     }
     
-    response = await client.get(f'https://lordchannel.{LC_DOMAIN}/live_search/', params=params, cookies=cookies, headers=headers, follow_redirects=True)
+    response = await client.get(f'https://lordchannel.{LC_DOMAIN}/live_search/', params=params, cookies=cookies, headers=headers, allow_redirects=True, impersonate = "chrome120")
     data = json.loads(response.text)
     for entry in data['data']:
         if entry is not None:  # check if the a_tag exists
             href = entry['url']
             quality = entry['qualit\u00e0_video']
             link = f'https://lordchannel.{LC_DOMAIN}{href}'
-            response = await client.get(link, follow_redirects=True)
+            response = await client.get(link, allow_redirects=True, impersonate = "chrome120")
             soup2 = BeautifulSoup(response.text,'lxml')
             li_tag = soup2.select_one("ul.card__meta li:nth-of-type(2)")
             if li_tag is not None:  # check if the li_tag exists
@@ -60,11 +56,11 @@ async def search(showname,date,season,episode,ismovie,client):
                          video_url = episode.find('a').get('href')
                          return video_url,quality
                 else:
-                    print("Sadly date are not equals")
+                    print("")
                     continue
 
 async def get_m3u8(video_url,client):
-    response = await client.get(video_url, follow_redirects=True)
+    response = await client.get(video_url, allow_redirects=True, impersonate = "chrome120")
     pattern = r'const\s+videoData\s*=\s*\[(.*?)\];'
     match = re.search(pattern, response.text)
     if match:
@@ -96,20 +92,20 @@ async def lordchannel(imdb,client):
         video_url,quality = await search(showname,date,season,episode,ismovie,client)
         url = await get_m3u8(video_url,client)
         url = url.replace('"','')
-        print(url)
+        print("MammaMia: Found results for LordChannel")
         return url,quality
     except:
-        print("Lordchannel Failed")
+        print("MammaMia: Lordchannel Failed")
         return None,None
     
 
 
-async def test_animeworld():
+#async def test_animeworld():
     async with httpx.AsyncClient() as client:
-        results = await lordchannel("tt16288804:1:1",client)
-      #  print(results)
+        results = await lordchannel("tt6468322:1:1",client)
+        print(results)
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     import httpx
     import asyncio
     asyncio.run(test_animeworld())  
