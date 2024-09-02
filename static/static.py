@@ -263,6 +263,7 @@ HTML = """
         document.getElementById('installButton').addEventListener('click', function() {
             let manifestUrl = generateManifest();
             manifestUrl = manifestUrl.replace("http://", "");
+            manifestUrl = manifestUrl.replace("https://", "");
             const stremioUrl = "stremio://" + manifestUrl;
             window.location.href = stremioUrl;
         });
