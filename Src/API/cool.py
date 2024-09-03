@@ -78,6 +78,7 @@ async def get_links(slug,season,episode,ismovie,client):
 
 
 async def search_imdb(showname,tmdba,client):
+        showname = showname.replace(" ","%20")
         tmdba = str(tmdba)
         query = f'https://altadefinizione-originale.com/api/search?search={showname}&page=1'
         response = await client.get(query,allow_redirects=True, impersonate = "chrome120")
@@ -128,7 +129,6 @@ async def cool(imdb,client):
         
 
         slug = await search_imdb(showname,tmdba,client)
-        print(ismovie)
         if ismovie == 1:
             season = None
             episode = None
@@ -138,7 +138,7 @@ async def cool(imdb,client):
         elif ismovie == 0:
             season = season -1
             episode = episode - 1
-            resolution_links = get_links(slug,season,episode,ismovie)
+            resolution_links = await get_links(slug,season,episode,ismovie,client)
             results = parse_links(resolution_links)
             return results
     except Exception as e:
