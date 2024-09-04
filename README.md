@@ -283,9 +283,7 @@ Open your instance URL and configure MammaMia. Once you are done you can click o
   
 
 | Enviroment Variable | Value |
-
 |-------------------------|---|
-
 |TMDB_KEY|INSERT YOUR API KEY HERE|
 
   
@@ -315,19 +313,12 @@ In the repo there is a config.json that you can modify to change some aspects of
   
 
 | Config | Value |
-
 |-------------------------|---|
-
 | Domain | The domain of the site, must be a string |
-
 |enabled | If the site is enabled or not. "1" means true. "0" means false. Remember, there is no point in enabling filmpertutti on a remote server since it's IP-LOCKED|
-
 |fast_search|"1" for enabled, "0" for disabled. It enables a faster search for supported providers but it is less accurate|
-
 |load_env|Put "1" if enabled, "0" if disabled. It needs to be enabled if you need to load a .env file. On remote hosting services, like Hugging Face or Render, it needs to be disabled. |
-
 |HOST| The host for the Fast API APP|
-
 |PORT| The port for the Fast API APP. Default: 8080 |
 
   
