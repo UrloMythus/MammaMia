@@ -160,7 +160,6 @@ async def true_url(protect_link,client):
         import random
         import json
         proxy_list = PROXY_CREDENTIALS
-        proxy_list = json.loads(proxy_list)
         proxy = random.choice(proxy_list)
         proxies = {
             "http": proxy,
