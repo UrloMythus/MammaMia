@@ -157,7 +157,9 @@ async def true_url(protect_link,client):
         "Referer": "https://d000d.com/",
     }
     if HF == "1":
-        proxy = PROXY_CREDENTIALS
+        import random
+        proxy_list = PROXY_CREDENTIALS
+        proxy = random.choice(proxy_list)
         proxies = {
             "http": proxy,
             "https": proxy
