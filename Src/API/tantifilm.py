@@ -165,7 +165,6 @@ async def true_url(protect_link,client):
         response = await client.get(protect_link, proxies=proxies, allow_redirects=True, impersonate = "chrome120")
     else:
         response = await client.get(protect_link, allow_redirects=True, impersonate = "chrome120")
-    link = response.url
  
     
     if response.status_code == 200:
@@ -182,7 +181,10 @@ async def true_url(protect_link,client):
         if match:
             # Create real link (match[0] includes all matched elements)
             url =f'https://d000d.com{match[1]}'
-            rebobo = await client.get(url, headers=headers, allow_redirects=True, impersonate = "chrome120")
+            if "HF" == "1" :
+                rebobo = await client.get(url, headers=headers, allow_redirects=True, impersonate = "chrome120",proxies= proxies)
+            else:
+                rebobo = await client.get(url, headers=headers, allow_redirects=True, impersonate = "chrome120")
             real_url = f'{rebobo.text}123456789{match[2]}{real_time}'
             print("MammaMia: Found results for Tantifilm")
             return real_url
@@ -266,7 +268,7 @@ async def tantifilm(imdb,client,TF_FAST_SEARCH):
         return None 
     
 
-
+'''
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
@@ -278,5 +280,5 @@ if __name__ == "__main__":
     import asyncio
     asyncio.run(test_animeworld())
 
-
+'''
 

@@ -224,8 +224,7 @@ async def addon_stream(request: Request,config, type, id,):
                     SC_FAST_SEARCH = provider_maps['SC_FAST_SEARCH']
                     url_streaming_community,url_720_streaming_community,quality_sc = await streaming_community(id,client,SC_FAST_SEARCH)
                     if url_streaming_community is not None:
-                        response = await client.get("https://api.ipify.org?format=json")
-                        print(f"StreamingCommunity Found Results for {id}",response.json())
+                        print(f"StreamingCommunity Found Results for {id}")
                         if quality_sc == "1080":
                             streams['streams'].append({'title': f'{HF}StreamingCommunity 1080p Max', 'url': url_streaming_community})
                             streams['streams'].append({'title': f'{HF}StreamingCommunity 720p Max', 'url': url_720_streaming_community})
