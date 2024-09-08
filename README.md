@@ -142,20 +142,20 @@ To host this project with Hugging Face, go to the [linked](https://huggingface.c
 5. Clone the Project
 
   
+6. Go into settings and click on Factory Rebuild.
+  
+
+  
+
+7. You are done!
 
   
 
   
 
-6. You are done!
-
   
 
-  
-
-  
-
-7. To install it on Stremio altought, you will need the Direct URL. It can be found on three dots --> Embed This Space --> Direct URL      
+8. To install it on Stremio altought, you will need the Direct URL. It can be found on three dots --> Embed This Space --> Direct URL      
    If you do not find it it means your space is Private. To fix so go to Settings and click Set Visibility to Public. 
 
   
@@ -164,10 +164,10 @@ To host this project with Hugging Face, go to the [linked](https://huggingface.c
 
   
 
-8. How do I handle updates? To update the addon you will have to Factory Rebuild your space (in Settings) and, if there are any changes to config.json, copy them from [here](https://github.com/UrloMythus/MammaMia/blob/main/config.json) to the config.json in your Space, under Files.
+9. How do I handle updates? To update the addon you will have to Factory Rebuild your space (in Settings) and, if there are any changes to config.json, copy them from [here](https://github.com/UrloMythus/MammaMia/blob/main/config.json) to the config.json in your Space, under Files.
   
 
-9. How can I use Live TV? For now you can't except on public Instance. Wait until next update.
+10. How can I use Live TV? For now it won't work on public instances. Wait until next update.
 
 
   
