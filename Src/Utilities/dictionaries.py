@@ -22,7 +22,7 @@ STREAM = {
         {
             "id": "rai-1",
             "title": "Rai 1",
-            "name": "Full HD",
+            "name": "Full HD Http",
             "genres": ["Rai"],
             "poster": "https://i.imgur.com/OPV9jJD.png",
             "url": "http://173.208.52.200/rai1/index.m3u8"
@@ -30,7 +30,7 @@ STREAM = {
         {
             "id": "rai-2",
             "title": "Rai 2",
-            "name": "Full HD",
+            "name": "Full HD Http",
             "genres": ["Rai"],
             "poster": "https://i.imgur.com/uHtYy8w.png",
             "url": "http://173.208.52.200/rai2/index.m3u8"
@@ -38,7 +38,7 @@ STREAM = {
         {
             "id": "rai-3",
             "title": "Rai 3",
-            "name": "Full HD",
+            "name": "Full HD Http",
             "genres": ["Rai"],
             "poster": "https://i.imgur.com/iXst6me.png",
             "url": "http://173.208.52.200/rai3/index.m3u8"
@@ -46,7 +46,7 @@ STREAM = {
         {
             "id": "rai-4",
             "title": "Rai 4",
-            "name": "Full HD",
+            "name": "Full HD Http",
             "genres": ["Rai"],
             "poster": "https://i.imgur.com/KGg3hvr.png",
             "url": "http://173.208.52.200/rai4/index.m3u8"
@@ -95,7 +95,7 @@ STREAM = {
         {
             "id": "rete-4",
             "title": "Rete 4",
-            "name": "Full HD",
+            "name": "Full HD Http",
             "genres": ["Mediaset"],
             "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Rete_4_2018.svg/1024px-Rete_4_2018.svg.png",
             "url": "http://173.208.52.200/rete4/index.m3u8"
@@ -111,7 +111,7 @@ STREAM = {
         {
             "id": "canale-5",
             "title": "Canale 5",
-            "name": "Full HD",
+            "name": "Full HD Http",
             "genres": ["Mediaset"],
             "poster": "https://www.sorrisi.com/guidatv/bundles/tvscnewsite/css/images/loghi/canale-5_c.png",
             "url": "http://173.208.52.200/canale5/index.m3u8"
@@ -119,7 +119,7 @@ STREAM = {
         {
             "id": "italia-1",
             "title": "Italia 1",
-            "name": "Full HD",
+            "name": "Full HD Http",
             "genres": ["Mediaset"],
             "poster": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e2/Italia_1.svg/1024px-Italia_1.svg.png",
             "url": "http://173.208.52.200/italia1/index.m3u8"
@@ -818,8 +818,8 @@ extra_sources = {
     "rai-1": ["https://m3u.iranvids.com/rai01/output.m3u8"],
     "rai-2": ["https://m3u.iranvids.com/rai02/output.m3u8"],
     "rai-3": ["https://dash2.antik.sk/live/test_rai_tre_tizen/playlist.m3u8","https://wzstreaming.rai.it/TVlive/liveStream/playlist.m3u8","https://list.iptvcat.com/my_list/s/1f22856f68f2fba4a993c47f47c78a64.m3u8","https://list.iptvcat.com/my_list/s/a372048a4fb440e752aec141aa02885f.m3u8","https://list.iptvcat.com/my_list/s/c7efe17aa0dc8096561967bfb828d4f3.m3u8","https://list.iptvcat.com/my_list/s/2d1f14bbb3370d263d8d3f0d9f5128e0.m3u8"],
-    "rete-4":["http://tvit.leicaflorianrobert.dev/mediaset/rete-4/stream.m3u8","https://live02-seg.msf.cdn.mediaset.net/live/ch-r4/r4-clr.isml/index.m3u8"],
-    "canale-5":["https://live02-seg.msf.cdn.mediaset.net/live/ch-c5/c5-clr.isml/index.m3u8","http://tvit.leicaflorianrobert.dev/mediaset/canale-5/stream.m3u8"],
+    "rete-4":["https://tvit.leicaflorianrobert.dev/mediaset/rete-4/stream.m3u8","https://live02-seg.msf.cdn.mediaset.net/live/ch-r4/r4-clr.isml/index.m3u8"],
+    "canale-5":["https://live02-seg.msf.cdn.mediaset.net/live/ch-c5/c5-clr.isml/index.m3u8","https://tvit.leicaflorianrobert.dev/mediaset/canale-5/stream.m3u8"],
     "italia-1":["https://tvit.leicaflorianrobert.dev/mediaset/italia-1/stream.m3u8","https://live02-seg.msf.cdn.mediaset.net/live/ch-i1/i1-clr.isml/index.m3u8"],
     "rai-4k": ["https://list.iptvcat.com/my_list/s/fbf04fbd9694eee71b5af9f12e49538d.m3u8"],
     "rai-news":["https://8e7439fdb1694c8da3a0fd63e4dda518.msvdn.net/rainews1/hls/playlist_mo.m3u8"],
@@ -831,7 +831,8 @@ extra_sources = {
     "tv8": ["https://tvit.leicaflorianrobert.dev/sky/tv8/stream.m3u8"],
     "cielo": ["https://tvit.leicaflorianrobert.dev/sky/cielo/stream.m3u8"],
     "dmax": ["https://tvit.leicaflorianrobert.dev/discovery/dmax/stream.m3u8"],
-    "nove": ["https://tvit.leicaflorianrobert.dev/discovery/nove/stream.m3u8"]
+    "nove": ["https://tvit.leicaflorianrobert.dev/discovery/nove/stream.m3u8"],
+    "euronews": ["https://amg00882-amg00882c4-wedotv-eu-4536.playouts.now.amagi.tv/playlist/amg00882-euronewsfast-euronewsita-wedotveu/playlist.m3u8?app_bundle=&app_name=wedotv&app_store_url=https://wedotv.com&url=https://wedotv.com&gdpr=1&channel_name=Euronews - Italiano&content_custom_1_param=Euronews - Italiano"]
 }
 
 provider_map = {

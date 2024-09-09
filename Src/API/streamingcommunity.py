@@ -177,7 +177,7 @@ async def streaming_community(imdb,client,SC_FAST_SEARCH):
         if Public_Instance == "1":
             Weird_Link = json.loads(Alternative_Link)
             link_post = random.choice(Weird_Link)
-            response = await client.get(f"{link_post}fetch-data/{imdb}")
+            response = await client.get(f"{link_post}fetch-data/{SC_FAST_SEARCH}/{SC_DOMAIN}/{imdb}")
             url_streaming_community = response.headers.get('x-url-streaming-community')
             url_720_streaming_community = response.headers.get('x-url-720-streaming-community')
             quality_sc = response.headers.get('x-quality-sc')
