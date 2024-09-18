@@ -1,12 +1,14 @@
 okru = {
-    "rai-1": "https://ok.ru/videoembed/7703488765552?nochat=1",
+    "rai-1": "https://ok.ru/videoembed/7868570672752?nochat=1", 
     "rai-2": "https://ok.ru/videoembed/7805618364016?nochat=1",
-    "canale-5": "https://ok.ru/videoembed/7789978328688?nochat=1",
+    "canale-5": "https://ok.ru/videoembed/7871149252208?nochat=1",
     "italia-1": "https://ok.ru/videoembed/7393558339184?nochat=1",
     "rai-premium": "https://ok.ru/videoembed/7363152715376?nochat=1",
     "rai-movie": "https://ok.ru/videoembed/7384012693104?nochat=1",
     "tv8": "https://ok.ru/videoembed/7681651777136?nochat=1",
-    "rsi-la-2": "https://ok.ru/videoembed/7681648107120?nochat=1"
+    "rsi-la-2": "https://ok.ru/videoembed/7681648107120?nochat=1",
+    "mediaset-extra": "https://ok.ru/videoembed/7363152715376?nochat=1",
+    "mediaset-infinity": "https://ok.ru/videoembed/6323249159792%3Fnochat=1"
 }
 
 STREAM = {
