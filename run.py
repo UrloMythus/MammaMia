@@ -194,8 +194,8 @@ async def addon_stream(request: Request,config, type, id,):
                             streams['streams'].append({'title':f"{HF}Server {i} " + channel['title'],'url': item})
                     if id in skystreaming:
                         i = i+1
-                        url, host = get_skystreaming(id,client)
-                        streams['streams'].append({'title': f'{HF}Server {i}', 'url': url,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://skystreaming.guru/", "Origin": "https://skystreaming.guru", "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36", "Accept": "*/*", "Accept-Language": "it-IT,it;q=0.9", "Host": host}}, 'notWebReady': True}})
+                        url = await get_skystreaming(id,client)
+                        streams['streams'].append({'title': f'{HF}Server {i}', 'url': url, "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:127.0) Gecko/20100101 Firefox/127.0", "Accept": "*/*", "Accept-Language": "en-US,en;q=0.5", "Origin": "https://skystreaming.guru", "DNT": "1", "Sec-GPC": "1", "Connection": "keep-alive", "Referer": "https://skystreaming.guru/", "Sec-Fetch-Dest": "empty", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "cross-site", "Pragma": "no-cache", "Cache-Control": "no-cache", "TE": "trailers"}}}})
 
                     if id in webru_vary:
                         i = i+1
