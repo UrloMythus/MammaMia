@@ -46,6 +46,16 @@ def get_info_tmdb(tmbda,ismovie,type):
             date = date.split("-")[0]
             print("Real date",date)
             return showname,date
+        elif type == "DDLStream":
+            return showname
+        elif type == "Cb01":
+            date = show.first_air_date
+            date = date.split("-")[0]
+            return showname,date
+        elif type == "Whvx":
+            date = show.first_air_date
+            date = date.split("-")[0]
+            return showname,date
     
     elif ismovie == 1:
         movie = Movie()
@@ -82,6 +92,16 @@ def get_info_tmdb(tmbda,ismovie,type):
             date = date.split("-")[0]
             print("Real date",date)
             return showname,date
+        elif type == "DDLStream":
+            return showname
+        elif type == "Cb01":
+            date = show.release_date
+            date = date.split("-")[0]
+            return showname,date
+        elif type == "Whvx":
+            date = show.release_date
+            date = date.split("-")[0]
+            return showname,date
 
 async def get_info_imdb(imdb_id, ismovie, type,client):
     resp = await client.get(f'https://api.themoviedb.org/3/find/{imdb_id}?api_key={TMDB_KEY}&language=it&external_source=imdb_id')
@@ -107,6 +127,16 @@ async def get_info_imdb(imdb_id, ismovie, type,client):
                 return showname
         elif type == "Cool":
             return showname
+        elif type == "DDLStream":
+            return showname
+        elif type == "Cb01":
+            date = data['tv_results'][0]['first_air_date']
+            date = date.split("-")[0]
+            return showname,date
+        elif type == "Whvx":
+            date = data['tv_results'][0]['first_air_date']
+            date = date.split("-")[0]
+            return showname,date
 
     elif ismovie == 1:
         showname= data['movie_results'][0]['title']
@@ -126,6 +156,17 @@ async def get_info_imdb(imdb_id, ismovie, type,client):
             return showname,date
         elif type == "Cool":
             return showname
+        elif type == "DDLStream":
+            return showname
+        elif type == "Cb01":
+            date = data['movie_results'][0]['release_date']
+            date = date.split("-")[0]
+            return showname,date
+        elif type == "Whvx":
+            date = data['movie_results'][0]['release_date']
+            date = date.split("-")[0]
+            return showname,date
+
 
 async def get_info_kitsu(kitsu_id,client):
     api_url = f'https://kitsu.io/api/edge/anime/{kitsu_id}'

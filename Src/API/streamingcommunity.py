@@ -8,6 +8,8 @@ import re
 from urllib.parse import urlparse, parse_qs
 from fake_headers import Headers  
 from Src.Utilities.loadenv import load_env  
+import urllib.parse
+
 env_vars = load_env()
 #Get domain
 SC_DOMAIN = config.SC_DOMAIN
@@ -22,8 +24,8 @@ async def get_version(client):
 
     try:
         random_headers = headers.generate()
-        random_headers['Referer'] = "https://streamingcommunity.buzz/"
-        random_headers['Origin'] = "https://streamingcommunity.buzz"
+        random_headers['Referer'] = f"https://streamingcommunity.{SC_DOMAIN}/"
+        random_headers['Origin'] = f"https://streamingcommunity.{SC_DOMAIN}"
         base_url = f'https://streamingcommunity.{SC_DOMAIN}/richiedi-un-titolo' 
         response = await client.get(base_url, headers=random_headers, allow_redirects = True, impersonate="chrome120")
         #Soup the response
@@ -41,8 +43,10 @@ async def search(query,date,ismovie, client,SC_FAST_SEARCH):
     random_headers = headers.generate()
     random_headers['Referer'] = "https://streamingcommunity.buzz/"
     random_headers['Origin'] = "https://streamingcommunity.buzz"
+    random_headers['Accept'] = 'application/json'  # Assuming the API returns JSON
+    random_headers['Content-Type'] = 'application/json'
     #Do a request to get the ID of serie/move and it's slug in the URL
-    response = await client.get(query, headers = random_headers, allow_redirects=True,impersonate = "chrome120")
+    response = await client.get(query, headers = random_headers, allow_redirects=True)
     print(response)
     response = response.json()
 
@@ -228,6 +232,7 @@ async def streaming_community(imdb,client,SC_FAST_SEARCH):
                         showname,date = get_info_tmdb(tmdba,ismovie,type) 
         
         showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
+        showname = urllib.parse.quote_plus(showname)
         query = f'https://streamingcommunity.{SC_DOMAIN}/api/search?q={showname}'
         version = await get_version(client)
         tid,slug = await search(query,date,ismovie,client,SC_FAST_SEARCH)
@@ -250,7 +255,7 @@ async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt16288804:1:1"  # This is an example ID format
+        test_id = "tt12930350"  # This is an example ID format
         results = await streaming_community(test_id, client,"0")
 
 if __name__ == "__main__":

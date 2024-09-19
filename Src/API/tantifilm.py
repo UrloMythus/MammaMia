@@ -8,9 +8,10 @@ HF = config.HF
 env_vars = load_env()
 PROXY_CREDENTIALS = env_vars.get('PROXY_CREDENTIALS')
 TF_DOMAIN = config.TF_DOMAIN
-
+import urllib.parse
 async def search(showname,ismovie,date,client):
     showname = showname.replace(" ","%20")
+    showname = urllib.parse.quote_plus(showname)
     url = f'https://www.tanti.bond/ajax/posts?q={showname}'
     response =  await client.post(url, allow_redirects=True, impersonate = "chrome120")
     response = response.json()['data']

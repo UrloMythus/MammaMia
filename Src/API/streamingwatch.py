@@ -4,9 +4,18 @@ from Src.Utilities.info import get_info_tmdb, is_movie, get_info_imdb
 import Src.Utilities.config as config
 import re
 import json
+import urllib.parse
 SW_DOMAIN = config.SW_DOMAIN
+async def wponce_get(client):
+    response = await client.get(f"https://www.streamingwatch.{SW_DOMAIN}/contatto/")
+    pattern = r'"admin_ajax_nonce":"(\w+)"'
+    matches = re.findall(pattern, response.text)
+    wponce = matches[1]
+    return wponce
+
 async def search(showname,season,episode,date,ismovie,client):
     if ismovie == 1:
+        wponce = await wponce_get(client)
         query = f'https://www.streamingwatch.{SW_DOMAIN}/wp-admin/admin-ajax.php'
         headers = {
             'authority': f'www.streamingwatch.{SW_DOMAIN}',
@@ -28,7 +37,7 @@ async def search(showname,season,episode,date,ismovie,client):
         data = {
             'action': 'data_fetch',
             'keyword': showname,
-            '_wpnonce': '648328b831',
+            '_wpnonce': wponce,
         }
         cookies = {
              'wordpress_test_cookie': 'WP%20Cookie%20check',
@@ -54,7 +63,7 @@ async def search(showname,season,episode,date,ismovie,client):
         data_json = response.text
         data = json.loads(data_json)
         for entry in data:
-            if f"stagione-{season}-episodio-{episode}" in entry["slug"]:
+            if f"stagione-{season}-episodio-{episode}" in entry["slug"] and f"stagione-{season}-episodio-{episode}0" not in entry["slug"]:
                 content = entry["content"]["rendered"]
                 #"content":{
 #    "rendered":"<p><!--baslik:PRO--><iframe loading=\"lazy\" src=\"https:\/\/hdplayer.gives\/embed\/YErLVq64uNTZRNz\" frameborder=\"0\" width=\"700\" height=\"400\" allowfullscreen><\/iframe><\/p>\n","protected":false}
@@ -91,8 +100,21 @@ async def streamingwatch(imdb,client):
        showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
        hdplayer = await search(showname,season,episode,date,ismovie,client)
        url = await hls_url(hdplayer,client)
-       print("MammaMia: StreamingWatch found results for StreamingCommunity")
+       print(f"MammaMia: StreamingWatch found results for {showname}")
        return url
-    except:
-          print("MammaMia: StreamingWatch Failed")
+    except Exception as e:
+          print("MammaMia: StreamingWatch Failed",e)
           return None
+    
+'''
+async def test_animeworld():
+    from curl_cffi.requests import AsyncSession
+    async with AsyncSession() as client:
+        # Replace with actual id, for example 'anime_id:episode' format
+        test_id = "tt16426418"  # This is an example ID format
+        results = await streamingwatch(test_id, client)
+
+if __name__ == "__main__":
+    import asyncio
+    asyncio.run(test_animeworld())
+'''

@@ -9,6 +9,7 @@ from Src.Utilities.info import get_info_tmdb, is_movie, get_info_imdb
 from Src.Utilities.convert_date import convert_US_date
 import Src.Utilities.config as config
 FT_DOMAIN = config.FT_DOMAIN
+import urllib.parse
 WOA = 0
 #Some basic headers
 headers = {
@@ -122,6 +123,7 @@ async def filmpertutti(imdb,client):
         tmdba = imdb_id.replace("tmdb:","")
         showname,date = get_info_tmdb(tmdba,ismovie,type)
     showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
+    showname = urllib.parse.quote_plus(showname)
     #Build the query
     query = f'https://filmpertutti.{FT_DOMAIN}/wp-json/wp/v2/posts?search={showname}&page=1&_fields=link,id'
     try:
@@ -135,6 +137,7 @@ async def filmpertutti(imdb,client):
         real_link = await get_real_link(episode_link,client)
         #let's get delivery link, streaming link
         streaming_link = await get_true_link(real_link,client)
+        print(streaming_link)
         return streaming_link
     elif ismovie == 1:
         film_link = get_film(url)
@@ -156,9 +159,9 @@ async def test_animeworld():
 if __name__ == "__main__":
     import asyncio
     asyncio.run(test_animeworld())
+
+
 '''
-
-
 
 
 

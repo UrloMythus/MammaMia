@@ -139,9 +139,6 @@ convert_bho_3 = {
 
 async def tivu_get(id,client):
     try:
-        cookies = {
-        'ASP.NET_SessionId': 'p2fk5silp5mjgtx0j5chjrh3',
-        }
         ik = tivu[id]
         headers = {
             'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:127.0) Gecko/20100101 Firefox/127.0',
@@ -162,11 +159,11 @@ async def tivu_get(id,client):
             'Pragma': 'no-cache',
             'Cache-Control': 'no-cache',
         }
-    
         data = {
             'ik': ik
         }
-        response = await client.post('https://www.tivu.tv/getPrograms.ashx', cookies=cookies, headers=headers, data=data)
+
+        response = await client.post('https://www.tivu.tv/getPrograms.ashx', headers=headers, data=data)
         soup = BeautifulSoup(response.text,'lxml')
         tr_element = soup.find('tr', class_='in_onda')
         hour_range = tr_element.find_all('td')[0].text.strip()

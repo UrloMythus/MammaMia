@@ -4,6 +4,7 @@ from Src.Utilities.convert import get_TMDb_id_from_IMDb_id
 from Src.Utilities.loadenv import load_env
 env_vars = load_env()
 MYSTERIUS_KEY = env_vars.get('MYSTERIUS_KEY')
+
 async def get_links(slug,season,episode,ismovie,client):
     try:
         headers = {
@@ -13,7 +14,7 @@ async def get_links(slug,season,episode,ismovie,client):
         Auths = response.json()
         Bearer = Auths.get('cookie')
         ap_session = Auths.get('auth')
-
+        
         cookies = {'ap_session': ap_session}
 
         headers = {
@@ -33,6 +34,7 @@ async def get_links(slug,season,episode,ismovie,client):
             request_url =f'https://altadefinizione-originale.com/api/post/urls/stream/{slug}/{season}/{episode}'
             print(request_url)
             response = await client.get(request_url,cookies=cookies,headers=headers)
+            print(response.text)
         try:
             video_data = response.json()  # Assuming this is the JSON response containing video streams
             if 'streams' not in video_data:
@@ -63,7 +65,7 @@ async def get_links(slug,season,episode,ismovie,client):
             print(f"JSONDecodeError: {e}")
             return None
 
-    except client.RequestException as e:
+    except Exception as e:
         print(f"Request error: {e}")
         return None
     
@@ -144,3 +146,15 @@ async def cool(imdb,client):
     except Exception as e:
         print("Cool Error",e)
         return None
+'''
+async def test_animeworld():
+    from curl_cffi.requests import AsyncSession
+    async with AsyncSession() as client:
+        # Replace with actual id, for example 'anime_id:episode' format
+        test_id = "tt1839578:1:1"  # This is an example ID format
+        results = await cool(test_id, client)
+
+if __name__ == "__main__":
+    import asyncio
+    asyncio.run(test_animeworld())
+'''

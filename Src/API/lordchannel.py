@@ -31,7 +31,6 @@ async def search(showname,date,season,episode,ismovie,client):
         'media': showname,
         '_': '1724421723999',
     }
-    
     response = await client.get(f'https://lordchannel.{LC_DOMAIN}/live_search/', params=params, cookies=cookies, headers=headers, allow_redirects=True, impersonate = "chrome120")
     data = json.loads(response.text)
     for entry in data['data']:
@@ -99,13 +98,14 @@ async def lordchannel(imdb,client):
         return None,None
     
 
-
-#async def test_animeworld():
+'''
+async def test_animeworld():
     async with httpx.AsyncClient() as client:
-        results = await lordchannel("tt6468322:1:1",client)
+        results = await lordchannel("tt14134334:1:1",client)
         print(results)
 
-#if __name__ == "__main__":
+if __name__ == "__main__":
     import httpx
     import asyncio
     asyncio.run(test_animeworld())  
+    '''

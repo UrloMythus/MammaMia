@@ -1,34 +1,33 @@
 {
-    "Siti": {
-           "StreamingCommunity": {
-               "domain": "buzz"
-           },
-           "Filmpertutti": {
-               "domain": "diy"
-           },
-           "Tantifilm":{
-               "domain": "bond"
-           },
-           "Mysterius":{
-               "enabled": "0"    
-           },
-          "LordChannel":{
-               "domain":"com"
-          },
-          "StreamingWatch":{
-              "domain":"org"
-          },
-          "AnimeWorld":{
-              "domain":"so"
-          }
-   },
-   "General":{
-       "load_env": "0",
-       "HOST": "0.0.0.0",
-       "PORT": "8080",
-       "HF": "1",
-       "Public_Instance": "0",
-       "MediaProxy": ["https://putinputout-newmediaflow-proxy.hf.space/"]
-   }
-   }
-   
+  "Siti": {
+         "StreamingCommunity": {
+             "domain": "buzz"
+         },
+         "Filmpertutti": {
+             "domain": "diy"
+         },
+         "Tantifilm":{
+             "domain": "bond"
+         },
+         "Mysterius":{
+             "enabled": "0"    
+         },
+        "LordChannel":{
+             "domain":"com"
+        },
+        "StreamingWatch":{
+            "domain":"org"
+        },
+        "AnimeWorld":{
+            "domain":"so"
+        }
+ },
+ "General":{
+     "load_env": "1",
+     "HOST": "0.0.0.0",
+     "PORT": "8080",
+     "HF": "0",
+     "Public_Instance": "0",
+     "MediaProxy": ["test"]
+ }
+}

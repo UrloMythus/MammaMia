@@ -9,9 +9,9 @@ import  Src.Utilities.config as config
 import logging
 from Src.API.okru import okru_get_url
 from Src.API.animeworld import animeworld
-from Src.Utilities.dictionaries import okru,STREAM,extra_sources,webru_vary,webru_dlhd,provider_map
+from Src.Utilities.dictionaries import okru,STREAM,extra_sources,webru_vary,webru_dlhd,provider_map,skystreaming
 from Src.API.epg import tivu, tivu_get,epg_guide,convert_bho_1,convert_bho_2,convert_bho_3
-from Src.API.webru import webru
+from Src.API.webru import webru,get_skystreaming
 from curl_cffi.requests import AsyncSession
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -75,6 +75,9 @@ def config():
 @app.get('/{config}/manifest.json')
 def addon_manifest():
     return respond_with(MANIFEST)
+@app.get('/manifest.json')
+def manifest():
+    return RedirectResponse(url="/|SC|LC|SW|/manifest.json")
 
 @app.get('/', response_class=HTMLResponse)
 def root(request: Request):
@@ -174,7 +177,7 @@ async def addon_stream(request: Request,config, type, id,):
                     if 'url' in channel:
                         i = i+1
                         streams['streams'].append({
-                            'title': f"Server {i} " + f" "+ channel['name'] + " " + channel['title'] ,
+                            'title': f"{HF}Server {i} " + f" "+ channel['name'] + " " + channel['title'] ,
                             'url': channel['url']
                             })    
                     if id in okru:
@@ -188,11 +191,16 @@ async def addon_stream(request: Request,config, type, id,):
                         list_sources = extra_sources[id]
                         for item in list_sources:
                             i = i+1
-                            streams['streams'].append({'title':f"Server {i} " + channel['title'],'url': item})
+                            streams['streams'].append({'title':f"{HF}Server {i} " + channel['title'],'url': item})
+                    if id in skystreaming:
+                        i = i+1
+                        url, host = get_skystreaming(id,client)
+                        streams['streams'].append({'title': f'{HF}Server {i}', 'url': url,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://skystreaming.guru/", "Origin": "https://skystreaming.guru", "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36", "Accept": "*/*", "Accept-Language": "it-IT,it;q=0.9", "Host": host}}, 'notWebReady': True}})
+
                     if id in webru_vary:
                         i = i+1
                         webru_url = await webru(id,"vary",client)
-                        streams['streams'].append({'title': f"Server {i} " + channel['title'],'url': webru_url})
+                        streams['streams'].append({'title': f"{HF}Server {i} " + channel['title'],'url': webru_url})
             if not streams['streams']:
                 raise HTTPException(status_code=404)
             return respond_with(streams)

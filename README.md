@@ -292,7 +292,7 @@ Open your instance URL and configure MammaMia. Once you are done you can click o
 
   
 
-Here is [linked](https://developer.themoviedb.org/docs/getting-started) a tutorial about how to get a TMDB KEY
+Here is [linked](https://www.themoviedb.org/settings/api) a tutorial about how to get a TMDB KEY
 
   
 

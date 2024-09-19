@@ -836,7 +836,31 @@ extra_sources = {
     "nove": ["https://tvit.leicaflorianrobert.dev/discovery/nove/stream.m3u8"],
     "euronews": ["https://amg00882-amg00882c4-wedotv-eu-4536.playouts.now.amagi.tv/playlist/amg00882-euronewsfast-euronewsita-wedotveu/playlist.m3u8?app_bundle=&app_name=wedotv&app_store_url=https://wedotv.com&url=https://wedotv.com&gdpr=1&channel_name=Euronews - Italiano&content_custom_1_param=Euronews - Italiano"]
 }
-
+skystreaming ={
+    "sky-sport-tennis": "https://skystreaming.guru/embed/MKCKP",
+    "sky-sport-24": "https://skystreaming.guru/embed/GB7zq",
+    "sky-sport-251": "https://skystreaming.guru/embed/drHbM",
+    "sky-sport-252": "https://skystreaming.guru/embed/m5kfg",
+    "sky-sport-253": "https://skystreaming.guru/embed/YprHf",
+    "sky-sport-254": "https://skystreaming.guru/embed/wroRV",
+    "sky-sport-255": "https://skystreaming.guru/embed/0TixN",
+    "sky-sport-256": "https://skystreaming.guru/embed/8g8bh",
+    "sky-sport-257": "https://skystreaming.guru/embed/ri859",
+    "sky-sport-258": "https://skystreaming.guru/embed/UoJuW",
+    "sky-sport-259": "https://skystreaming.guru/embed/squCy",
+    "sky-sport-260": "https://skystreaming.guru/embed/Z5h2e",
+    "sky-sport-261": "https://skystreaming.guru/embed/Hz9FW",
+    "sky-sport-uno": "https://skystreaming.guru/embed/tb1np",
+    "sky-sport-f1": "https://skystreaming.guru/embed/MLkym",
+    "sky-sport-motogp": "https://skystreaming.guru/embed/ARFFv",
+    "sky-sport-calcio": "https://skystreaming.guru/embed/STOZT",
+    "sky-sport-arena": "https://skystreaming.guru/embed/NkEda",
+    "sky-sport-max": "https://skystreaming.guru/embed/4QzWz",
+    "sky-sport-nba": "https://skystreaming.guru/embed/saR8j",
+    "sky-sport-golf": "https://skystreaming.guru/embed/s9L5f",
+    "eurosport-1": "https://skystreaming.guru/embed/Vyv99",
+    "eurosport-2": "https://skystreaming.guru/embed/um8E5",
+}
 provider_map = {
         'SC': 'STREAMINGCOMMUNITY',
         'SC_FS': 'SC_FAST_SEARCH',
