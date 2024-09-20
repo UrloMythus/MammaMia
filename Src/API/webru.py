@@ -55,4 +55,6 @@ async def get_skystreaming(id,client):
     soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('source'))
     source_tag = soup.find('source')
     m3u8_url = source_tag.get('src')
-    return m3u8_url
+    Host = m3u8_url.replace("https://","").split("/")[0]
+    print(Host)
+    return m3u8_url,Host
