@@ -50,7 +50,28 @@ async def webru(id,site,client):
 
 
 async def get_skystreaming(id,client):
-    skystreaming_link =  skystreaming[id]
+    try:
+        skystreaming_link =  skystreaming[id]
+        m3u8_urls = []
+        if type(skystreaming_link) == list:
+            
+            for link in skystreaming_link:
+                m3u8_url,Host = await get_skystreaming_url(link,client)
+                m3u8_urls.append(m3u8_url)
+        else:
+            m3u8_url,Host = await get_skystreaming_url(skystreaming_link,client)
+            m3u8_urls.append(m3u8_url)
+        return m3u8_urls,Host
+
+    except Exception as e:
+        print("SkyStreaming failed",e)
+        return None,None 
+                    
+    
+
+
+
+async def get_skystreaming_url(skystreaming_link,client):
     response =  await client.get(skystreaming_link, headers=headers, allow_redirects=True, impersonate = "chrome120")
     soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('source'))
     source_tag = soup.find('source')

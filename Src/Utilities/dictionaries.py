@@ -758,7 +758,9 @@ webru_vary = {
     "sky-nature": "https://webuit.mizhls.ru/lb/calcioXskynature/index.m3u8",
     "sky-serie": "https://webuit.mizhls.ru/lb/calcioXskyserie/index.m3u8",
     "sky-uno": "https://webuit.mizhls.ru/lb/calcioXskyuno/index.m3u8",
-    "sky-sport-24": "https://webuit.mizhls.ru/lb/calcioXskysport24/index.m3u8",
+    "sky-sport-24": "https://webuit.mizhls.ru/lb/calcioXskysport24/index.m3u8",  
+}
+'''
     "sky-sport-golf": "https://webuit.mizhls.ru/lb/calcioXskysportgolf/index.m3u8",
     "sky-sport-251": "https://webuit.mizhls.ru/lb/calcioXskysport251/index.m3u8",
     "sky-sport-253": "https://webuit.mizhls.ru/lb/calcioXskysport253/index.m3u8",
@@ -781,11 +783,9 @@ webru_vary = {
     "sky-sport-calcio": "https://webuit.mizhls.ru/lb/calcioXskysportcalcio/index.m3u8",
     "sky-sport-arena": "https://webuit.mizhls.ru/lb/calcioXskysportarena/index.m3u8",
     "sky-sport-tennis": "https://webuit.mizhls.ru/lb/calcioXskysporttennis/index.m3u8",
-    "sky-sport-nba": "https://webuit.mizhls.ru/lb/calcioXskysportnba/index.m3u8",
-    "dazn-zona-a": "https://webuit.mizhls.ru/lb/calcioXzona/index.m3u8"
-}
-
-
+    "sky-sport-nba": "https://webuit.mizhls.ru/lb/calcioXskysportnba/index.m3u8", 
+'''
+#"dazn-zona-a": "https://webuit.mizhls.ru/lb/calcioXzona/index.m3u8"
 webru_dlhd = {
     "sky-sport-tennis": "https://webhdrunns.mizhls.ru/lb/premium576/index.m3u8",
     "sky-sport-uno": "https://webhdrunns.mizhls.ru/lb/premium461/index.m3u8",
@@ -860,6 +860,21 @@ skystreaming ={
     "sky-sport-golf": "https://skystreaming.guru/embed/s9L5f",
     "eurosport-1": "https://skystreaming.guru/embed/Vyv99",
     "eurosport-2": "https://skystreaming.guru/embed/um8E5",
+    "dazn-zona-a": ["https://skystreaming.guru/embed/tIswJ","https://skystreaming.guru/embed/16U0s"],
+}
+huhu = {
+    "canale-5": "1101559666",
+    "sky-sport-motogp": "2090703806",
+    "rai-1": "1225653759",
+    "sky-cinema-drama": "1235530177",
+    "sky-cinema-action": "3812796171",
+    "Dazn": "2745635299",
+    "sky-sport-uno": "3192996672",
+    "canale-5": "1534161807",
+    "mediaset-extra": "477466531",
+    "Dazn-1": "1376440573",
+    "sky-sport-24": "2775802255",
+    "sky-sport-24": "3445562519",
 }
 provider_map = {
         'SC': 'STREAMINGCOMMUNITY',
