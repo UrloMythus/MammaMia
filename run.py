@@ -194,9 +194,11 @@ async def addon_stream(request: Request,config, type, id,):
                             streams['streams'].append({'title':f"{HF}Server {i} " + channel['title'],'url': item})
                     if id in skystreaming:
                         
-                        urls,Host = await get_skystreaming(id,client)
+                        urls = await get_skystreaming(id,client)
                         for url in urls:
                             i = i+1
+                            Host = urls[url]
+                            print(url,Host)
                             streams['streams'].append({'title': f'{HF}Server {i}', 'url': url, "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:127.0) Gecko/20100101 Firefox/127.0", "Accept": "*/*", "Accept-Language": "en-US,en;q=0.5", "Origin": "https://skystreaming.guru", "DNT": "1", "Sec-GPC": "1", "Connection": "keep-alive", "Referer": "https://skystreaming.guru/", "Sec-Fetch-Dest": "empty", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "cross-site", "Pragma": "no-cache", "Cache-Control": "no-cache", "TE": "trailers","Host": Host}}}})
                             
                     if id in webru_vary:

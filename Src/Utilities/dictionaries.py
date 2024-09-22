@@ -575,7 +575,7 @@ STREAM = {
         },
         {
             "id": "sportitalia",
-            "title": ["Sportitalia"],
+            "title": "Sportitalia",
             "name": "",
             "genres": ["Sportitalia"],
             "poster": "https://upload.wikimedia.org/wikipedia/en/5/55/Sportitalia.jpg",
@@ -860,7 +860,8 @@ skystreaming ={
     "sky-sport-golf": "https://skystreaming.guru/embed/s9L5f",
     "eurosport-1": "https://skystreaming.guru/embed/Vyv99",
     "eurosport-2": "https://skystreaming.guru/embed/um8E5",
-    "dazn-zona-a": ["https://skystreaming.guru/embed/tIswJ","https://skystreaming.guru/embed/16U0s"],
+    "dazn-zona-a": ["https://skystreaming.guru/embed/tIswJ","https://hls.cls.autos/hls/serie/index.m3u8"],
+    "sportitalia": "https://skystreaming.guru/embed/zA9LP",
 }
 huhu = {
     "canale-5": "1101559666",

@@ -16,6 +16,7 @@ async def okru_get_url(id,client):
         metadata = json.loads(data['flashvars']['metadata'])
         m3u8_link = metadata['hlsMasterPlaylistUrl']
         print("MammaMia: Found results for Okru")
+        print(m3u8_link)
         return m3u8_link
     except Exception as e:
         print("MammaMia: No results found for Okru")

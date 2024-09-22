@@ -23,10 +23,10 @@
         }
  },
  "General":{
-     "load_env": "1",
+     "load_env": "0",
      "HOST": "0.0.0.0",
      "PORT": "8080",
-     "HF": "0",
+     "HF": "1",
      "Public_Instance": "0",
      "MediaProxy": ["test"]
  }

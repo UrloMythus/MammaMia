@@ -52,16 +52,17 @@ async def webru(id,site,client):
 async def get_skystreaming(id,client):
     try:
         skystreaming_link =  skystreaming[id]
-        m3u8_urls = []
+        m3u8_urls = {}
         if type(skystreaming_link) == list:
             
             for link in skystreaming_link:
                 m3u8_url,Host = await get_skystreaming_url(link,client)
-                m3u8_urls.append(m3u8_url)
+                m3u8_urls[m3u8_url] = Host
+                print(m3u8_urls)
         else:
             m3u8_url,Host = await get_skystreaming_url(skystreaming_link,client)
-            m3u8_urls.append(m3u8_url)
-        return m3u8_urls,Host
+            m3u8_urls[m3u8_url] = Host
+        return m3u8_urls
 
     except Exception as e:
         print("SkyStreaming failed",e)
@@ -72,10 +73,18 @@ async def get_skystreaming(id,client):
 
 
 async def get_skystreaming_url(skystreaming_link,client):
-    response =  await client.get(skystreaming_link, headers=headers, allow_redirects=True, impersonate = "chrome120")
-    soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('source'))
-    source_tag = soup.find('source')
-    m3u8_url = source_tag.get('src')
-    Host = m3u8_url.replace("https://","").split("/")[0]
-    print(Host)
-    return m3u8_url,Host
+    try:
+        if "hls" in skystreaming_link:
+            m3u8_url = skystreaming_link
+            Host = m3u8_url.replace("https://","").split("/")[0]
+            return m3u8_url,Host
+        response =  await client.get(skystreaming_link, headers=headers, allow_redirects=True, impersonate = "chrome120")
+        soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('source'))
+        source_tag = soup.find('source')
+        m3u8_url = source_tag.get('src')
+        Host = m3u8_url.replace("https://","").split("/")[0]
+        print(Host)
+        return m3u8_url,Host
+    except Exception as e: 
+        print("SkyStreaming failed",e)
+        return None,None
