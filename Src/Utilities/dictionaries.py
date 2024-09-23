@@ -860,8 +860,8 @@ skystreaming ={
     "sky-sport-golf": "https://skystreaming.guru/embed/s9L5f",
     "eurosport-1": "https://skystreaming.guru/embed/Vyv99",
     "eurosport-2": "https://skystreaming.guru/embed/um8E5",
-    "dazn-zona-a": ["https://skystreaming.guru/embed/tIswJ","https://hls.cls.autos/hls/serie/index.m3u8"],
-    "sportitalia": "https://skystreaming.guru/embed/zA9LP",
+    "dazn-zona-a": ["https://hls.psz.pm/hls/serie/index.m3u8","https://hls.cls.autos/hls/serie/index.m3u8"],
+    "sportitalia": "https://hls.cls.autos/hls/sportitalia/index.m3u8",
 }
 huhu = {
     "canale-5": "1101559666",
