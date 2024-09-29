@@ -208,10 +208,8 @@ async def addon_stream(request: Request,config, type, id,):
                         streams['streams'].append({'title': f"{HF}Server {i} " + channel['title'],'url': webru_url})
                     if id in webru_dlhd:
                         if DLHD == "1":
-                            print("Webru DLHD triggered")
                             i = i+1
                             webru_url_2 = await webru(id,"dlhd",client)
-                            print(webru_url_2)
                             streams['streams'].append({'title': f"{HF}Server {i} " + channel['title'],'url': webru_url_2})
             if not streams['streams']:
                 raise HTTPException(status_code=404)
