@@ -3,7 +3,9 @@ from bs4 import BeautifulSoup,SoupStrainer
 from Src.Utilities.info import is_movie,get_info_tmdb,get_info_imdb
 from Src.Utilities.convert import get_TMDb_id_from_IMDb_id
 from fake_headers import Headers
-
+import Src.Utilities.config as config
+ForwardProxy_list = config.ForwardProxy
+ForwardProxy = ForwardProxy_list[0]
 fake_headers = Headers()
 
 async def get_stayonline(link,client):

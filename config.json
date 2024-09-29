@@ -20,6 +20,12 @@
         },
         "AnimeWorld":{
             "domain":"so"
+        },
+        "SkyStreaming":{
+            "domain":"guru"
+        },
+        "DaddyLiveHD":{
+            "enabled":"1"
         }
  },
  "General":{
@@ -28,6 +34,8 @@
      "PORT": "8080",
      "HF": "1",
      "Public_Instance": "0",
-     "MediaProxy": ["test"]
+     "MediaProxy": ["Test"],
+     "ForwardProxy": ["Test"],
+     "Proxy": []
  }
 }

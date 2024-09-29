@@ -19,6 +19,7 @@ from slowapi.middleware import SlowAPIMiddleware
 from static.static import HTML
 # Configure logging
 MYSTERIUS = config.MYSTERIUS
+DLHD = config.DLHD
 HOST = config.HOST
 PORT = int(config.PORT)
 HF = config.HF
@@ -205,6 +206,11 @@ async def addon_stream(request: Request,config, type, id,):
                         i = i+1
                         webru_url = await webru(id,"vary",client)
                         streams['streams'].append({'title': f"{HF}Server {i} " + channel['title'],'url': webru_url})
+                    if id in webru_dlhd:
+                        if DLHD == "1":
+                            i = i+1
+                            webru_url = await webru(id,"dlhd",client)
+                            streams['streams'].append({'title': f"{HF}Server {i} " + channel['title'],'url': webru_url})
             if not streams['streams']:
                 raise HTTPException(status_code=404)
             return respond_with(streams)
