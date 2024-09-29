@@ -42,6 +42,7 @@ async def webru(id,site,client):
         mediaproxy = config.MediaProxy
         medialink = random.choice(mediaproxy)
         new_stream_url = f'{medialink}proxy/hls?key_url=https%3A%2F%2Fkey.mizhls.ru%2F&api_password={MEDIAFLOW_PASS}&d={stream_url}&h_Referer={Referer}&h_Origin={Origin}&h_User-Agent=Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F58.0.3029.110%20Safari%2F537.3'
+        print(new_stream_url)
         return new_stream_url
     except Exception as e:
         print("WebRu failed",e)
