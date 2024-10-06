@@ -758,7 +758,7 @@ webru_vary = {
     "sky-nature": "calcioXskynature",
     "sky-serie": "calcioXskyserie",
     "sky-uno": "calcioXskyuno",
-    "sky-sport-24": "Xskysport24",  
+    "sky-sport-24": "calcioXskysport24",  
 }
 '''
     "sky-sport-golf": "https://webuit.mizhls.ru/lb/calcioXskysportgolf/index.m3u8",
