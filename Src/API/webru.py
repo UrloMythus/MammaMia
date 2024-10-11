@@ -7,7 +7,7 @@ env_vars = load_env()
 MEDIAFLOW_PASS = env_vars.get('MEDIAFLOW_PASS')
 Referer = "https://ilovetoplay.xyz/"
 Origin = "https://ilovetoplay.xyz"
-key_url = "https%3A%2F%2Fkey2.videohls.ru%2F"
+key_url = "https%3A%2F%2Fkey2.mizhls.ru%2F"  
 headers = {
     "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:127.0) Gecko/20100101 Firefox/127.0",
     "Accept": "*/*",
@@ -29,9 +29,9 @@ medialink = config.MediaProxy
 async def get_stream_link(id,site,client):
     try:
         if site == "dlhd":
-            stream_url = "https://xyzdddd.videohls.ru/lb/" + webru_dlhd[id] + "/index.m3u8"
+            stream_url = "https://xyzdddd.mizhls.ru/lb/" + webru_dlhd[id] + "/index.m3u8"
         elif site == "vary":
-            stream_url = "https://webuit.videohls.ru/lb/"+ webru_vary[id] + "/index.m3u8"
+            stream_url = "https://webuit.mizhls.ru/lb/"+ webru_vary[id] + "/index.m3u8"
         return stream_url,Referer,Origin
     except Exception as e:
         return None
