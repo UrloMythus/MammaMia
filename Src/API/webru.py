@@ -40,7 +40,7 @@ async def webru(id,site,client):
         stream_url, Referer,Origin = await get_stream_link(id,site,client)
         mediaproxy = config.MediaProxy
         medialink = random.choice(mediaproxy)
-        new_stream_url = f'{medialink}proxy/hls?key_url={key_url}&api_password={MEDIAFLOW_PASS}&d={stream_url}&h_Referer={Referer}&h_Origin={Origin}&h_User-Agent=Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F58.0.3029.110%20Safari%2F537.3'
+        new_stream_url = f'{medialink}/proxy/hls/manifest.m3u8?api_password={MEDIAFLOW_PASS}&d={stream_url}&h_Referer={Referer}&h_Origin={Origin}&h_User-Agent=Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F58.0.3029.110%20Safari%2F537.3'
         return new_stream_url
     except Exception as e:
         print("WebRu failed",e)
@@ -87,3 +87,20 @@ async def get_skystreaming_url(skystreaming_link,client):
     except Exception as e: 
         print("SkyStreaming failed",e)
         return None,None
+    
+
+
+
+
+    '''
+    async def webru(id,site,client):
+    try:
+        stream_url, Referer,Origin = await get_stream_link(id,site,client)
+        mediaproxy = config.MediaProxy
+        medialink = random.choice(mediaproxy)
+        new_stream_url = f'{medialink}proxy/hls/manifest.m3u8?api_password={MEDIAFLOW_PASS}&d={stream_url}&h_Referer={Referer}&h_Origin={Origin}&h_User-Agent=Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F58.0.3029.110%20Safari%2F537.3'
+        return new_stream_url
+    except Exception as e:
+        print("WebRu failed",e)
+        return None
+    '''
