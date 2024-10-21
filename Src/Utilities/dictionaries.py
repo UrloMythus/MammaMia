@@ -479,6 +479,13 @@ STREAM = {
             "poster": "https://i.ytimg.com/vi/0cEfGLq-tz4/maxresdefault.jpg"
         },
         {
+            "id": "dazn-1",
+            "title": "DAZN 1",
+            "name": "",
+            "genres": ["DAZN"],
+            "poster": "https://i.ytimg.com/vi/0cEfGLq-tz4/maxresdefault.jpg"
+        },
+        {
             "id": "eurosport-1",
             "title": "Eurosport 1",
             "name": "",
@@ -814,7 +821,8 @@ webru_dlhd = {
     "sky-cinema-uno-24": "premium863",
     "sky-cinema-suspence": "premium868",
     "sky-sport-253": "premium873",
-    "sky-serie": "premium880"
+    "sky-serie": "premium880",
+    "dazn-1": "premium877"
 }
 extra_sources = {
     "rai-1": ["https://m3u.iranvids.com/rai01/output.m3u8"],
