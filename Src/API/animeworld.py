@@ -21,20 +21,22 @@ showname_replace = {
 }
 
 async def get_mp4(anime_url,ismovie,episode,client):
-   response = await client.get(anime_url,allow_redirects=True, impersonate = "chrome120")
-   soup = BeautifulSoup(response.text,'lxml')
-   episode_page = soup.find('a', {'data-episode-num':episode })
-   if episode_page is None:
-       return None
-   episode_page = f'https://animeworld.{AW_DOMAIN}{episode_page["href"]}'
-   response = await client.get(episode_page,allow_redirects=True, impersonate = "chrome120")
-   soup = BeautifulSoup(response.text,'lxml')
-   a_tag  = soup.find('a', {'id': 'alternativeDownloadLink', 'class': 'm-1 btn btn-sm btn-primary'}) 
-   url = a_tag['href']
-   response = await client.head(url)
-   if response.status_code == 404:
+    response = await client.get(anime_url,allow_redirects=True, impersonate = "chrome120")
+    soup = BeautifulSoup(response.text,'lxml')
+    if ismovie == 0:
+        episode_page = soup.find('a', {'data-episode-num':episode })
+        if episode_page is None:
+            return None
+        episode_page = f'https://animeworld.{AW_DOMAIN}{episode_page["href"]}'
+        response = await client.get(episode_page,allow_redirects=True, impersonate = "chrome120")
+        soup = BeautifulSoup(response.text,'lxml')
+
+    a_tag  = soup.find('a', {'id': 'alternativeDownloadLink', 'class': 'm-1 btn btn-sm btn-primary'}) 
+    url = a_tag['href']
+    response = await client.head(url)
+    if response.status_code == 404:
         url = None
-   return url
+    return url
 
 
 
@@ -136,8 +138,11 @@ async def animeworld(id,client):
     try:
         print(id)
         kitsu_id = id.split(":")[1]
-        episode = id.split(":")[2]
         ismovie = 1 if len(id.split(":")) == 2 else 0
+        if ismovie == 1:
+            episode = None
+        else:
+            episode = id.split(":")[2]
         showname,date = await get_info_kitsu(kitsu_id,client)
         for key in showname_replace:
             if key in showname:  # Check if the key is a substring of showname
@@ -149,15 +154,16 @@ async def animeworld(id,client):
     except:
         print("Animeworld failed")
         return None
-
-#async def test_animeworld():
-    async with httpx.AsyncClient() as client:
+'''
+async def test_animeworld():
+    async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "kitsu:1555:1"  # This is an example ID format
+        test_id = "kitsu:11407"  # This is an example ID format
         results = await animeworld(test_id, client)
         print(results)
 
-#if __name__ == "__main__":
-    import httpx
+if __name__ == "__main__":
+    from curl_cffi.requests import AsyncSession
     import asyncio
     asyncio.run(test_animeworld())
+    '''
