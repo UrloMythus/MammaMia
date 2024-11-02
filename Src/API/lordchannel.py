@@ -50,9 +50,11 @@ async def search(showname,date,season,episode,ismovie,client):
                         return video_url,quality
                     elif ismovie == 0:
                          div = soup2.find('div', id=f'collapse{season}')
-                         episode = episode -1 #Index start from 0 so I need to subtract 1
-                         episode = div.select('tr')[2]  # index is 2 because we want the correct  element
-                         video_url = episode.find('a').get('href')
+                        #Index start from 0 so I need to subtract 1
+
+                         episode_find = div.select('tr')[episode]
+     # index is 2 because we want the correct  element
+                         video_url = episode_find.find('a').get('href')
                          return video_url,quality
                 else:
                     print("")
@@ -93,19 +95,19 @@ async def lordchannel(imdb,client):
         url = url.replace('"','')
         print("MammaMia: Found results for LordChannel")
         return url,quality
-    except:
-        print("MammaMia: Lordchannel Failed")
+    except Exception as e:
+        print("MammaMia: Lordchannel Failed",e)
         return None,None
     
 
 '''
 async def test_animeworld():
-    async with httpx.AsyncClient() as client:
-        results = await lordchannel("tt14134334:1:1",client)
+    from curl_cffi.requests import AsyncSession
+    async with AsyncSession() as client:
+        results = await lordchannel("tt0920489:3:2",client)
         print(results)
 
 if __name__ == "__main__":
-    import httpx
     import asyncio
     asyncio.run(test_animeworld())  
-    '''
+'''
