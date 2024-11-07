@@ -74,8 +74,17 @@ def respond_with(data):
 def config():
     return RedirectResponse(url="/")
 @app.get('/{config}/manifest.json')
-def addon_manifest():
-    return respond_with(MANIFEST)
+def addon_manifest(config: str): 
+    manifest_copy = MANIFEST.copy()  
+    print(config)
+    if "LIVETV"  in config:
+        return respond_with(manifest_copy)
+    elif "LIVETV" not in config:
+        manifest_copy["catalogs"] = []
+        if "catalog" in manifest_copy["resources"]:
+            manifest_copy["resources"].remove("catalog")
+        return respond_with(manifest_copy)
+
 @app.get('/manifest.json')
 def manifest():
     return RedirectResponse(url="/|SC|LC|SW|/manifest.json")
@@ -211,6 +220,12 @@ async def addon_stream(request: Request,config, type, id,):
                             i = i+1
                             webru_url_2 = await webru(id,"dlhd",client)
                             streams['streams'].append({'title': f"{HF}Server {i} " + channel['title'],'url': webru_url_2})
+                    if id == "sky-sport-f1":
+                        test= "https://mhdtv.co.in/daddy/stream.m3u8?id=577"
+                        Referer1 = "https://mhdtv.co.in"
+                        User_Agent1 = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"
+                        streams['streams'].append({'title': f'{HF}Server {i} Test mhd', 'url': test, "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": User_Agent1, "Referer": Referer1}}}})
+            
             if not streams['streams']:
                 raise HTTPException(status_code=404)
             return respond_with(streams)
@@ -240,22 +255,22 @@ async def addon_stream(request: Request,config, type, id,):
                 print(provider_maps['STREAMINGCOMMUNITY'])
                 if provider_maps['STREAMINGCOMMUNITY'] == "1":
                     SC_FAST_SEARCH = provider_maps['SC_FAST_SEARCH']
-                    url_streaming_community,url_720_streaming_community,quality_sc = await streaming_community(id,client,SC_FAST_SEARCH)
+                    url_streaming_community,url_720_streaming_community,quality_sc, slug_sc = await streaming_community(id,client,SC_FAST_SEARCH)
                     if url_streaming_community is not None:
                         print(f"StreamingCommunity Found Results for {id}")
                         if quality_sc == "1080":
-                            streams['streams'].append({'title': f'{HF}StreamingCommunity 1080p Max', 'url': url_streaming_community})
-                            streams['streams'].append({'title': f'{HF}StreamingCommunity 720p Max', 'url': url_720_streaming_community})
+                            streams['streams'].append({"name":f'MammaMia 1080p Max', 'title': f'{HF}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}','url': url_streaming_community})
+                            streams['streams'].append({"name": f'MammaMia 720p Max','title': f'{HF}StreamingCommunity {slug_sc.replace("-","").capitalize()}', 'url': url_720_streaming_community})
                         else:
                             streams['streams'].append({'title': f'{HF}StreamingCommunity 720p Max', 'url': url_streaming_community})
                 if provider_maps['LORDCHANNEL'] == "1":
                     url_lordchannel,quality_lordchannel = await lordchannel(id,client)
                     if quality_lordchannel == "FULL HD" and url_lordchannel !=  None:
                         print(f"LordChannel Found Results for {id}")
-                        streams['streams'].append({'title': f'{HF}LordChannel 1080p', 'url': url_lordchannel})
+                        streams['streams'].append({'name': "MammaMia 1080p",'title': f'{HF}LordChannel', 'url': url_lordchannel})
                     elif url_lordchannel !=  None:
                         print(f"LordChannel Found Results for {id}")
-                        streams['streams'].append({'title': f'{HF}LordChannel 720p', 'url': url_lordchannel})            
+                        streams['streams'].append({"name": "MammaMia 720p",'title': f'{HF}LordChannel 720p', 'url': url_lordchannel})            
                 if provider_maps['FILMPERTUTTI'] == "1":
                     url_filmpertutti = await filmpertutti(id,client)
                     if url_filmpertutti is not None:
@@ -275,7 +290,7 @@ async def addon_stream(request: Request,config, type, id,):
                     url_streamingwatch = await streamingwatch(id,client)
                     if url_streamingwatch:
                         print(f"Streaming Watch Found Results for {id}")
-                        streams['streams'].append({'title': f'{HF}StreamingWatch 720p', 'url': url_streamingwatch})
+                        streams['streams'].append({'name': "MammaMia 720p",'title': f'{HF}StreamingWatch', 'url': url_streamingwatch})
         if not streams['streams']:
             raise HTTPException(status_code=404)
 
@@ -285,3 +300,4 @@ async def addon_stream(request: Request,config, type, id,):
 if __name__ == '__main__':
     import uvicorn
     uvicorn.run("run:app", host=HOST, port=PORT, log_level="info")
+    

@@ -7,6 +7,8 @@ from Src.Utilities.loadenv import load_env
 HF = config.HF
 env_vars = load_env()
 PROXY_CREDENTIALS = env_vars.get('PROXY_CREDENTIALS')
+ForwardProxy_list = config.ForwardProxy
+ForwardProxy = ForwardProxy_list[0]
 TF_DOMAIN = config.TF_DOMAIN
 import urllib.parse
 async def search(showname,ismovie,date,client):
@@ -160,15 +162,22 @@ async def true_url(protect_link,client):
     if HF == "1":
         import random
         import json
+        print(PROXY_CREDENTIALS)
         proxy_list = json.loads(PROXY_CREDENTIALS)
         proxy = random.choice(proxy_list)
-        proxies = {
-            "http": proxy,
-            "https": proxy
-        }
-        response = await client.get(protect_link, proxies=proxies, allow_redirects=True, impersonate = "chrome120")
+        if proxy == "":
+            proxies = {}
+        else:
+            proxies = {
+                "http": proxy,
+                "https": proxy
+            }   
+        response = await client.head(protect_link, allow_redirects=True, impersonate = "chrome120", proxies = proxies)
+        doodstream_url = response.url
     else:
-        response = await client.get(protect_link, allow_redirects=True, impersonate = "chrome120")
+        proxies = {}
+        doodstream_url = protect_link
+    response = await client.get(ForwardProxy + doodstream_url, allow_redirects=True, impersonate = "chrome120", proxies = proxies)
  
     
     if response.status_code == 200:
@@ -185,10 +194,7 @@ async def true_url(protect_link,client):
         if match:
             # Create real link (match[0] includes all matched elements)
             url =f'https://d000d.com{match[1]}'
-            if "HF" == "1" :
-                rebobo = await client.get(url, headers=headers, allow_redirects=True, impersonate = "chrome120",proxies= proxies)
-            else:
-                rebobo = await client.get(url, headers=headers, allow_redirects=True, impersonate = "chrome120")
+            rebobo = await client.get(ForwardProxy + url, headers=headers, allow_redirects=True, impersonate = "chrome120",proxies= proxies)
             real_url = f'{rebobo.text}123456789{match[2]}{real_time}'
             print("MammaMia: Found results for Tantifilm")
             return real_url

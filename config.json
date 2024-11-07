@@ -29,13 +29,13 @@
         }
  },
  "General":{
-     "load_env": "0",
+     "load_env": "1",
      "HOST": "0.0.0.0",
      "PORT": "8080",
-     "HF": "1",
+     "HF": "0",
      "Public_Instance": "0",
-     "MediaProxy": ["Test"],
-     "ForwardProxy": ["Test"],
-     "Proxy": []
+     "MediaProxy": ["http://mammamia-urlo.serv00.net:1984/"],
+     "ForwardProxy": [""],
+     "Proxy": [""]
  }
 }

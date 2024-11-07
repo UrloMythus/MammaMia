@@ -76,6 +76,7 @@ async def whvx(id,client):
     showname = urllib.parse.quote_plus(showname)
     response = await client.get(f'https://api.whvx.net/search', params = params,  headers=headers, impersonate = "chrome120")
     data = json.loads(response.text)
+    print(data)
     url = data['url']
     print(data)
     params = {
@@ -110,7 +111,7 @@ async def whvx(id,client):
     print(resolution_links)
     return resolution_links
 
-'''
+
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
@@ -123,4 +124,3 @@ if __name__ == "__main__":
     asyncio.run(test_animeworld())
 
 
-'''

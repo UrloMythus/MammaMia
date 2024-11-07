@@ -4,8 +4,13 @@ from Src.Utilities.info import is_movie,get_info_tmdb,get_info_imdb
 from Src.Utilities.convert import get_TMDb_id_from_IMDb_id
 from fake_headers import Headers
 import Src.Utilities.config as config
+from Src.Utilities.loadenv import load_env
+HF = config.HF
+
+env_vars = load_env()
 ForwardProxy_list = config.ForwardProxy
 ForwardProxy = ForwardProxy_list[0]
+PROXY_CREDENTIALS = env_vars.get('PROXY_CREDENTIALS')
 fake_headers = Headers()
 
 async def get_stayonline(link,client):
@@ -24,9 +29,24 @@ async def get_stayonline(link,client):
 async def get_uprot(link,client):
         if "msf" in link:
              link = link.replace("msf","mse")
-
+        if PROXY_CREDENTIALS :
+            import json
+            import random
+            proxy_list = json.loads(PROXY_CREDENTIALS)
+            proxy = random.choice(proxy_list)
+            if proxy  == " ":
+                proxies = {
+                    "http": proxy,
+                    "https": proxy
+                }
+            else:
+                 proxies = {}
+        else:
+             proxies = {}
+                 
         headers = fake_headers.generate()
-        response = await client.get(link, headers=headers, allow_redirects=True, timeout=10)
+        print(ForwardProxy + link)
+        response = await client.get(ForwardProxy + link, headers=headers, allow_redirects=True, timeout=10, proxies=proxies)
         soup = BeautifulSoup(response.text, "lxml")
         maxstream_url = soup.find("a")
         maxstream_url = maxstream_url.get("href")
@@ -54,7 +74,7 @@ async def get_true_link_mixdrop(real_link,client):
 async def get_true_link_maxstream(maxstream_url,client):
         headers = fake_headers.generate()
         # Send a GET request to the Maxstream URL
-        response = await client.get(maxstream_url, headers=headers, allow_redirects=True, timeout=10)
+        response = await client.get(ForwardProxy + maxstream_url, headers=headers, allow_redirects=True, timeout=10)
         [s1, s2] = re.search(r"\}\('(.+)',.+,'(.+)'\.split", response.text).group(1, 2)
         terms = s2.split("|")
         urlset_index = terms.index('urlset')
@@ -250,7 +270,7 @@ async def cb01(id,client):
 
 
 
-'''
+
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
@@ -261,5 +281,3 @@ async def test_animeworld():
 if __name__ == "__main__":
     import asyncio
     asyncio.run(test_animeworld())
-'''
-

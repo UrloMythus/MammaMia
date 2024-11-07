@@ -227,6 +227,26 @@ HTML = """
                     <input type="checkbox" id="animeworld"> Animeworld
                 </label>
             </div>
+            <div class="provider-group">
+                <label for="cb01" class="provider-label">
+                    <input type="checkbox" id="cb01"> CB01
+                </label>
+            </div>
+             <div class="provider-group">
+                <label for="ddlstream" class="provider-label">
+                    <input type="checkbox" id="ddlstream"> DDLStream Italy
+                </label>
+            </div>
+             <div class="provider-group">
+                <label for="whvx" class="provider-label">
+                    <input type="checkbox" id="whvx"> WHVX 🇬🇧️
+                </label>
+            </div>
+            <div class="provider-group">
+                <label for="livetv" class="provider-label">
+                    <input type="checkbox" id="livetv"> LiveTV
+                </label>
+            </div>
         </form>
         <button id="generateManifestButton">Generate Link</button>
         <button id="installButton">INSTALL</button>
@@ -243,7 +263,11 @@ HTML = """
                 "tantifilm": "TF",
                 "fast_search_tf": "TF_FS",
                 "filmpertutti": "FT",
-                "animeworld": "AW"
+                "animeworld": "AW",
+                "livetv": "LIVETV",
+                "cb01": "CB",
+                "ddlstream": "DDL",
+                "whvx": "WHVX"
             };
             
             for (const id in providers) {

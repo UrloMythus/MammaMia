@@ -26,21 +26,23 @@ headers = {
 }
 
 medialink = config.MediaProxy
-async def get_stream_link(id,site,client):
+async def get_stream_link(id,site):
     try:
         if site == "dlhd":
             stream_url = "https://xyzdddd.mizhls.ru/lb/" + webru_dlhd[id] + "/index.m3u8"
         elif site == "vary":
             stream_url = "https://webuit.mizhls.ru/lb/"+ webru_vary[id] + "/index.m3u8"
+        mediaproxy = config.MediaProxy
+        medialink = random.choice(mediaproxy)
+        new_stream_url = f'{medialink}proxy/hls/manifest.m3u8?api_password={MEDIAFLOW_PASS}&d={stream_url}&h_Referer={Referer}&h_Origin={Origin}&h_User-Agent=Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F58.0.3029.110%20Safari%2F537.3'
+
         return stream_url,Referer,Origin
     except Exception as e:
         return None
 async def webru(id,site,client):
     try:
-        stream_url, Referer,Origin = await get_stream_link(id,site,client)
-        mediaproxy = config.MediaProxy
-        medialink = random.choice(mediaproxy)
-        new_stream_url = f'{medialink}proxy/hls/manifest.m3u8?api_password={MEDIAFLOW_PASS}&d={stream_url}&h_Referer={Referer}&h_Origin={Origin}&h_User-Agent=Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F58.0.3029.110%20Safari%2F537.3'
+        new_stream_url = await get_stream_link(id,site,client)
+        
         return new_stream_url
     except Exception as e:
         print("WebRu failed",e)
@@ -103,4 +105,35 @@ async def get_skystreaming_url(skystreaming_link,client):
     except Exception as e:
         print("WebRu failed",e)
         return None
+    '''
+
+
+
+async def webru(id,site,client):
+    try:
+        print(id)
+        if site == "vary":
+            print("1")
+            url = await get_stream_link(id,site)
+        if any(keyword in id for keyword in ["cinema", "arte", "nature", "investigation", "sky-uno", "sky-serie"]):
+            print("2")
+            url = await get_stream_link(id,site)
+        else:
+            print("3")
+            response = await client.get(f"https://848b3516657c-worldwide-sports-tv.baby-beamup.club/stream/tv/wwstv-it-{id}.json", impersonate = "chrome120", headers = headers)
+            data = response.json()
+            url = data['streams'][0]['url']
+            print(url)
+            return url
+    except Exception as e:
+        print("WorldSport failed",e)
+        return None
+    
+
+    '''
+    if id in skystreaming:
+                        i = i+1
+                        url,Host = await get_skystreaming(id,client)
+                        streams['streams'].append({'title': f'{HF}Server {i}', 'url': url, "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:127.0) Gecko/20100101 Firefox/127.0", "Accept": "*/*", "Accept-Language": "en-US,en;q=0.5", "Origin": "https://skystreaming.guru", "DNT": "1", "Sec-GPC": "1", "Connection": "keep-alive", "Referer": "https://skystreaming.guru/", "Sec-Fetch-Dest": "empty", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "cross-site", "Pragma": "no-cache", "Cache-Control": "no-cache", "TE": "trailers","Host": Host}}}})
+
     '''

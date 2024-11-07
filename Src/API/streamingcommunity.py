@@ -39,7 +39,7 @@ async def get_version(client):
         version = "65e52dcf34d64173542cd2dc6b8bb75b"
         return version
 
-async def search(query,date,ismovie, client,SC_FAST_SEARCH):
+async def search(query,date,ismovie, client,SC_FAST_SEARCH,movie_id):
     random_headers = headers.generate()
     random_headers['Referer'] = "https://streamingcommunity.buzz/"
     random_headers['Origin'] = "https://streamingcommunity.buzz"
@@ -65,16 +65,20 @@ async def search(query,date,ismovie, client,SC_FAST_SEARCH):
                 random_headers['Referer'] = "https://streamingcommunity.buzz/"
                 random_headers['Origin'] = "https://streamingcommunity.buzz"
                 response = await client.get ( f'https://streamingcommunity.{SC_DOMAIN}/titles/{tid}-{slug}', headers = random_headers, allow_redirects=True,impersonate = "chrome120")
-                pattern = r'<div[^>]*class="features"[^>]*>.*?<span[^>]*>(.*?)<\/span>'
-                match = re.search(pattern, response.text)
-                print(match.group(1).split("-")[0])
-                first_air_year = match.group(1).split("-")[0]
-                date = int(date)
-                first_air_year = int(first_air_year)
-                if first_air_year == date:
-                    return tid,slug
+                soup = BeautifulSoup(response.text, "lxml")
+                data = json.loads(soup.find("div", {"id": "app"}).get("data-page"))
+                version = data['version']
+                if "tt" in movie_id:
+                    imdb_id = data['props']['title']['imdb_id']
+                    if imdb_id == movie_id:
+                        return tid,slug,version
+                else:
+                    tmdb_id = str(data['props']['title']['tmdb_id'])
+                    if tmdb_id == movie_id:
+                        return tid,slug,version
             elif SC_FAST_SEARCH == "1":
-                 return tid,slug
+                version = await get_version(client)
+                return tid,slug,version
         else:
             print("Couldn't find anything")
 
@@ -108,15 +112,24 @@ async def get_film(tid,version,client):
     expires = re.search(r"'expires':\s*'(\d+)'", script).group(1)
     quality = re.search(r'"quality":(\d+)', script).group(1)
     #Example url  https://vixcloud.co/playlist/231315?b=1&token=bce060eec3dc9d1965a5d258dc78c964&expires=1728995040&rendition=1080p
-    url = f'https://vixcloud.co/playlist/{vixid}.m3u8?token={token}&expires={expires}'
+    url = f'https://vixcloud.co/playlist/{vixid}.m3u8?expires={expires}'
     if 'canPlayFHD' in query_params:
        canPlayFHD = 'h=1'
        url += "&h=1"
     if 'b' in query_params:
        b = 'b=1'
        url += "&b=1"
+    if quality == "1080":
+        if "&h" in url:
+            url = url
+        elif "&b" in url and quality == "1080":
+            url = url.replace("&b=1","&h=1")
+        elif quality == "1080" and "&b" and "&h" not in url:
+            url = url + "&h=1"
+    else:
+        url = url + f"&token={token}"        
     url720 = f'https://vixcloud.co/playlist/{vixid}.m3u8'
-    return url,url720,quality,
+    return url,url720,quality
 
 async def get_season_episode_id(tid,slug,season,episode,version,client):
     random_headers = headers.generate()
@@ -165,13 +178,22 @@ async def get_episode_link(episode_id,tid,version,client):
     expires = re.search(r"'expires':\s*'(\d+)'", script).group(1)
     quality = re.search(r'"quality":(\d+)', script).group(1)
     #Example url  https://vixcloud.co/playlist/231315?b=1&token=bce060eec3dc9d1965a5d258dc78c964&expires=1728995040&rendition=1080p
-    url = f'https://vixcloud.co/playlist/{vixid}.m3u8?token={token}&expires={expires}'
+    url = f'https://vixcloud.co/playlist/{vixid}.m3u8?expires={expires}'
     if 'canPlayFHD' in query_params:
        canPlayFHD = 'h=1'
        url += "&h=1"
     if 'b' in query_params:
        b = 'b=1'
        url += "&b=1"
+    if quality == "1080":
+        if "&h" in url:
+            url = url
+        elif "&b" in url and quality == "1080":
+            url = url.replace("&b=1","&h=1")
+        elif quality == "1080" and "&b" and "&h" not in url:
+            url = url + "&h=1"
+    else:
+        url = url + f"&token={token}"        
     url720 = f'https://vixcloud.co/playlist/{vixid}.m3u8'
     return url,url720,quality
 
@@ -190,6 +212,7 @@ async def streaming_community(imdb,client,SC_FAST_SEARCH):
         general = is_movie(imdb)
         ismovie = general[0]
         imdb_id = general[1]
+
         if ismovie == 0 : 
             season = int(general[2])
             episode = int(general[3])
@@ -208,7 +231,8 @@ async def streaming_community(imdb,client,SC_FAST_SEARCH):
                     showname = get_info_tmdb(tmdba,ismovie,type)
             elif SC_FAST_SEARCH == "0":
                 type = "StreamingCommunity"
-                tmdba = await get_TMDb_id_from_IMDb_id(imdb_id,client)
+                if "tt" in imdb:
+                    tmdba = await get_TMDb_id_from_IMDb_id(imdb_id,client)
                 showname,date = get_info_tmdb(tmdba,ismovie,type) 
         #HERE THE CASE IF IT IS A MOVIE
         else:
@@ -234,31 +258,29 @@ async def streaming_community(imdb,client,SC_FAST_SEARCH):
         showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
         showname = urllib.parse.quote_plus(showname)
         query = f'https://streamingcommunity.{SC_DOMAIN}/api/search?q={showname}'
-        version = await get_version(client)
-        tid,slug = await search(query,date,ismovie,client,SC_FAST_SEARCH)
+        tid,slug,version = await search(query,date,ismovie,client,SC_FAST_SEARCH,imdb_id)
         if ismovie == 1:
             #TID means temporaly ID
             url,url720,quality = await get_film(tid,version,client)
             print("MammaMia found results for StreamingCommunity")
-            return url,url720,quality
+            return url,url720,quality,slug
         if ismovie == 0:
             #Uid = URL ID
             episode_id = await get_season_episode_id(tid,slug,season,episode,version,client)
             url,url720,quality = await get_episode_link(episode_id,tid,version,client)
             print("MammaMia found results for StreamingCommunity")
-            return url,url720,quality
+            return url,url720,quality,slug
     except Exception as e:
         print("MammaMia: StreamingCommunity failed",e)
         return None,None,None
-'''
+
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt12930350"  # This is an example ID format
+        test_id = "tt0101414"  # This is an example ID format
         results = await streaming_community(test_id, client,"0")
 
 if __name__ == "__main__":
     import asyncio
     asyncio.run(test_animeworld())
-'''

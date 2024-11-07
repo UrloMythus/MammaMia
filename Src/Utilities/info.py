@@ -68,9 +68,9 @@ def get_info_tmdb(tmbda,ismovie,type):
             #GET US RELEASE DATE because filmpertutti somewhy uses US release date
             return showname,date
         elif type == "StreamingCommunity":
-            date = show.release_dates
+            date = show.release_date
             date = date.split("-")[0]
-            return showname
+            return showname,date
         elif type == "StreamingCommunityFS":
             return showname
         elif type == "Tantifilm":
@@ -106,7 +106,7 @@ def get_info_tmdb(tmbda,ismovie,type):
 async def get_info_imdb(imdb_id, ismovie, type,client):
     resp = await client.get(f'https://api.themoviedb.org/3/find/{imdb_id}?api_key={TMDB_KEY}&language=it&external_source=imdb_id')
     data = resp.json()
-    if ismovie == 0:     
+    if ismovie == 0:
         showname = data['tv_results'][0]['name']
         if type == "Filmpertutti":
             date= data['tv_results'][0]['first_air_date']
