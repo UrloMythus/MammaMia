@@ -21,17 +21,17 @@ async def get_links(slug,season,episode,ismovie,client):
             'accept': 'application/json, text/plain, */*',
             'accept-language': 'it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7',
             'authorization': f'Bearer {Bearer}',
-            'referer': f'https://altadefinizione-originale.com/play/{slug}',
+            'referer': f'https://altadefinizioneapp.com/play/{slug}',
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 OPR/111.0.0.0',
             'x-requested-with': 'XMLHttpRequest',
         }
         if ismovie == 1:
 
-            response = await client.get(f'https://altadefinizione-originale.com/api/post/urls/stream/{slug}',cookies=cookies,headers=headers)
+            response = await client.get(f'https://altadefinizioneapp.com/api/post/urls/stream/{slug}',cookies=cookies,headers=headers)
         elif ismovie == 0:
             print("HERE SEASON",season)
             print("HERE EPISODE",episode)
-            request_url =f'https://altadefinizione-originale.com/api/post/urls/stream/{slug}/{season}/{episode}'
+            request_url =f'https://altadefinizioneapp.com/api/post/urls/stream/{slug}/{season}/{episode}'
             print(request_url)
             response = await client.get(request_url,cookies=cookies,headers=headers)
             print(response.text)
@@ -82,7 +82,7 @@ async def get_links(slug,season,episode,ismovie,client):
 async def search_imdb(showname,tmdba,client):
         showname = showname.replace(" ","%20")
         tmdba = str(tmdba)
-        query = f'https://altadefinizione-originale.com/api/search?search={showname}&page=1'
+        query = f'https://altadefinizioneapp.com/api/search?search={showname}&page=1'
         response = await client.get(query,allow_redirects=True, impersonate = "chrome120")
         if response.status_code == 200:
             data = response.json()
@@ -102,8 +102,8 @@ def parse_links(resolution_links):
     if resolution_links:
         print("Video links:")
         for resolution, link in resolution_links.items():
-            if "cdn.altadefinizione-originale.com" in link:
-                link = link.replace("cdn.altadefinizione-originale.com","protectlinknt.b-cdn.net")
+            if "cdn.altadefinizione-originale.com" in link or "cdn.altadefinizioneapp.com" in link:
+                link = link.replace("cdn.altadefinizione-originale.com","protectlinknt.b-cdn.net").replace("cdn.altadefinizioneapp.com","protectlinknt.b-cdn.net")
             print(f"{resolution}: {link}")
             results[resolution] = link
         return results    
