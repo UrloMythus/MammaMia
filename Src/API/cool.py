@@ -10,7 +10,7 @@ async def get_links(slug,season,episode,ismovie,client):
         headers = {
             "x-api-key": MYSTERIUS_KEY
         }
-        response = await client.get("https://kripton12-ulala12431.hf.space/api/cookie", headers=headers)
+        response = await client.get("https://aimammam-ulala12431.hf.space/api/cookie", headers=headers)
         Auths = response.json()
         Bearer = Auths.get('cookie')
         ap_session = Auths.get('auth')
