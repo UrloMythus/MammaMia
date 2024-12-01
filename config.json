@@ -1,7 +1,7 @@
 {
   "Siti": {
          "StreamingCommunity": {
-             "domain": "buzz"
+             "domain": "computer"
          },
          "Filmpertutti": {
              "domain": "diy"
@@ -10,7 +10,7 @@
              "domain": "bond"
          },
          "Mysterius":{
-             "enabled": "0"    
+             "enabled": "1"    
          },
         "LordChannel":{
              "domain":"com"
@@ -29,10 +29,10 @@
         }
  },
  "General":{
-     "load_env": "1",
+     "load_env": "0",
      "HOST": "0.0.0.0",
      "PORT": "8080",
-     "HF": "0",
+     "HF": "1",
      "Public_Instance": "0",
      "MediaProxy": ["http://mammamia-urlo.serv00.net:1984/"],
      "ForwardProxy": [""],
