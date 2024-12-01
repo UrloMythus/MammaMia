@@ -69,13 +69,11 @@ async def search(query,date,ismovie, client,SC_FAST_SEARCH,movie_id):
                 data = json.loads(soup.find("div", {"id": "app"}).get("data-page"))
                 version = data['version']
                 if "tt" in movie_id:
-                    imdb_id = data['props']['title']['imdb_id']
-                    if imdb_id == movie_id:
-                        return tid,slug,version
-                else:
-                    tmdb_id = str(data['props']['title']['tmdb_id'])
-                    if tmdb_id == movie_id:
-                        return tid,slug,version
+                    movie_id = str(await get_TMDb_id_from_IMDb_id(movie_id,client))
+                    #Here we need to convert because the IMDB ID is often bugged
+                tmdb_id = str(data['props']['title']['tmdb_id'])
+                if tmdb_id == movie_id:
+                    return tid,slug,version
             elif SC_FAST_SEARCH == "1":
                 version = await get_version(client)
                 return tid,slug,version
@@ -272,15 +270,17 @@ async def streaming_community(imdb,client,SC_FAST_SEARCH):
             return url,url720,quality,slug
     except Exception as e:
         print("MammaMia: StreamingCommunity failed",e)
-        return None,None,None
-
+        return None,None,None,None
+'''
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt0101414"  # This is an example ID format
+        test_id = "tt0095765"  # This is an example ID format
         results = await streaming_community(test_id, client,"0")
+        print(results)
 
 if __name__ == "__main__":
     import asyncio
     asyncio.run(test_animeworld())
+'''
