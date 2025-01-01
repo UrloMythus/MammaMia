@@ -1,0 +1,17 @@
+ervices:
+  - type: web
+    name: MammaMia  
+    runtime: python  
+    buildCommand: pip install -r requirements.txt  
+    startCommand: python3 run.py  
+    plan: free 
+    region: frankfurt
+    envVars:
+      # Sets a hardcoded value
+      # (DO NOT hardcode secrets in your Blueprint file!)
+      - key: PORT
+        value: 8080
+      # Prompts for a value in the Render Dashboard on creation
+      # (useful for secrets)
+      - key: TMDB_KEY
+        sync: false

@@ -16,21 +16,16 @@ def get_info_tmdb(tmbda,ismovie,type):
         show= tv.details(tmbda)
         showname = show.name
         if type == "Filmpertutti":
-            date= show.first_air_date
-            date = date.split("-")[0]
-            print("Real date",date)
-            return showname,date
+            return showname
         elif type == "StreamingCommunity":
             full_date = show.first_air_date
             date = full_date.split("-")[0]
-            print(date)
             return showname,date
         elif type == "StreamingCommunityFS":
                 return showname
         elif type == "Tantifilm":
             date = show.first_air_date
             date = date.split("-")[0]
-            print("Real date",date)
             return showname,date
         elif type == "TantifilmFS":
             return showname
@@ -39,12 +34,10 @@ def get_info_tmdb(tmbda,ismovie,type):
         elif type == "LordChannel":
             date = show.first_air_date
             date = date.split("-")[0]
-            print("Real date",date)
             return showname,date
         elif type == "StreamingWatch":
             date = show.first_air_date
             date = date.split("-")[0]
-            print("Real date",date)
             return showname,date
         elif type == "DDLStream":
             return showname
@@ -63,10 +56,7 @@ def get_info_tmdb(tmbda,ismovie,type):
         showname= show.title
         #Get all release dates
         if type == "Filmpertutti":
-            date = show.release_dates
-            date = date.split("-")[0]
-            #GET US RELEASE DATE because filmpertutti somewhy uses US release date
-            return showname,date
+            return showname
         elif type == "StreamingCommunity":
             date = show.release_date
             date = date.split("-")[0]
@@ -76,7 +66,6 @@ def get_info_tmdb(tmbda,ismovie,type):
         elif type == "Tantifilm":
             date = show.release_date
             date = date.split("-")[0]
-            print("Real date",date)
             return showname,date
         elif type == "TantifilmFS":
                 return showname
@@ -85,12 +74,10 @@ def get_info_tmdb(tmbda,ismovie,type):
         elif type == "LordChannel":
             date = show.release_date
             date = date.split("-")[0]
-            print("Real date",date)
             return showname,date
         elif type == "StreamingWatch":
             date = show.release_date
             date = date.split("-")[0]
-            print("Real date",date)
             return showname,date
         elif type == "DDLStream":
             return showname
@@ -109,10 +96,7 @@ async def get_info_imdb(imdb_id, ismovie, type,client):
     if ismovie == 0:
         showname = data['tv_results'][0]['name']
         if type == "Filmpertutti":
-            date= data['tv_results'][0]['first_air_date']
-            date = date.split("-")[0]
-            print("Real date",date)
-            return showname, date
+            return showname
         elif type == "StreamingCommunity":
             date = data['tv_results'][0]['first_air_date']
             date = date.split("-")[0]
@@ -141,9 +125,7 @@ async def get_info_imdb(imdb_id, ismovie, type,client):
     elif ismovie == 1:
         showname= data['movie_results'][0]['title']
         if type == "Filmpertutti":
-            date = data['movie_results'][0]['release_date']
-            date = date.split("-")[0]
-            return showname,date
+            return showname
         elif type == "StreamingCommunity":
             date = data['movie_results'][0]['release_date']
             date = date.split("-")[0]
@@ -179,7 +161,7 @@ async def get_info_kitsu(kitsu_id,client):
 
 
 
-def is_movie(imdb_id):
+async def is_movie(imdb_id):
     if "tmdb:" in imdb_id:
         imdb_id = imdb_id.replace("tmdb:","")
     if ":"  in imdb_id:

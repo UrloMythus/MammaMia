@@ -4,7 +4,6 @@ from Src.Utilities.info import get_info_tmdb, is_movie, get_info_imdb
 import Src.Utilities.config as config
 import re
 import json
-import urllib.parse
 SW_DOMAIN = config.SW_DOMAIN
 async def wponce_get(client):
     response = await client.get(f"https://www.streamingwatch.{SW_DOMAIN}/contatto/")
@@ -44,15 +43,19 @@ async def search(showname,season,episode,date,ismovie,client):
         }
         response = await client.post(query,cookies=cookies, headers=headers, data=data)
         soup = BeautifulSoup(response.content,'lxml')
-        page_date = soup.find(id = 'search-cat-year').text.strip()
-        if page_date == date:
-           href = soup.find('a')['href']
-           response = await client.get(href, allow_redirects=True, impersonate = "chrome120")
-           soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('iframe'))
-           iframe = soup.find('iframe')
-           hdplayer = iframe.get('data-lazy-src')
+        all_page_dates = soup.find_all(id = 'search-cat-year')
+        all_hrefs = soup.find_all('a')
+        for temp_data,temp_href in zip(all_page_dates,all_hrefs):
+            page_date = temp_data.text.strip()
+            if date == page_date:
+                href = temp_href['href']
+                href = soup.find('a')['href']
+                response = await client.get(href, allow_redirects=True, impersonate = "chrome120")
+                soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('iframe'))
+                iframe = soup.find('iframe')
+                hdplayer = iframe.get('data-lazy-src')
 
-           return hdplayer
+                return hdplayer
     elif ismovie == 0:
         #Some series have the name in english so we first search with the categories option and then we use the obtained ID to get all the episodes
         id_response = await client.get(f'https://streamingwatch.{SW_DOMAIN}/wp-json/wp/v2/categories?search={showname}&_fields=id', allow_redirects=True, impersonate = "chrome120")
@@ -75,10 +78,11 @@ async def hls_url(hdplayer,client):
     response = await client.get(hdplayer, allow_redirects=True, impersonate = "chrome120")
     match = re.search(r'sources:\s*\[\s*\{\s*file\s*:\s*"([^"]*)"', response.text)
     url = match.group(1)
+
     return url
 async def streamingwatch(imdb,client):
     try:
-       general = is_movie(imdb)
+       general = await is_movie(imdb)
        ismovie = general[0]
        imdb_id = general[1]
        type = "StreamingWatch"
@@ -97,24 +101,25 @@ async def streamingwatch(imdb,client):
            else:
                tmdba = imdb_id
        showname,date = get_info_tmdb(tmdba,ismovie,type)
-       showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
+       showname = showname.replace(" ", "+").replace("–", "+").replace("—","+").replace("&","")
        hdplayer = await search(showname,season,episode,date,ismovie,client)
        url = await hls_url(hdplayer,client)
-       print(f"MammaMia: StreamingWatch found results for {showname}")
-       return url
+       if url:
+           #Fix for Exoplayer which needs .m3u8 in the url to play the file
+           url = url + ".m3u8"
+       return url,hdplayer
     except Exception as e:
           print("MammaMia: StreamingWatch Failed",e)
-          return None
+          return None,None
     
-'''
+
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt16426418"  # This is an example ID format
+        test_id = "tt1431045"  # This is an example ID format
         results = await streamingwatch(test_id, client)
 
 if __name__ == "__main__":
     import asyncio
     asyncio.run(test_animeworld())
-'''

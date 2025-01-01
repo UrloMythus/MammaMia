@@ -1,3 +1,5 @@
+import Src.Utilities.config as config
+SKY_DOMAIN = config.SKY_DOMAIN
 okru = {
     "rai-1": "https://ok.ru/videoembed/7868570672752?nochat=1", 
     "rai-2": "https://ok.ru/videoembed/7805618364016?nochat=1",
@@ -26,7 +28,7 @@ STREAM = {
             "title": "Rai 1",
             "name": "Full HD Http",
             "genres": ["Rai"],
-            "poster": "https://i.imgur.com/OPV9jJD.png",
+            "poster": "https://i.imgur.com/bb72vqh.jpeg",
             "url": "http://173.208.52.200/rai1/index.m3u8"
         },
         {
@@ -34,7 +36,7 @@ STREAM = {
             "title": "Rai 2",
             "name": "Full HD Http",
             "genres": ["Rai"],
-            "poster": "https://i.imgur.com/uHtYy8w.png",
+            "poster": "https://i.imgur.com/jX95Qod.jpeg",
             "url": "http://173.208.52.200/rai2/index.m3u8"
         },
         {
@@ -42,7 +44,7 @@ STREAM = {
             "title": "Rai 3",
             "name": "Full HD Http",
             "genres": ["Rai"],
-            "poster": "https://i.imgur.com/iXst6me.png",
+            "poster": "https://i.imgur.com/fgAh9if.jpeg",
             "url": "http://173.208.52.200/rai3/index.m3u8"
         },
         {
@@ -50,7 +52,7 @@ STREAM = {
             "title": "Rai 4",
             "name": "Full HD Http",
             "genres": ["Rai"],
-            "poster": "https://i.imgur.com/KGg3hvr.png",
+            "poster": "https://i.imgur.com/NryLzhA.jpeg",
             "url": "http://173.208.52.200/rai4/index.m3u8"
         },
         {
@@ -844,31 +846,31 @@ extra_sources = {
     "doctor-who": ["https://amg00793-amg00793c17-samsung-it-4577.playouts.now.amagi.tv/playlist/amg00793-bbcstudios-drwhoitaly-samsungit/playlist.m3u8"]
 }
 skystreaming ={
-    "sky-sport-tennis": "https://skystreaming.guru/embed/MKCKP",
-    "sky-sport-24": "https://skystreaming.guru/embed/GB7zq",
-    "sky-sport-251": "https://skystreaming.guru/embed/drHbM",
-    "sky-sport-252": "https://skystreaming.guru/embed/m5kfg",
-    "sky-sport-253": "https://skystreaming.guru/embed/YprHf",
-    "sky-sport-254": "https://skystreaming.guru/embed/wroRV",
-    "sky-sport-255": "https://skystreaming.guru/embed/0TixN",
-    "sky-sport-256": "https://skystreaming.guru/embed/8g8bh",
-    "sky-sport-257": "https://skystreaming.guru/embed/ri859",
-    "sky-sport-258": "https://skystreaming.guru/embed/UoJuW",
-    "sky-sport-259": "https://skystreaming.guru/embed/squCy",
-    "sky-sport-260": "https://skystreaming.guru/embed/Z5h2e",
-    "sky-sport-261": "https://skystreaming.guru/embed/Hz9FW",
-    "sky-sport-uno": "https://skystreaming.guru/embed/tb1np",
-    "sky-sport-f1": "https://skystreaming.guru/embed/MLkym",
-    "sky-sport-motogp": "https://skystreaming.guru/embed/ARFFv",
-    "sky-sport-calcio": "https://skystreaming.guru/embed/STOZT",
-    "sky-sport-arena": "https://skystreaming.guru/embed/NkEda",
-    "sky-sport-max": "https://skystreaming.guru/embed/4QzWz",
-    "sky-sport-nba": "https://skystreaming.guru/embed/saR8j",
-    "sky-sport-golf": "https://skystreaming.guru/embed/s9L5f",
-    "eurosport-1": "https://skystreaming.guru/embed/Vyv99",
-    "eurosport-2": "https://skystreaming.guru/embed/um8E5",
-    "dazn-zona-a": ["https://hls.psz.pm/hls/serie/index.m3u8","https://hls.cls.autos/hls/serie/index.m3u8"],
-    "sportitalia": "https://hls.cls.autos/hls/sportitalia/index.m3u8",
+    "sky-sport-tennis": f"https://skystreaming.{SKY_DOMAIN}/embed/MKCKP",
+    "sky-sport-24": f"https://skystreaming.{SKY_DOMAIN}/embed/GB7zq",
+    "sky-sport-251": f"https://skystreaming.{SKY_DOMAIN}/embed/drHbM",
+    "sky-sport-252": f"https://skystreaming.{SKY_DOMAIN}/embed/m5kfg",
+    "sky-sport-253": f"https://skystreaming.{SKY_DOMAIN}/embed/YprHf",
+    "sky-sport-254": f"https://skystreaming.{SKY_DOMAIN}/embed/wroRV",
+    "sky-sport-255": f"https://skystreaming.{SKY_DOMAIN}/embed/0TixN",
+    "sky-sport-256": f"https://skystreaming.{SKY_DOMAIN}/embed/8g8bh",
+    "sky-sport-257": f"https://skystreaming.{SKY_DOMAIN}/embed/ri859",
+    "sky-sport-258": f"https://skystreaming.{SKY_DOMAIN}/embed/UoJuW",
+    "sky-sport-259": f"https://skystreaming.{SKY_DOMAIN}/embed/squCy",
+    "sky-sport-260": f"https://skystreaming.{SKY_DOMAIN}/embed/Z5h2e",
+    "sky-sport-261": f"https://skystreaming.{SKY_DOMAIN}/embed/Hz9FW",
+    "sky-sport-uno": f"https://skystreaming.{SKY_DOMAIN}/embed/tb1np",
+    "sky-sport-f1": f"https://skystreaming.{SKY_DOMAIN}/embed/MLkym",
+    "sky-sport-motogp": f"https://skystreaming.{SKY_DOMAIN}/embed/ARFFv",
+    "sky-sport-calcio": f"https://skystreaming.{SKY_DOMAIN}/embed/STOZT",
+    "sky-sport-arena": f"https://skystreaming.{SKY_DOMAIN}/embed/NkEda",
+    "sky-sport-max": f"https://skystreaming.{SKY_DOMAIN}/embed/4QzWz",
+    "sky-sport-nba": f"https://skystreaming.{SKY_DOMAIN}/embed/saR8j",
+    "sky-sport-golf": f"https://skystreaming.{SKY_DOMAIN}/embed/s9L5f",
+    "eurosport-1": f"https://skystreaming.{SKY_DOMAIN}/embed/Vyv99",
+    "eurosport-2": f"https://skystreaming.{SKY_DOMAIN}/embed/um8E5",
+    "dazn-zona-a": ["https://live.servis.hair/hls/serie/index.m3u8","https://live.servis.hair/hls/serie/index.m3u8"],
+    "sportitalia": "https://live.servis.hair/hls/sportitalia/index.m3u8",
 }
 huhu = {
     "canale-5": "1101559666",
@@ -892,5 +894,9 @@ provider_map = {
         'TF_FS': 'TF_FAST_SEARCH',
         'TF': 'TANTIFILM',  # Assuming 'TF' should also be handled
         'FT': 'FILMPERTUTTI',
-        'AW': 'ANIMEWORLD'
+        'AW': 'ANIMEWORLD',
+        'DDL': 'DDLSTREAM',
+        'CB': 'CB01',
+        "GS": "GUARDASERIE",
+        "GHD": "GUARDAHD",
     }

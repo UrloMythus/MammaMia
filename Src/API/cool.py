@@ -29,12 +29,9 @@ async def get_links(slug,season,episode,ismovie,client):
 
             response = await client.get(f'https://altadefinizioneapp.com/api/post/urls/stream/{slug}',cookies=cookies,headers=headers)
         elif ismovie == 0:
-            print("HERE SEASON",season)
-            print("HERE EPISODE",episode)
             request_url =f'https://altadefinizioneapp.com/api/post/urls/stream/{slug}/{season}/{episode}'
             print(request_url)
             response = await client.get(request_url,cookies=cookies,headers=headers)
-            print(response.text)
         try:
             video_data = response.json()  # Assuming this is the JSON response containing video streams
             if 'streams' not in video_data:
@@ -92,7 +89,6 @@ async def search_imdb(showname,tmdba,client):
                     tmdb_id = ''.join(char for char in tmdb_id if char.isdigit())
                     if tmdb_id == tmdba:
                         slug = item.get('slug')
-                        print(slug)
                         return slug
                     
 
@@ -100,11 +96,9 @@ async def search_imdb(showname,tmdba,client):
 def parse_links(resolution_links):  
     results = {}      
     if resolution_links:
-        print("Video links:")
         for resolution, link in resolution_links.items():
             if "cdn.altadefinizione-originale.com" in link or "cdn.altadefinizioneapp.com" in link:
                 link = link.replace("cdn.altadefinizione-originale.com","protectlinknt.b-cdn.net").replace("cdn.altadefinizioneapp.com","protectlinknt.b-cdn.net")
-            print(f"{resolution}: {link}")
             results[resolution] = link
         return results    
     else:
@@ -114,7 +108,7 @@ def parse_links(resolution_links):
 async def cool(imdb,client):
     try:
         type = "Cool"    
-        general = is_movie(imdb)
+        general = await is_movie(imdb)
         ismovie = general[0]
         imdb_id = general[1]
         if ismovie == 0 : 

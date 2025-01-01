@@ -1,0 +1,15 @@
+{
+    "devCommand": "uvicorn run:app --host 0.0.0.0 --port 8080",
+    "builds": [
+      {
+        "src": "run.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "run.py"
+      }
+    ]
+  }

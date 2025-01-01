@@ -4,23 +4,26 @@ import time
 from Src.Utilities.info import is_movie,get_info_imdb,get_info_tmdb
 import Src.Utilities.config as config
 from Src.Utilities.loadenv import load_env
-HF = config.HF
 env_vars = load_env()
-PROXY_CREDENTIALS = env_vars.get('PROXY_CREDENTIALS')
-ForwardProxy_list = config.ForwardProxy
-ForwardProxy = ForwardProxy_list[0]
+TF_PROXY = config.TF_PROXY
+if TF_PROXY == "1":
+    PROXY_CREDENTIALS = env_vars.get('PROXY_CREDENTIALS')
+TF_FORWARDPROXY = config.TF_ForwardProxy
+if TF_FORWARDPROXY == "1":
+    ForwardProxy = env_vars.get('ForwardProxy')
+else:
+    ForwardProxy = ""
 TF_DOMAIN = config.TF_DOMAIN
 import urllib.parse
 async def search(showname,ismovie,date,client):
-    showname = showname.replace(" ","%20")
-    showname = urllib.parse.quote_plus(showname)
+    showname = showname.replace(" ","+")
     url = f'https://www.tanti.bond/ajax/posts?q={showname}'
-    response =  await client.post(url, allow_redirects=True, impersonate = "chrome120")
+    response =  await client.get(url, allow_redirects=True)
     response = response.json()['data']
     if ismovie == 1:
         for link in response:
             url = link['url']
-            response = client.get(url, allow_redirects=True, impersonate = "chrome120")
+            response = await client.get(url, allow_redirects=True, impersonate = "chrome120")
             pattern = r'Data di rilascio\s*</div>\s*<div class="text">\s*(\d{4})\s*</div>'
             found_date = re.search(pattern, response.text)
             release_date = str(found_date.group(1))
@@ -107,7 +110,7 @@ async def get_protect_link(id,url,client):
                     soup = BeautifulSoup(response.text, "lxml", parse_only=SoupStrainer('iframe'))
                     protect_link = soup.iframe['src'] 
                     if "protect" in protect_link:
-                        url = true_url(protect_link)
+                        url = await true_url(protect_link,client)
                         links_dict[title] = url
             return  links_dict
                          # Get the value of the href attribute
@@ -159,7 +162,10 @@ async def true_url(protect_link,client):
         "Range": "bytes=0-",
         "Referer": "https://d000d.com/",
     }
-    if HF == "1":
+    doodstream_url = protect_link
+    proxies = {}
+
+    if TF_PROXY == "1":
         import random
         import json
         print(PROXY_CREDENTIALS)
@@ -172,14 +178,12 @@ async def true_url(protect_link,client):
                 "http": proxy,
                 "https": proxy
             }   
+    
+    elif TF_FORWARDPROXY == "1":
         response = await client.head(protect_link, allow_redirects=True, impersonate = "chrome120", proxies = proxies)
         doodstream_url = response.url
-    else:
-        proxies = {}
-        doodstream_url = protect_link
     response = await client.get(ForwardProxy + doodstream_url, allow_redirects=True, impersonate = "chrome120", proxies = proxies)
  
-    
     if response.status_code == 200:
         # Get unique timestamp for the request      
         real_time = str(int(time.time()))
@@ -199,7 +203,7 @@ async def true_url(protect_link,client):
             print("MammaMia: Found results for Tantifilm")
             return real_url
         else:
-            print("No match found in the text.")
+            print("Tantifilm: No match found in the text. Please be sure you are using a local instance")
             return None
   
     print("Error: Could not get the response.")
@@ -211,7 +215,7 @@ async def true_url(protect_link,client):
 async def tantifilm(imdb,client,TF_FAST_SEARCH):
     urls = None
     try:
-        general = is_movie(imdb)
+        general = await is_movie(imdb)
         ismovie = general[0]
         imdb_id = general[1]
         if ismovie == 0 : 
@@ -278,17 +282,18 @@ async def tantifilm(imdb,client,TF_FAST_SEARCH):
         return None 
     
 
-'''
+
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt6468322:1:1"  # This is an example ID format
+        test_id = "tt0816692"  # This is an example ID format
         results = await tantifilm(test_id, client,"0")
 
 if __name__ == "__main__":
     import asyncio
     asyncio.run(test_animeworld())
 
-'''
 
+
+ 

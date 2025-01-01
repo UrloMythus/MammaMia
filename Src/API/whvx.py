@@ -1,7 +1,7 @@
 from Src.Utilities.info import is_movie,get_info_imdb,get_info_tmdb
 import json
 import urllib.parse
-
+#This doesn't work anymore.
 headers = {
     'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:127.0) Gecko/20100101 Firefox/127.0',
     'Accept': '*/*',

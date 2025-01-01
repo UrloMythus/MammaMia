@@ -186,11 +186,11 @@ async def epg_guide(id,client):
         elif id in convert_bho_2:
             new_id = convert_bho_2[id]
             new_id = new_id.replace(" ","%20")
-            response = await client.get(f"https://mammamia-urlo-boh2.hf.space/{new_id}/now")
+            response = await client.get(f"https://aimammam-boh2.hf.space/{new_id}/now")
         elif id in convert_bho_3:
             new_id = convert_bho_3[id]
             new_id = new_id.replace(" ","%20")
-            response =  await client.get(f"https://mammamia-urlo-boh3.hf.space/{new_id}/now")
+            response =  await client.get(f"https://aimammam-boh3.hf.space/{new_id}/now")
         data = response.json()
         description = data['description'].replace("- EPG by epg-guide.com","").replace("No description","")
         title = data['title']
@@ -204,10 +204,10 @@ async def epg_guide(id,client):
 
 
 
-
-#async def test_animeworld():
+'''
+async def test_animeworld():
     async with httpx.AsyncClient() as client:
-        test_id = "rai-news"  # Replace with actual ID
+        test_id = "rai-1"  # Replace with actual ID
         try:
             results = await epg_guide(test_id, client)
             print(results)
@@ -216,7 +216,8 @@ async def epg_guide(id,client):
         except Exception as e:
             print(f"An error occurred: {e}")
 
-#if __name__ == "__main__":
+if __name__ == "__main__":
     import httpx
     import asyncio
     asyncio.run(test_animeworld())
+'''

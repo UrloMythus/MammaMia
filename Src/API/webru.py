@@ -3,6 +3,10 @@ from bs4 import BeautifulSoup,SoupStrainer
 import Src.Utilities.config as config
 from Src.Utilities.dictionaries import webru_vary,webru_dlhd,skystreaming
 from Src.Utilities.loadenv import load_env
+from urllib.parse import urlparse
+import re
+TF_DOMAIN = config.TF_DOMAIN
+DLHD_DOMAIN = config.DLHD_DOMAIN
 env_vars = load_env()
 MEDIAFLOW_PASS = env_vars.get('MEDIAFLOW_PASS')
 Referer = "https://ilovetoplay.xyz/"
@@ -25,23 +29,50 @@ headers = {
     "Cache-Control": "no-cache",
 }
 
-medialink = config.MediaProxy
-async def get_stream_link(id,site):
+async def get_stream_link(id,site,MFP_CREDENTIALS,client):
     try:
         if site == "dlhd":
-            stream_url = "https://xyzdddd.mizhls.ru/lb/" + webru_dlhd[id] + "/index.m3u8"
-        elif site == "vary":
-            stream_url = "https://webuit.mizhls.ru/lb/"+ webru_vary[id] + "/index.m3u8"
-        mediaproxy = config.MediaProxy
-        medialink = random.choice(mediaproxy)
-        new_stream_url = f'{medialink}proxy/hls/manifest.m3u8?api_password={MEDIAFLOW_PASS}&d={stream_url}&h_Referer={Referer}&h_Origin={Origin}&h_User-Agent=Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F58.0.3029.110%20Safari%2F537.3'
+            response = await client.get(f"https://thedaddy.{DLHD_DOMAIN}/embed/stream-853.php", impersonate = "chrome124", headers = headers)
+            soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('iframe'))
+            iframe = soup.find('iframe', id='thatframe')
+            real_link = iframe.get('src')
+            response = await client.get(real_link, allow_redirects = False) 
+            pattern = r"source:\s*'([^']*\.m3u8)'"
+            match = re.search(pattern, response.text)
+            if match:
+                m3u8_url = match.group(1)  # The URL is captured in the first capturing group
+                parsed_url = urlparse(m3u8_url)
+                domain = parsed_url.netloc
 
-        return stream_url,Referer,Origin
+            else:
+                print("No .m3u8 URL found.")
+            stream_url = f"https://{domain}/lb/" + webru_dlhd[id] + "/index.m3u8"
+        elif site == "vary":
+            response = await client.get(f"https://www.tanti.{TF_DOMAIN}/tv-channel/sky-cinema-action-2", impersonate = "chrome124", headers = headers)
+            soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('iframe'))
+            iframe = soup.find('iframe', class_='embed-responsive-item') 
+            real_link = iframe.get('src')
+            response = await client.get(real_link, allow_redirects = False) 
+            pattern = r"source:\s*'([^']*\.m3u8)'"
+            match = re.search(pattern, response.text)
+            if match:
+                m3u8_url = match.group(1)  # The URL is captured in the first capturing group
+                parsed_url = urlparse(m3u8_url)
+                domain = parsed_url.netloc
+
+            else:
+                print("No .m3u8 URL found.")
+            stream_url = f"https://{domain}/lb/"+ webru_vary[id] + "/index.m3u8"
+        mfp_url = MFP_CREDENTIALS[0]
+        mfp_pass = MFP_CREDENTIALS[1]
+        new_stream_url = f'{mfp_url}/proxy/hls/manifest.m3u8?api_password={mfp_pass}&d={stream_url}&h_Referer={Referer}&h_Origin={Origin}&h_User-Agent=Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F58.0.3029.110%20Safari%2F537.3'
+
+        return new_stream_url
     except Exception as e:
         return None
-async def webru(id,site,client):
+async def webru(id,site,client,MFP_CREDENTIALS):
     try:
-        new_stream_url = await get_stream_link(id,site,client)
+        new_stream_url = await get_stream_link(id,site,MFP_CREDENTIALS,client)
         
         return new_stream_url
     except Exception as e:
@@ -94,22 +125,20 @@ async def get_skystreaming_url(skystreaming_link,client):
 
 
 
-    '''
-    async def webru(id,site,client):
+'''
+async def webru(id,site,client,MFP_CREDENTIALS):
     try:
         stream_url, Referer,Origin = await get_stream_link(id,site,client)
-        mediaproxy = config.MediaProxy
-        medialink = random.choice(mediaproxy)
-        new_stream_url = f'{medialink}proxy/hls/manifest.m3u8?api_password={MEDIAFLOW_PASS}&d={stream_url}&h_Referer={Referer}&h_Origin={Origin}&h_User-Agent=Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F58.0.3029.110%20Safari%2F537.3'
+        mfp_url = MFP_CREDENTIALS[0]
+        mfp_pass = MFP_CREDENTIALS[1]
+        new_stream_url = f'{mfp_url}/proxy/hls/manifest.m3u8?api_password={mfp_pass}&d={stream_url}&h_Referer={Referer}&h_Origin={Origin}&h_User-Agent=Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F58.0.3029.110%20Safari%2F537.3'
         return new_stream_url
     except Exception as e:
         print("WebRu failed",e)
         return None
-    '''
-
-
-
-async def webru(id,site,client):
+'''
+'''
+async def webru2(id,site,client):
     try:
         print(id)
         if site == "vary":
@@ -129,8 +158,8 @@ async def webru(id,site,client):
         print("WorldSport failed",e)
         return None
     
-
-    '''
+'''
+'''
     if id in skystreaming:
                         i = i+1
                         url,Host = await get_skystreaming(id,client)

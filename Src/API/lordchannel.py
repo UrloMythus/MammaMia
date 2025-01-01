@@ -62,16 +62,15 @@ async def search(showname,date,season,episode,ismovie,client):
 
 async def get_m3u8(video_url,client):
     response = await client.get(video_url, allow_redirects=True, impersonate = "chrome120")
-    pattern = r'const\s+videoData\s*=\s*\[(.*?)\];'
+    pattern = r'https?://[^\s]+\.m3u8'
     match = re.search(pattern, response.text)
     if match:
-       video_data = match.group(1).strip().split(', ')
-       url = video_data[0]
+       url = match.group(0)
        return url
 
 async def lordchannel(imdb,client):
     try:
-        general = is_movie(imdb)
+        general = await is_movie(imdb)
         ismovie = general[0]
         imdb_id = general[1]
         type = "LordChannel"
@@ -99,7 +98,6 @@ async def lordchannel(imdb,client):
         print("MammaMia: Lordchannel Failed",e)
         return None,None
     
-
 '''
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
@@ -110,4 +108,5 @@ async def test_animeworld():
 if __name__ == "__main__":
     import asyncio
     asyncio.run(test_animeworld())  
+    #python3 -m Src.API.lordchannel
 '''

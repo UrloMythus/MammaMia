@@ -1,41 +1,80 @@
 {
   "Siti": {
          "StreamingCommunity": {
-             "domain": "buzz"
+             "domain": "prof",
+             "SC_ForwardProxy": "0",
+             "SC_PROXY": "0",
+             "enabled": "1"
          },
          "Filmpertutti": {
-             "domain": "diy"
+             "domain": "app",
+             "enabled": "1"
          },
          "Tantifilm":{
-             "domain": "bond"
+             "domain": "bond",
+             "TF_ForwardProxy": "0",
+             "TF_PROXY": "0",
+             "enabled": "1"
          },
          "Mysterius":{
              "enabled": "0"    
          },
         "LordChannel":{
-             "domain":"com"
+             "domain":"com",
+             "enabled":"1"
         },
         "StreamingWatch":{
-            "domain":"org"
+            "domain":"org",
+            "enabled":"1"
+        },
+        "CB01":{
+            "domain":"stream",
+            "CB_PROXY":"0",
+            "enabled":"1"
+        },
+        "DDLStream":{
+            "domain":"co",
+            "cookies" : {
+                "ips4_device_key": null,
+                "ips4_IPSSessionFront": null,
+                "ips4_member_id": null,
+                "ips4_login_key": null
+                },
+            "enabled":"1"
+        },
+        "Guardaserie":{
+            "domain":"academy",
+            "enabled":"1",
+            "GS_ForwardProxy":"0",
+            "GS_PROXY":"0"
+        },
+        "GuardaHD":{
+            "domain":"stream",
+            "enabled":"1",
+            "GH_ForwardProxy":"0",
+            "GH_PROXY":"0"
         },
         "AnimeWorld":{
-            "domain":"so"
+            "domain":"so",
+            "enabled":"1"
         },
         "SkyStreaming":{
-            "domain":"guru"
+            "domain":"my",
+            "enabled":"1"
         },
         "DaddyLiveHD":{
+            "domain":"to",
             "enabled":"1"
         }
  },
  "General":{
-     "load_env": "1",
+     "load_env": "0",
      "HOST": "0.0.0.0",
      "PORT": "8080",
-     "HF": "0",
+     "Name": "MammaMia",
+     "Icon": "🍕️",
      "Public_Instance": "0",
-     "MediaProxy": ["http://mammamia-urlo.serv00.net:1984/"],
-     "ForwardProxy": [""],
-     "Proxy": [""]
- }
+     "Remote_Instance": "1",
+     "Global_Proxy": "0"
+     }
 }

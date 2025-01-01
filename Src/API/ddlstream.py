@@ -3,16 +3,23 @@ import re
 from bs4 import BeautifulSoup, SoupStrainer
 from Src.Utilities.info import get_info_imdb, is_movie, get_info_tmdb
 import urllib.parse
+import Src.Utilities.config as config
+import urllib.parse
+DDL_DOMAIN = config.DDL_DOMAIN
+ips4_device_key = config.ips4_device_key
+ips4_login_key = config.ips4_login_key
+ips4_member_id = config.ips4_member_id
+ips4_IPSSessionFront = config.ips4_IPSSessionFront
 cookies = {
-    'ips4_device_key': 'b6f084be79c28bb53ecfc556fd7a2a70',
-    'ips4_IPSSessionFront': 'f2b9db91793e084cf2003a07c563e6aa',
-    'ips4_member_id': '4029711',
-    'ips4_login_key': '41b6a70b16cce2fd39482f5b21a9c35f',
+    'ips4_device_key': ips4_device_key,
+    'ips4_IPSSessionFront': ips4_IPSSessionFront,
+    'ips4_member_id': ips4_member_id,
+    'ips4_login_key': ips4_login_key,
     }
 
 async def search_series(client,id,season,episode,showname):
     showname = showname.replace(" ", "%20").replace("–", "+").replace("—","+")
-    response = await client.get(f"https://ddlstreamitaly.co/search/?&q={showname}%20{season}%20Streaming&type=videobox_video&quick=1&nodes=11&search_and_or=and&search_in=titles&sortby=relevancy")
+    response = await client.get(f"https://ddlstreamitaly.{DDL_DOMAIN}/search/?&q={showname}%20{season}%20Streaming&type=videobox_video&quick=1&nodes=11,36&search_and_or=and&search_in=titles&sortby=relevancy")
     soup = BeautifulSoup(response.text, 'lxml',parse_only=SoupStrainer('a'))
     a_tags = soup.find_all('a', {'data-linktype': 'link'})
     for a in a_tags:
@@ -58,10 +65,7 @@ async def get_episode(client,link,episode):
     }
 
 
-
-    episode = "6"
     response = await client.get(link, cookies = cookies, headers = headers, params = params, impersonate="chrome120")
-    print(link)
 
     pattern = rf'<a\s+href="([^"]+)"[^>]*>\s*Part {episode}\s*</a>'
     match = re.search(pattern, response.text)
@@ -71,9 +75,9 @@ async def get_episode(client,link,episode):
     return mp4_link
 
 async def search_movie(client,showname,id):
-    showname = showname.replace(" ", "%20").replace("–", "+").replace("—","+")
-    showname = urllib.parse.quote_plus(showname)
-    link = f"https://ddlstreamitaly.co/search/?&q={showname}%20Streaming&quick=1&nodes=11&search_and_or=and&search_in=titles&sortby=relevancy"
+    showname = showname.replace("–", "+").replace("—","+")
+    showname = urllib.parse.quote(showname)
+    link = f"https://ddlstreamitaly.{DDL_DOMAIN}/search/?&q={showname}%20Streaming&quick=1&nodes=11&search_and_or=and&search_in=titles&sortby=relevancy"    
     response = await client.get(link,impersonate = "chrome120")
     soup = BeautifulSoup(response.text, 'lxml',parse_only=SoupStrainer('a'))
     a_tags = soup.find_all('a', {'data-linktype': 'link'})
@@ -116,13 +120,12 @@ async def get_mp4(client,link):
 
 async def ddlstream(imdb,client):
     try:
-        general = is_movie(imdb)
+        general = await is_movie(imdb)
         ismovie = general[0]
         id = general[1]
         type = "DDLStream"
         if "tt" in imdb:
                 showname = await get_info_imdb(id,ismovie,type,client)
-                print(showname)
         else:
             showname = get_info_tmdb(id,ismovie,type)
         if ismovie == 0:
@@ -131,24 +134,22 @@ async def ddlstream(imdb,client):
             page_link = await search_series(client,id,season,episode,showname)
             mp4_link = await get_episode(client,page_link,episode)
             final_url = await get_mp4(client,mp4_link)
-            print(final_url)
             return final_url
         else:
              page_link = await search_movie(client,showname,id)
              mp4_link = page_link + "?area=online"
              final_url = await get_mp4(client,mp4_link)
-             print(final_url) 
              return final_url
             
     except Exception as e:
         print(f"MammaMia: DDLStream Failed {e}")
-        return None,None
+        return None
     
-'''
+
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
-        test_id = "tt6263850"  # This is an example ID format
+        test_id = "tt14948432"  # This is an example ID format
         results = await ddlstream(test_id, client)
         print(results)
 
@@ -158,4 +159,3 @@ if __name__ == "__main__":
 
 
     #python3 -m Src.API.ddlstream
-'''

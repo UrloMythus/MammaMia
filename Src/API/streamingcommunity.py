@@ -9,8 +9,27 @@ from urllib.parse import urlparse, parse_qs
 from fake_headers import Headers  
 from Src.Utilities.loadenv import load_env  
 import urllib.parse
+User_Agent= "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 OPR/111.0.0.0"
 
 env_vars = load_env()
+SC_PROXY = config.SC_PROXY
+proxies = {}
+if SC_PROXY == "1":
+    PROXY_CREDENTIALS = env_vars.get('PROXY_CREDENTIALS')
+    proxy_list = json.loads(PROXY_CREDENTIALS)
+    proxy = random.choice(proxy_list)
+    if proxy == "":
+        proxies = {}
+    else:
+        proxies = {
+            "http": proxy,
+            "https": proxy
+        }   
+SC_ForwardProxy = config.SC_ForwardProxy
+if SC_ForwardProxy == "1":
+    ForwardProxy = env_vars.get('ForwardProxy')
+else:
+    ForwardProxy = ""
 #Get domain
 SC_DOMAIN = config.SC_DOMAIN
 Public_Instance = config.Public_Instance
@@ -27,7 +46,7 @@ async def get_version(client):
         random_headers['Referer'] = f"https://streamingcommunity.{SC_DOMAIN}/"
         random_headers['Origin'] = f"https://streamingcommunity.{SC_DOMAIN}"
         base_url = f'https://streamingcommunity.{SC_DOMAIN}/richiedi-un-titolo' 
-        response = await client.get(base_url, headers=random_headers, allow_redirects = True, impersonate="chrome120")
+        response = await client.get(ForwardProxy + base_url, headers=random_headers, allow_redirects = True, impersonate="chrome124", proxies = proxies)
         #Soup the response
         soup = BeautifulSoup(response.text, "lxml")
 
@@ -46,7 +65,7 @@ async def search(query,date,ismovie, client,SC_FAST_SEARCH,movie_id):
     random_headers['Accept'] = 'application/json'  # Assuming the API returns JSON
     random_headers['Content-Type'] = 'application/json'
     #Do a request to get the ID of serie/move and it's slug in the URL
-    response = await client.get(query, headers = random_headers, allow_redirects=True)
+    response = await client.get(ForwardProxy + query, headers = random_headers, allow_redirects=True, impersonate = "chrome124", proxies = proxies)
     print(response)
     response = response.json()
 
@@ -64,7 +83,7 @@ async def search(query,date,ismovie, client,SC_FAST_SEARCH,movie_id):
                 random_headers = headers.generate()
                 random_headers['Referer'] = "https://streamingcommunity.buzz/"
                 random_headers['Origin'] = "https://streamingcommunity.buzz"
-                response = await client.get ( f'https://streamingcommunity.{SC_DOMAIN}/titles/{tid}-{slug}', headers = random_headers, allow_redirects=True,impersonate = "chrome120")
+                response = await client.get ( ForwardProxy + f'https://streamingcommunity.{SC_DOMAIN}/titles/{tid}-{slug}', headers = random_headers, allow_redirects=True,impersonate = "chrome124", proxies = proxies)
                 soup = BeautifulSoup(response.text, "lxml")
                 data = json.loads(soup.find("div", {"id": "app"}).get("data-page"))
                 version = data['version']
@@ -87,9 +106,11 @@ async def get_film(tid,version,client):
     random_headers['Origin'] = "https://streamingcommunity.buzz"
     random_headers['x-inertia'] = "true"
     random_headers['x-inertia-version'] = version
+    random_headers['User-Agent'] = User_Agent
+    random_headers['user-agent'] = User_Agent
     #Access the iframe
     url = f'https://streamingcommunity.{SC_DOMAIN}/iframe/{tid}'
-    response = await client.get(url, headers=random_headers, allow_redirects=True,impersonate = "chrome120")
+    response = await client.get(ForwardProxy + url, headers=random_headers, allow_redirects=True,impersonate = "chrome124", proxies = proxies)
     iframe = BeautifulSoup(response.text, 'lxml')
     #Get the link of iframe
     iframe = iframe.find('iframe').get("src")
@@ -98,25 +119,33 @@ async def get_film(tid,version,client):
     parsed_url = urlparse(iframe)
     query_params = parse_qs(parsed_url.query)
     random_headers = headers.generate()
-    random_headers['Referer'] = "https://streamingcommunity.buzz/"
-    random_headers['Origin'] = "https://streamingcommunity.buzz"
+    random_headers['Referer'] = f"https://streamingcommunity.{SC_DOMAIN}/"
+    random_headers['Origin'] = f"https://streamingcommunity.{SC_DOMAIN}"
     random_headers['x-inertia'] = "true"
     random_headers['x-inertia-version'] = version
+    random_headers['User-Agent'] = User_Agent
+    random_headers['user-agent'] = User_Agent
     #Get real token and expires by looking at the page in the iframe, vixcloud/embed
-    resp = await client.get(iframe, headers = random_headers, allow_redirects=True,impersonate= "chrome120")
+    resp = await client.get(ForwardProxy + iframe, headers = random_headers, allow_redirects=True,impersonate= "chrome124", proxies = proxies)
     soup=  BeautifulSoup(resp.text, "lxml")
     script = soup.find("body").find("script").text
     token = re.search(r"'token':\s*'(\w+)'", script).group(1)
     expires = re.search(r"'expires':\s*'(\d+)'", script).group(1)
     quality = re.search(r'"quality":(\d+)', script).group(1)
+    base_url = re.search(r"url:\s*'(https?://[^']+)'", script).group(1)  
     #Example url  https://vixcloud.co/playlist/231315?b=1&token=bce060eec3dc9d1965a5d258dc78c964&expires=1728995040&rendition=1080p
-    url = f'https://vixcloud.co/playlist/{vixid}.m3u8?expires={expires}'
+    url = f'https://vixcloud.co/playlist/{vixid}.m3u8?token={token}&expires={expires}'
     if 'canPlayFHD' in query_params:
        canPlayFHD = 'h=1'
        url += "&h=1"
+    if 'b=1' in base_url:
+         url += "&b=1"   
+    '''   
     if 'b' in query_params:
        b = 'b=1'
        url += "&b=1"
+    '''
+    '''
     if quality == "1080":
         if "&h" in url:
             url = url
@@ -125,7 +154,8 @@ async def get_film(tid,version,client):
         elif quality == "1080" and "&b" and "&h" not in url:
             url = url + "&h=1"
     else:
-        url = url + f"&token={token}"        
+        url = url + f"&token={token}"      
+    '''  
     url720 = f'https://vixcloud.co/playlist/{vixid}.m3u8'
     return url,url720,quality
 
@@ -135,9 +165,10 @@ async def get_season_episode_id(tid,slug,season,episode,version,client):
     random_headers['Origin'] = "https://streamingcommunity.buzz"
     random_headers['x-inertia'] = "true"
     random_headers['x-inertia-version'] = version
+    
     #Set some basic headers for the request  
       #Get episode ID 
-    response = await client.get(f'https://streamingcommunity.{SC_DOMAIN}/titles/{tid}-{slug}/stagione-{season}', headers=random_headers, allow_redirects=True, impersonate = "chrome120")
+    response = await client.get(ForwardProxy + f'https://streamingcommunity.{SC_DOMAIN}/titles/{tid}-{slug}/stagione-{season}', headers=random_headers, allow_redirects=True, impersonate = "chrome124", proxies = proxies)
     # Print the json got
     json_response = response.json().get('props', {}).get('loadedSeason', {}).get('episodes', [])
     for dict_episode in json_response:
@@ -147,42 +178,49 @@ async def get_season_episode_id(tid,slug,season,episode,version,client):
 async def get_episode_link(episode_id,tid,version,client):
     #The parameters for the request
     random_headers = headers.generate()
-    random_headers['Referer'] = "https://streamingcommunity.buzz/"
-    random_headers['Origin'] = "https://streamingcommunity.buzz"
+    random_headers['Referer'] = f"https://streamingcommunity.{SC_DOMAIN}/"
+    random_headers['Origin'] = f"https://streamingcommunity.{SC_DOMAIN}"
+    random_headers['User-Agent'] = User_Agent
+    random_headers['user-agent'] = User_Agent
     params = {
                 'episode_id': episode_id, 
                 'next_episode': '1'
             }
     #Let's try to get the link from iframe source
         # Make a request to get iframe source
-    response = await client.get(f"https://streamingcommunity.{SC_DOMAIN}/iframe/{tid}", params=params, headers = random_headers, allow_redirects=True, impersonate = "chrome120")
+    response = await client.get(ForwardProxy + f"https://streamingcommunity.{SC_DOMAIN}/iframe/{tid}", params=params, headers = random_headers, allow_redirects=True, impersonate = "chrome124", proxies = proxies)
 
     # Parse response with BeautifulSoup to get iframe source
     soup = BeautifulSoup(response.text, "lxml")
     iframe = soup.find("iframe").get("src")
     vixid = iframe.split("/embed/")[1].split("?")[0]
     random_headers = headers.generate()
-    random_headers['Referer'] = "https://streamingcommunity.buzz/"
-    random_headers['Origin'] = "https://streamingcommunity.buzz"
+    random_headers['Referer'] = f"https://streamingcommunity.{SC_DOMAIN}/"
+    random_headers['Origin'] = f"https://streamingcommunity.{SC_DOMAIN}"
     random_headers['x-inertia'] = "true"
     random_headers['x-inertia-version'] = version
+    random_headers['User-Agent'] = User_Agent
+    random_headers['user-agent'] = User_Agent
     parsed_url = urlparse(iframe)
     query_params = parse_qs(parsed_url.query)
     #Get real token and expires by looking at the page in the iframe, vixcloud/embed
-    resp = await client.get(iframe, headers = random_headers, allow_redirects=True, impersonate = "chrome120")
+    resp = await client.get(ForwardProxy + iframe, headers = random_headers, allow_redirects=True, impersonate = "chrome124", proxies = proxies)
     soup=  BeautifulSoup(resp.text, "lxml")
     script = soup.find("body").find("script").text
     token = re.search(r"'token':\s*'(\w+)'", script).group(1)
     expires = re.search(r"'expires':\s*'(\d+)'", script).group(1)
     quality = re.search(r'"quality":(\d+)', script).group(1)
+    base_url = re.search(r"url:\s*'(https?://[^']+)'", script).group(1)  
+
     #Example url  https://vixcloud.co/playlist/231315?b=1&token=bce060eec3dc9d1965a5d258dc78c964&expires=1728995040&rendition=1080p
-    url = f'https://vixcloud.co/playlist/{vixid}.m3u8?expires={expires}'
+    url = f'https://vixcloud.co/playlist/{vixid}.m3u8?token={token}&expires={expires}'
     if 'canPlayFHD' in query_params:
        canPlayFHD = 'h=1'
        url += "&h=1"
-    if 'b' in query_params:
+    if 'b=1' in base_url:
        b = 'b=1'
        url += "&b=1"
+    '''
     if quality == "1080":
         if "&h" in url:
             url = url
@@ -191,13 +229,15 @@ async def get_episode_link(episode_id,tid,version,client):
         elif quality == "1080" and "&b" and "&h" not in url:
             url = url + "&h=1"
     else:
-        url = url + f"&token={token}"        
+        url = url + f"&token={token}"
+    '''        
     url720 = f'https://vixcloud.co/playlist/{vixid}.m3u8'
     return url,url720,quality
 
 
 async def streaming_community(imdb,client,SC_FAST_SEARCH):
     try:
+        '''
         if Public_Instance == "1":
             Weird_Link = json.loads(Alternative_Link)
             link_post = random.choice(Weird_Link)
@@ -207,7 +247,8 @@ async def streaming_community(imdb,client,SC_FAST_SEARCH):
             quality_sc = response.headers.get('x-quality-sc')
             print(quality_sc,url_streaming_community)
             return url_streaming_community,url_720_streaming_community,quality_sc
-        general = is_movie(imdb)
+        '''
+        general = await is_movie(imdb)
         ismovie = general[0]
         imdb_id = general[1]
 
@@ -271,16 +312,15 @@ async def streaming_community(imdb,client,SC_FAST_SEARCH):
     except Exception as e:
         print("MammaMia: StreamingCommunity failed",e)
         return None,None,None,None
-'''
+
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt0095765"  # This is an example ID format
+        test_id = "tt6468322:1:1"  # This is an example ID format
         results = await streaming_community(test_id, client,"0")
         print(results)
 
 if __name__ == "__main__":
     import asyncio
     asyncio.run(test_animeworld())
-'''
