@@ -30,7 +30,7 @@ random_headers = Headers()
 
 async def get_supervideo_link(link,client):
     headers = random_headers.generate()
-    response = await client.get(ForwardProxy + link, headers=headers, allow_redirects=True,timeout = 30)
+    response = await client.get(ForwardProxy + link, headers=headers, allow_redirects=True,timeout = 30, proxies = proxies)
     s2 = re.search(r"\}\('(.+)',.+,'(.+)'\.split", response.text).group(2)
     terms = s2.split("|")
     file_index = terms.index('file')
