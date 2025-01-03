@@ -301,9 +301,9 @@ async def addon_stream(request: Request,config, type, id,):
                             instance_url = f"{scheme}://{request.url.netloc}"
                             url_streaming_community = url_streaming_community.replace("?","&")
                             url_streaming_community = instance_url + "/vixcloud/manifest.m3u8?d=" + url_streaming_community
-                            streams['streams'].append({"name":f'{Name}\n{quality} Max', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}','url': url_streaming_community,'behaviorHints': {'bingeGroup': f'streamingcommunity{quality}'}})
+                            streams['streams'].append({"name":f'{Name}\n{quality_sc} Max', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}','url': url_streaming_community,'behaviorHints': {'bingeGroup': f'streamingcommunity{quality_sc}'}})
                         else:
-                            streams['streams'].append({"name":f'{Name}\n{quality} Max', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}','url': url_streaming_community,'behaviorHints': {'proxyHeaders': {"request": {"user-agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': f'streamingcommunity{quality}'}})
+                            streams['streams'].append({"name":f'{Name}\n{quality_sc} Max', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}','url': url_streaming_community,'behaviorHints': {'proxyHeaders': {"request": {"user-agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
 
                 if provider_maps['LORDCHANNEL'] == "1" and LC == "1":
                     url_lordchannel,quality_lordchannel = await lordchannel(id,client)
