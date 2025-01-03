@@ -50,9 +50,20 @@ async def clony_m3u8(segment: str, request: Request):
     m3u8_content = await fetch_m3u8(full_url)
     return Response(content=m3u8_content, media_type='application/vnd.apple.mpegurl')
  
-@router.api_route("/storage/enc.key", methods=["GET", "HEAD"])
+@router.api_route('/storage/enc.key')
 async def get_key():
-    async with AsyncSession() as client:
-        response = await client.get("https://vixcloud.co/storage/enc.key",headers = {"User-Agent": User_Agent, "user-agent": User_Agent})
-        response.raise_for_status()  # Raise an error for bad responses
-        return response.text
+    async with AsyncSession(timeout = 20) as client:
+        response = await client.get('https://vixcloud.co/storage/enc.key', headers = {"User-Agent": User_Agent, "user-agent": User_Agent})
+    
+    response_headers = {
+        'date': response.headers['date'],
+        'content-length': response.headers['content-length'],
+        'content-type': 'application/octet-stream',
+        'access-control-allow-origin': '*'
+    }
+    
+    return Response(
+        response.content,
+        response.status_code,
+        response_headers
+    )
