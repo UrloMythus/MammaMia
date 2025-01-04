@@ -60,8 +60,8 @@ async def get_version(client):
 
 async def search(query,date,ismovie, client,SC_FAST_SEARCH,movie_id):
     random_headers = headers.generate()
-    random_headers['Referer'] = "https://streamingcommunity.buzz/"
-    random_headers['Origin'] = "https://streamingcommunity.buzz"
+    random_headers['Referer'] = f"https://streamingcommunity.{SC_DOMAIN}/"
+    random_headers['Origin'] = f"https://streamingcommunity.{SC_DOMAIN}"
     random_headers['Accept'] = 'application/json'  # Assuming the API returns JSON
     random_headers['Content-Type'] = 'application/json'
     #Do a request to get the ID of serie/move and it's slug in the URL
@@ -81,8 +81,8 @@ async def search(query,date,ismovie, client,SC_FAST_SEARCH,movie_id):
             #Added a Check to see if the result is what it is supposed to be
             if SC_FAST_SEARCH == "0":
                 random_headers = headers.generate()
-                random_headers['Referer'] = "https://streamingcommunity.buzz/"
-                random_headers['Origin'] = "https://streamingcommunity.buzz"
+                random_headers['Referer'] = f"https://streamingcommunity.{SC_DOMAIN}/"
+                random_headers['Origin'] = f"https://streamingcommunity.{SC_DOMAIN}"
                 response = await client.get ( ForwardProxy + f'https://streamingcommunity.{SC_DOMAIN}/titles/{tid}-{slug}', headers = random_headers, allow_redirects=True,impersonate = "chrome124", proxies = proxies)
                 soup = BeautifulSoup(response.text, "lxml")
                 data = json.loads(soup.find("div", {"id": "app"}).get("data-page"))
@@ -102,8 +102,8 @@ async def search(query,date,ismovie, client,SC_FAST_SEARCH,movie_id):
         
 async def get_film(tid,version,client):  
     random_headers = headers.generate()
-    random_headers['Referer'] = "https://streamingcommunity.buzz/"
-    random_headers['Origin'] = "https://streamingcommunity.buzz"
+    random_headers['Referer'] = f"https://streamingcommunity.{SC_DOMAIN}/"
+    random_headers['Origin'] = f"https://streamingcommunity.{SC_DOMAIN}"
     random_headers['x-inertia'] = "true"
     random_headers['x-inertia-version'] = version
     random_headers['User-Agent'] = User_Agent
@@ -161,8 +161,8 @@ async def get_film(tid,version,client):
 
 async def get_season_episode_id(tid,slug,season,episode,version,client):
     random_headers = headers.generate()
-    random_headers['Referer'] = "https://streamingcommunity.buzz/"
-    random_headers['Origin'] = "https://streamingcommunity.buzz"
+    random_headers['Referer'] = f"https://streamingcommunity.{SC_DOMAIN}/"
+    random_headers['Origin'] = f"https://streamingcommunity.{SC_DOMAIN}"
     random_headers['x-inertia'] = "true"
     random_headers['x-inertia-version'] = version
     
