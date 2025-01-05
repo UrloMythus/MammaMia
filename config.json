@@ -13,7 +13,7 @@
          "Tantifilm":{
              "domain": "bond",
              "TF_ForwardProxy": "0",
-             "TF_PROXY": "0",
+             "TF_PROXY": "1",
              "enabled": "1"
          },
          "Mysterius":{
@@ -46,13 +46,13 @@
             "domain":"academy",
             "enabled":"1",
             "GS_ForwardProxy":"0",
-            "GS_PROXY":"0"
+            "GS_PROXY":"1"
         },
         "GuardaHD":{
             "domain":"stream",
             "enabled":"1",
             "GH_ForwardProxy":"0",
-            "GH_PROXY":"0"
+            "GH_PROXY":"1"
         },
         "AnimeWorld":{
             "domain":"so",
@@ -71,8 +71,8 @@
      "load_env": "0",
      "HOST": "0.0.0.0",
      "PORT": "8080",
-     "Name": "SC",
-     "Icon": "👽",
+     "Name": "HTTPS_ITA",
+     "Icon": "🚀",
      "Public_Instance": "0",
      "Remote_Instance": "1",
      "Global_Proxy": "0"
