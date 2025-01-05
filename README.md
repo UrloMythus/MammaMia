@@ -130,7 +130,7 @@ How do I handle Updates ? First of all you will need to go to your GitHub Repo a
 
 ## Render
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/UrloMythus/MammaMia)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/TheLiukas/MammaMia)
 
   
 
