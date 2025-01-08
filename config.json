@@ -3,7 +3,7 @@
          "StreamingCommunity": {
              "domain": "prof",
              "SC_ForwardProxy": "0",
-             "SC_PROXY": "0",
+             "SC_PROXY": "1",
              "enabled": "1"
          },
          "Filmpertutti": {
@@ -45,13 +45,13 @@
         "Guardaserie":{
             "domain":"academy",
             "enabled":"1",
-            "GS_ForwardProxy":"0",
+            "GS_ForwardProxy":"1",
             "GS_PROXY":"1"
         },
         "GuardaHD":{
             "domain":"stream",
             "enabled":"1",
-            "GH_ForwardProxy":"0",
+            "GH_ForwardProxy":"1",
             "GH_PROXY":"1"
         },
         "AnimeWorld":{
