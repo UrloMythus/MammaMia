@@ -296,7 +296,6 @@ async def addon_stream(request: Request,config, type, id,):
                     if url_streaming_community is not None:
                         print(f"StreamingCommunity Found Results for {id}")
                         if Remote_Instance == "1":
-                            from urllib.parse import quote
                             forwarded_proto = request.headers.get("x-forwarded-proto")
                             scheme = forwarded_proto if forwarded_proto else request.url.scheme
                             instance_url = f"{scheme}://{request.url.netloc}"
