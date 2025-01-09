@@ -3,9 +3,9 @@
            "StreamingCommunity": {
                "domain": "prof",
                "SC_ForwardProxy": "0",
-               "SC_PROXY": "0",
+               "SC_PROXY": "1",
                "VX_ForwardProxy": "0",
-               "VX_PROXY": "0",
+               "VX_PROXY": "1",
                "enabled": "1"
            },
            "Filmpertutti": {
@@ -15,7 +15,7 @@
            "Tantifilm":{
                "domain": "bond",
                "TF_ForwardProxy": "0",
-               "TF_PROXY": "0",
+               "TF_PROXY": "1",
                "enabled": "1"
            },
            "Mysterius":{
@@ -31,10 +31,10 @@
           },
           "CB01":{
               "domain":"sbs",
-              "CB_PROXY":"0",
+              "CB_PROXY":"1",
               "CB_ForwardProxy":"0",
               "MX_ForwardProxy":"0",
-              "MX_PROXY":"0",
+              "MX_PROXY":"1",
               "enabled":"1"
           },
           "DDLStream":{
@@ -51,19 +51,19 @@
               "domain":"academy",
               "enabled":"1",
               "GS_ForwardProxy":"0",
-              "GS_PROXY":"0"
+              "GS_PROXY":"1"
           },
           "GuardaHD":{
               "domain":"stream",
               "enabled":"1",
               "GH_ForwardProxy":"0",
-              "GH_PROXY":"0"
+              "GH_PROXY":"1"
           },
           "AnimeWorld":{
               "domain":"so",
               "enabled":"1",
               "AW_ForwardProxy":"0",
-              "AW_PROXY":"0"
+              "AW_PROXY":"1"
           },
           "SkyStreaming":{
               "domain":"my",
@@ -78,8 +78,8 @@
        "load_env": "0",
        "HOST": "0.0.0.0",
        "PORT": "8080",
-       "Name": "MammaMia",
-       "Icon": "🍕️",
+       "Name": "MFP+PROXY",
+       "Icon": "🎱",
        "Public_Instance": "0",
        "Remote_Instance": "1",
        "Global_Proxy": "0"
