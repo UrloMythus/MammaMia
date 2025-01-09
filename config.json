@@ -3,7 +3,7 @@
            "StreamingCommunity": {
                "domain": "prof",
                "SC_ForwardProxy": "0",
-               "SC_PROXY": "1",
+               "SC_PROXY": "0",
                "VX_ForwardProxy": "0",
                "VX_PROXY": "1",
                "enabled": "1"
@@ -31,7 +31,7 @@
           },
           "CB01":{
               "domain":"sbs",
-              "CB_PROXY":"1",
+              "CB_PROXY":"0",
               "CB_ForwardProxy":"0",
               "MX_ForwardProxy":"0",
               "MX_PROXY":"1",
