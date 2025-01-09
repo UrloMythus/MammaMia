@@ -1,4 +1,4 @@
-ervices:
+services:
   - type: web
     name: MammaMia  
     runtime: python  
