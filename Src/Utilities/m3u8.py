@@ -1,13 +1,58 @@
 from urllib.parse import urlparse, parse_qs,unquote,quote
 from fastapi import APIRouter, HTTPException, Response, Request
 from curl_cffi.requests import AsyncSession
+import Src.Utilities.config as config
+from Src.Utilities.loadenv import load_env  
+env_vars = load_env()
+SC_PROXY = config.SC_PROXY
+VX_PROXY = config.VX_PROXY
+import json
+import random
+proxies = {}
+proxies2 = {}
+if VX_PROXY == "1":
+    PROXY_CREDENTIALS = env_vars.get('PROXY_CREDENTIALS')
+    proxy_list = json.loads(PROXY_CREDENTIALS)
+    proxy = random.choice(proxy_list)
+    if proxy == "":
+        proxies2 = {}
+    else:
+        proxies2 = {
+            "http": proxy,
+            "https": proxy
+        }      
+if SC_PROXY == "1":
+    PROXY_CREDENTIALS = env_vars.get('PROXY_CREDENTIALS')
+    proxy_list = json.loads(PROXY_CREDENTIALS)
+    proxy = random.choice(proxy_list)
+    if proxy == "":
+        proxies = {}
+    else:
+        proxies = {
+            "http": proxy,
+            "https": proxy
+        }   
+    if VX_PROXY == "1":
+        proxies2 = proxy
+SC_ForwardProxy = config.SC_ForwardProxy
+VX_ForwardProxy = config.VX_ForwardProxy
+if SC_ForwardProxy == "1":
+    ForwardProxy = env_vars.get('ForwardProxy')
+else:
+    ForwardProxy = ""
+
+if VX_ForwardProxy == "1":
+    ForwardProxy = env_vars.get('ForwardProxy')
+else:
+    ForwardProxy = ""
+
 
 router = APIRouter()
-User_Agent= "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 OPR/111.0.0.0"
+User_Agent= "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:127.0) Gecko/20100101 Firefox/127.0"
 async def fetch_m3u8(url):
     """Fetch the M3U8 file from the URL and store it in memory."""
     async with AsyncSession() as client:
-        response = await client.get(url,headers = {"User-Agent": User_Agent, "user-agent": User_Agent})
+        response = await client.get(ForwardProxy + url,headers = {"User-Agent": User_Agent, "user-agent": User_Agent}, proxies = proxies2)
         response.raise_for_status()  # Raise an error for bad responses
         return response.text
 
@@ -36,6 +81,7 @@ async def clone2_m3u8(d:str,token:str,expires:str,h:str = None, b:str = None, re
         scheme = forwarded_proto if forwarded_proto else request.url.scheme
         instance_url = f"{scheme}://{request.url.netloc}"
         m3u8_content = await fetch_m3u8(m3u8)
+        print(m3u8_content)
         modified_playlist = m3u8_content.replace("https://vixcloud.co/playlist/", f"{instance_url}/clony/")
 
         return Response(content=modified_playlist, media_type='application/vnd.apple.mpegurl')
@@ -47,13 +93,19 @@ async def clone2_m3u8(d:str,token:str,expires:str,h:str = None, b:str = None, re
 async def clony_m3u8(segment: str, request: Request):
     base_url = "https://vixcloud.co/playlist/"
     full_url = f"{base_url}{segment}?{request.query_params}"
+    if "rendition=1080p" in full_url or "type=subtitle" in full_url:
+        print(full_url)
+        raise HTTPException(status_code=404, detail="Requested variant not available.")
     m3u8_content = await fetch_m3u8(full_url)
+    if "sc-b1" in m3u8_content:
+        import re
+        m3u8_content = re.sub(r"https://sc-b1-([0-2][0-9]|30).scws-content.net", "https://sc-u9-01.scws-content.net", m3u8_content)
     return Response(content=m3u8_content, media_type='application/vnd.apple.mpegurl')
  
 @router.api_route('/storage/enc.key')
 async def get_key():
     async with AsyncSession(timeout = 20) as client:
-        response = await client.get('https://vixcloud.co/storage/enc.key', headers = {"User-Agent": User_Agent, "user-agent": User_Agent})
+        response = await client.get(ForwardProxy + 'https://vixcloud.co/storage/enc.key', headers = {"User-Agent": User_Agent, "user-agent": User_Agent}, proxies = proxies2)
     
     response_headers = {
         'date': response.headers['date'],

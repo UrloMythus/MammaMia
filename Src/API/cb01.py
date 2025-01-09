@@ -7,9 +7,51 @@ import Src.Utilities.config as config
 from Src.Utilities.loadenv import load_env
 CB_DOMAIN = config.CB_DOMAIN
 CB_PROXY = config.CB_PROXY
-if CB_PROXY == "1":
-    env_vars = load_env()
+MX_PROXY = config.MX_PROXY
+proxies = {}
+proxies2 = {}
+env_vars = load_env()
+import random
+import json
+if MX_PROXY == "1":
     PROXY_CREDENTIALS = env_vars.get('PROXY_CREDENTIALS')
+    proxy_list = json.loads(PROXY_CREDENTIALS)
+    proxy = random.choice(proxy_list)
+    if proxy == "":
+        proxies2 = {}
+    else:
+        proxies2 = {
+            "http": proxy,
+            "https": proxy
+        }      
+if CB_PROXY == "1":
+    PROXY_CREDENTIALS = env_vars.get('PROXY_CREDENTIALS')
+    proxy_list = json.loads(PROXY_CREDENTIALS)
+    proxy = random.choice(proxy_list)
+    if proxy == "":
+        proxies = {}
+    else:
+        proxies = {
+            "http": proxy,
+            "https": proxy
+        }   
+    if MX_PROXY == "1":
+        proxies2 = proxy
+ 
+CB_ForwardProxy = config.CB_ForwardProxy
+MX_ForwardProxy = config.MX_ForwardProxy
+if CB_ForwardProxy == "1":
+    ForwardProxy = env_vars.get('ForwardProxy')
+    ForwardProxy2 = ForwardProxy
+    if MX_ForwardProxy == "1":
+        ForwardProxy2 = ForwardProxy
+elif MX_ForwardProxy == "1":
+    ForwardProxy2 = env_vars.get('ForwardProxy')
+else:
+    ForwardProxy2 = ""
+    ForwardProxy = ""
+
+
 fake_headers = Headers()
 
 async def get_stayonline(link,client):
@@ -19,7 +61,7 @@ async def get_stayonline(link,client):
                     'x-requested-with': 'XMLHttpRequest',
                 }
     data = {'id': link.split("/")[-2], 'ref': ''}
-    response = await client.post('https://stayonline.pro/ajax/linkEmbedView.php', headers=headers, data=data)
+    response = await client.post(ForwardProxy2 + 'https://stayonline.pro/ajax/linkEmbedView.php', headers=headers, data=data, proxies2 = proxies2)
     real_url = response.json()['data']['value']
     return real_url
 
@@ -27,23 +69,8 @@ async def get_stayonline(link,client):
 async def get_uprot(link,client):
         if "msf" in link:
              link = link.replace("msf","mse")
-        if CB_PROXY  == "1":
-            import json
-            import random
-            proxy_list = json.loads(PROXY_CREDENTIALS)
-            proxy = random.choice(proxy_list)
-            if proxy  == " ":
-                proxies = {
-                    "http": proxy,
-                    "https": proxy
-                }
-            else:
-                 proxies = {}
-        else:
-             proxies = {}
-                 
         headers = fake_headers.generate()
-        response = await client.get(link, headers=headers, allow_redirects=True, timeout=10, proxies=proxies, impersonate = "chrome124")
+        response = await client.get(ForwardProxy2 + link, headers=headers, allow_redirects=True, timeout=10, proxies=proxies2, impersonate = "chrome124")
         soup = BeautifulSoup(response.text, "lxml")
         maxstream_url = soup.find("a")
         maxstream_url = maxstream_url.get("href")
@@ -75,21 +102,9 @@ async def get_true_link_mixdrop(real_link,client,MFP):
         print(e)
         return None
 async def get_true_link_maxstream(maxstream_url,client):
-        headers = fake_headers.generate()
-        if CB_PROXY == "1":
-            import json
-            import random
-            proxy_list = json.loads(PROXY_CREDENTIALS)
-            proxy = random.choice(proxy_list)
-            if proxy  == " ":
-                proxies = {
-                    "http": proxy,
-                    "https": proxy
-                }
-        else:
-            proxies = {}        
+        headers = fake_headers.generate()    
         # Send a GET request to the Maxstream URL
-        response = await client.get(maxstream_url, headers=headers, allow_redirects=True, timeout=10,proxies = proxies, impersonate = "chrome124")
+        response = await client.get(ForwardProxy2 + maxstream_url, headers=headers, allow_redirects=True, timeout=10,proxies = proxies2, impersonate = "chrome124")
         [s1, s2] = re.search(r"\}\('(.+)',.+,'(.+)'\.split", response.text).group(1, 2)
         terms = s2.split("|")
         urlset_index = terms.index('urlset')
@@ -124,11 +139,11 @@ async def get_true_link_maxstream(maxstream_url,client):
 
 async def search_movie(showname,date,client):
     try:
-        showname = showname.replace(" ","+")
+        showname = showname.replace(" ","+").replace("ò","o").replace("è","e").replace("à","a").replace("ù","u").replace("ì","i")  
         headers = fake_headers.generate()
         headers['Referer'] = f'https://cb01new.{CB_DOMAIN}/'
         query = f'https://cb01new.{CB_DOMAIN}/?s={showname}'
-        response = await client.get(query,headers=headers, impersonate = "chrome124")
+        response = await client.get(ForwardProxy + query,headers=headers, impersonate = "chrome124", proxies = proxies)
         if response.status_code != 200:
             print(f"CB01 Failed to fetch search results: {response.status_code}")
         soup = BeautifulSoup(response.text, 'lxml',parse_only=SoupStrainer('div', class_='card-content'))
@@ -157,7 +172,7 @@ async def search_series(showname,date,client):
         headers = fake_headers.generate()
         headers['Referer'] = f'https://cb01new.{CB_DOMAIN}/serietv/'
         query = f'https://cb01new.{CB_DOMAIN}/serietv/?s={showname}'
-        response = await client.get(query,headers=headers,impersonate = "chrome124")
+        response = await client.get(ForwardProxy + query,headers=headers,impersonate = "chrome124", proxies = proxies)
         if response.status_code != 200:
             print(f"CB01 Failed to fetch search results: {response.status_code}")
         soup = BeautifulSoup(response.text, 'lxml',parse_only=SoupStrainer('div', class_='card-content'))
@@ -183,7 +198,7 @@ async def search_series(showname,date,client):
 
 async def movie_redirect_url(link,client,MFP):
         headers = fake_headers.generate()
-        response = await client.get(link, headers=headers, allow_redirects=True, timeout=10, impersonate = "chrome124")
+        response = await client.get(ForwardProxy + link, headers=headers, allow_redirects=True, timeout=10, impersonate = "chrome124", proxies = proxies)
         # Extract the redirect URL from the HTML
         soup = BeautifulSoup(response.text, "lxml",parse_only=SoupStrainer('div'))
         redirect_url = soup.find("div", id="iframen2").get("data-src")
@@ -192,11 +207,11 @@ async def movie_redirect_url(link,client,MFP):
                 mixdrop_real_link = await get_stayonline(redirect_url,client)
                 final_url = await get_true_link_mixdrop(mixdrop_real_link,client,MFP)
                 return final_url
-        except Exception as e:    
+        except Exception as e:  
             redirect_url = soup.find("div", id="iframen1").get("data-src")
-            if "stayonline" in maxstream_link:
-                    maxstream_link =await get_stayonline(maxstream_link,client)
-            maxstream_real_link = await get_uprot(maxstream_link,client)
+            if "stayonline" in redirect_url:
+                    redirect_url =await get_stayonline(redirect_url,client)
+            maxstream_real_link = await get_uprot(redirect_url,client)
             final_url = await get_true_link_maxstream(maxstream_real_link,client) 
             return(final_url)
 
@@ -205,7 +220,7 @@ async def series_redirect_url(link,season,episode,client,MFP):
         if len(episode) == 1:
                         episode = f'0{episode}'
         headers = fake_headers.generate()
-        response = await client.get(link, headers=headers, allow_redirects=True, timeout=10,impersonate = "chrome124")
+        response = await client.get(ForwardProxy + link, headers=headers, allow_redirects=True, timeout=10,impersonate = "chrome124", proxies = proxies)
         soup = BeautifulSoup(response.text, "lxml")     
         seasons_text = soup.find_all('div', class_='sp-head')
         for season_text in seasons_text:
@@ -218,7 +233,7 @@ async def series_redirect_url(link,season,episode,client,MFP):
                     sp_body = season_text.find_next('div', class_='sp-body')
                     link_tag = sp_body.find('a')
                     uprot_long = link_tag.get('href')
-                    response = await client.get(uprot_long, headers=headers, allow_redirects=True, timeout=10, impersonate = "chrome124")
+                    response = await client.get(ForwardProxy + uprot_long, headers=headers, allow_redirects=True, timeout=10, impersonate = "chrome124", proxies = proxies)
                     season = "01"
                     episode = "04"
                     pattern1 = rf"(?i)\S*?\.{season}x{episode}\S*?\.mkv.*?href=['\"](.*?)['\"]"
@@ -301,8 +316,8 @@ async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt14948432"  # This is an example ID format
-        MFP = "1"
+        test_id = "tt0045247"  # This is an example ID format
+        MFP = "0"
         results = await cb01(test_id, client,MFP)
         print(results)
 
