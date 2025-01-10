@@ -5,7 +5,7 @@
                "SC_ForwardProxy": "0",
                "SC_PROXY": "0",
                "VX_ForwardProxy": "0",
-               "VX_PROXY": "1",
+               "VX_PROXY": "0",
                "enabled": "1"
            },
            "Filmpertutti": {
@@ -31,7 +31,7 @@
           },
           "CB01":{
               "domain":"sbs",
-              "CB_PROXY":"0",
+              "CB_PROXY":"1",
               "CB_ForwardProxy":"0",
               "MX_ForwardProxy":"0",
               "MX_PROXY":"0",
@@ -78,7 +78,7 @@
        "load_env": "0",
        "HOST": "0.0.0.0",
        "PORT": "8080",
-       "Name": "MFP+PROXY",
+       "Name": "MammaMiaAll",
        "Icon": "🎱",
        "Public_Instance": "0",
        "Remote_Instance": "1",
