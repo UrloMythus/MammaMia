@@ -35,8 +35,7 @@ if CB_PROXY == "1":
             "http": proxy,
             "https": proxy
         }   
-    if MX_PROXY == "1":
-        proxies2 = proxy
+        proxies2 = proxies
  
 CB_ForwardProxy = config.CB_ForwardProxy
 MX_ForwardProxy = config.MX_ForwardProxy
@@ -61,14 +60,14 @@ async def get_stayonline(link,client):
                     'x-requested-with': 'XMLHttpRequest',
                 }
     data = {'id': link.split("/")[-2], 'ref': ''}
-    response = await client.post(ForwardProxy2 + 'https://stayonline.pro/ajax/linkEmbedView.php', headers=headers, data=data, proxies2 = proxies2)
+    response = await client.post('https://stayonline.pro/ajax/linkEmbedView.php', headers=headers, data=data, proxies = proxies2)
     real_url = response.json()['data']['value']
     return real_url
 
 
 async def get_uprot(link,client):
         if "msf" in link:
-             link = link.replace("msf","mse")
+             link = link.replace("msf","mse")    
         headers = fake_headers.generate()
         response = await client.get(ForwardProxy2 + link, headers=headers, allow_redirects=True, timeout=10, proxies=proxies2, impersonate = "chrome124")
         soup = BeautifulSoup(response.text, "lxml")
@@ -103,7 +102,7 @@ async def get_true_link_mixdrop(real_link,client,MFP):
         return None
 async def get_true_link_maxstream(maxstream_url,client):
         headers = fake_headers.generate()    
-        # Send a GET request to the Maxstream URL
+        # Send a GET request to the Maxstream URL)
         response = await client.get(ForwardProxy2 + maxstream_url, headers=headers, allow_redirects=True, timeout=10,proxies = proxies2, impersonate = "chrome124")
         [s1, s2] = re.search(r"\}\('(.+)',.+,'(.+)'\.split", response.text).group(1, 2)
         terms = s2.split("|")
@@ -317,7 +316,7 @@ async def test_animeworld():
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
         test_id = "tt0045247"  # This is an example ID format
-        MFP = "0"
+        MFP = "1"
         results = await cb01(test_id, client,MFP)
         print(results)
 

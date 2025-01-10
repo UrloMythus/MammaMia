@@ -33,7 +33,7 @@ if SC_PROXY == "1":
             "https": proxy
         }   
     if VX_PROXY == "1":
-        proxies2 = proxy
+        proxies2 = proxies
 SC_ForwardProxy = config.SC_ForwardProxy
 VX_ForwardProxy = config.VX_ForwardProxy
 if SC_ForwardProxy == "1":
