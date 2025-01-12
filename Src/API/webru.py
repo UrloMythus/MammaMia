@@ -48,7 +48,7 @@ async def get_stream_link(id,site,MFP_CREDENTIALS,client):
                 print("No .m3u8 URL found.")
             stream_url = f"https://{domain}/lb/" + webru_dlhd[id] + "/index.m3u8"
         elif site == "vary":
-            response = await client.get(f"https://www.tanti.{TF_DOMAIN}/tv-channel/sky-cinema-action-2", impersonate = "chrome124", headers = headers)
+            response = await client.get(f"https://www.tanti.{TF_DOMAIN}/tv-channel/sky-cinema-action-2", impersonate = "chrome124", headers = headers, timeout = 10)
             soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('iframe'))
             iframe = soup.find('iframe', class_='embed-responsive-item') 
             real_link = iframe.get('src')
