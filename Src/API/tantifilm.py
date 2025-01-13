@@ -199,9 +199,10 @@ async def true_url(protect_link,client):
             # Create real link (match[0] includes all matched elements)
             url =f'https://d000d.com{match[1]}'
             rebobo = await client.get(ForwardProxy + url, headers=headers, allow_redirects=True, impersonate = "chrome120",proxies= proxies)
-            real_url = f'{rebobo.text}123456789{match[2]}{real_time}'
-            print("MammaMia: Found results for Tantifilm")
-            return real_url
+            if len(rebobo.text)> 2:
+                real_url = f'{rebobo.text}123456789{match[2]}{real_time}'
+                print("MammaMia: Found results for Tantifilm")
+                return real_url
         else:
             print("Tantifilm: No match found in the text. Please be sure you are using a local instance")
             return None
@@ -287,8 +288,9 @@ async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt0816692"  # This is an example ID format
+        test_id = "tt9165438:9:1"  # This is an example ID format
         results = await tantifilm(test_id, client,"0")
+        print(results)
 
 if __name__ == "__main__":
     import asyncio
