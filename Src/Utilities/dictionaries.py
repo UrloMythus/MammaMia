@@ -822,7 +822,19 @@ webru_dlhd = {
     "sky-cinema-suspence": "premium868",
     "sky-sport-253": "premium873",
     "sky-serie": "premium880",
-    "dazn-1": "premium877"
+    "dazn-1": "premium877",
+    "rai-1": "premium850",
+    "rai-2": "premium851",
+    "rai-3": "premium852",
+    "canale-5": "premium853",
+    "rai-sport": "premium882",
+    "rai-premium": "premium858",
+    "italia-1" : "premium854",
+    "la7": "premium855",
+    "la7d": "premium856",
+    "mediaset-20": "premium857",
+    "la5": "premium856",
+
 }
 extra_sources = {
     "rai-1": ["https://m3u.iranvids.com/rai01/output.m3u8"],
