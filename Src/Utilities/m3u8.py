@@ -94,17 +94,13 @@ async def clone2_m3u8(d:str,token:str,expires:str,h:str = None, b:str = None, re
 async def clony_m3u8(segment: str, request: Request):
     base_url = "https://vixcloud.co/playlist/"
     full_url = f"{base_url}{segment}?{request.query_params}"
+    print(full_url, "A",request.query_params)
     if "rendition=1080p" in full_url or "type=subtitle" in full_url:
         print(full_url)
         raise HTTPException(status_code=404, detail="Requested variant not available.")
     m3u8_content = await fetch_m3u8(full_url)
-    if "sc-b1" in m3u8_content:
-        m3u8_content = re.sub(r"https://sc-b1-([0-2][0-9]|30).scws-content.net", "https://sc-u9-01.scws-content.net", m3u8_content)
-    if "sc-u2" in m3u8_content:
-        m3u8_content = re.sub(r"https://sc-u2-([0-2][0-9]|30).scws-content.net", "https://sc-u9-01.scws-content.net", m3u8_content)
-    if "sc-u5-01" in m3u8_content:
-        m3u8_content = re.sub(r"https://sc-u5-([0-2][0-9]|30).scws-content.net", "https://sc-u9-01.scws-content.net", m3u8_content)
-
+    if "sc-u9" not  in m3u8_content:
+        m3u8_content = re.sub(r"https://sc-[a-zA-Z0-9]+-\d+.scws-content.net", "https://sc-u9-01.scws-content.net", m3u8_content)
     return Response(content=m3u8_content, media_type='application/vnd.apple.mpegurl')
  
 @router.api_route('/storage/enc.key')
