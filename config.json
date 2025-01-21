@@ -63,7 +63,7 @@
               "domain":"so",
               "enabled":"1",
               "AW_ForwardProxy":"0",
-              "AW_PROXY":"1"
+              "AW_PROXY":"0"
           },
           "SkyStreaming":{
               "domain":"my",
