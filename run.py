@@ -23,6 +23,7 @@ from slowapi.middleware import SlowAPIMiddleware
 from static.static import HTML
 from urllib.parse import unquote
 from Src.Utilities.m3u8 import router as m3u8_clone
+
 #Configure Env Vars
 Global_Proxy = config.Global_Proxy
 if Global_Proxy == "1":
@@ -201,7 +202,10 @@ async def addon_stream(request: Request,config, type, id,):
     if type not in MANIFEST['types']:
         raise HTTPException(status_code=404)
     streams = {'streams': []}
-    config_providers = config.split('|')
+    if "|" in config:
+        config_providers = config.split('|')
+    elif "%7C" in config:
+        config_providers = config.split('%7C')
     provider_maps = {name: "0" for name in provider_map.values()}
     for provider in config_providers:
             if provider in provider_map:
@@ -229,16 +233,11 @@ async def addon_stream(request: Request,config, type, id,):
                         streams['streams'].append({
                             'title': f"{Icon}Server {i} " + f" "+ channel['name'] + " " + channel['title'] ,
                             'url': channel['url']
-                            })    
-                    '''    
+                            })     
                     if id in okru:
                         i = i+1
                         channel_url = await okru_get_url(id,client)
-                        streams['streams'].append({
-                            'title':  f"{Icon}Server {i} " +  channel['title'] + " OKRU",
-                            'url': channel_url
-                        })
-                    '''    
+                        streams['streams'].append({'title':  f"{Icon}Server {i} " +  channel['title'] + " OKRU",'url': channel_url,  "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": User_Agent}}}})
                     if id in extra_sources:
                         list_sources = extra_sources[id]
                         for item in list_sources:
@@ -301,11 +300,12 @@ async def addon_stream(request: Request,config, type, id,):
                             instance_url = f"{scheme}://{request.url.netloc}"
                             url_streaming_community = url_streaming_community.replace("?","&")
                             url_streaming_community = instance_url + "/vixcloud/manifest.m3u8?d=" + url_streaming_community
+                            if quality_sc == "1080":
+                                quality_sc = quality_sc.replace("1080","720")
                             streams['streams'].append({"name":f'{Name}\n{quality_sc}p Max', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}','url': url_streaming_community,'behaviorHints': {'proxyHeaders': {"request": {"user-agent": User_Agent}}, 'notWebReady': False, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
-
                         else:
                             streams['streams'].append({"name":f'{Name}\n{quality_sc}p Max', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}','url': url_streaming_community,'behaviorHints': {'proxyHeaders': {"request": {"user-agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
-
+                
                 if provider_maps['LORDCHANNEL'] == "1" and LC == "1":
                     url_lordchannel,quality_lordchannel = await lordchannel(id,client)
                     if quality_lordchannel == "FULL HD" and url_lordchannel !=  None:
@@ -319,6 +319,7 @@ async def addon_stream(request: Request,config, type, id,):
                     if url_filmpertutti is not None and Host is not None:
                         if MFP == "1":
                             url_filmpertutti = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_filmpertutti}&host={Host}&redirect_stream=true'
+                            print(url_filmpertutti)
                             streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}Filmpertutti', 'url': url_filmpertutti,'behaviorHints': {'bingeGroup': 'filmpertutti'}})
                         else:
                             streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}Filmpertutti', 'url': url_filmpertutti,'behaviorHints': {'proxyHeaders': {"request": {"User-Agent": "Mozilla/5.0 (Windows NT 10.10; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}}, 'notWebReady': True, 'bingeGroup': 'filmpertutti'}})
