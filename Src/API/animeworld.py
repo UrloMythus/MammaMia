@@ -43,6 +43,8 @@ showname_replace = {
     "  ": " ",
     "Shippuuden": "Shippuden",
     " ": "+",
+    "Solo+Leveling+2": "Solo+Leveling+2:",
+    "-": ""
 }
 async def security_cookie (response):
     if "SecurityAW-gl" in response.text:
@@ -149,7 +151,7 @@ async def animeworld(id,client):
 async def test_animeworld():
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "kitsu:46231:1"  # This is an example ID format
+        test_id = "kitsu:48671:1"  # This is an example ID format
         results = await animeworld(test_id, client)
         print(results)
 
