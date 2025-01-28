@@ -306,7 +306,7 @@ Check those links to get the new Domain for the providers.
 
 [ANIMEWORLD](https://t.me/AnimeWorldITA2)
 
-[CB01](https://cb01official.community/)
+[CB01](https://cb01.uno/)
 
 ## Mediaflow Proxy
 

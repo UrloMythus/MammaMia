@@ -43,6 +43,8 @@ showname_replace = {
     "  ": " ",
     "Shippuuden": "Shippuden",
     " ": "+",
+    "Solo+Leveling+2": "Solo+Leveling+2:",
+    "-": ""
 }
 async def security_cookie (response):
     if "SecurityAW-gl" in response.text:
@@ -59,7 +61,14 @@ async def security_cookie (response):
         return cookies
 async def get_mp4(anime_url,ismovie,episode,client):
     cookies = {}
-    response = await client.get(ForwardProxy + anime_url,allow_redirects=True,  cookies = cookies,impersonate = "chrome124",proxies=proxies)
+    if ForwardProxy != "":
+        response = await client.get(ForwardProxy + anime_url,allow_redirects=True,impersonate = "chrome124",proxies=proxies)
+        anime_url = f'https://animeworld.{AW_DOMAIN}/{response.url.replace(ForwardProxy,"")}?d=1'
+        response = await client.get(ForwardProxy + anime_url, allow_redirects=True,  cookies = cookies,impersonate = "chrome124",proxies=proxies)
+        cookies = await security_cookie(response)
+        response = await client.get(ForwardProxy + anime_url, allow_redirects=True,  cookies = cookies,impersonate = "chrome124",proxies=proxies)
+    else:
+        response = await client.get(ForwardProxy + anime_url, allow_redirects=True,  cookies = cookies,impersonate = "chrome124",proxies=proxies)
     soup = BeautifulSoup(response.text,'lxml')
     if ismovie == 0:
         episode_page = soup.find('a', {'data-episode-num':episode })
@@ -106,17 +115,16 @@ async def search(showname,date,ismovie,episode,client):
         release_date = match.group(1).strip()
         for ita, eng in months.items():
             release_date = release_date.replace(ita, eng)
-        release_date = datetime.datetime.strptime(release_date, "%d %B %Y")
+        release_date_object = datetime.datetime.strptime(release_date, "%d %B %Y")
         date_object = datetime.datetime.strptime(date, "%Y-%m-%d")
-        release_date = release_date.strftime("%Y-%m-%d")
+        release_date = release_date_object.strftime("%Y-%m-%d")
         if (release_date == date or 
-    release_date == date_object + datetime.timedelta(days=1) or
-    release_date == date_object - datetime.timedelta(days=1)):
+    release_date == (datetime.datetime.strptime(date, "%Y-%m-%d") + datetime.timedelta(days=1)).strftime("%Y-%m-%d") or
+    release_date == (datetime.datetime.strptime(date, "%Y-%m-%d") - datetime.timedelta(days=1)).strftime("%Y-%m-%d")):
             anime_url = f'https://www.animeworld.{AW_DOMAIN}{anime["href"]}'
             final_url = await get_mp4(anime_url,ismovie,episode,client)
             if final_url:
                 final_urls.append(final_url)
-
     return final_urls
 
 async def animeworld(id,client):
@@ -128,6 +136,7 @@ async def animeworld(id,client):
         else:
             episode = id.split(":")[2]
         showname,date = await get_info_kitsu(kitsu_id,client)
+        #Format Showname
         for key in showname_replace:
             if key in showname:  # Check if the key is a substring of showname
                 showname = showname.replace(key, showname_replace[key])
@@ -135,14 +144,14 @@ async def animeworld(id,client):
                     showname = showname.replace(":", "")
         final_urls = await search(showname,date,ismovie,episode,client)
         return final_urls
-    except:
-        print("Animeworld failed")
+    except Exception as e:
+        print("Animeworld failed",e)
         return None
 
 async def test_animeworld():
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "kitsu:11:3"  # This is an example ID format
+        test_id = "kitsu:48671:1"  # This is an example ID format
         results = await animeworld(test_id, client)
         print(results)
 
