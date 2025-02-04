@@ -1,7 +1,7 @@
 {
     "Siti": {
            "StreamingCommunity": {
-               "domain": "prof",
+               "domain": "paris",
                "SC_ForwardProxy": "0",
                "SC_PROXY": "0",
                "VX_ForwardProxy": "0",
@@ -30,7 +30,7 @@
               "enabled":"1"
           },
           "CB01":{
-              "domain":"sbs",
+              "domain":"media",
               "CB_PROXY":"0",
               "CB_ForwardProxy":"0",
               "MX_ForwardProxy":"0",
@@ -48,7 +48,7 @@
               "enabled":"1"
           },
           "Guardaserie":{
-              "domain":"academy",
+              "domain":"mom",
               "enabled":"1",
               "GS_ForwardProxy":"0",
               "GS_PROXY":"0"
@@ -59,6 +59,12 @@
               "GH_ForwardProxy":"0",
               "GH_PROXY":"0"
           },
+          "Onlineserietv":{
+              "domain":"com",
+              "enabled":"1",
+              "OST_ForwardProxy":"0",
+              "OST_PROXY":"0"
+          },
           "AnimeWorld":{
               "domain":"so",
               "enabled":"1",
@@ -66,7 +72,7 @@
               "AW_PROXY":"0"
           },
           "SkyStreaming":{
-              "domain":"my",
+              "domain":"store",
               "enabled":"1"
           },
           "DaddyLiveHD":{
