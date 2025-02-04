@@ -68,7 +68,7 @@ async def get_supervideo_link(link,client):
 async def search(clean_id,client):
     try:
         headers = random_headers.generate()
-        response = await client.get(ForwardProxy + f'https://guardaserie.{GS_DOMAIN}/?story={clean_id}&do=search&subaction=search', allow_redirects=True, impersonate = "chrome124", headers = headers, proxies = proxies)
+        response = await client.get(ForwardProxy + f'https://guardaserietv.{GS_DOMAIN}/?story={clean_id}&do=search&subaction=search', allow_redirects=True, impersonate = "chrome124", headers = headers, proxies = proxies)
         if response.status_code != 200:
             print(f"Guardaserie Failed to fetch search results: {response.status_code}")
         soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('div',class_="mlnh-2"))
@@ -120,7 +120,7 @@ async def test_script():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt16288804:1:1"  # This is an example ID format
+        test_id = "tt1190634:1:1"  # This is an example ID format
         results = await guardaserie(test_id, client)
         print(results)
 
