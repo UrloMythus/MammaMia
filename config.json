@@ -15,7 +15,7 @@
            "Tantifilm":{
                "domain": "bond",
                "TF_ForwardProxy": "0",
-               "TF_PROXY": "0",
+               "TF_PROXY": "1",
                "enabled": "1"
            },
            "Mysterius":{
@@ -40,10 +40,10 @@
           "DDLStream":{
               "domain":"co",
               "cookies" : {
-                  "ips4_device_key": null,
-                  "ips4_IPSSessionFront": null,
-                  "ips4_member_id": null,
-                  "ips4_login_key": null
+                  "ips4_device_key": "1496c03312d318b557ff53512202e757",
+                  "ips4_IPSSessionFront": "d9ace0029696972877e2a5e3614a333b",
+                  "ips4_member_id": "4030088",
+                  "ips4_login_key": "71a501781ba479dfb91b40147e637daf"
                   },
               "enabled":"1"
           },
@@ -51,13 +51,13 @@
               "domain":"mom",
               "enabled":"1",
               "GS_ForwardProxy":"0",
-              "GS_PROXY":"0"
+              "GS_PROXY":"1"
           },
           "GuardaHD":{
               "domain":"stream",
               "enabled":"1",
               "GH_ForwardProxy":"0",
-              "GH_PROXY":"0"
+              "GH_PROXY":"1"
           },
           "Onlineserietv":{
               "domain":"com",
