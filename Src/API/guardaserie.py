@@ -85,6 +85,9 @@ async def search(clean_id,client):
 async def player_url(page_url, season, episode,client):
     try:
         headers = random_headers.generate()
+        if GS_ForwardProxy == "1":
+            response = await client.get(ForwardProxy + page_url, allow_redirects=True, impersonate = "chrome124", headers = headers)
+            page_url = response.url.replace(ForwardProxy,f'https://guardaserietv.{GS_DOMAIN}/')
         response = await client.get(ForwardProxy + page_url, allow_redirects=True, impersonate = "chrome124", headers = headers, proxies = proxies)
         soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('a'))
         a_tag = soup.find('a', id = f"serie-{season}_{episode}")
