@@ -1,7 +1,7 @@
 {
     "Siti": {
            "StreamingCommunity": {
-               "domain": "ooo",
+               "domain": "paris",
                "SC_ForwardProxy": "0",
                "SC_PROXY": "0",
                "VX_ForwardProxy": "0",
@@ -30,8 +30,8 @@
               "enabled":"1"
           },
           "CB01":{
-              "domain":"sbs",
-              "CB_PROXY":"1",
+              "domain":"media",
+              "CB_PROXY":"0",
               "CB_ForwardProxy":"0",
               "MX_ForwardProxy":"0",
               "MX_PROXY":"0",
@@ -40,15 +40,15 @@
           "DDLStream":{
               "domain":"co",
               "cookies" : {
-                  "ips4_device_key": "1496c03312d318b557ff53512202e757",
-                  "ips4_IPSSessionFront": "d9ace0029696972877e2a5e3614a333b",
-                  "ips4_member_id": "4030088",
-                  "ips4_login_key": "71a501781ba479dfb91b40147e637daf"
+                  "ips4_device_key": "e76de2d09214c678fa18e317e1aab74b",
+                  "ips4_IPSSessionFront": "a43ab7f014e10d61c58412c436b2018b",
+                  "ips4_member_id": "4030150",
+                  "ips4_login_key": "5cb83aeddd61ee9dc9d8727726cabc94"
                   },
               "enabled":"1"
           },
           "Guardaserie":{
-              "domain":"academy",
+              "domain":"mom",
               "enabled":"1",
               "GS_ForwardProxy":"0",
               "GS_PROXY":"1"
@@ -59,6 +59,12 @@
               "GH_ForwardProxy":"0",
               "GH_PROXY":"1"
           },
+          "Onlineserietv":{
+              "domain":"com",
+              "enabled":"1",
+              "OST_ForwardProxy":"0",
+              "OST_PROXY":"0"
+          },
           "AnimeWorld":{
               "domain":"so",
               "enabled":"1",
@@ -66,7 +72,7 @@
               "AW_PROXY":"0"
           },
           "SkyStreaming":{
-              "domain":"my",
+              "domain":"store",
               "enabled":"1"
           },
           "DaddyLiveHD":{

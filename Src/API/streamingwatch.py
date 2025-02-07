@@ -50,7 +50,7 @@ async def search(showname,season,episode,date,ismovie,client):
             if date == page_date:
                 href = temp_href['href']
                 href = soup.find('a')['href']
-                response = await client.get(href, allow_redirects=True, impersonate = "chrome120")
+                response = await client.get(href, allow_redirects=True, impersonate = "chrome124")
                 soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('iframe'))
                 iframe = soup.find('iframe')
                 hdplayer = iframe.get('data-lazy-src')
@@ -66,14 +66,15 @@ async def search(showname,season,episode,date,ismovie,client):
         data_json = response.text
         data = json.loads(data_json)
         for entry in data:
-            if f"stagione-{season}-episodio-{episode}" in entry["slug"] and f"stagione-{season}-episodio-{episode}0" not in entry["slug"]:
-                content = entry["content"]["rendered"]
+            if f"stagione-{season}-episodio-{episode}" in entry["slug"] or f"stagione-{season}-episode-{episode}" in entry["slug"]:
+                if f"stagione-{season}-episodio-{episode}0" not in entry["slug"]:
+                    content = entry["content"]["rendered"]
                 #"content":{
 #    "rendered":"<p><!--baslik:PRO--><iframe loading=\"lazy\" src=\"https:\/\/hdplayer.gives\/embed\/YErLVq64uNTZRNz\" frameborder=\"0\" width=\"700\" height=\"400\" allowfullscreen><\/iframe><\/p>\n","protected":false}
-                start = content.find('src="') + len('src="') #start of url
-                end = content.find('"', start) #end of url
-                hdplayer = content[start:end]
-                return hdplayer
+                    start = content.find('src="') + len('src="') #start of url
+                    end = content.find('"', start) #end of url
+                    hdplayer = content[start:end]
+                    return hdplayer
 async def hls_url(hdplayer,client):
     response = await client.get(hdplayer, allow_redirects=True, impersonate = "chrome120")
     match = re.search(r'sources:\s*\[\s*\{\s*file\s*:\s*"([^"]*)"', response.text)
@@ -117,7 +118,7 @@ async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt1431045"  # This is an example ID format
+        test_id = "tt1190634:4:8"  # This is an example ID format
         results = await streamingwatch(test_id, client)
 
 if __name__ == "__main__":

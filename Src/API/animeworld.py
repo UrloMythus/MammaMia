@@ -47,16 +47,12 @@ showname_replace = {
     "-": ""
 }
 async def security_cookie (response):
-    if "SecurityAW-gl" in response.text:
-        match = re.search(r'SecurityAW-gl=([^;]+)', response.text)
-        characters = "gl"
-    elif "SecurityAW-Ec" in response.text:
-        match = re.search(r'SecurityAW-Ec=([^;]+)', response.text)
-        characters = "Ec"
+    match = re.search(r'SecurityAW-([A-Za-z0-9]{2})=([^;]+)', response.text)
     if match:
-        Security_Cookie = match.group(1).strip()
+        unknown_chars = match.group(1).strip()
+        Security_Cookie = match.group(2).strip()
         cookies = {
-            f"SecurityAW-{characters}": Security_Cookie
+            f"SecurityAW-{unknown_chars}": Security_Cookie
         }
         return cookies
 async def get_mp4(anime_url,ismovie,episode,client):
