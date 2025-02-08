@@ -66,7 +66,6 @@ async def get_stream_link(id,site,MFP_CREDENTIALS,client):
         mfp_url = MFP_CREDENTIALS[0]
         mfp_pass = MFP_CREDENTIALS[1]
         new_stream_url = f'{mfp_url}/proxy/hls/manifest.m3u8?api_password={mfp_pass}&d={stream_url}&h_Referer={Referer}&h_Origin={Origin}&h_User-Agent=Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F58.0.3029.110%20Safari%2F537.3'
-
         return new_stream_url
     except Exception as e:
         return None
@@ -88,14 +87,10 @@ async def get_skystreaming(id,client):
         if type(skystreaming_link) == list:
             
             for link in skystreaming_link:
-                m3u8_url,Host = await get_skystreaming_url(link,client)
-                m3u8_urls[m3u8_url] = Host
-                print(m3u8_urls)
+                m3u8_url,Host,Origin = await get_skystreaming_url(link,client)
         else:
-            m3u8_url,Host = await get_skystreaming_url(skystreaming_link,client)
-            m3u8_urls[m3u8_url] = Host
-        return m3u8_urls
-
+            m3u8_url,Host,Origin = await get_skystreaming_url(skystreaming_link,client)
+        return m3u8_url,Host,Origin
     except Exception as e:
         print("SkyStreaming failed",e)
         return None,None 
@@ -111,12 +106,12 @@ async def get_skystreaming_url(skystreaming_link,client):
             Host = m3u8_url.replace("https://","").split("/")[0]
             return m3u8_url,Host
         response =  await client.get(skystreaming_link, headers=headers, allow_redirects=True, impersonate = "chrome120")
+        Origin = response.url.split('/embed')[0]
         soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('source'))
         source_tag = soup.find('source')
         m3u8_url = source_tag.get('src')
         Host = m3u8_url.replace("https://","").split("/")[0]
-        print(Host)
-        return m3u8_url,Host
+        return m3u8_url,Host,Origin
     except Exception as e: 
         print("SkyStreaming failed",e)
         return None,None

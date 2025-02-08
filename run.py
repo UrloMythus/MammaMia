@@ -247,11 +247,10 @@ async def addon_stream(request: Request,config, type, id,):
                             else:
                                 streams['streams'].append({'title':f"{Icon}Server {i} " + channel['title'],'url': item})
                     if id in skystreaming and SKY == "1":
-                        urls = await get_skystreaming(id,client)
-                        for url in urls:
-                            i = i+1
-                            Host = urls[url]
-                            streams['streams'].append({'title': f'{Icon}Server S {i}' + channel['title'], 'url': url, "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:127.0) Gecko/20100101 Firefox/127.0", "Accept": "*/*", "Accept-Language": "en-US,en;q=0.5", "Origin": f"https://skystreaming.{SKY_DOMAIN}", "DNT": "1", "Sec-GPC": "1", "Connection": "keep-alive", "Referer": f"https://skystreaming.{SKY_DOMAIN}/", "Sec-Fetch-Dest": "empty", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "cross-site", "Pragma": "no-cache", "Cache-Control": "no-cache", "TE": "trailers","Host": Host}}}})
+                        url,Host,Sky_Origin = await get_skystreaming(id,client)
+                        i = i+1
+                        if url:
+                            streams['streams'].append({'title': f'{Icon}Server S {i}' + channel['title'], 'url': url, "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:127.0) Gecko/20100101 Firefox/127.0", "Accept": "*/*", "Accept-Language": "en-US,en;q=0.5", "Origin": Sky_Origin, "DNT": "1", "Sec-GPC": "1", "Connection": "keep-alive", "Referer": f"{Sky_Origin}/", "Sec-Fetch-Dest": "empty", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "cross-site", "Pragma": "no-cache", "Cache-Control": "no-cache", "TE": "trailers","Host": Host}}}})
                     if MFP == "1":  
                         if id in webru_vary:
                             i = i+1
