@@ -32,11 +32,18 @@ headers = {
 async def get_stream_link(id,site,MFP_CREDENTIALS,client):
     try:
         if site == "dlhd":
+            dlhd_id = webru_dlhd[id]
             response = await client.get(f"https://thedaddy.{DLHD_DOMAIN}/embed/stream-853.php", impersonate = "chrome124", headers = headers)
             soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('iframe'))
             iframe = soup.find('iframe', id='thatframe')
             real_link = iframe.get('src')
+            parent_site_domain = real_link.split('/premiumtv')[0]
+            server_key_link = (f'{parent_site_domain}/server_lookup.php?channel_id={dlhd_id}')
+            response = await client.get(server_key_link, allow_redirects = False)
+            server_key = response.json()['server_key']
+            '''
             response = await client.get(real_link, allow_redirects = False) 
+            print(response.text)
             pattern = r"source:\s*'([^']*\.m3u8)'"
             match = re.search(pattern, response.text)
             if match:
@@ -46,7 +53,8 @@ async def get_stream_link(id,site,MFP_CREDENTIALS,client):
 
             else:
                 print("No .m3u8 URL found.")
-            stream_url = f"https://{domain}/lb/" + webru_dlhd[id] + "/index.m3u8"
+            '''
+            stream_url = f"https://{server_key}new.iosplayer.ru/{server_key}/{dlhd_id}" + "/mono.m3u8"
         elif site == "vary":
             response = await client.get(f"https://www.tanti.{TF_DOMAIN}/tv-channel/sky-cinema-action-2", impersonate = "chrome124", headers = headers, timeout = 10)
             soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('iframe'))
@@ -72,7 +80,6 @@ async def get_stream_link(id,site,MFP_CREDENTIALS,client):
 async def webru(id,site,client,MFP_CREDENTIALS):
     try:
         new_stream_url = await get_stream_link(id,site,MFP_CREDENTIALS,client)
-        
         return new_stream_url
     except Exception as e:
         print("WebRu failed",e)
