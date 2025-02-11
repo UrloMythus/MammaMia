@@ -99,8 +99,10 @@ async def clony_m3u8(segment: str, request: Request):
         print(full_url)
         raise HTTPException(status_code=404, detail="Requested variant not available.")
     m3u8_content = await fetch_m3u8(full_url)
-    if "sc-u9" not  in m3u8_content:
+    '''
+    if "sc-u12" not  in m3u8_content:
         m3u8_content = re.sub(r"https://sc-[a-zA-Z0-9]+-\d+.scws-content.net", "https://sc-u12-01.scws-content.net", m3u8_content)
+    '''
     return Response(content=m3u8_content, media_type='application/vnd.apple.mpegurl')
  
 @router.api_route('/storage/enc.key')
