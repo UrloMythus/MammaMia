@@ -103,6 +103,7 @@ async def clony_m3u8(segment: str, request: Request):
     if "sc-u12" not  in m3u8_content:
         m3u8_content = re.sub(r"https://sc-[a-zA-Z0-9]+-\d+.scws-content.net", "https://sc-u12-01.scws-content.net", m3u8_content)
     '''
+    #Test
     return Response(content=m3u8_content, media_type='application/vnd.apple.mpegurl')
  
 @router.api_route('/storage/enc.key')
