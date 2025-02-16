@@ -290,20 +290,17 @@ async def addon_stream(request: Request,config, type, id,):
                             streams['streams'].append({'title': f'{Icon}Mysterious {resolution}', 'url': link, 'behaviorHints': {'bingeGroup': f'mysterius{resolution}'}})
                 if provider_maps['STREAMINGCOMMUNITY'] == "1" and SC == "1":
                     SC_FAST_SEARCH = provider_maps['SC_FAST_SEARCH']
-                    url_streaming_community,url_720_streaming_community,quality_sc, slug_sc = await streaming_community(id,client,SC_FAST_SEARCH)
+                    url_streaming_community,quality_sc, slug_sc = await streaming_community(id,client,SC_FAST_SEARCH,MFP)
                     if url_streaming_community is not None:
                         print(f"StreamingCommunity Found Results for {id}")
-                        if Remote_Instance == "1":
-                            forwarded_proto = request.headers.get("x-forwarded-proto")
-                            scheme = forwarded_proto if forwarded_proto else request.url.scheme
-                            instance_url = f"{scheme}://{request.url.netloc}"
-                            url_streaming_community = url_streaming_community.replace("?","&")
-                            url_streaming_community = instance_url + "/vixcloud/manifest.m3u8?d=" + url_streaming_community
-                            if quality_sc == "1080":
-                                quality_sc = quality_sc.replace("1080","720")
-                            streams['streams'].append({"name":f'{Name}\n{quality_sc}p Max', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}','url': url_streaming_community,'behaviorHints': {'proxyHeaders': {"request": {"user-agent": User_Agent}}, 'notWebReady': False, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
+                        if MFP == "1" and "iframe" in url_streaming_community:
+                            url_streaming_community = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_streaming_community}&host=VixCloud&redirect_stream=true'
+                            if "hf.space" in MFP_url:
+                                streams['streams'].append({"name":f'{Name}', 'title': f'{Icon}StreamingCommunity\n Sorry StreamingCommunity wont work with MFP hosted on HuggingFace','url': url_streaming_community})
+
+                            streams['streams'].append({"name":f'{Name}\n{quality_sc} Max', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}','url': url_streaming_community,'behaviorHints': {'proxyHeaders': {"request": {"user-agent": User_Agent}}, 'notWebReady': False, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
                         else:
-                            streams['streams'].append({"name":f'{Name}\n{quality_sc}p Max', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}','url': url_streaming_community,'behaviorHints': {'proxyHeaders': {"request": {"user-agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
+                            streams['streams'].append({"name":f'{Name}\n{quality_sc}p Max\n This will work only on a local instance', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}','url': url_streaming_community,'behaviorHints': {'proxyHeaders': {"request": {"user-agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
                 
                 if provider_maps['LORDCHANNEL'] == "1" and LC == "1":
                     url_lordchannel,quality_lordchannel = await lordchannel(id,client)
@@ -339,7 +336,7 @@ async def addon_stream(request: Request,config, type, id,):
                     if url_streamingwatch: 
                         print(f"StreamingWatch Found Results for {id}")
                         streams['streams'].append({'name': f"{Name}\n720/1080p",'title': f'{Icon}StreamingWatch', 'url': url_streamingwatch,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": Referer}}, 'notWebReady': True, 'bingeGroup': 'streamingwatch'}})
-                if provider_maps['DDLSTREAM'] and DDL == "1":
+                if provider_maps['DDLSTREAM'] == "1" and DDL == "1":
                     if MFP == "1":
                         results = await ddlstream(id,client)
                         if  results:

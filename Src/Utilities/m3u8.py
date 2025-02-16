@@ -99,11 +99,8 @@ async def clony_m3u8(segment: str, request: Request):
         print(full_url)
         raise HTTPException(status_code=404, detail="Requested variant not available.")
     m3u8_content = await fetch_m3u8(full_url)
-    '''
     if "sc-u12" not  in m3u8_content:
         m3u8_content = re.sub(r"https://sc-[a-zA-Z0-9]+-\d+.scws-content.net", "https://sc-u12-01.scws-content.net", m3u8_content)
-    '''
-    #Test
     return Response(content=m3u8_content, media_type='application/vnd.apple.mpegurl')
  
 @router.api_route('/storage/enc.key')
@@ -124,3 +121,12 @@ async def get_key():
         response_headers
     )
 #r"https://sc-b1-([0-2][0-9]|30).scws-content.net", "https://sc-u9-01.scws-content.net", m3u8_content)
+
+
+'''
+                            forwarded_proto = request.headers.get("x-forwarded-proto")
+                            scheme = forwarded_proto if forwarded_proto else request.url.scheme
+                            instance_url = f"{scheme}://{request.url.netloc}"
+                            url_streaming_community = url_streaming_community.replace("?","&")
+                            url_streaming_community = instance_url + "/vixcloud/manifest.m3u8?d=" + url_streaming_community
+'''

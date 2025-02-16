@@ -53,7 +53,6 @@ else:
 SC_DOMAIN = config.SC_DOMAIN
 Public_Instance = config.Public_Instance
 Alternative_Link = env_vars.get('ALTERNATIVE_LINK')
-
 headers = Headers()
 #GET VERSION OF STREAMING COMMUNITY:
 async def get_version(client):
@@ -119,7 +118,7 @@ async def search(query,date,ismovie, client,SC_FAST_SEARCH,movie_id):
             print("Couldn't find anything")
 
         
-async def get_film(tid,version,client):  
+async def get_film(tid,version,client,MFP):  
     random_headers = headers.generate()
     random_headers['Referer'] = "https://streamingcommunity.buzz/"
     random_headers['Origin'] = "https://streamingcommunity.buzz"
@@ -129,6 +128,10 @@ async def get_film(tid,version,client):
     random_headers['user-agent'] = User_Agent
     #Access the iframe
     url = f'https://streamingcommunity.{SC_DOMAIN}/iframe/{tid}'
+    if MFP == "1":
+        url = f'https://streamingcommunity.{SC_DOMAIN}/iframe/{tid}'
+        quality = "Unknown"
+        return url,quality
     response = await client.get(ForwardProxy + url, headers=random_headers, allow_redirects=True,impersonate = "chrome124", proxies = proxies)
     iframe = BeautifulSoup(response.text, 'lxml')
     #Get the link of iframe
@@ -175,13 +178,12 @@ async def get_film(tid,version,client):
     else:
         url = url + f"&token={token}"      
     '''  
-    url720 = f'https://vixcloud.co/playlist/{vixid}.m3u8'
-    return url,url720,quality
+    return url,quality
 
 async def get_season_episode_id(tid,slug,season,episode,version,client):
     random_headers = headers.generate()
-    random_headers['Referer'] = "https://streamingcommunity.buzz/"
-    random_headers['Origin'] = "https://streamingcommunity.buzz"
+    random_headers['Referer'] = f"https://streamingcommunity.{SC_DOMAIN}/"
+    random_headers['Origin'] = f"https://streamingcommunity.{SC_DOMAIN}"
     random_headers['x-inertia'] = "true"
     random_headers['x-inertia-version'] = version
     
@@ -194,7 +196,7 @@ async def get_season_episode_id(tid,slug,season,episode,version,client):
         if dict_episode['number'] == episode:
             return dict_episode['id']
 
-async def get_episode_link(episode_id,tid,version,client):
+async def get_episode_link(episode_id,tid,version,client,MFP):
     #The parameters for the request
     random_headers = headers.generate()
     random_headers['Referer'] = f"https://streamingcommunity.{SC_DOMAIN}/"
@@ -207,6 +209,10 @@ async def get_episode_link(episode_id,tid,version,client):
             }
     #Let's try to get the link from iframe source
         # Make a request to get iframe source
+    if MFP == "1":
+        url = f'https://streamingcommunity.{SC_DOMAIN}/iframe/{tid}?episode_id={episode_id}&next_episode=1'
+        quality = "Unknown"
+        return url,quality
     response = await client.get(ForwardProxy + f"https://streamingcommunity.{SC_DOMAIN}/iframe/{tid}", params=params, headers = random_headers, allow_redirects=True, impersonate = "chrome124", proxies = proxies)
 
     # Parse response with BeautifulSoup to get iframe source
@@ -250,11 +256,10 @@ async def get_episode_link(episode_id,tid,version,client):
     else:
         url = url + f"&token={token}"
     '''        
-    url720 = f'https://vixcloud.co/playlist/{vixid}.m3u8'
-    return url,url720,quality
+    return url,quality
 
 
-async def streaming_community(imdb,client,SC_FAST_SEARCH):
+async def streaming_community(imdb,client,SC_FAST_SEARCH,MFP):
     try:
         '''
         if Public_Instance == "1":
@@ -319,15 +324,15 @@ async def streaming_community(imdb,client,SC_FAST_SEARCH):
         tid,slug,version = await search(query,date,ismovie,client,SC_FAST_SEARCH,imdb_id)
         if ismovie == 1:
             #TID means temporaly ID
-            url,url720,quality = await get_film(tid,version,client)
+            url,quality = await get_film(tid,version,client,MFP)
             print("MammaMia found results for StreamingCommunity")
-            return url,url720,quality,slug
+            return url,quality,slug
         if ismovie == 0:
             #Uid = URL ID
             episode_id = await get_season_episode_id(tid,slug,season,episode,version,client)
-            url,url720,quality = await get_episode_link(episode_id,tid,version,client)
+            url,quality = await get_episode_link(episode_id,tid,version,client,MFP)
             print("MammaMia found results for StreamingCommunity")
-            return url,url720,quality,slug
+            return url,quality,slug
     except Exception as e:
         print("MammaMia: StreamingCommunity failed",e)
         return None,None,None,None
@@ -336,7 +341,7 @@ async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt6468322:1:1"  # This is an example ID format
+        test_id = "tt1190634:4:5"  # This is an example ID format
         results = await streaming_community(test_id, client,"0")
         print(results)
 

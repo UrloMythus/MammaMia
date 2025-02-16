@@ -20,7 +20,7 @@ HTML = """
             font-size: 2.2vh;
             font-family: 'Open Sans', Arial, sans-serif;
             color: white;
-            background: url('https://i.postimg.cc/m2ZqvpZj/italian-seamless-free-vector-pattern3.png') center center repeat;
+            background: url('https://i.postimg.cc/ry3p76HY/italian-seamless-free-vector-pattern3.png') center center repeat;
             background-size: cover;
             display: flex;
             align-items: flex-start;
@@ -188,16 +188,6 @@ HTML = """
         <h3 class="gives">Select Providers:</h3>
         <form class="pure-form" id="provider-form">
             <div class="provider-group">
-                <label for="streamingcommunity" class="provider-label">
-                    <input type="checkbox" id="streamingcommunity"> StreamingCommunity
-                </label>
-                <span class="fast-search">
-                    <label for="fast_search_sc">
-                        <input type="checkbox" id="fast_search_sc"> Fast Search
-                    </label>
-                </span>
-            </div>
-            <div class="provider-group">
                 <label for="lordchannel" class="provider-label">
                     <input type="checkbox" id="lordchannel"> LordChannel
                 </label>
@@ -254,6 +244,17 @@ HTML = """
                 <label for="ddlstream" class="provider-label">
                     <input type="checkbox" id="ddlstream"> DDLStream Italy
                 </label>
+            </div>
+            <p>To use the following provider you need to use a local instance or else you need to set up Mediaflow-proxy with an IP not blocked by the site</p>
+            <div class="provider-group">
+                <label for="streamingcommunity" class="provider-label">
+                    <input type="checkbox" id="streamingcommunity"> StreamingCommunity
+                </label>
+                <span class="fast-search">
+                    <label for="fast_search_sc">
+                        <input type="checkbox" id="fast_search_sc"> Fast Search
+                    </label>
+                </span>
             </div>
             <div class="provider-group">
                 <label for="livetv" class="provider-label">
