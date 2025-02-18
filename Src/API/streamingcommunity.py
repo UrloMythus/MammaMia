@@ -332,10 +332,11 @@ async def streaming_community(imdb,client,SC_FAST_SEARCH,MFP):
             episode_id = await get_season_episode_id(tid,slug,season,episode,version,client)
             url,quality = await get_episode_link(episode_id,tid,version,client,MFP)
             print("MammaMia found results for StreamingCommunity")
+            print("OK")
             return url,quality,slug
     except Exception as e:
         print("MammaMia: StreamingCommunity failed",e)
-        return None,None,None,None
+        return None,None,None
 
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
