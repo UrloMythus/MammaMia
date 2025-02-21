@@ -23,7 +23,7 @@ from slowapi.middleware import SlowAPIMiddleware
 from static.static import HTML
 from urllib.parse import unquote
 from Src.Utilities.m3u8 import router as m3u8_clone
-
+import urllib.parse
 #Configure Env Vars
 Global_Proxy = config.Global_Proxy
 if Global_Proxy == "1":
@@ -101,7 +101,19 @@ def respond_with(data):
     resp.headers['Access-Control-Allow-Origin'] = '*'
     resp.headers['Access-Control-Allow-Headers'] = '*'
     return resp
+async def transform_mfp(mfp_stream_url,client):
+    try:
+        response = await client.get(mfp_stream_url)
+        data = response.json()
+        url = data['mediaflow_proxy_url'] + "?api_password=" + data['query_params']['api_password'] + "&d=" + urllib.parse.quote(data['destination_url'])
+        for i in data['request_headers']:
+            url += f"&h_{i}=({urllib.parse.quote(data['request_headers'][i])})"
 
+
+        return url
+    except Exception as e:
+        print("Transforing MFP failed",e)
+        return None
 @app.get('/config')
 def config():
     return RedirectResponse(url="/")
@@ -304,7 +316,8 @@ async def addon_stream(request: Request,config, type, id,):
                     if url_streaming_community is not None:
                         print(f"StreamingCommunity Found Results for {id}")
                         if MFP == "1" and "iframe" in url_streaming_community:
-                            url_streaming_community = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_streaming_community}&host=VixCloud&redirect_stream=true'
+                            url_streaming_community = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_streaming_community}&host=VixCloud&redirect_stream=false'
+                            url_streaming_community = await transform_mfp(url_streaming_community,client)
                             if "hf.space" in MFP_url:
                                 streams['streams'].append({"name":f'{Name}', 'title': f'{Icon}StreamingCommunity\n Sorry StreamingCommunity wont work with MFP hosted on HuggingFace','url': url_streaming_community})
 
