@@ -55,23 +55,21 @@ async def get_stream_link(id,site,client):
                 print("No .m3u8 URL found.")
             '''
             stream_url = f"https://{server_key}new.iosplayer.ru/{server_key}/{dlhd_id}" + "/mono.m3u8"
+            return stream_url,Referer,Origin
         elif site == "vary":
-            response = await client.get(f"https://www.tanti.{TF_DOMAIN}/tv-channel/sky-cinema-action-2", impersonate = "chrome124", headers = headers, timeout = 10)
-            soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('iframe'))
-            iframe = soup.find('iframe', class_='embed-responsive-item') 
-            real_link = iframe.get('src')
-            response = await client.get(real_link, allow_redirects = False) 
-            pattern = r"source:\s*'([^']*\.m3u8)'"
-            match = re.search(pattern, response.text)
-            if match:
-                m3u8_url = match.group(1)  # The URL is captured in the first capturing group
-                parsed_url = urlparse(m3u8_url)
-                domain = parsed_url.netloc
-
-            else:
-                print("No .m3u8 URL found.")
-            stream_url = f"https://{domain}/lb/"+ webru_vary[id] + "/index.m3u8"
-        return stream_url,Referer,Origin
+            response = await client.get("https://calcio.monster/streaming-gratis-calcio-1.php")
+            soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('div', class_='ticket_btn'))
+            href = soup.find('a').get('href')
+            response = await client.get(href)
+            soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('button'))
+            webru_iframe = soup.find('button', {"data-type": "embed"}).get('data-url')
+            webru_iframe = "https://" + webru_iframe.split("/")[2]
+            vary_id = webru_vary[id]
+            vary_link = f"{webru_iframe}/server_lookup.php?channel_id={vary_id}"
+            response = await client.get(vary_link, headers=headers, allow_redirects=True, impersonate = "chrome124")
+            server_key = response.json()['server_key']
+            stream_url = f"https://{server_key}new.iosplayer.ru/{server_key}/{vary_id}" + "/mono.m3u8"
+            return stream_url,Referer,Origin
     except Exception as e:
         return None
 async def webru(id,site,client):
@@ -80,7 +78,7 @@ async def webru(id,site,client):
         return new_stream_url,Referer,Origin
     except Exception as e:
         print("WebRu failed",e)
-        return None
+        return None,None,None
     
 
 
@@ -97,7 +95,7 @@ async def get_skystreaming(id,client):
         return m3u8_url,Host,Origin
     except Exception as e:
         print("SkyStreaming failed",e)
-        return None,None 
+        return None,None,None 
                     
     
 
@@ -165,3 +163,14 @@ async def webru2(id,site,client):
                         streams['streams'].append({'title': f'{HF}Server {i}', 'url': url, "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:127.0) Gecko/20100101 Firefox/127.0", "Accept": "*/*", "Accept-Language": "en-US,en;q=0.5", "Origin": "https://skystreaming.guru", "DNT": "1", "Sec-GPC": "1", "Connection": "keep-alive", "Referer": "https://skystreaming.guru/", "Sec-Fetch-Dest": "empty", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "cross-site", "Pragma": "no-cache", "Cache-Control": "no-cache", "TE": "trailers","Host": Host}}}})
 
     '''
+async def test_webru():
+    from curl_cffi.requests import AsyncSession
+    async with AsyncSession() as client:
+        # Replace with actual id, for example 'anime_id:episode' format
+        test_id = "sky-sport-uno"  # This is an example ID format
+        results = await get_skystreaming(test_id,client)
+        print(results)
+
+if __name__ == "__main__":
+    import asyncio
+    asyncio.run(test_webru())
