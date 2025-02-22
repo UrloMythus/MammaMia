@@ -61,9 +61,9 @@ async def get_version(client):
 
     try:
         random_headers = headers.generate()
-        random_headers['Referer'] = f"https://streamingcommunity.{SC_DOMAIN}/"
-        random_headers['Origin'] = f"https://streamingcommunity.{SC_DOMAIN}"
-        base_url = f'https://streamingcommunity.{SC_DOMAIN}/richiedi-un-titolo' 
+        random_headers['Referer'] = f"{SC_DOMAIN}/"
+        random_headers['Origin'] = f"{SC_DOMAIN}"
+        base_url = f'{SC_DOMAIN}/richiedi-un-titolo' 
         response = await client.get(ForwardProxy + base_url, headers=random_headers, allow_redirects = True, impersonate="chrome124", proxies = proxies)
         #Soup the response
         soup = BeautifulSoup(response.text, "lxml")
@@ -78,8 +78,8 @@ async def get_version(client):
 
 async def search(query,date,ismovie, client,SC_FAST_SEARCH,movie_id):
     random_headers = headers.generate()
-    random_headers['Referer'] = "https://streamingcommunity.buzz/"
-    random_headers['Origin'] = "https://streamingcommunity.buzz"
+    random_headers['Referer'] = f"{SC_DOMAIN}/"
+    random_headers['Origin'] = f"{SC_DOMAIN}"
     random_headers['Accept'] = 'application/json'  # Assuming the API returns JSON
     random_headers['Content-Type'] = 'application/json'
     #Do a request to get the ID of serie/move and it's slug in the URL
@@ -99,9 +99,9 @@ async def search(query,date,ismovie, client,SC_FAST_SEARCH,movie_id):
             #Added a Check to see if the result is what it is supposed to be
             if SC_FAST_SEARCH == "0":
                 random_headers = headers.generate()
-                random_headers['Referer'] = "https://streamingcommunity.buzz/"
-                random_headers['Origin'] = "https://streamingcommunity.buzz"
-                response = await client.get ( ForwardProxy + f'https://streamingcommunity.{SC_DOMAIN}/titles/{tid}-{slug}', headers = random_headers, allow_redirects=True,impersonate = "chrome124", proxies = proxies)
+                random_headers['Referer'] = f"{SC_DOMAIN}/"
+                random_headers['Origin'] = f"{SC_DOMAIN}"
+                response = await client.get ( ForwardProxy + f'{SC_DOMAIN}/titles/{tid}-{slug}', headers = random_headers, allow_redirects=True,impersonate = "chrome124", proxies = proxies)
                 soup = BeautifulSoup(response.text, "lxml")
                 data = json.loads(soup.find("div", {"id": "app"}).get("data-page"))
                 version = data['version']
@@ -120,16 +120,16 @@ async def search(query,date,ismovie, client,SC_FAST_SEARCH,movie_id):
         
 async def get_film(tid,version,client,MFP):  
     random_headers = headers.generate()
-    random_headers['Referer'] = "https://streamingcommunity.buzz/"
-    random_headers['Origin'] = "https://streamingcommunity.buzz"
+    random_headers['Referer'] = f"{SC_DOMAIN}/"
+    random_headers['Origin'] = f"{SC_DOMAIN}"
     random_headers['x-inertia'] = "true"
     random_headers['x-inertia-version'] = version
     random_headers['User-Agent'] = User_Agent
     random_headers['user-agent'] = User_Agent
     #Access the iframe
-    url = f'https://streamingcommunity.{SC_DOMAIN}/iframe/{tid}'
+    url = f'{SC_DOMAIN}/iframe/{tid}'
     if MFP == "1":
-        url = f'https://streamingcommunity.{SC_DOMAIN}/iframe/{tid}'
+        url = f'{SC_DOMAIN}/iframe/{tid}'
         quality = "Unknown"
         return url,quality
     response = await client.get(ForwardProxy + url, headers=random_headers, allow_redirects=True,impersonate = "chrome124", proxies = proxies)
@@ -141,8 +141,8 @@ async def get_film(tid,version,client,MFP):
     parsed_url = urlparse(iframe)
     query_params = parse_qs(parsed_url.query)
     random_headers = headers.generate()
-    random_headers['Referer'] = f"https://streamingcommunity.{SC_DOMAIN}/"
-    random_headers['Origin'] = f"https://streamingcommunity.{SC_DOMAIN}"
+    random_headers['Referer'] = f"{SC_DOMAIN}/"
+    random_headers['Origin'] = f"{SC_DOMAIN}"
     random_headers['x-inertia'] = "true"
     random_headers['x-inertia-version'] = version
     random_headers['User-Agent'] = User_Agent
@@ -182,14 +182,14 @@ async def get_film(tid,version,client,MFP):
 
 async def get_season_episode_id(tid,slug,season,episode,version,client):
     random_headers = headers.generate()
-    random_headers['Referer'] = f"https://streamingcommunity.{SC_DOMAIN}/"
-    random_headers['Origin'] = f"https://streamingcommunity.{SC_DOMAIN}"
+    random_headers['Referer'] = f"{SC_DOMAIN}/"
+    random_headers['Origin'] = f"{SC_DOMAIN}"
     random_headers['x-inertia'] = "true"
     random_headers['x-inertia-version'] = version
     
     #Set some basic headers for the request  
       #Get episode ID 
-    response = await client.get(ForwardProxy + f'https://streamingcommunity.{SC_DOMAIN}/titles/{tid}-{slug}/stagione-{season}', headers=random_headers, allow_redirects=True, impersonate = "chrome124", proxies = proxies)
+    response = await client.get(ForwardProxy + f'{SC_DOMAIN}/titles/{tid}-{slug}/stagione-{season}', headers=random_headers, allow_redirects=True, impersonate = "chrome124", proxies = proxies)
     # Print the json got
     json_response = response.json().get('props', {}).get('loadedSeason', {}).get('episodes', [])
     for dict_episode in json_response:
@@ -199,8 +199,8 @@ async def get_season_episode_id(tid,slug,season,episode,version,client):
 async def get_episode_link(episode_id,tid,version,client,MFP):
     #The parameters for the request
     random_headers = headers.generate()
-    random_headers['Referer'] = f"https://streamingcommunity.{SC_DOMAIN}/"
-    random_headers['Origin'] = f"https://streamingcommunity.{SC_DOMAIN}"
+    random_headers['Referer'] = f"{SC_DOMAIN}/"
+    random_headers['Origin'] = f"{SC_DOMAIN}"
     random_headers['User-Agent'] = User_Agent
     random_headers['user-agent'] = User_Agent
     params = {
@@ -210,18 +210,18 @@ async def get_episode_link(episode_id,tid,version,client,MFP):
     #Let's try to get the link from iframe source
         # Make a request to get iframe source
     if MFP == "1":
-        url = f'https://streamingcommunity.{SC_DOMAIN}/iframe/{tid}?episode_id={episode_id}&next_episode=1'
+        url = f'{SC_DOMAIN}/iframe/{tid}?episode_id={episode_id}&next_episode=1'
         quality = "Unknown"
         return url,quality
-    response = await client.get(ForwardProxy + f"https://streamingcommunity.{SC_DOMAIN}/iframe/{tid}", params=params, headers = random_headers, allow_redirects=True, impersonate = "chrome124", proxies = proxies)
+    response = await client.get(ForwardProxy + f"{SC_DOMAIN}/iframe/{tid}", params=params, headers = random_headers, allow_redirects=True, impersonate = "chrome124", proxies = proxies)
 
     # Parse response with BeautifulSoup to get iframe source
     soup = BeautifulSoup(response.text, "lxml")
     iframe = soup.find("iframe").get("src")
     vixid = iframe.split("/embed/")[1].split("?")[0]
     random_headers = headers.generate()
-    random_headers['Referer'] = f"https://streamingcommunity.{SC_DOMAIN}/"
-    random_headers['Origin'] = f"https://streamingcommunity.{SC_DOMAIN}"
+    random_headers['Referer'] = f"{SC_DOMAIN}/"
+    random_headers['Origin'] = f"{SC_DOMAIN}"
     random_headers['x-inertia'] = "true"
     random_headers['x-inertia-version'] = version
     random_headers['User-Agent'] = User_Agent
@@ -320,7 +320,7 @@ async def streaming_community(imdb,client,SC_FAST_SEARCH,MFP):
         
         showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
         showname = urllib.parse.quote_plus(showname)
-        query = f'https://streamingcommunity.{SC_DOMAIN}/api/search?q={showname}'
+        query = f'{SC_DOMAIN}/api/search?q={showname}'
         tid,slug,version = await search(query,date,ismovie,client,SC_FAST_SEARCH,imdb_id)
         if ismovie == 1:
             #TID means temporaly ID

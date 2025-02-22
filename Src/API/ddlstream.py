@@ -19,7 +19,7 @@ cookies = {
 
 async def search_series(client,id,season,episode,showname):
     showname = showname.replace(" ", "%20").replace("–", "+").replace("—","+")
-    response = await client.get(f"https://ddlstreamitaly.{DDL_DOMAIN}/search/?&q={showname}%20{season}%20Streaming&type=videobox_video&quick=1&nodes=11,36&search_and_or=and&search_in=titles&sortby=relevancy")
+    response = await client.get(f"{DDL_DOMAIN}/search/?&q={showname}%20{season}%20Streaming&type=videobox_video&quick=1&nodes=11,36&search_and_or=and&search_in=titles&sortby=relevancy")
     soup = BeautifulSoup(response.text, 'lxml',parse_only=SoupStrainer('a'))
     a_tags = soup.find_all('a', {'data-linktype': 'link'})
     for a in a_tags:
@@ -77,7 +77,7 @@ async def get_episode(client,link,episode):
 async def search_movie(client,showname,id):
     showname = showname.replace("–", "+").replace("—","+")
     showname = urllib.parse.quote(showname)
-    link = f"https://ddlstreamitaly.{DDL_DOMAIN}/search/?&q={showname}%20Streaming&quick=1&nodes=11&search_and_or=and&search_in=titles&sortby=relevancy"    
+    link = f"{DDL_DOMAIN}/search/?&q={showname}%20Streaming&quick=1&nodes=11&search_and_or=and&search_in=titles&sortby=relevancy"    
     response = await client.get(link,impersonate = "chrome120")
     soup = BeautifulSoup(response.text, 'lxml',parse_only=SoupStrainer('a'))
     a_tags = soup.find_all('a', {'data-linktype': 'link'})

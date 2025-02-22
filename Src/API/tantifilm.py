@@ -17,7 +17,7 @@ TF_DOMAIN = config.TF_DOMAIN
 import urllib.parse
 async def search(showname,ismovie,date,client):
     showname = showname.replace(" ","+")
-    url = f'https://www.tanti.bond/ajax/posts?q={showname}'
+    url = f'{TF_DOMAIN}/ajax/posts?q={showname}'
     response =  await client.get(url, allow_redirects=True)
     response = response.json()['data']
     if ismovie == 1:
@@ -50,7 +50,7 @@ async def search(showname,ismovie,date,client):
             
 async def fast_search(showname,ismovie,client):
     showname = showname.replace(" ","%20")
-    url = f'https://www.tanti.{TF_DOMAIN}/search/{showname}'
+    url = f'{TF_DOMAIN}/search/{showname}'
     response = await client.get(url, allow_redirects=True, impersonate = "chrome120")
     soup = BeautifulSoup(response.text, "lxml")
     if ismovie == 1:
@@ -91,7 +91,7 @@ async def get_protect_link(id,url,client):
             data = {
             'id': embed_id
             }
-            ajax_url = f"https://www.tanti.{TF_DOMAIN}/ajax/embed"
+            ajax_url = f"{TF_DOMAIN}/ajax/embed"
             response = await client.post(ajax_url, headers=headers, data=data)
             hdplayer = response.text[43:-27]
             response = await client.get(hdplayer, allow_redirects=True, impersonate = "chrome120")
@@ -125,7 +125,7 @@ async def get_nuovo_indirizzo_and_protect_link(url,embed_id,season,episode,clien
     data = {
     'id': embed_id
 }
-    ajax_url = f"https://www.tanti.{TF_DOMAIN}/ajax/embed"
+    ajax_url = f"{TF_DOMAIN}/ajax/embed"
     response = await client.post(ajax_url, headers=headers, data=data)
     nuovo_indirizzo = response.text[43:-27]
     response = await client.get(nuovo_indirizzo, allow_redirects=True, impersonate = "chrome120")
@@ -288,7 +288,7 @@ async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt9165438:9:1"  # This is an example ID format
+        test_id = "tt1839578:1:1"  # This is an example ID format
         results = await tantifilm(test_id, client,"0")
         print(results)
 

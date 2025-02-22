@@ -64,7 +64,7 @@ async def get_supervideo_link(link,client):
 
 async def search(clean_id,client):
     headers = random_headers.generate()
-    response = await client.get(ForwardProxy + f"https://mostraguarda.{GHD_DOMAIN}/set-movie-a/{clean_id}", allow_redirects=True, impersonate = "chrome124", headers = headers, proxies = proxies)
+    response = await client.get(ForwardProxy + f"{GHD_DOMAIN}/set-movie-a/{clean_id}", allow_redirects=True, impersonate = "chrome124", headers = headers, proxies = proxies)
     if response.status_code != 200:
             print(f"GuardaHD Failed to fetch search results: {response.status_code}")
     soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('li'))

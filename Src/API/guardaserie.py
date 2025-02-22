@@ -68,7 +68,7 @@ async def get_supervideo_link(link,client):
 async def search(clean_id,client):
     try:
         headers = random_headers.generate()
-        response = await client.get(ForwardProxy + f'https://guardaserietv.{GS_DOMAIN}/?story={clean_id}&do=search&subaction=search', allow_redirects=True, impersonate = "chrome124", headers = headers, proxies = proxies)
+        response = await client.get(ForwardProxy + f'{GS_DOMAIN}/?story={clean_id}&do=search&subaction=search', allow_redirects=True, impersonate = "chrome124", headers = headers, proxies = proxies)
         if response.status_code != 200:
             print(f"Guardaserie Failed to fetch search results: {response.status_code}")
         soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('div',class_="mlnh-2"))
@@ -87,7 +87,7 @@ async def player_url(page_url, season, episode,client):
         headers = random_headers.generate()
         if GS_ForwardProxy == "1":
             response = await client.get(ForwardProxy + page_url, allow_redirects=True, impersonate = "chrome124", headers = headers)
-            page_url = response.url.replace(ForwardProxy,f'https://guardaserietv.{GS_DOMAIN}/')
+            page_url = response.url.replace(ForwardProxy,f'{GS_DOMAIN}/')
         response = await client.get(ForwardProxy + page_url, allow_redirects=True, impersonate = "chrome124", headers = headers, proxies = proxies)
         soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('a'))
         a_tag = soup.find('a', id = f"serie-{season}_{episode}")

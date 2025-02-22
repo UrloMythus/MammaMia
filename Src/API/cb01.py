@@ -140,8 +140,8 @@ async def search_movie(showname,date,client):
     try:
         showname = showname.replace(" ","+").replace("ò","o").replace("è","e").replace("à","a").replace("ù","u").replace("ì","i")  
         headers = fake_headers.generate()
-        headers['Referer'] = f'https://cb01new.{CB_DOMAIN}/'
-        query = f'https://cb01new.{CB_DOMAIN}/?s={showname}'
+        headers['Referer'] = f'{CB_DOMAIN}/'
+        query = f'{CB_DOMAIN}/?s={showname}'
         response = await client.get(ForwardProxy + query,headers=headers, impersonate = "chrome124", proxies = proxies)
         if response.status_code != 200:
             print(f"CB01 Failed to fetch search results: {response.status_code}")
@@ -169,8 +169,8 @@ async def search_series(showname,date,client):
     try:
         showname = showname.replace(" ","+")
         headers = fake_headers.generate()
-        headers['Referer'] = f'https://cb01new.{CB_DOMAIN}/serietv/'
-        query = f'https://cb01new.{CB_DOMAIN}/serietv/?s={showname}'
+        headers['Referer'] = f'{CB_DOMAIN}/serietv/'
+        query = f'{CB_DOMAIN}/serietv/?s={showname}'
         response = await client.get(ForwardProxy + query,headers=headers,impersonate = "chrome124", proxies = proxies)
         if response.status_code != 200:
             print(f"CB01 Failed to fetch search results: {response.status_code}")
@@ -201,15 +201,24 @@ async def movie_redirect_url(link,client,MFP):
         # Extract the redirect URL from the HTML
         soup = BeautifulSoup(response.text, "lxml",parse_only=SoupStrainer('div'))
         redirect_url = soup.find("div", id="iframen2").get("data-src")
-        try:
-            if "stayonline" in redirect_url:
-                mixdrop_real_link = await get_stayonline(redirect_url,client)
-                final_url = await get_true_link_mixdrop(mixdrop_real_link,client,MFP)
+        print(redirect_url)
+        if "stayonline" in redirect_url:
+            mixdrop_real_link = await get_stayonline(redirect_url,client)
+            final_url = await get_true_link_mixdrop(mixdrop_real_link,client,MFP)
+            if final_url != None:
                 return final_url
-        except Exception as e:  
+            else:
+                redirect_url = soup.find("div", id="iframen1").get("data-src")
+                if "stayonline" in redirect_url:
+                    redirect_url =await get_stayonline(redirect_url,client)
+                maxstream_real_link = await get_uprot(redirect_url,client)
+                final_url = await get_true_link_maxstream(maxstream_real_link,client) 
+                return(final_url)
+
+        else:
             redirect_url = soup.find("div", id="iframen1").get("data-src")
             if "stayonline" in redirect_url:
-                    redirect_url =await get_stayonline(redirect_url,client)
+                redirect_url =await get_stayonline(redirect_url,client)
             maxstream_real_link = await get_uprot(redirect_url,client)
             final_url = await get_true_link_maxstream(maxstream_real_link,client) 
             return(final_url)
@@ -316,7 +325,7 @@ async def test_animeworld():
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
         test_id = "tt0045247"  # This is an example ID format
-        MFP = "1"
+        MFP = "0"
         results = await cb01(test_id, client,MFP)
         print(results)
 

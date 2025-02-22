@@ -59,7 +59,7 @@ async def get_mp4(anime_url,ismovie,episode,client):
     cookies = {}
     if ForwardProxy != "":
         response = await client.get(ForwardProxy + anime_url,allow_redirects=True,impersonate = "chrome124",proxies=proxies)
-        anime_url = f'https://animeworld.{AW_DOMAIN}/{response.url.replace(ForwardProxy,"")}?d=1'
+        anime_url = f'{AW_DOMAIN}/{response.url.replace(ForwardProxy,"")}?d=1'
         response = await client.get(ForwardProxy + anime_url, allow_redirects=True,  cookies = cookies,impersonate = "chrome124",proxies=proxies)
         cookies = await security_cookie(response)
         response = await client.get(ForwardProxy + anime_url, allow_redirects=True,  cookies = cookies,impersonate = "chrome124",proxies=proxies)
@@ -70,7 +70,7 @@ async def get_mp4(anime_url,ismovie,episode,client):
         episode_page = soup.find('a', {'data-episode-num':episode })
         if episode_page is None:
             return None
-        episode_page = f'https://animeworld.{AW_DOMAIN}{episode_page["href"]}'
+        episode_page = f'{AW_DOMAIN}{episode_page["href"]}'
         response = await client.get(ForwardProxy + episode_page,allow_redirects=True, cookies = cookies,impersonate = "chrome124", proxies=proxies)
         if response.status_code == 202:
             cookies = await security_cookie(response)
@@ -90,7 +90,7 @@ async def get_mp4(anime_url,ismovie,episode,client):
 async def search(showname,date,ismovie,episode,client):
     search_year = date[:4] 
     headers = random_headers.generate()
-    link = f'https://www.animeworld.so/filter?year={search_year}&sort=2&keyword={showname}'
+    link = f'{AW_DOMAIN}/filter?year={search_year}&sort=2&keyword={showname}'
     response = await client.get(ForwardProxy + link,allow_redirects=True, impersonate = "chrome124", headers = headers, proxies = proxies)
     if response.status_code == 202:
         cookies = await security_cookie(response)
@@ -101,7 +101,7 @@ async def search(showname,date,ismovie,episode,client):
     anime_list = soup.find_all('a', class_=['poster', 'tooltipstered'])
     final_urls = []
     for anime in anime_list:
-        anime_info_url = f'https://www.animeworld.{AW_DOMAIN}/{anime["data-tip"]}'
+        anime_info_url = f'{AW_DOMAIN}/{anime["data-tip"]}'
         response = await client.get(ForwardProxy + anime_info_url,allow_redirects=True, impersonate = "chrome124", cookies = cookies, proxies = proxies)
         if response.status_code == 202:
             cookies = await security_cookie(response)
@@ -117,7 +117,7 @@ async def search(showname,date,ismovie,episode,client):
         if (release_date == date or 
     release_date == (datetime.datetime.strptime(date, "%Y-%m-%d") + datetime.timedelta(days=1)).strftime("%Y-%m-%d") or
     release_date == (datetime.datetime.strptime(date, "%Y-%m-%d") - datetime.timedelta(days=1)).strftime("%Y-%m-%d")):
-            anime_url = f'https://www.animeworld.{AW_DOMAIN}{anime["href"]}'
+            anime_url = f'{AW_DOMAIN}{anime["href"]}'
             final_url = await get_mp4(anime_url,ismovie,episode,client)
             if final_url:
                 final_urls.append(final_url)

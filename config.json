@@ -1,7 +1,7 @@
 {
     "Siti": {
            "StreamingCommunity": {
-               "domain": "paris",
+               "url": "https://streamingcommunity.paris",
                "SC_ForwardProxy": "0",
                "SC_PROXY": "0",
                "VX_ForwardProxy": "0",
@@ -9,11 +9,11 @@
                "enabled": "1"
            },
            "Filmpertutti": {
-               "domain": "motorcycles",
+               "url": "https://filmpertutti.motorcycles",
                "enabled": "1"
            },
            "Tantifilm":{
-               "domain": "bond",
+               "url": "https://www.tanti.bond",
                "TF_ForwardProxy": "0",
                "TF_PROXY": "0",
                "enabled": "1"
@@ -22,15 +22,15 @@
                "enabled": "0"    
            },
           "LordChannel":{
-               "domain":"com",
+               "url":"https://lordchannel.net",
                "enabled":"1"
           },
           "StreamingWatch":{
-              "domain":"org",
+              "url":"https://www.streamingwatch.org",
               "enabled":"1"
           },
           "CB01":{
-              "domain":"media",
+              "url":"https://cb01new.loan",
               "CB_PROXY":"0",
               "CB_ForwardProxy":"0",
               "MX_ForwardProxy":"0",
@@ -38,7 +38,7 @@
               "enabled":"1"
           },
           "DDLStream":{
-              "domain":"co",
+              "url":"https://ddlstreamitaly.co",
               "cookies" : {
                   "ips4_device_key": null,
                   "ips4_IPSSessionFront": null,
@@ -48,13 +48,13 @@
               "enabled":"1"
           },
           "Guardaserie":{
-              "domain":"mom",
+              "url":"https://guardaserietv.mom",
               "enabled":"1",
               "GS_ForwardProxy":"0",
               "GS_PROXY":"0"
           },
           "GuardaHD":{
-              "domain":"stream",
+              "url":"https://mostraguarda.stream",
               "enabled":"1",
               "GH_ForwardProxy":"0",
               "GH_PROXY":"0"
@@ -66,17 +66,17 @@
               "OST_PROXY":"0"
           },
           "AnimeWorld":{
-              "domain":"so",
+              "url":"https://www.animeworld.so",
               "enabled":"1",
               "AW_ForwardProxy":"0",
               "AW_PROXY":"0"
           },
           "SkyStreaming":{
-              "domain":"store",
+              "url":"https://skystreaming.watch",
               "enabled":"1"
           },
           "DaddyLiveHD":{
-              "domain":"to",
+              "url":"https://daddylive.mp",
               "enabled":"1"
           }
    },

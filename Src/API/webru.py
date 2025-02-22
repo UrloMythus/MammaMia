@@ -33,7 +33,7 @@ async def get_stream_link(id,site,client):
     try:
         if site == "dlhd":
             dlhd_id = webru_dlhd[id]
-            response = await client.get(f"https://thedaddy.{DLHD_DOMAIN}/embed/stream-853.php", impersonate = "chrome124", headers = headers)
+            response = await client.get(f"{DLHD_DOMAIN}/embed/stream-853.php", impersonate = "chrome124", headers = headers)
             soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('iframe'))
             iframe = soup.find('iframe', id='thatframe')
             real_link = iframe.get('src')
@@ -57,7 +57,7 @@ async def get_stream_link(id,site,client):
             stream_url = f"https://{server_key}new.iosplayer.ru/{server_key}/{dlhd_id}" + "/mono.m3u8"
             return stream_url,Referer,Origin
         elif site == "vary":
-            response = await client.get("https://calcio.monster/streaming-gratis-calcio-1.php")
+            response = await client.get("https://calcio.monster/streaming-gratis-calcio-1.php", impersonate = "chrome124", headers = headers)
             soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('div', class_='ticket_btn'))
             href = soup.find('a').get('href')
             response = await client.get(href)
@@ -71,10 +71,13 @@ async def get_stream_link(id,site,client):
             stream_url = f"https://{server_key}new.iosplayer.ru/{server_key}/{vary_id}" + "/mono.m3u8"
             return stream_url,Referer,Origin
     except Exception as e:
-        return None
+        print("WebRu failed",e)
+        return None,None,None
 async def webru(id,site,client):
     try:
         new_stream_url,Referer,Origin = await get_stream_link(id,site,client)
+        if new_stream_url == None:
+            raise Exception("No stream URL found")
         return new_stream_url,Referer,Origin
     except Exception as e:
         print("WebRu failed",e)
@@ -85,7 +88,6 @@ async def webru(id,site,client):
 async def get_skystreaming(id,client):
     try:
         skystreaming_link =  skystreaming[id]
-        m3u8_urls = {}
         if type(skystreaming_link) == list:
             
             for link in skystreaming_link:

@@ -16,7 +16,7 @@ async def search(showname,date,season,episode,ismovie,client):
         'accept': '*/*',
         'accept-language': 'it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7',
         # 'cookie': 'csrftoken=7lvc502CZe8Zbx7iSX1xkZOBA1NbDxJZ',
-        'referer': f'https://lordchannel.{LC_DOMAIN}/anime/anime-ita/',
+        'referer': f'{LC_DOMAIN}/anime/anime-ita/',
         'sec-ch-ua': '"Not-A.Brand";v="99", "Chromium";v="124"',
         'sec-ch-ua-mobile': '?0',
         'sec-ch-ua-platform': '"Android"',
@@ -31,13 +31,13 @@ async def search(showname,date,season,episode,ismovie,client):
         'media': showname,
         '_': '1724421723999',
     }
-    response = await client.get(f'https://lordchannel.{LC_DOMAIN}/live_search/', params=params, cookies=cookies, headers=headers, allow_redirects=True, impersonate = "chrome120")
+    response = await client.get(f'{LC_DOMAIN}/live_search/', params=params, cookies=cookies, headers=headers, allow_redirects=True, impersonate = "chrome120")
     data = json.loads(response.text)
     for entry in data['data']:
         if entry is not None:  # check if the a_tag exists
             href = entry['url']
             quality = entry['qualit\u00e0_video']
-            link = f'https://lordchannel.{LC_DOMAIN}{href}'
+            link = f'{LC_DOMAIN}{href}'
             response = await client.get(link, allow_redirects=True, impersonate = "chrome120")
             soup2 = BeautifulSoup(response.text,'lxml')
             li_tag = soup2.select_one("ul.card__meta li:nth-of-type(2)")

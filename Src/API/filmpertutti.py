@@ -46,6 +46,7 @@ async def search(query,imdb_id,client,season,ismovie):
         imdb_match = re.search(imdb_pattern, series_response.text)
         if imdb_match:
             id = imdb_match.group(1)
+            print(id)
             if id == imdb_id:
                 url = link
                 tid = tid
@@ -80,6 +81,7 @@ def get_film(url):
 
 async def get_real_link(tlink,client):
     try:
+        print(tlink)
         #Some basic code to get the mixdrop link
         page = await client.get(tlink, headers=headers, allow_redirects=True)
         soup = BeautifulSoup(page.content, features="lxml",parse_only=SoupStrainer('iframe'))
@@ -134,7 +136,7 @@ async def filmpertutti(imdb,client,MFP):
         showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
         showname = urllib.parse.quote_plus(showname)
         #   Build the query
-        query = f'https://filmpertutti.{FT_DOMAIN}/wp-json/wp/v2/posts?search={showname}&page=1&_fields=link,id'
+        query = f'{FT_DOMAIN}/wp-json/wp/v2/posts?search={showname}&page=1&_fields=link,id'
         try:
             url,tid,actual_season = await search(query,imdb_id,client,season,ismovie)
         except:
@@ -183,7 +185,7 @@ async def test_animeworld():
     async with AsyncSession() as client:
         MFP = "1"
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt0413573:19:1"  # This is an example ID format
+        test_id = "tt1190634:1:1"  # This is an example ID format
         results = await filmpertutti(test_id, client,MFP)
 
 if __name__ == "__main__":

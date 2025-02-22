@@ -6,7 +6,7 @@ import re
 import json
 SW_DOMAIN = config.SW_DOMAIN
 async def wponce_get(client):
-    response = await client.get(f"https://www.streamingwatch.{SW_DOMAIN}/contatto/")
+    response = await client.get(f"{SW_DOMAIN}/contatto/")
     pattern = r'"admin_ajax_nonce":"(\w+)"'
     matches = re.findall(pattern, response.text)
     wponce = matches[1]
@@ -15,15 +15,15 @@ async def wponce_get(client):
 async def search(showname,season,episode,date,ismovie,client):
     if ismovie == 1:
         wponce = await wponce_get(client)
-        query = f'https://www.streamingwatch.{SW_DOMAIN}/wp-admin/admin-ajax.php'
+        query = f'{SW_DOMAIN}/wp-admin/admin-ajax.php'
         headers = {
-            'authority': f'www.streamingwatch.{SW_DOMAIN}',
+            'authority': f'{SW_DOMAIN}',
             'accept': '*/*',
             'accept-language': 'it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7',
             'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
             # 'cookie': 'wordpress_test_cookie=WP%20Cookie%20check',
-            'origin': f'https://www.streamingwatch.{SW_DOMAIN}',
-            'referer': f'https://www.streamingwatch.{SW_DOMAIN}',
+            'origin': f'{SW_DOMAIN}',
+            'referer': f'{SW_DOMAIN}/',
             'sec-ch-ua': '"Not-A.Brand";v="99", "Chromium";v="124"',
             'sec-ch-ua-mobile': '?0',
             'sec-ch-ua-platform': '"Android"',
@@ -58,10 +58,10 @@ async def search(showname,season,episode,date,ismovie,client):
                 return hdplayer
     elif ismovie == 0:
         #Some series have the name in english so we first search with the categories option and then we use the obtained ID to get all the episodes
-        id_response = await client.get(f'https://streamingwatch.{SW_DOMAIN}/wp-json/wp/v2/categories?search={showname}&_fields=id', allow_redirects=True, impersonate = "chrome120")
+        id_response = await client.get(f'{SW_DOMAIN}/wp-json/wp/v2/categories?search={showname}&_fields=id', allow_redirects=True, impersonate = "chrome120")
         data = json.loads(id_response.text)
         category_id = data[0]['id']
-        query = f'https://streamingwatch.{SW_DOMAIN}/wp-json/wp/v2/posts?categories={category_id}&per_page=100'
+        query = f'{SW_DOMAIN}/wp-json/wp/v2/posts?categories={category_id}&per_page=100'
         response = await client.get(query, allow_redirects=True, impersonate = "chrome120")
         data_json = response.text
         data = json.loads(data_json)
