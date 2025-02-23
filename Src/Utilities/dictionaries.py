@@ -791,6 +791,7 @@ webru_vary = {
     "sky-sport-arena": "calcioXskysportarena",
     "sky-sport-tennis": "calcioXskysporttennis",
     "sky-sport-nba": "calcioXskysportnba", 
+    "dazn-1": "Xserie"
 }
 #"dazn-zona-a": "https://webuit.mizhls.ru/lb/calcioXzona/index.m3u8"
 webru_dlhd = {
@@ -882,8 +883,8 @@ skystreaming ={
     "sky-sport-golf": f"{SKY_DOMAIN}/embed/s9L5f",
     "eurosport-1": f"{SKY_DOMAIN}/embed/Vyv99",
     "eurosport-2": f"{SKY_DOMAIN}/embed/um8E5",
-    "dazn-zona-a": ["https://live.servis.hair/hls/serie/index.m3u8","https://live.servis.hair/hls/serie/index.m3u8"],
-    "sportitalia": "https://live.servis.hair/hls/sportitalia/index.m3u8",
+    "dazn-zona-a": ["https://hls.kangal.sbs/hls/serie/index.m3u8","https://hls.kangal.sbs/hls/serie/index.m3u8"],
+    "sportitalia": "https://hls.kangal.sbs/hls/sportitalia/index.m3u8",
 }
 huhu = {
     "canale-5": "1101559666",
