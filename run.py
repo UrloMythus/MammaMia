@@ -107,7 +107,7 @@ async def transform_mfp(mfp_stream_url,client):
         data = response.json()
         url = data['mediaflow_proxy_url'] + "?api_password=" + data['query_params']['api_password'] + "&d=" + urllib.parse.quote(data['destination_url'])
         for i in data['request_headers']:
-            url += f"&h_{i}=({urllib.parse.quote(data['request_headers'][i])})"
+            url += f"&h_{i}={urllib.parse.quote(data['request_headers'][i])}"
 
 
         return url
