@@ -162,7 +162,10 @@ async def get_info_kitsu(kitsu_id,client):
     api_url = f'https://kitsu.io/api/edge/anime/{kitsu_id}'
     response = await client.get(api_url)
     data = json.loads(response.text)
-    showname = data['data']['attributes']['titles']['en']
+    try:
+        showname = data['data']['attributes']['titles']['en']
+    except Exception as e:
+        showname = data['data']['attributes']['canonicalTitle']
     date = data['data']['attributes']['startDate']
     return showname,date           
 
