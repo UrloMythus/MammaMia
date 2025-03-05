@@ -63,7 +63,7 @@
             "domain": "com",
             "enabled": "1",
             "OST_ForwardProxy": "0",
-            "OST_PROXY": "0"
+            "OST_PROXY": "1"
         },
         "AnimeWorld": {
             "url": "https://www.animeworld.so",
