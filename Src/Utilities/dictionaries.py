@@ -913,4 +913,5 @@ provider_map = {
         'CB': 'CB01',
         "GS": "GUARDASERIE",
         "GHD": "GUARDAHD",
+        "OST": "ONLINESERIETV",
     }

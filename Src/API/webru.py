@@ -114,7 +114,9 @@ async def get_skystreaming_url(skystreaming_link,client):
         if "hls" in skystreaming_link:
             m3u8_url = skystreaming_link
             Host = m3u8_url.replace("https://","").split("/")[0]
-            return m3u8_url,Host
+            response =  await client.get(skystreaming_link, headers=headers, allow_redirects=True, impersonate = "chrome120")
+            Origin = response.url.split('/embed')[0]
+            return m3u8_url,Host,Origin 
         response =  await client.get(skystreaming_link, headers=headers, allow_redirects=True, impersonate = "chrome120")
         Origin = response.url.split('/embed')[0]
         soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('source'))
