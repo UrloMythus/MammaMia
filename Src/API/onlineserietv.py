@@ -57,7 +57,8 @@ async def search(showname,date,client,ismovie,episode,season):
     'searchwp_live_search_client_nonce': 'undefined',
     }
     response = await client.get(ForwardProxy + f"https://onlineserietv.{OST_DOMAIN}/wp-admin/admin-ajax.php", headers=headers, params=params, cookies=cookies, impersonate = "chrome124", proxies = proxies)
-    print(response)
+    if response.status_code != 200:
+        print("IP Blocked by OnlineserieTV",response)
     soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('a'))
     a_tags_with_href = soup.find_all("a", href=True)
     for a_tag in a_tags_with_href:
@@ -65,6 +66,8 @@ async def search(showname,date,client,ismovie,episode,season):
         if ismovie == 1:
             if "film" in href:
                 response = await client.get(ForwardProxy + href, headers=headers, impersonate = "chrome124", proxies = proxies)
+                if response.status_code != 200:
+                    print("IP Blocked by OnlineserieTV",response)
                 year_match = re.search(r'Anno: <i>(\d{4})</i>', response.text)
                 year = year_match.group(1) if year_match else None
                 if year == date:
@@ -81,7 +84,8 @@ async def search(showname,date,client,ismovie,episode,season):
         elif ismovie == 0:
             if "serietv" in href:
                 response = await client.get(ForwardProxy + href, headers=headers, impersonate = "chrome124", proxies = proxies)
-                print(response)
+                if response.status_code != 200:
+                    print("IP Blocked by OnlineserieTV",response)
                 year_match = re.search(r'Anno: <i>(\d{4})</i>', response.text)
                 year = year_match.group(1) if year_match else None
                 if year == date:
@@ -120,7 +124,7 @@ async def onlineserietv(id,client):
         flexy_link = flexy_link.replace("fxf","fxe")
         real_url = await client.head(ForwardProxy + flexy_link, headers=headers, impersonate = "chrome124", proxies = proxies)
         real_url = real_url.url
-        final_url = await eval_solver(real_url,client)
+        final_url = await eval_solver(real_url,proxies, ForwardProxy, client)
         return final_url,name
     except Exception as e:
         print("MammaMia: Onlineserietv Failed",e)
