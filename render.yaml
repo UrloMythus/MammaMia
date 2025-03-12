@@ -15,3 +15,5 @@ services:
       # (useful for secrets)
       - key: TMDB_KEY
         sync: false
+      - key: PROXY
+        sync: false
