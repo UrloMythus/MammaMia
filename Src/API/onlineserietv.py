@@ -56,7 +56,7 @@ async def search(showname,date,client,ismovie,episode,season):
     'origin_id': '50141',
     'searchwp_live_search_client_nonce': 'undefined',
     }
-    response = await client.get(ForwardProxy + f"https://onlineserietv.{OST_DOMAIN}/wp-admin/admin-ajax.php", headers=headers, params=params, cookies=cookies, impersonate = "chrome124", proxies = proxies)
+    response = await client.get(ForwardProxy + f"https://onlineserietv.{OST_DOMAIN}/wp-admin/admin-ajax.php?s={showname.replace(' ','%20')}&action=searchwp_live_search&swpengine=default&swpquery={showname.replace(' ', '%20')}&origin_id=50141&searchwp_live_search_client_nonce=undefined", headers=headers, cookies=cookies, impersonate = "chrome124", proxies = proxies)
     if response.status_code != 200:
         print("IP Blocked by OnlineserieTV",response)
     soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('a'))
@@ -122,6 +122,7 @@ async def onlineserietv(id,client):
             showname,date = get_info_tmdb(clean_id,ismovie,type)
         flexy_link,name = await search(showname,date,client,ismovie,episode,season)
         flexy_link = flexy_link.replace("fxf","fxe")
+        print(flexy_link)
         real_url = await client.head(ForwardProxy + flexy_link, headers=headers, impersonate = "chrome124", proxies = proxies)
         real_url = real_url.url
         final_url = await eval_solver(real_url,proxies, ForwardProxy, client)
