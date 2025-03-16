@@ -73,10 +73,11 @@ async def search(showname,date,client,ismovie,episode,season):
                 if year == date:
                     pattern = r'https://uprot\.net/fxf/[^\s"<>]+'
                     match = re.search(pattern, response.text)
-                    print("Here Match",match)
                     if match:
                         name = a_tag.text
+                        print("A match was found",match)
                         flexy_link = match.group(1)
+                        print(flexy_link)
                         return flexy_link,name
                     else:
                         print("No flexy link found.")
@@ -94,7 +95,6 @@ async def search(showname,date,client,ismovie,episode,season):
                     episode = episode.zfill(2)
                     pattern = rf'{season}x{episode}.*?<a href=[\'"](https://uprot\.net/fxf/[^\'"]+)'
                     match = re.search(pattern, response.text, re.DOTALL)
-                    print("Here Match",match)
                     if match:
                         name = a_tag.text.replace("\t","").replace("\n","")
                         flexy_link = match.group(1)
@@ -123,6 +123,7 @@ async def onlineserietv(id,client):
         else:
             showname,date = get_info_tmdb(clean_id,ismovie,type)
         flexy_link,name = await search(showname,date,client,ismovie,episode,season)
+        print(flexy_link)
         flexy_link = flexy_link.replace("fxf","fxe")
         real_url = await client.head(ForwardProxy + flexy_link, headers=headers, impersonate = "chrome124", proxies = proxies)
         real_url = real_url.url
