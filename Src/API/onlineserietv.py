@@ -74,7 +74,7 @@ async def search(showname,date,client,ismovie,episode,season):
                     pattern = r'https://uprot\.net/fxf/[^\s"<>]+'
                     match = re.search(pattern, response.text)
                     if match:
-                        name = a_tag.text
+                        name = a_tag.text.replace("\t","").replace("\n","")
                         flexy_link = match.group()
                         return flexy_link,name
                     else:
