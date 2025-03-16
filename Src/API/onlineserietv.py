@@ -75,9 +75,7 @@ async def search(showname,date,client,ismovie,episode,season):
                     match = re.search(pattern, response.text)
                     if match:
                         name = a_tag.text
-                        print("A match was found",match)
-                        flexy_link = match.group(1)
-                        print(flexy_link)
+                        flexy_link = match.group()
                         return flexy_link,name
                     else:
                         print("No flexy link found.")
@@ -123,7 +121,6 @@ async def onlineserietv(id,client):
         else:
             showname,date = get_info_tmdb(clean_id,ismovie,type)
         flexy_link,name = await search(showname,date,client,ismovie,episode,season)
-        print(flexy_link)
         flexy_link = flexy_link.replace("fxf","fxe")
         real_url = await client.head(ForwardProxy + flexy_link, headers=headers, impersonate = "chrome124", proxies = proxies)
         real_url = real_url.url
@@ -137,7 +134,7 @@ async def onlineserietv(id,client):
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
-        test_id = "tt9165438:1:1"  # This is an example ID format
+        test_id = "tt9218128"  # This is an example ID format
         results = await onlineserietv(test_id, client)
         print(results)
 
