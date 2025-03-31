@@ -57,7 +57,7 @@ headers = Headers()
 #GET VERSION OF STREAMING COMMUNITY:
 async def get_version(client):
     #Extract the version from the main page of the site
-
+    #You can extract it from any page of the site but I chose one of the lightiest
 
     try:
         random_headers = headers.generate()
@@ -77,6 +77,11 @@ async def get_version(client):
         return version
 
 async def search(query,date,ismovie, client,SC_FAST_SEARCH,movie_id):
+    '''
+    This function is used to search for a movie or a show in the Streaming Community website using the API
+    After it checks if the imdb id given is the same as the one in the website
+    We need to convert imdb id to tmdb id because often imdb ids are missing
+    '''
     random_headers = headers.generate()
     random_headers['Referer'] = f"{SC_DOMAIN}/"
     random_headers['Origin'] = f"{SC_DOMAIN}"
@@ -107,6 +112,7 @@ async def search(query,date,ismovie, client,SC_FAST_SEARCH,movie_id):
                 version = data['version']
                 if "tt" in movie_id:
                     movie_id = str(await get_TMDb_id_from_IMDb_id(movie_id,client))
+                    print(movie_id)
                     #Here we need to convert because the IMDB ID is often bugged
                 tmdb_id = str(data['props']['title']['tmdb_id'])
                 if tmdb_id == movie_id:
@@ -119,6 +125,9 @@ async def search(query,date,ismovie, client,SC_FAST_SEARCH,movie_id):
 
         
 async def get_film(tid,version,client,MFP):  
+    ''''
+    This function is used to get the link of the m3u8 from the Streaming Community player,vixcloud
+    '''
     random_headers = headers.generate()
     random_headers['Referer'] = f"{SC_DOMAIN}/"
     random_headers['Origin'] = f"{SC_DOMAIN}"
@@ -181,6 +190,9 @@ async def get_film(tid,version,client,MFP):
     return url,quality
 
 async def get_season_episode_id(tid,slug,season,episode,version,client):
+    '''
+    This function is used to get the ID of the episode in the Streaming Community website
+    '''
     random_headers = headers.generate()
     random_headers['Referer'] = f"{SC_DOMAIN}/"
     random_headers['Origin'] = f"{SC_DOMAIN}"
@@ -197,6 +209,9 @@ async def get_season_episode_id(tid,slug,season,episode,version,client):
             return dict_episode['id']
 
 async def get_episode_link(episode_id,tid,version,client,MFP):
+    ''''
+    This function is used to get the link of the m3u8 from the Streaming Community player,vixcloud
+    '''
     #The parameters for the request
     random_headers = headers.generate()
     random_headers['Referer'] = f"{SC_DOMAIN}/"
@@ -340,8 +355,8 @@ async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt1190634:4:5"  # This is an example ID format
-        results = await streaming_community(test_id, client,"0")
+        test_id = "tt4772188"  # This is an example ID format
+        results = await streaming_community(test_id, client,"0","0")
         print(results)
 
 if __name__ == "__main__":

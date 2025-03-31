@@ -6,6 +6,7 @@ from Src.Utilities.loadenv import load_env
 import json, random
 import re
 from Src.Utilities.eval import eval_solver
+import urllib.parse
 OST_DOMAIN = config.OST_DOMAIN
 OST_PROXY = config.OST_PROXY
 env_vars = load_env()
@@ -56,7 +57,7 @@ async def search(showname,date,client,ismovie,episode,season):
     'origin_id': '50141',
     'searchwp_live_search_client_nonce': 'undefined',
     }
-    response = await client.get(ForwardProxy + f"https://onlineserietv.{OST_DOMAIN}/wp-admin/admin-ajax.php?s={showname.replace(' ','%20')}&action=searchwp_live_search&swpengine=default&swpquery={showname.replace(' ', '%20')}&origin_id=50141&searchwp_live_search_client_nonce=undefined", headers=headers, cookies=cookies, impersonate = "chrome124", proxies = proxies)
+    response = await client.get(ForwardProxy + f"https://onlineserietv.{OST_DOMAIN}/wp-admin/admin-ajax.php?s={urllib.parse.quote(showname)}&action=searchwp_live_search&swpengine=default&swpquery={urllib.parse.quote(showname)}&origin_id=50141&searchwp_live_search_client_nonce=undefined", headers=headers, cookies=cookies, impersonate = "chrome124", proxies = proxies)
     if response.status_code != 200:
         print("IP Blocked by OnlineserieTV",response)
     soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('a'))
@@ -91,11 +92,20 @@ async def search(showname,date,client,ismovie,episode,season):
                 if year == date:
                     season = season.zfill(2)
                     episode = episode.zfill(2)
-                    pattern = rf'{season}x{episode}.*?<a href=[\'"](https://uprot\.net/fxf/[^\'"]+)'
-                    match = re.search(pattern, response.text, re.DOTALL)
+                    if season == "0000000000000":
+                        print(True,season,episode)
+                        #pattern = rf'{season}x{episode}.*?<a href=[\'"](https://uprot\.net/fxf/[^\'"]+)|0{episode}.*?<a href=[\'"](https://uprot\.net/fxf/[^\'"]+)'
+                        pattern = rf'0{episode}.*?<a href=[\'"](https://uprot\.net/fxf/[^\'"]+)'
+                        match1 = re.findall(pattern, response.text)
+                        match = re.search(pattern, response.text)
+                        print(match)
+                    else:
+                        pattern = rf'{season}x{episode}.*?<a href=[\'"](https://uprot\.net/fxf/[^\'"]+)'
+                        match = re.search(pattern, response.text, re.DOTALL)
                     if match:
                         name = a_tag.text.replace("\t","").replace("\n","")
                         flexy_link = match.group(1)
+                        print(match,flexy_link)
                         return flexy_link,name
                     else:
                         print("No flexy link found.")
@@ -120,6 +130,7 @@ async def onlineserietv(id,client):
                 showname,date = await get_info_imdb(clean_id,ismovie,type,client)
         else:
             showname,date = get_info_tmdb(clean_id,ismovie,type)
+        showname = showname.replace("'"," ")
         flexy_link,name = await search(showname,date,client,ismovie,episode,season)
         flexy_link = flexy_link.replace("fxf","fxe")
         real_url = await client.head(ForwardProxy + flexy_link, headers=headers, impersonate = "chrome124", proxies = proxies)
@@ -134,7 +145,7 @@ async def onlineserietv(id,client):
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
-        test_id = "tt9218128"  # This is an example ID format
+        test_id = "tt0206516:2:1"  # This is an example ID format
         results = await onlineserietv(test_id, client)
         print(results)
 
@@ -142,5 +153,5 @@ if __name__ == "__main__":
     import asyncio
     asyncio.run(test_animeworld())
 
-
+    # Guru Guru tt0330592  Uomo tigre tt0206516
     #python3 -m Src.API.onlineserietv

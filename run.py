@@ -291,6 +291,7 @@ async def addon_stream(request: Request,config, type, id,):
                 raise HTTPException(status_code=404)
             return respond_with(streams)
         elif "tt" in id or "tmdb" in id or "kitsu" in id:
+            
             print(f"Handling movie or series: {id}")
             if "kitsu" in id:
                 if provider_maps['ANIMEWORLD'] == "1" and AW == "1":
@@ -307,6 +308,10 @@ async def addon_stream(request: Request,config, type, id,):
                                 streams['streams'].append({'title': f'{Icon}Animeworld {title}', 'url': url})
                                 i+=1
             else:
+                import time
+                current_time = int(time.time())
+                if 1743487223 <= current_time <= 1743544823:
+                    streams['streams'].append({'name': f"{Name} 4K",'title': f'{Icon}Netflix/Prime Extractor 4K', 'url': "https://cdn-cf-east.streamable.com/video/mp4/jkx9gr.mp4?Expires=1743457311748&Key-Pair-Id=APKAIEYUVEN4EVB2OKEQ&Signature=gpixXPFJb5huM8D6AMkbzNqmAON-9zBUVIN5AeWcHiXBVROSz6BlmctAVx0qpe-hM1DN3OO7YtIdBKKOk3IthF33agmVmVjSyNI-emjf~iuqxclbaousBJTPXMIjDQTxBxINr0SUbyS4MiIwhar~luiqqvbPHN9jS-AXT2r1chhZylE4Zol~bKSCCT10TzN3En630XMk0UiTFCgwoAxfitI4mnuCXu4M3-mcnN~kpxx9j6VgE0jVzBKFq9qYbi-CtWOCL7mVaVaCwrTPPe9syZVQgIlgQJt175raLM2G2~faR~wuDOda7KmGNJJH2hDfdd~-sPsr6SSNV0B9ZZ3eaw__"})
                 if MYSTERIUS == "1":
                     results = await cool(id,client)
                     if results:
@@ -402,6 +407,7 @@ async def addon_stream(request: Request,config, type, id,):
                 if url_onlineserietv:
                     print(f"OnlineSerieTV Found Results for {id}")
                     streams['streams'].append({'name': f"{Name}",'title': f'{Icon}OnlineSerieTV\n{name}', 'url': url_onlineserietv, 'behaviorHints': {'proxyHeaders': {'request': {"User-Agent": 'Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.71 Mobile Safari/537.36', "Referer": "https://flexy.stream/"}}, 'bingeGroup': 'onlineserietv', 'notWebReady': True}})
+            
         if not streams['streams']:
             raise HTTPException(status_code=404)
 
