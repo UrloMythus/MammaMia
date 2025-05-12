@@ -197,10 +197,12 @@ async def get_season_episode_id(tid,slug,season,episode,version,client):
     random_headers['Origin'] = f"{SC_DOMAIN}"
     random_headers['x-inertia'] = "true"
     random_headers['x-inertia-version'] = version
+    random_headers['accept'] = 'text/html, application/xhtml+xml'
+    random_headers['accept-language'] = 'it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7' 
     
     #Set some basic headers for the request  
       #Get episode ID 
-    response = await client.get(ForwardProxy + f'{SC_DOMAIN}/it/titles/{tid}-{slug}/stagione-{season}', headers=random_headers, allow_redirects=True, impersonate = "chrome124", proxies = proxies)
+    response = await client.get(ForwardProxy + f'{SC_DOMAIN}/it/titles/{tid}-{slug}/season-{season}', headers=random_headers, allow_redirects=True, impersonate = "chrome124", proxies = proxies)
     # Print the json got
     json_response = response.json().get('props', {}).get('loadedSeason', {}).get('episodes', [])
     for dict_episode in json_response:
@@ -354,7 +356,7 @@ async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt9218128"  # This is an example ID format
+        test_id = "tt6468322:1:1"  # This is an example ID format
         results = await streaming_community(test_id, client,"0","0")
         print(results)
 
