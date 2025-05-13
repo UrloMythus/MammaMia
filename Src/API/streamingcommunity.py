@@ -226,7 +226,7 @@ async def get_episode_link(episode_id,tid,version,client,MFP):
     #Let's try to get the link from iframe source
         # Make a request to get iframe source
     if MFP == "1":
-        url = f'{SC_DOMAIN}/iframe/{tid}?episode_id={episode_id}&next_episode=1'
+        url = f'{SC_DOMAIN}/it/iframe/{tid}?episode_id={episode_id}&next_episode=1'
         quality = "Unknown"
         return url,quality
     response = await client.get(ForwardProxy + f"{SC_DOMAIN}/it/iframe/{tid}", params=params, headers = random_headers, allow_redirects=True, impersonate = "chrome124", proxies = proxies)
