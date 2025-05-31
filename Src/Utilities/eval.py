@@ -137,6 +137,7 @@ class UnpackingError(Exception):
 
 async def eval_solver(stream_link,proxies, ForwardProxy, client):
     try:
+        print(ForwardProxy + stream_link)
         headers = {}
         headers["user-agent"] = "Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.71 Mobile Safari/537.36"
         headers["User-Agent"] = "Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.71 Mobile Safari/537.36"
