@@ -146,7 +146,7 @@ async def eval_solver(stream_link,proxies, ForwardProxy, client):
         for i in script_all:
             if detect(i.text):
                 unpacked_code = unpack(i.text)
-                match = re.search(r'sources:\s*\[\{\s*src:\s*"([^"]+)"', unpacked_code)
+                match = re.search( r'file:"(.*?)"', unpacked_code)
                 if match:
                     m3u8_url = match.group(1)
                     return m3u8_url
