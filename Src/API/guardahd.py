@@ -4,6 +4,7 @@ import re
 import Src.Utilities.config as config
 from fake_headers import Headers  
 from Src.Utilities.loadenv import load_env  
+from Src.Utilities.eval import eval_solver
 import json, random
 env_vars = load_env()
 GH_PROXY = config.GH_PROXY
@@ -82,7 +83,7 @@ async def guardahd(id,client):
         if ismovie == 0:
             return None
         supervideo_link = await search(clean_id,client)
-        final_url = await get_supervideo_link(supervideo_link,client)
+        final_url = await eval_solver(supervideo_link,proxies, ForwardProxy, client)
         return final_url
     except Exception as e:
         print("MammaMia: GuardaHD Failed",e)
