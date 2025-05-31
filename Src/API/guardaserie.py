@@ -5,6 +5,8 @@ import Src.Utilities.config as config
 from fake_headers import Headers  
 from Src.Utilities.loadenv import load_env  
 import json, random
+from Src.Utilities.info import get_info_imdb,get_info_tmdb
+from Src.Utilities.eval import eval_solver
 env_vars = load_env()
 GS_PROXY = config.GS_PROXY
 proxies = {}
@@ -65,17 +67,21 @@ async def get_supervideo_link(link,client):
 
 
 
-async def search(clean_id,client):
+async def search(showname,date,client):
     try:
         headers = random_headers.generate()
-        response = await client.get(ForwardProxy + f'{GS_DOMAIN}/?story={clean_id}&do=search&subaction=search', allow_redirects=True, impersonate = "chrome124", headers = headers, proxies = proxies)
+        response = await client.get(ForwardProxy + f'{GS_DOMAIN}/?story={showname}&do=search&subaction=search', allow_redirects=True, impersonate = "chrome124", headers = headers, proxies = proxies)
         if response.status_code != 200:
             print(f"Guardaserie Failed to fetch search results: {response.status_code}")
-        soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('div',class_="mlnh-2"))
-        div_mlnh2 = soup.select_one('div.mlnh-2:nth-of-type(2)')
-        a_tag = div_mlnh2.find('h2').find('a')
-        href = a_tag['href']
-        return href
+        soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('div'))
+        div_mlnew = soup.find_all('div', class_='mlnew')
+        for mlnew in div_mlnew:
+            div_date = mlnew.find('div', class_='mlnh-3 hdn').text
+            div_date = div_date[:4]
+            if div_date == date:
+                a_tag = mlnew.find('div', class_='mlnh-2').find('h2').find('a')
+                href = a_tag['href']
+                return href
 
     except Exception as e:
         return None
@@ -107,11 +113,17 @@ async def guardaserie(id,client):
         clean_id = general[1]
         season = general[2]
         episode = general[3]
+        type = "Guardaserie"
+        if "tt" in id:
+            showname,date = await get_info_imdb(clean_id,ismovie,type,client)
+        else:
+            showname,date = get_info_tmdb(clean_id,ismovie,type)
+        showname = showname.replace("'"," ")
         if ismovie == 1:
             return None
-        page_url = await search(clean_id,client)
+        page_url = await search(showname,date,client)
         supervideo_link =await player_url(page_url,season,episode,client)
-        final_url = await get_supervideo_link(supervideo_link,client)
+        final_url = await eval_solver(supervideo_link,proxies, ForwardProxy, client)
         return final_url
     except Exception as e:
         print("MammaMia: Guardaserie Failed",e)
@@ -123,7 +135,7 @@ async def test_script():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt1190634:1:1"  # This is an example ID format
+        test_id = "tt3148266:3:4"  # This is an example ID format
         results = await guardaserie(test_id, client)
         print(results)
 
