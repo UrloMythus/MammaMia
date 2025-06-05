@@ -49,6 +49,10 @@ def get_info_tmdb(tmbda,ismovie,type):
             date = show.first_air_date
             date = date.split("-")[0]
             return showname,date
+        elif type == "Guardaserie":
+            date = show.first_air_date
+            date = date.split("-")[0]
+            return showname,date
     
     elif ismovie == 1:
         movie = Movie()
@@ -123,6 +127,10 @@ async def get_info_imdb(imdb_id, ismovie, type,client):
             return showname,date
         elif type == "Onlineserietv":
             date = data['tv_results'][0]['first_air_date']
+            date = date.split("-")[0]
+            return showname,date
+        elif type == "Guardaserie":
+            date = data['tv_results'][0]['first_air_date'] 
             date = date.split("-")[0]
             return showname,date
 
