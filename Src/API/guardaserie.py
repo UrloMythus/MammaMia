@@ -132,7 +132,7 @@ async def test_script():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt3148266:3:4"  # This is an example ID format
+        test_id = "tt0460649:1:1"  # This is an example ID format
         results = await guardaserie(test_id, client)
         print(results)
 
