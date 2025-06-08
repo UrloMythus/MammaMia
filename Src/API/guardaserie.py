@@ -7,6 +7,7 @@ from Src.Utilities.loadenv import load_env
 import json, random
 from Src.Utilities.info import get_info_imdb,get_info_tmdb
 from Src.Utilities.eval import eval_solver
+import urllib.parse
 env_vars = load_env()
 GS_PROXY = config.GS_PROXY
 proxies = {}
@@ -70,6 +71,7 @@ async def get_supervideo_link(link,client):
 async def search(showname,date,client):
     try:
         headers = random_headers.generate()
+        showname = urllib.parse.quote(showname)
         response = await client.get(ForwardProxy + f'{GS_DOMAIN}/?story={showname}&do=search&subaction=search', allow_redirects=True, impersonate = "chrome124", headers = headers, proxies = proxies)
         if response.status_code != 200:
             print(f"Guardaserie Failed to fetch search results: {response.status_code}")
@@ -120,8 +122,12 @@ async def guardaserie(id,client):
             return None
         page_url = await search(showname,date,client)
         supervideo_link =await player_url(page_url,season,episode,client)
-        final_url = await eval_solver(supervideo_link,proxies, ForwardProxy, client)
-        return final_url
+        if supervideo_link:
+            final_url = await eval_solver(supervideo_link,proxies, ForwardProxy, client)
+            return final_url
+        else:
+            print("Couldn't find iframe source")
+            return None
     except Exception as e:
         print("MammaMia: Guardaserie Failed",e)
         return None
@@ -132,7 +138,7 @@ async def test_script():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt0460649:1:1"  # This is an example ID format
+        test_id = "tt0157246:1:1"  # This is an example ID format tt0460649
         results = await guardaserie(test_id, client)
         print(results)
 
