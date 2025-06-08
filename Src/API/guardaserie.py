@@ -118,11 +118,13 @@ async def guardaserie(id,client):
         else:
             showname,date = get_info_tmdb(clean_id,ismovie,type)
         showname = showname.replace("'"," ")
+        if "Guru" in showname:
+            showname = showname.split("-")[0]
         if ismovie == 1:
             return None
         page_url = await search(showname,date,client)
         supervideo_link =await player_url(page_url,season,episode,client)
-        if supervideo_link:
+        if supervideo_link: 
             final_url = await eval_solver(supervideo_link,proxies, ForwardProxy, client)
             return final_url
         else:
@@ -138,7 +140,7 @@ async def test_script():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt0157246:1:1"  # This is an example ID format tt0460649
+        test_id = "tmdb:36247:1:1"  # This is an example ID format tt0460649
         results = await guardaserie(test_id, client)
         print(results)
 
