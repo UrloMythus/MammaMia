@@ -741,29 +741,2379 @@ STREAM = {
             "poster": "https://images.pluto.tv/channels/60b9dc99521a1400079bdfba/colorLogoPNG.png"
             # URL rimosso perché sarà dinamico
         },
-        # Canali da OMGTV (script_with_noepg.py)
-        # Esempio per 247ita
+        # Canali da OMGTV (script_with_noepg.py integrato)
         {
-            "id": "omgtv-247ita-sky-uno", # ID univoco per MammaMia
-            "title": "Sky Uno (D)",      # Titolo visualizzato
-            "name": "OMGTV - 247ita",    # Nome del server/sorgente
-            "genres": ["OMGTV", "Sky"],  # Generi
+            "id": "omgtv-vavoo-eurosport-1",
+            "title": "EUROSPORT 1 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-canale-5",
+            "title": "CANALE 5 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-1",
+            "title": "RAI 1 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rai-1-it.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-24-live-during-events-only",
+            "title": "SKY SPORT 24 [LIVE DURING EVENTS ONLY] (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-action",
+            "title": "SKY CINEMA ACTION (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-24",
+            "title": "SKY SPORT 24 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sports-f1",
+            "title": "SKY SPORTS F1 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-moto-gp",
+            "title": "SKY SPORT MOTO GP (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-collection",
+            "title": "SKY CINEMA COLLECTION (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-uno",
+            "title": "SKY SPORT UNO (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-tennis",
+            "title": "SKY SPORT TENNIS (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-dmax",
+            "title": "DMAX (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Discovery", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-italia-1",
+            "title": "ITALIA 1 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-canale-5-2",
+            "title": "CANALE 5 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-20-mediaset",
+            "title": "20 MEDIASET (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-3",
+            "title": "RAI 3 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-drama",
+            "title": "SKY CINEMA DRAMA (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-arena",
+            "title": "SKY SPORT ARENA (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-uno",
+            "title": "SKY CINEMA UNO (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-atlantic",
+            "title": "SKY ATLANTIC (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-suspense",
+            "title": "SKY CINEMA SUSPENSE (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-family",
+            "title": "SKY CINEMA FAMILY (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-due",
+            "title": "SKY CINEMA DUE (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-5",
+            "title": "SKY PRIMAFILA 5 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-eurosport-2",
+            "title": "EUROSPORT 2 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-action-2",
+            "title": "SKY CINEMA ACTION (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-suspense-2",
+            "title": "SKY CINEMA SUSPENSE (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-serie",
+            "title": "SKY SERIE (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-comedy",
+            "title": "SKY CINEMA COMEDY (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-la-7",
+            "title": "LA 7 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Altro", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-comedy-2",
+            "title": "SKY CINEMA COMEDY (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-4",
+            "title": "RAI 4 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-arte",
+            "title": "SKY ARTE (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Documentari", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-eurosport-1-2",
+            "title": "EUROSPORT 1 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-uno-24",
+            "title": "SKY CINEMA UNO +24 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-cartoon-network",
+            "title": "CARTOON NETWORK (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Bambini", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-football-live-during-events-only",
+            "title": "SKY SPORT FOOTBALL [LIVE DURING EVENTS ONLY] (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-tennis-2",
+            "title": "SKY SPORT TENNIS (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-motogp",
+            "title": "SKY SPORT MOTOGP (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-nba",
+            "title": "SKY SPORT NBA (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-sport-live-during-events-only",
+            "title": "RAI SPORT [LIVE DURING EVENTS ONLY] (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-calcio",
+            "title": "SKY SPORT CALCIO (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-news-24",
+            "title": "RAI NEWS 24 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Notizie", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-zona-dazn",
+            "title": "ZONA DAZN (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-tg-24",
+            "title": "SKY TG 24 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Notizie", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-10",
+            "title": "SKY PRIMAFILA 10 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-tg-com-24",
+            "title": "TG COM 24 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Notizie", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-8",
+            "title": "SKY PRIMAFILA 8 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-arena-2",
+            "title": "SKY SPORT ARENA (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rete-4",
+            "title": "RETE 4 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-calcio-2",
+            "title": "SKY SPORT CALCIO (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-2",
+            "title": "RAI 2 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-uno-2",
+            "title": "SKY CINEMA UNO (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-2-2",
+            "title": "RAI 2 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-dmax-2",
+            "title": "DMAX (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Discovery", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-cielo",
+            "title": "CIELO (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-mediaset-extra",
+            "title": "MEDIASET EXTRA (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-romance",
+            "title": "SKY CINEMA ROMANCE (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-4-2",
+            "title": "RAI 4 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-la-5",
+            "title": "LA 5 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Altro", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-cielo-2",
+            "title": "CIELO (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-italia-2",
+            "title": "ITALIA 2 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-8-2",
+            "title": "SKY PRIMAFILA 8 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-sport",
+            "title": "RAI SPORT (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-top-crime",
+            "title": "TOP CRIME (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Discovery", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-dazn-1",
+            "title": "DAZN 1 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-uno-2",
+            "title": "SKY SPORT UNO (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-7",
+            "title": "SKY PRIMAFILA 7 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-golf",
+            "title": "SKY SPORT GOLF (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-uno",
+            "title": "SKY UNO (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sky", "Vavoo"],
             "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-uno-it.png"
-            # "url" non è necessario qui, sarà generato dinamicamente
+        },
+        {
+            "id": "omgtv-vavoo-boing-plus",
+            "title": "BOING PLUS (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Bambini", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-nick-jr",
+            "title": "NICK JR (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Bambini", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-romance-2",
+            "title": "SKY CINEMA ROMANCE (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-4k",
+            "title": "RAI 4K (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rsi-la-1",
+            "title": "RSI LA 1 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Altro", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-italia",
+            "title": "RAI ITALIA (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rsi-la-2",
+            "title": "RSI LA 2 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Altro", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-tv-8",
+            "title": "TV 8 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-atlantic-2",
+            "title": "SKY ATLANTIC (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-deejay-tv",
+            "title": "DEEJAY TV (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Altro", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-9",
+            "title": "SKY PRIMAFILA 9 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-yoyo",
+            "title": "RAI YOYO (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-due-2",
+            "title": "SKY CINEMA DUE (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-6",
+            "title": "SKY PRIMAFILA 6 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-arte-2",
+            "title": "SKY ARTE (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Documentari", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-news-24-2",
+            "title": "RAI NEWS 24 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Notizie", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-1",
+            "title": "SKY PRIMAFILA 1 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-4",
+            "title": "SKY PRIMAFILA 4 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-golf-2",
+            "title": "SKY SPORT GOLF (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-nba-2",
+            "title": "SKY SPORT NBA (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-f1",
+            "title": "SKY SPORT F1 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-discovery-nove",
+            "title": "DISCOVERY NOVE (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Documentari", "Discovery", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-2",
+            "title": "SKY PRIMAFILA 2 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-hgtv",
+            "title": "HGTV (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Discovery", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-1-2",
+            "title": "SKY PRIMAFILA 1 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-action-backup",
+            "title": "SKY CINEMA ACTION (BACKUP) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-5",
+            "title": "RAI 5 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-5-2",
+            "title": "SKY PRIMAFILA 5 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-premium",
+            "title": "RAI PREMIUM (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-super",
+            "title": "SUPER! (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Altro", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-food-network",
+            "title": "FOOD NETWORK (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Discovery", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-5-2",
+            "title": "RAI 5 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-tennis-channel",
+            "title": "TENNIS CHANNEL (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-hgtv-2",
+            "title": "HGTV (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Discovery", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-giallo",
+            "title": "GIALLO (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Altro", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-dazn",
+            "title": "DAZN (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-17",
+            "title": "SKY PRIMAFILA 17 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-k2",
+            "title": "K2 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Bambini", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-27-twentyseven",
+            "title": "27 TWENTYSEVEN (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Altro", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-16",
+            "title": "SKY PRIMAFILA 16 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-crime-investigation",
+            "title": "CRIME+ INVESTIGATION (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Discovery", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-comedy-central",
+            "title": "COMEDY CENTRAL (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sky", "Vavoo"],
+            "poster": "https://yt3.googleusercontent.com/FPzu1EWCI54fIh2j9JEp0NOzwoeugjL4sZTQCdoxoQY1U4QHyKx2L3wPSw27IueuZGchIxtKfv8=s900-c-k-c0x00ffffff-no-rj"
+        },
+        {
+            "id": "omgtv-vavoo-history",
+            "title": "HISTORY (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Documentari", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-giallo-2",
+            "title": "GIALLO (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Altro", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-history-2",
+            "title": "HISTORY (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Documentari", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-gulp",
+            "title": "RAI GULP (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-nickelodeon",
+            "title": "NICKELODEON (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Bambini", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-dazn-2",
+            "title": "DAZN 2 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-1-2",
+            "title": "RAI 1 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rai-1-it.png"
+        },
+        {
+            "id": "omgtv-vavoo-animal-planet",
+            "title": "ANIMAL PLANET (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-cine-34-mediaset",
+            "title": "CINE 34 MEDIASET (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rete-4-2",
+            "title": "RETE 4 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-family-2",
+            "title": "SKY CINEMA FAMILY (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-3-2",
+            "title": "RAI 3 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-football",
+            "title": "SKY SPORT FOOTBALL (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-premium-2",
+            "title": "RAI PREMIUM (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-iris",
+            "title": "IRIS (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-k2-2",
+            "title": "K2 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Bambini", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-real-time",
+            "title": "REAL TIME (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Discovery", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-mediaset-20",
+            "title": "MEDIASET 20 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-la-5-2",
+            "title": "LA 5 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Altro", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-food-network-2",
+            "title": "FOOD NETWORK (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Discovery", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-uno-2",
+            "title": "SKY UNO (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sky", "Vavoo"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-uno-it.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-3",
+            "title": "SKY PRIMAFILA 3 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-discovery-nove-2",
+            "title": "DISCOVERY NOVE (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Documentari", "Discovery", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-real-time-2",
+            "title": "REAL TIME (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Discovery", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-2-2",
+            "title": "SKY PRIMAFILA 2 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-movie",
+            "title": "RAI MOVIE (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-10-2",
+            "title": "SKY PRIMAFILA 10 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-max",
+            "title": "SKY SPORT MAX (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-movie-2",
+            "title": "RAI MOVIE (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-mediaset-1",
+            "title": "MEDIASET 1 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-eurosport-2-2",
+            "title": "EUROSPORT 2 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-mediaset-iris",
+            "title": "MEDIASET IRIS (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-super-tennis",
+            "title": "SKY SUPER TENNIS (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-cartoon-network-2",
+            "title": "CARTOON NETWORK (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Bambini", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-4-2",
+            "title": "SKY PRIMAFILA 4 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-discovery-channel",
+            "title": "DISCOVERY CHANNEL (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Documentari", "Discovery", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-cine-34",
+            "title": "CINE 34 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-9-2",
+            "title": "SKY PRIMAFILA 9 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-storia",
+            "title": "RAI STORIA (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-focus",
+            "title": "FOCUS (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-27-twenty-seven",
+            "title": "27 TWENTY SEVEN (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-scuola",
+            "title": "RAI SCUOLA (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-6-2",
+            "title": "SKY PRIMAFILA 6 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-la-7-2",
+            "title": "LA 7 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Altro", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-focus-2",
+            "title": "FOCUS (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-frisbee",
+            "title": "FRISBEE (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Bambini", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-discovery-channel-2",
+            "title": "DISCOVERY CHANNEL (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Documentari", "Discovery", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-7-2",
+            "title": "SKY PRIMAFILA 7 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-deejay-tv-2",
+            "title": "DEEJAY TV (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Altro", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-top-crime-2",
+            "title": "TOP CRIME (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Discovery", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-cartoonito",
+            "title": "CARTOONITO (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Bambini", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-premium-crime",
+            "title": "PREMIUM CRIME (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-boing",
+            "title": "BOING (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Bambini", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-super-2",
+            "title": "SUPER! (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Altro", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rsi-la-1-2",
+            "title": "RSI LA 1 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Altro", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-boing-2",
+            "title": "BOING (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Bambini", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-tv-8-2",
+            "title": "TV 8 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-storia-2",
+            "title": "RAI STORIA (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-discovery-focus",
+            "title": "DISCOVERY FOCUS (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-mediaset-italia",
+            "title": "MEDIASET ITALIA (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-yoyo-2",
+            "title": "RAI YOYO (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-cartoonito-backup",
+            "title": "CARTOONITO (BACKUP) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Bambini", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-3-2",
+            "title": "SKY PRIMAFILA 3 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-super-tennis",
+            "title": "SUPER TENNIS (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-comedy-central-2",
+            "title": "COMEDY CENTRAL (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sky", "Vavoo"],
+            "poster": "https://yt3.googleusercontent.com/FPzu1EWCI54fIh2j9JEp0NOzwoeugjL4sZTQCdoxoQY1U4QHyKx2L3wPSw27IueuZGchIxtKfv8=s900-c-k-c0x00ffffff-no-rj"
+        },
+        {
+            "id": "omgtv-vavoo-rai-scuola-2",
+            "title": "RAI SCUOLA (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-gulp-2",
+            "title": "RAI GULP (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-wwe-channel",
+            "title": "WWE CHANNEL (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Discovery", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sport-italia-backup",
+            "title": "SPORT ITALIA (BACKUP) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-mediaset-italia-2",
+            "title": "MEDIASET ITALIA 2 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-nature",
+            "title": "SKY NATURE (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Documentari", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-14",
+            "title": "SKY PRIMAFILA 14 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-18",
+            "title": "SKY PRIMAFILA 18 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-cartoonito-2",
+            "title": "CARTOONITO (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Bambini", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rsi-la-2-2",
+            "title": "RSI LA 2 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Altro", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-super-tennis-2",
+            "title": "SUPER TENNIS (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sport-italia",
+            "title": "SPORT ITALIA (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sportitalia-solocalcio",
+            "title": "SPORTITALIA SOLOCALCIO (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sport-italia-solo-calcio-live-during-events-only",
+            "title": "SPORT ITALIA SOLO CALCIO [LIVE DURING EVENTS ONLY] (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-sport",
+            "title": "RAI SPORT+ (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-tg-24-2",
+            "title": "SKY TG 24 (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Notizie", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport",
+            "title": "SKY SPORT (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-sport-serie-a",
+            "title": "SKY SPORT SERIE A (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-12",
+            "title": "SKY PRIMAFILA 12 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-discovery-k2",
+            "title": "DISCOVERY K2 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Bambini", "Discovery", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-primafila-15",
+            "title": "SKY PRIMAFILA 15 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sportitalia-plus",
+            "title": "SPORTITALIA PLUS (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sport", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-nat-geo-wild",
+            "title": "NAT GEO WILD (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Documentari", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rai-italia-2",
+            "title": "RAI ITALIA (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Rai Tv", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-la-7-d",
+            "title": "LA 7 D (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Altro", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-nat-geo",
+            "title": "NAT GEO (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Documentari", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-documentaries",
+            "title": "SKY DOCUMENTARIES (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-fox",
+            "title": "FOX (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-nat-geo-2",
+            "title": "NAT GEO (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Documentari", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-warner-tv",
+            "title": "WARNER TV (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Discovery", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-mediaset-infinity-1",
+            "title": "MEDIASET INFINITY+ 1 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-disney-film",
+            "title": "DISNEY+ FILM (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-sky-cinema-due-24",
+            "title": "SKY CINEMA DUE +24 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-nat-geo-wild-2",
+            "title": "NAT GEO WILD (2) (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Documentari", "Sky", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-tgcom-24",
+            "title": "TGCOM 24 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Notizie", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rakuten-action-movies",
+            "title": "RAKUTEN ACTION MOVIES (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Rakuten", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-mediaset-infinity-2",
+            "title": "MEDIASET INFINITY+ 2 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-catfish",
+            "title": "CATFISH (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Altro", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-mediaset-infinity-5",
+            "title": "MEDIASET INFINITY+ 5 (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Intrattenimento", "Mediaset", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rakuten-drama",
+            "title": "RAKUTEN DRAMA (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Rakuten", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rakuten-tv-shows",
+            "title": "RAKUTEN TV SHOWS (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Rakuten", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rakuten-family",
+            "title": "RAKUTEN FAMILY (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Rakuten", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rakuten-comedy-movies",
+            "title": "RAKUTEN COMEDY MOVIES (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Film", "Rakuten", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-vavoo-rakuten-top-free",
+            "title": "RAKUTEN TOP FREE (V)",
+            "name": "OMGTV - Vavoo",
+            "genres": ["OMGTV", "Rakuten", "Vavoo"],
+            "poster": "https://www.vavoo.tv/software/images/logo.png"
+        },
+        {
+            "id": "omgtv-247ita-eurosport-1",
+            "title": "EuroSport 1 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/eurosport-1-es.png"
+        },
+        {
+            "id": "omgtv-247ita-eurosport-2",
+            "title": "EuroSport 2 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/spain/eurosport-2-es.png"
+        },
+        {
+            "id": "omgtv-247ita-italia-1",
+            "title": "Italia 1 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Mediaset", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/italia1-it.png"
+        },
+        {
+            "id": "omgtv-247ita-la7",
+            "title": "La7 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Tv Italia", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/la7-it.png"
+        },
+        {
+            "id": "omgtv-247ita-la7d",
+            "title": "LA7d (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Tv Italia", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/la7-it.png"
         },
         {
             "id": "omgtv-247ita-rai-1",
             "title": "Rai 1 (D)",
             "name": "OMGTV - 247ita",
-            "genres": ["OMGTV", "Rai"],
+            "genres": ["OMGTV", "Rai Tv", "247ita"],
             "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rai-1-it.png"
+        },
+        {
+            "id": "omgtv-247ita-rai-2",
+            "title": "Rai 2 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Rai Tv", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rai-2-it.png"
+        },
+        {
+            "id": "omgtv-247ita-rai-3",
+            "title": "Rai 3 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Rai Tv", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rai-3-it.png"
+        },
+        {
+            "id": "omgtv-247ita-rai-sport",
+            "title": "Rai Sport (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rai-sport-it.png"
+        },
+        {
+            "id": "omgtv-247ita-rai-premium",
+            "title": "Rai Premium (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Rai Tv", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rai-premium-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-sports-golf",
+            "title": "Sky Sports Golf (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-golf-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-sport-motogp",
+            "title": "Sky Sport MotoGP (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-motogp-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-sport-tennis",
+            "title": "Sky Sport Tennis (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-tennis-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-sport-f1",
+            "title": "Sky Sport F1 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-f1-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-sport-football",
+            "title": "Sky Sport Football (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-football-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-sport-uno",
+            "title": "Sky Sport UNO (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-uno-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-sport-arena",
+            "title": "Sky Sport Arena (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-arena-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-uno",
+            "title": "Sky UNO (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sky", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-uno-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-cinema-collection",
+            "title": "Sky Cinema Collection (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sky", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-cinema-collection-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-cinema-uno",
+            "title": "Sky Cinema Uno (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sky", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-cinema-uno-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-cinema-action",
+            "title": "Sky Cinema Action (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sky", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-cinema-action-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-cinema-comedy",
+            "title": "Sky Cinema Comedy (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sky", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-cinema-comedy-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-cinema-uno-24",
+            "title": "Sky Cinema Uno +24 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sky", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-cinema-uno-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-cinema-romance",
+            "title": "Sky Cinema Romance (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sky", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-cinema-romance-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-cinema-family",
+            "title": "Sky Cinema Family (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sky", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-cinema-family-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-cinema-due-24",
+            "title": "Sky Cinema Due +24 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sky", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-cinema-due-plus24-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-cinema-drama",
+            "title": "Sky Cinema Drama (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sky", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-cinema-drama-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-cinema-suspense",
+            "title": "Sky Cinema Suspense (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sky", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-cinema-suspense-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-sport-24",
+            "title": "Sky Sport 24 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-24-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-sport-calcio",
+            "title": "Sky Sport Calcio (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-calcio-it.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-calcio-1",
+            "title": "Sky Calcio 1 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/germany/sky-select-1-alt-de.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-calcio-2",
+            "title": "Sky Calcio 2 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/germany/sky-select-2-alt-de.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-calcio-3",
+            "title": "Sky Calcio 3 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/germany/sky-select-3-alt-de.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-calcio-4",
+            "title": "Sky Calcio 4 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/germany/sky-select-4-alt-de.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-calcio-5",
+            "title": "Sky Calcio 5 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/germany/sky-select-5-alt-de.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-calcio-6",
+            "title": "Sky Calcio 6 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/germany/sky-select-6-alt-de.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-calcio-7",
+            "title": "Sky Calcio 7 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/germany/sky-select-7-alt-de.png"
+        },
+        {
+            "id": "omgtv-247ita-sky-serie",
+            "title": "Sky Serie (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sky", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-serie-it.png"
+        },
+        {
+            "id": "omgtv-247ita-20-mediaset",
+            "title": "20 Mediaset (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Mediaset", "247ita"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/20-it.png"
         },
         {
             "id": "omgtv-247ita-dazn-1",
             "title": "DAZN 1 (D)",
             "name": "OMGTV - 247ita",
-            "genres": ["OMGTV", "Sport", "DAZN"],
+            "genres": ["OMGTV", "Sport", "247ita"],
             "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/DAZN_1_Logo.svg/774px-DAZN_1_Logo.svg.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-sport-24",
+            "title": "Sport 24 (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://sportstreaming.net/assets/img/live/perma/live1.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-formula-1",
+            "title": "Formula 1 (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://sportstreaming.net/assets/img/live/perma/live2.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-moto-gp",
+            "title": "Moto GP (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://sportstreaming.net/assets/img/live/perma/live3.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-nba",
+            "title": "NBA (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://sportstreaming.net/assets/img/live/perma/live4.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-tennis",
+            "title": "Tennis (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://sportstreaming.net/assets/img/live/perma/live5.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-golf",
+            "title": "Golf (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-sport-uno",
+            "title": "Sport Uno (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-sport-calcio",
+            "title": "Sport Calcio (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-sport-max",
+            "title": "Sport Max (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-sport-arena",
+            "title": "Sport Arena (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-cinema-uno",
+            "title": "Cinema Uno (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-cinema-due",
+            "title": "Cinema Due (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-cinema-collection",
+            "title": "Cinema Collection (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-cinema-family",
+            "title": "Cinema Family (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-cinema-action",
+            "title": "Cinema Action (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-cinema-suspense",
+            "title": "Cinema Suspense (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-cinema-romance",
+            "title": "Cinema Romance (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-cinema-drama",
+            "title": "Cinema Drama (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-cinema-comedy",
+            "title": "Cinema Comedy (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-uno",
+            "title": "Uno (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-atlantic",
+            "title": "Atlantic (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-serie",
+            "title": "Serie (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-investigation",
+            "title": "Investigation (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-comedy-central",
+            "title": "Comedy Central (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-arte",
+            "title": "Arte (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-documentaries",
+            "title": "Documentaries (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-nature",
+            "title": "Nature (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-sportstreaming-crime",
+            "title": "Crime (SpS)",
+            "name": "OMGTV - Sportstreaming",
+            "genres": ["OMGTV", "SportStreaming"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+        },
+        {
+            "id": "omgtv-calcio-comedy-central",
+            "title": "Comedy Central (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-dazn-1",
+            "title": "DAZN 1 (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-eurosport-1",
+            "title": "Eurosport 1 (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-eurosport-2",
+            "title": "Eurosport 2 (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-formula-1",
+            "title": "Formula 1 (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-history",
+            "title": "History (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-rai-sport",
+            "title": "Rai Sport (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-serie-a",
+            "title": "Serie A (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-serie-a-1",
+            "title": "Serie A 1 (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-258",
+            "title": "Sky 258 (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-259",
+            "title": "Sky 259 (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-arte",
+            "title": "Sky Arte (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-atlantic",
+            "title": "Sky Atlantic (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-cinema-action",
+            "title": "Sky Cinema Action (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-cinema-collection",
+            "title": "Sky Cinema Collection (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-cinema-comedy",
+            "title": "Sky Cinema Comedy (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-cinema-drama",
+            "title": "Sky Cinema Drama (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-cinema-due",
+            "title": "Sky Cinema Due (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-cinema-family",
+            "title": "Sky Cinema Family (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-cinema-romance",
+            "title": "Sky Cinema Romance (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-cinema-suspense",
+            "title": "Sky Cinema Suspense (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-cinema-uno",
+            "title": "Sky Cinema Uno (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-crime",
+            "title": "Sky Crime (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-documentaries",
+            "title": "Sky Documentaries (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-investigation",
+            "title": "Sky Investigation (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-nature",
+            "title": "Sky Nature (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-serie",
+            "title": "Sky Serie (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-sport-24",
+            "title": "Sky Sport 24 (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-sport-251",
+            "title": "Sky Sport 251 (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-sport-252",
+            "title": "Sky Sport 252 (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-sport-253",
+            "title": "Sky Sport 253 (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-sport-254",
+            "title": "Sky Sport 254 (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-sport-255",
+            "title": "Sky Sport 255 (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-sport-256",
+            "title": "Sky Sport 256 (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-sport-257",
+            "title": "Sky Sport 257 (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-sport-arena",
+            "title": "Sky Sport Arena (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-sport-calcio",
+            "title": "Sky Sport Calcio (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-sport-f1",
+            "title": "Sky Sport F1 (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-sport-golf",
+            "title": "Sky Sport Golf (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-sport-max",
+            "title": "Sky Sport Max (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-sport-motogp",
+            "title": "Sky Sport MotoGP (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-sport-nba",
+            "title": "Sky Sport NBA (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-sport-tennis",
+            "title": "Sky Sport Tennis (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-sport-uno",
+            "title": "Sky Sport Uno (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sky-uno",
+            "title": "Sky Uno (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sky", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-solo-calcio",
+            "title": "Solo Calcio (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-spezia",
+            "title": "Spezia (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-sportitalia",
+            "title": "Sportitalia (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-zona-b",
+            "title": "Zona B (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
+        },
+        {
+            "id": "omgtv-calcio-zona-dazn",
+            "title": "Zona DAZN (CT1)",
+            "name": "OMGTV - Calcio",
+            "genres": ["OMGTV", "Sport", "Calcio TOP1", "Calcio"],
+            "poster": "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
         }
     ]
 }
