@@ -738,8 +738,32 @@ STREAM = {
             "title": "Consulenze Illegali",
             "name": "",
             "genres": ["Pluto"],
-            "poster": "https://images.pluto.tv/channels/60b9dc99521a1400079bdfba/colorLogoPNG.png",
-            "url": "http://stitcher.pluto.tv/v1/stitch/embed/hls/channel/60b9dc99521a1400079bdfba/master.m3u8?deviceType=samsung-tvplus&deviceMake=samsung&deviceModel=samsung&deviceVersion=unknown&appVersion=unknown&deviceLat=0&deviceLon=0&deviceDNT=%7BTARGETOPT%7D&deviceId=%7BPSID%7D&advertisingId=%7BPSID%7D&us_privacy=1YNY&samsung_app_domain=%7BAPP_DOMAIN%7D&samsung_app_name=%7BAPP_NAME%7D&profileLimit=&profileFloor=&embedPartner=samsung-tvplus"
+            "poster": "https://images.pluto.tv/channels/60b9dc99521a1400079bdfba/colorLogoPNG.png"
+            # URL rimosso perché sarà dinamico
+        },
+        # Canali da OMGTV (script_with_noepg.py)
+        # Esempio per 247ita
+        {
+            "id": "omgtv-247ita-sky-uno", # ID univoco per MammaMia
+            "title": "Sky Uno (D)",      # Titolo visualizzato
+            "name": "OMGTV - 247ita",    # Nome del server/sorgente
+            "genres": ["OMGTV", "Sky"],  # Generi
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-uno-it.png"
+            # "url" non è necessario qui, sarà generato dinamicamente
+        },
+        {
+            "id": "omgtv-247ita-rai-1",
+            "title": "Rai 1 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Rai"],
+            "poster": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rai-1-it.png"
+        },
+        {
+            "id": "omgtv-247ita-dazn-1",
+            "title": "DAZN 1 (D)",
+            "name": "OMGTV - 247ita",
+            "genres": ["OMGTV", "Sport", "DAZN"],
+            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/DAZN_1_Logo.svg/774px-DAZN_1_Logo.svg.png"
         }
     ]
 }
