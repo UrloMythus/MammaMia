@@ -18,6 +18,7 @@ from Src.API.epg import tivu, tivu_get,epg_guide,convert_bho_1,convert_bho_2,con
 from Src.API.webru import webru,get_skystreaming
 from Src.API.onlineserietv import onlineserietv
 from curl_cffi.requests import AsyncSession
+from Src.API.omgtv import get_omgtv_streams_for_channel_id # Importa la nuova funzione
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from slowapi.middleware import SlowAPIMiddleware
@@ -218,25 +219,47 @@ async def addon_stream(request: Request,config, type, id,):
     streams = {'streams': []}
     if "|" in config:
         config_providers = config.split('|')
-    elif "%7C" in config:
+    elif "%7C" in config: # Gestisce l'URL encoding di Stremio per "|"
         config_providers = config.split('%7C')
+    else: # Caso base se non ci sono provider specifici nella config (improbabile per stream)
+        config_providers = []
+
     provider_maps = {name: "0" for name in provider_map.values()}
     for provider in config_providers:
             if provider in provider_map:
                 provider_name = provider_map[provider]
                 provider_maps[provider_name] = "1"
+    
+    MFP = "0"
+    MFP_CREDENTIALS = None # Inizializza a None
+
     if "MFP[" in config:
     # Extract proxy data between "MFP(" and ")"
-        mfp_data = config.split("MFP[")[1].split(")")[0]  
+        try:
+            # Trova l'indice di "MFP[" e ")"
+            start_index = config.find("MFP[") + len("MFP[")
+            end_index = config.find("])", start_index) # Cerca "])" per chiudere correttamente
+            if end_index == -1: # Fallback se "])" non è trovato (vecchio formato?)
+                end_index = config.find(")", start_index)
+
+            mfp_data_full = config[start_index:end_index]
+            
+            # Dividi per virgola, gestendo il caso in cui la password potrebbe non esserci
+            mfp_parts = mfp_data_full.split(",", 1)
+            MFP_url = mfp_parts[0].strip()
+            MFP_password = mfp_parts[1].strip() if len(mfp_parts) > 1 else "" # Password vuota se non specificata
+
+            if MFP_url: # Password può essere vuota
+                MFP_CREDENTIALS = [MFP_url, MFP_password]
+                MFP = "1"
+        except Exception as e:
+            print(f"Errore nell'estrazione dei dati MFP dalla configurazione: {e}")
+            MFP = "0"
+            MFP_CREDENTIALS = None
+
     # Split the data by comma to get proxy URL and password
-        MFP_url, MFP_password = mfp_data.split(",")
-        MFP_password = MFP_password[:-2]
     # Store them in a list
-        MFP_CREDENTIALS = [MFP_url, MFP_password]
-        if MFP_url and MFP_password:
-            MFP = "1"
-    else:
-        MFP = "0"
+
     async with AsyncSession(proxies = proxies) as client:
         if type == "tv":
             for channel in STREAM["channels"]:
@@ -247,7 +270,7 @@ async def addon_stream(request: Request,config, type, id,):
                         streams['streams'].append({
                             'title': f"{Icon}Server {i} " + f" "+ channel['name'] + " " + channel['title'] ,
                             'url': channel['url']
-                            })     
+                            })
                     if id in okru:
                         i = i+1
                         channel_url = await okru_get_url(id,client)
@@ -271,7 +294,7 @@ async def addon_stream(request: Request,config, type, id,):
                         if MFP== "1" and webru_url:
                             webru_url = f'{MFP_url}/proxy/hls/manifest.m3u8?api_password={MFP_password}&d={webru_url}&h_Referer={Referer_webru_url}&h_Origin={Origin_webru_url}&h_User-Agent=Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F58.0.3029.110%20Safari%2F537.3'
                             streams['streams'].append({'title': f"{Icon}Proxied Server X-{i} " + channel['title'],'url': webru_url})
-                        else:
+                        elif webru_url: # Aggiungi solo se webru_url non è None
                             if webru_url:
                                 streams['streams'].append({'title': f'{Icon}Server X-{i}' + channel['title'], 'url': webru_url, "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3", "Accept": "*/*", "Accept-Language": "en-US,en;q=0.5", "Origin": Origin_webru_url, "DNT": "1", "Sec-GPC": "1", "Connection": "keep-alive", "Referer": Referer_webru_url, "Sec-Fetch-Dest": "empty", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "cross-site", "Pragma": "no-cache", "Cache-Control": "no-cache", "TE": "trailers"}}}})
 
@@ -279,13 +302,32 @@ async def addon_stream(request: Request,config, type, id,):
                         if DLHD == "1":
                             i = i+1
                             webru_url_2,Referer_webru_url_2,Origin_webru_url_2 = await webru(id,"dlhd",client)
-                            if MFP== "1":
+                            if MFP== "1" and MFP_CREDENTIALS and webru_url_2: # Assicurati che MFP_CREDENTIALS e webru_url_2 esistano
+                                MFP_url, MFP_password = MFP_CREDENTIALS
                                 webru_url_2 = f'{MFP_url}/proxy/hls/manifest.m3u8?api_password={MFP_password}&d={webru_url_2}&h_Referer={Referer_webru_url_2}&h_Origin={Origin_webru_url_2}&h_User-Agent=Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F58.0.3029.110%20Safari%2F537.3'
                                 streams['streams'].append({'title': f"{Icon}Proxied Server D-{i} " + channel['title'],'url': webru_url_2})
-                            else:
+                            elif webru_url_2: # Aggiungi solo se webru_url_2 non è None
                                 streams['streams'].append({'title': f'{Icon}Server D-{i}' + channel['title'], 'url': webru_url_2, "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3", "Accept": "*/*", "Accept-Language": "en-US,en;q=0.5", "Origin": Origin_webru_url_2, "DNT": "1", "Sec-GPC": "1", "Connection": "keep-alive", "Referer": Referer_webru_url_2, "Sec-Fetch-Dest": "empty", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "cross-site", "Pragma": "no-cache", "Cache-Control": "no-cache", "TE": "trailers"}}}})
 
-
+            # Logica per i canali OMGTV
+            if id.startswith("omgtv-"):
+                mfp_url_to_pass = MFP_CREDENTIALS[0] if MFP == "1" and MFP_CREDENTIALS else None
+                mfp_password_to_pass = MFP_CREDENTIALS[1] if MFP == "1" and MFP_CREDENTIALS else None
+                
+                omgtv_stream_list = await get_omgtv_streams_for_channel_id(
+                    channel_id_full=id,
+                    client=client,
+                    mfp_url=mfp_url_to_pass,
+                    mfp_password=mfp_password_to_pass
+                )
+                if omgtv_stream_list:
+                    for stream_item in omgtv_stream_list:
+                        streams['streams'].append({
+                            'name': f"{Name} {stream_item.get('group', 'OMGTV')}", # Usa il gruppo se disponibile
+                            'title': f"{Icon}{stream_item.get('title', 'OMGTV Stream')}",
+                            'url': stream_item['url'],
+                            'behaviorHints': stream_item.get('behaviorHints', {})
+                        })
             
             if not streams['streams']:
                 raise HTTPException(status_code=404)
@@ -322,7 +364,7 @@ async def addon_stream(request: Request,config, type, id,):
                     SC_FAST_SEARCH = provider_maps['SC_FAST_SEARCH']
                     url_streaming_community,quality_sc, slug_sc = await streaming_community(id,client,SC_FAST_SEARCH,MFP)
                     if url_streaming_community is not None:
-                        print(f"StreamingCommunity Found Results for {id}")
+                        print(f"StreamingCommunity Found Results for {id} with MFP: {MFP}")
                         if MFP == "1" and "iframe" in url_streaming_community:
                             url_streaming_community = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_streaming_community}&host=VixCloud&redirect_stream=false'
                             url_streaming_community = await transform_mfp(url_streaming_community,client)
@@ -338,7 +380,7 @@ async def addon_stream(request: Request,config, type, id,):
                     if quality_lordchannel == "FULL HD" and url_lordchannel !=  None:
                         print(f"LordChannel Found Results for {id}")
                         streams['streams'].append({'name': f"{Name}\n1080p",'title': f'{Icon}LordChannel', 'url': url_lordchannel,'behaviorHints': {'bingeGroup': 'lordchannel1080'}})
-                    elif url_lordchannel !=  None:
+                    elif url_lordchannel is not None: # Controllo esplicito per None
                         print(f"LordChannel Found Results for {id}")
                         streams['streams'].append({"name": f"{Name}\n720p",'title': f'{Icon}LordChannel 720p', 'url': url_lordchannel, 'behaviorHints': {'bingeGroup': 'lordchannel720'}})            
                 if provider_maps['FILMPERTUTTI'] == "1" and FT == "1":
@@ -346,7 +388,7 @@ async def addon_stream(request: Request,config, type, id,):
                     if url_filmpertutti is not None and Host is not None:
                         if MFP == "1":
                             url_filmpertutti = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_filmpertutti}&host={Host}&redirect_stream=true'
-                            print(url_filmpertutti)
+                            # print(url_filmpertutti) # Rimosso per pulizia log
                             streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}Filmpertutti', 'url': url_filmpertutti,'behaviorHints': {'bingeGroup': 'filmpertutti'}})
                         else:
                             streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}Filmpertutti', 'url': url_filmpertutti,'behaviorHints': {'proxyHeaders': {"request": {"User-Agent": "Mozilla/5.0 (Windows NT 10.10; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}}, 'notWebReady': True, 'bingeGroup': 'filmpertutti'}})
@@ -367,7 +409,7 @@ async def addon_stream(request: Request,config, type, id,):
                     if url_streamingwatch: 
                         print(f"StreamingWatch Found Results for {id}")
                         streams['streams'].append({'name': f"{Name}\n720/1080p",'title': f'{Icon}StreamingWatch', 'url': url_streamingwatch,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": Referer}}, 'notWebReady': True, 'bingeGroup': 'streamingwatch'}})
-                if provider_maps['DDLSTREAM'] == "1" and DDL == "1":
+                if provider_maps['DDLSTREAM'] == "1" and DDL == "1" and MFP == "1" and MFP_CREDENTIALS:
                     if MFP == "1":
                         results = await ddlstream(id,client)
                         if  results:
@@ -375,6 +417,7 @@ async def addon_stream(request: Request,config, type, id,):
                             url_ddlstream = results[0]
                             quality = results[1]
                             name = unquote(url_ddlstream.split('/')[-1].replace(".mp4",""))
+                            MFP_url, MFP_password = MFP_CREDENTIALS # Assicurati che siano definiti
                             url_ddlstream = f'{MFP_url}/proxy/stream?api_password={MFP_password}&d={url_ddlstream}&h_Referer=https://ddlstreamitaly.{DDL_DOMAIN}/'
                             streams['streams'].append({'name': f"{Name}\n{quality}",'title': f'{Icon}DDLStream \n {name}', 'url': url_ddlstream, 'behaviorHints': {'bingeGroup': 'ddlstream'}}) 
                 if provider_maps['CB01'] == "1" and CB == "1":
@@ -382,7 +425,8 @@ async def addon_stream(request: Request,config, type, id,):
                     if url_cbo1:
                         print(f"CB01 Found Results for {id}")
                         if "mixdrop" in url_cbo1:
-                            if MFP == "1":
+                            if MFP == "1" and MFP_CREDENTIALS: # Assicurati che MFP_CREDENTIALS esista
+                                MFP_url, MFP_password = MFP_CREDENTIALS
                                 url_cbo1 = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_cbo1}&host=Mixdrop&redirect_stream=false'
                                 url_cbo1 = await transform_mfp(url_cbo1,client)
                                 if url_cbo1:
