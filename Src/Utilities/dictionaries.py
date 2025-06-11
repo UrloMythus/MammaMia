@@ -2569,202 +2569,202 @@ STREAM = {
             "genres": ["OMGTV", "Sport", "247ita"],
             "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/DAZN_1_Logo.svg/774px-DAZN_1_Logo.svg.png"
         },
-        {
-            "id": "omgtv-sportstreaming-sport-24",
-            "title": "Sport 24 (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://sportstreaming.net/assets/img/live/perma/live1.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-formula-1",
-            "title": "Formula 1 (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://sportstreaming.net/assets/img/live/perma/live2.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-moto-gp",
-            "title": "Moto GP (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://sportstreaming.net/assets/img/live/perma/live3.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-nba",
-            "title": "NBA (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://sportstreaming.net/assets/img/live/perma/live4.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-tennis",
-            "title": "Tennis (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://sportstreaming.net/assets/img/live/perma/live5.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-golf",
-            "title": "Golf (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-sport-uno",
-            "title": "Sport Uno (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-sport-calcio",
-            "title": "Sport Calcio (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-sport-max",
-            "title": "Sport Max (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-sport-arena",
-            "title": "Sport Arena (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-cinema-uno",
-            "title": "Cinema Uno (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-cinema-due",
-            "title": "Cinema Due (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-cinema-collection",
-            "title": "Cinema Collection (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-cinema-family",
-            "title": "Cinema Family (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-cinema-action",
-            "title": "Cinema Action (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-cinema-suspense",
-            "title": "Cinema Suspense (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-cinema-romance",
-            "title": "Cinema Romance (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-cinema-drama",
-            "title": "Cinema Drama (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-cinema-comedy",
-            "title": "Cinema Comedy (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-uno",
-            "title": "Uno (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-atlantic",
-            "title": "Atlantic (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-serie",
-            "title": "Serie (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-investigation",
-            "title": "Investigation (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-comedy-central",
-            "title": "Comedy Central (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-arte",
-            "title": "Arte (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-documentaries",
-            "title": "Documentaries (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-nature",
-            "title": "Nature (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
-        {
-            "id": "omgtv-sportstreaming-crime",
-            "title": "Crime (SpS)",
-            "name": "OMGTV - Sportstreaming",
-            "genres": ["OMGTV", "SportStreaming"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
-        },
+#        {
+#            "id": "omgtv-sportstreaming-sport-24",
+#            "title": "Sport 24 (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://sportstreaming.net/assets/img/live/perma/live1.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-formula-1",
+#            "title": "Formula 1 (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://sportstreaming.net/assets/img/live/perma/live2.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-moto-gp",
+#            "title": "Moto GP (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://sportstreaming.net/assets/img/live/perma/live3.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-nba",
+#            "title": "NBA (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://sportstreaming.net/assets/img/live/perma/live4.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-tennis",
+#            "title": "Tennis (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://sportstreaming.net/assets/img/live/perma/live5.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-golf",
+#            "title": "Golf (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-sport-uno",
+#            "title": "Sport Uno (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-sport-calcio",
+#            "title": "Sport Calcio (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-sport-max",
+#            "title": "Sport Max (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-sport-arena",
+#            "title": "Sport Arena (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-cinema-uno",
+#            "title": "Cinema Uno (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-cinema-due",
+#            "title": "Cinema Due (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-cinema-collection",
+#            "title": "Cinema Collection (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-cinema-family",
+#            "title": "Cinema Family (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-cinema-action",
+#            "title": "Cinema Action (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-cinema-suspense",
+#            "title": "Cinema Suspense (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-cinema-romance",
+#            "title": "Cinema Romance (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-cinema-drama",
+#            "title": "Cinema Drama (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-cinema-comedy",
+#            "title": "Cinema Comedy (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-uno",
+#            "title": "Uno (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-atlantic",
+#            "title": "Atlantic (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-serie",
+#            "title": "Serie (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-investigation",
+#            "title": "Investigation (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-comedy-central",
+#            "title": "Comedy Central (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-arte",
+#            "title": "Arte (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-documentaries",
+#            "title": "Documentaries (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-nature",
+#            "title": "Nature (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
+#        {
+#            "id": "omgtv-sportstreaming-crime",
+#            "title": "Crime (SpS)",
+#            "name": "OMGTV - Sportstreaming",
+#            "genres": ["OMGTV", "SportStreaming"],
+#            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Sky_italia_2018.png/500px-Sky_italia_2018.png"
+#        },
         {
             "id": "omgtv-calcio-comedy-central",
             "title": "Comedy Central (CT1)",
