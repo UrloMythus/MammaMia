@@ -247,7 +247,12 @@ async def addon_stream(request: Request,config, type, id,):
             # Dividi per virgola, gestendo il caso in cui la password potrebbe non esserci
             mfp_parts = mfp_data_full.split(",", 1)
             MFP_url = mfp_parts[0].strip()
-            MFP_password = mfp_parts[1].strip() if len(mfp_parts) > 1 else "" # Password vuota se non specificata
+            if len(mfp_parts) > 1:
+                MFP_password = mfp_parts[1].strip()
+                if MFP_password.endswith(']'): # Rimuove la parentesi quadra finale se presente
+                    MFP_password = MFP_password[:-1]
+            else:
+                MFP_password = "" # Password vuota se non specificata
 
             if MFP_url: # Password può essere vuota
                 MFP_CREDENTIALS = [MFP_url, MFP_password]
