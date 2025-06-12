@@ -219,7 +219,7 @@ async def addon_stream(request: Request,config, type, id,):
     streams = {'streams': []}
     if "|" in config:
         config_providers = config.split('|')
-    elif "%7C" in config:
+    elif "%7C" in config: # Gestisce l'URL encoding di Stremio per "|"
         config_providers = config.split('%7C')
     else: # Caso base se non ci sono provider specifici nella config (improbabile per stream)
         config_providers = []
@@ -243,8 +243,12 @@ async def addon_stream(request: Request,config, type, id,):
         MFP_CREDENTIALS = [MFP_url, MFP_password]
         if MFP_url and MFP_password:
             MFP = "1"
+        # Se MFP_url o MFP_password sono vuoti, MFP rimane "0" (dall'inizializzazione)
+        # e MFP_CREDENTIALS conterrà i valori analizzati (potenzialmente vuoti).
     else:
         MFP = "0"
+        # MFP_CREDENTIALS rimane None (dall'inizializzazione).
+
     async with AsyncSession(proxies = proxies) as client:
         if type == "tv":
             for channel in STREAM["channels"]:
@@ -294,16 +298,19 @@ async def addon_stream(request: Request,config, type, id,):
                             else:
                                 streams['streams'].append({'title': f'{Icon}Server D-{i}' + channel['title'], 'url': webru_url_2, "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3", "Accept": "*/*", "Accept-Language": "en-US,en;q=0.5", "Origin": Origin_webru_url_2, "DNT": "1", "Sec-GPC": "1", "Connection": "keep-alive", "Referer": Referer_webru_url_2, "Sec-Fetch-Dest": "empty", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "cross-site", "Pragma": "no-cache", "Cache-Control": "no-cache", "TE": "trailers"}}}})
 
-            omgtv_sources_to_try = ["247ita", "calcio", "vavoo"]
+            omgtv_sources_to_try = ["247ita", "calcio", "vavoo", "static"] # Assicurati che "static" sia qui
             channel_name_query_base = id.replace('-', ' ')
+            # print(f"DEBUG RUN.PY: addon_stream per TV ID: {id}, channel_name_query_base: {channel_name_query_base}")
 
             mfp_url_to_pass = MFP_CREDENTIALS[0] if MFP == "1" and MFP_CREDENTIALS else None
             mfp_password_to_pass = MFP_CREDENTIALS[1] if MFP == "1" and MFP_CREDENTIALS else None
+            # print(f"DEBUG RUN.PY: MFP URL da passare: {mfp_url_to_pass}, MFP Password presente: {'Sì' if mfp_password_to_pass else 'No'}")
 
             for omgtv_source in omgtv_sources_to_try:
                 # Construct the full OMGTV-style ID to query
                 omgtv_channel_id_full = f"omgtv-{omgtv_source}-{channel_name_query_base.replace(' ', '-')}"
-
+                # print(f"DEBUG RUN.PY: Tentativo sorgente OMGTV: {omgtv_source}, ID completo query: {omgtv_channel_id_full}")
+                
                 omgtv_stream_list = await get_omgtv_streams_for_channel_id(
                     channel_id_full=omgtv_channel_id_full,
                     client=client, # Pass the AsyncSession client
@@ -312,6 +319,7 @@ async def addon_stream(request: Request,config, type, id,):
                 )
                 if omgtv_stream_list:
                     for stream_item in omgtv_stream_list:
+                        # print(f"DEBUG RUN.PY: Aggiungendo stream da OMGTV ({omgtv_source}): {stream_item.get('title')}")
                         # Ensure unique titles if multiple OMGTV sources provide the same channel
                         stream_title = f"{Icon}{stream_item.get('title', f'{channel_name_query_base.title()} ({omgtv_source.upper()})')}"
                         streams['streams'].append({
