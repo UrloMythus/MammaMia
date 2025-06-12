@@ -55,6 +55,264 @@ STATIC_LOGOS_247ITA = {
     # ... altri loghi
 }
 
+# --- Definizione Canali Statici Interni ---
+STATIC_CHANNELS_DATA = [
+    {
+        "id": "sky-uno", # ID originale del canale
+        "title": "Sky Uno",
+        "url": "https://linear313-it-dash1-prd.selector.skycdn.it/016a/32477/FHD/skyuno/master.mpd&key_id=003610b8556000936e48061cdb4ee11a&key=2cd6bcc2160aa6ec048e5a5f7a0f73c8",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-atlantic",
+        "title": "Sky Atlantic",
+        "url": "https://linear315-it-dash1-prd-akp2.cdn13.skycdp.com/016a/31226/FHD/skyatlantic/master.mpd&key_id=0036d37875a7307fd4551bcd6e466882&key=a8cdc74a5d05c7a45c551af45aa5549c",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-24",
+        "title": "Sky Sport 24",
+        "url": "https://linear303-it-dash1-prd.selector.skycdn.it/016a/31035/FHD/skysport24/master.mpd&key_id=003663ddf1acb25ea88a7cf973afc0d5&key=35ea91b4151d6975007998c328daee6c",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-uno",
+        "title": "Sky Sport Uno",
+        "url": "https://linear301-it-dash1-prd.selector.skycdn.it/016a/31023/FHD/skysportuno/master.mpd&key_id=0036aaa1d68c6b487e29a5cb080a8a28&key=a3e8db3ff3c876f7b43a961b64a63474",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-calcio",
+        "title": "Sky Sport Calcio",
+        "url": "https://linear302-it-dash1-prd.selector.skycdn.it/016a/31209/FHD/skysportseriea/master.mpd&key_id=00362f95db61eba0e6f14acee3f71e01&key=fb74cd84b53c7557e18424a3356c4665",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-f1",
+        "title": "Sky Sport F1",
+        "url": "https://linear307-it-dash1-prd.selector.skycdn.it/016a/31478/FHD/skysportf1/master.mpd&key_id=0036a96b6bbbf1828488f90e6b2ca1f4&key=d24e6ae926e88f8303b6926271ff8155",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-motogp",
+        "title": "Sky Sport MotoGP",
+        "url": "https://linear306-it-dash1-prd.selector.skycdn.it/016a/31483/FHD/skysportmotogp/master.mpd&key_id=00362e9181eaa0c5f91761ade3515eb8&key=52cf3c27885d58ad76aaf36d4217a984",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-arena",
+        "title": "Sky Sport Arena",
+        "url": "https://linear304-it-dash1-prd-akp2.cdn13.skycdp.com/016a/31024/FHD/skysportarena/master.mpd&key_id=00368f2bf10736c9c2c02ab0fa694d00&key=92eec9d841ac0c1ff16b90a0db82c792",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-tennis",
+        "title": "Sky Sport Tennis",
+        "url": "https://linear310-it-dash1-prd.selector.skycdn.it/016a/32559/FHD/skysporttennis/master.mpd&key_id=0036fb7c564c4eb99e310f5fa82ab2f2&key=647f07b6858a669456e73ca103b4c2c0",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-nba",
+        "title": "Sky Sport NBA",
+        "url": "https://linear308-it-dash1-prd-akp2.cdn13.skycdp.com/016a/31764/FHD/skysportnba/master.mpd&key_id=00364eac2ffee337640e39682439b540&key=0960172d9000c470ade0658bd36c1d53",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-max",
+        "title": "Sky Sport Max",
+        "url": "https://linear305-it-dash1-prd-akp2.cdn13.skycdp.com/016a/31248/FHD/skysportmax/master.mpd&key_id=0036f13bca1c5603b9f3bb28ec28fa80&key=f01403bcb5a02c61153d297fb0c4395f",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-golf",
+        "title": "Sky Sport Golf",
+        "url": "https://linear309-it-dash1-prd-akp2.cdn13.skycdp.com/016a/32768/FHD/skysportgolf/master.mpd&key_id=00360b7729f74bf56a0a4eb0eda15ec5&key=f8a5f4723c71ac84c2f1ff6f55939a63",
+        "group": "MPD"
+    },
+    {
+        "id": "eurosport-1",
+        "title": "Eurosport 1",
+        "url": "https://linear311-it-dash1-prd.selector.skycdn.it/016a/313073/FHD/eurosport/master.mpd&key_id=0036bb3fa7e6f2c334d7cba5c28b6caf&key=217fa35739cd68e90b2cd23322c01312",
+        "group": "MPD"
+    },
+    {
+        "id": "eurosport-2",
+        "title": "Eurosport 2",
+        "url": "https://linear312-it-dash1-prd-akp2.cdn13.skycdp.com/016a/31150/FHD/eurosport2/master.mpd&key_id=003670a7034342a4a07c91173818c61c&key=7b90055c1a1ea34d9090e9ebf6c4db8a",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-251",
+        "title": "Sky Sport Calcio 1",
+        "url": "https://linear311-it-dash1-prd.selector.skycdn.it/016a/31917/FHD/skysport251/master.mpd&key_id=0036384f59a2b80ed142f82250c79f77&key=2e6507cb779a28739b0bb1564f418823",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-252",
+        "title": "Sky Sport Calcio 2",
+        "url": "https://linear312-it-dash1-prd.selector.skycdn.it/016a/32951/FHD/skysport252/master.mpd&key_id=003610b4ce44ba838c199b6636cf7431&key=8369cbbccf0c1ff6bdbacbdae9252a04",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-253",
+        "title": "Sky Sport Calcio 3",
+        "url": "https://linear311-it-dash1-prd.selector.skycdn.it/016a/32233/FHD/skysport253/master.mpd&key_id=0036d3b63b421abd69d9f0d3b6bdcf19&key=0725c3162d5aefbf9c6d144f06ea0c92",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-254",
+        "title": "Sky Sport Calcio 4",
+        "url": "https://linear312-it-dash1-prd.selector.skycdn.it/016a/31234/FHD/skysport254/master.mpd&key_id=00369c14c20b78aadb1ec0e3c0e74979&key=e768767e2c7238d8069887bb36aed7fa",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-255",
+        "title": "Sky Sport Calcio 5",
+        "url": "https://linear311-it-dash1-prd.selector.skycdn.it/016a/32910/FHD/skysport255/master.mpd&key_id=0036b781a22ebb0c20c16ac27d5d1448&key=f309b94acfda720bf1ed5741489f8967",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-256",
+        "title": "Sky Sport Calcio 6",
+        "url": "https://linear312-it-dash1-prd.selector.skycdn.it/016a/31912/FHD/skysport256/master.mpd&key_id=00366f263859fc1cc82d2c4da6a66ef6&key=754ae922d113c54349002cd9a88694a4",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-257",
+        "title": "Sky Sport Calcio 7",
+        "url": "https://linear311-it-dash1-prd-akp2.cdn13.skycdp.com/016a/31775/FHD/skysport257/master.mpd&key_id=0036faeace9872d3ceeb8b1b63f0baa3&key=dbd41ee944243307d39b7b27f16615a8",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-258",
+        "title": "Sky Sport Calcio 8",
+        "url": "https://linear312-it-dash1-prd-akp2.cdn13.skycdp.com/016a/32772/skysport258/master.mpd&key_id=0036fd8ccfddba47c8b40aeff63a797c&key=dfd5c9d0f4ac6f3a1bd89803399e7026",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-sport-259",
+        "title": "Sky Sport Calcio 9",
+        "url": "https://linear311-it-dash1-prd-akp1.cdn13.skycdp.com/016a/31613/skysport259/master.mpd&key_id=0036644f7699f43e401f88d920dc385c&key=e5b0cebdc3edd7996d283041535fce9c",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-cinema-uno",
+        "title": "Sky Cinema Uno",
+        "url": "https://linear314-it-dash1-prd.selector.skycdn.it/016a/32202/FHD/cinemauno/master.mpd&key_id=0036211ccb7bd9cfd99fb8591e67d772&key=a10923293396f30380ce411a3504ddc3",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-cinema-due",
+        "title": "Sky Cinema Due",
+        "url": "https://linear308-it-dash1-prd-akp2.cdn13.skycdp.com/016a/32564/FHD/cinemadue/master.mpd&key_id=003629d4c6efbd39a2808a85a286b783&key=41c463cc4bf6da4dec7935eb01a7155e",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-cinema-comedy",
+        "title": "Sky Cinema Comedy",
+        "url": "https://linear303-it-dash1-prd-akp2.cdn13.skycdp.com/016a/32030/FHD/cinemacomedy/master.mpd&key_id=003638a93ac06c9df7de5d8f349f56fd&key=45c7c2ba5a3cdfd03e90ff16e6ac15d8",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-cinema-action",
+        "title": "Sky Cinema Action",
+        "url": "https://linear306-it-dash1-prd-akp2.cdn13.skycdp.com/016a/31206/FHD/cinemaaction/master.mpd&key_id=00368fc53eab9498463dadfc60e0f818&key=0a70fe8d3b90360035982deaa8c83a6d",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-cinema-family",
+        "title": "Sky Cinema Family",
+        "url": "https://linear305-it-dash1-prd-akp2.cdn13.skycdp.com/016a/31255/FHD/cinemafamily/master.mpd&key_id=0036012604394c43b063c4f513ee431d&key=2c665092aa45cbae824bf7ad4e69d767",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-cinema-collection",
+        "title": "Sky Cinema Collection",
+        "url": "https://linear302-it-dash1-prd.selector.skycdn.it/016a/31204/FHD/cinemacollection/master.mpd&key_id=003699aeb8e998fe0afed0c7302ce51f&key=4583daf5ec387c310633cdc922dd3130",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-cinema-drama",
+        "title": "Sky Cinema Drama",
+        "url": "https://linear304-it-dash1-prd-akp2.cdn13.skycdp.com/016a/31769/FHD/cinemadrama/master.mpd&key_id=0036a5270d8f1d1a2f573864aed26225&key=df0e826d2eeb78051f5dcf6f166e6056",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-cinema-suspense",
+        "title": "Sky Cinema Suspense",
+        "url": "https://linear307-it-dash1-prd-akp2.cdn13.skycdp.com/016a/32047/FHD/cinemasuspense/master.mpd&key_id=00365eb692a3fd6907192a4a3f0958b2&key=9f86ea0417e3458186f8ada1a2003fa5",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-cinema-romance",
+        "title": "Sky Cinema Romance",
+        "url": "https://linear301-it-dash1-prd.selector.skycdn.it/016a/32231/FHD/cinemaromance/master.mpd&key_id=00362d0a5efbd10ab56a3f502f2be023&key=61c8c429f412ea52e06d9663c48ee9b7",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-serie",
+        "title": "Sky Serie",
+        "url": "https://linear315-it-dash1-prd-akp2.cdn13.skycdp.com/016a/31684/FHD/skyserie/master.mpd&key_id=00366cd68acfb019e5d302f452c96ed7&key=fbb59d554722277be85b0728c13051ab",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-crime",
+        "title": "Sky Crime",
+        "url": "https://linear315-it-dash1-prd.selector.skycdn.it/016a/32249/FHD/skycrime/master.mpd&key_id=0036de91177ccee5fdfd4929c099854f&key=f40263272212aacdcf7e405cfb4b4a91",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-investigation",
+        "title": "Sky Investigation",
+        "url": "https://linear315-it-dash1-prd.selector.skycdn.it/016a/32686/FHD/skyinvestigation/master.mpd&key_id=003689703a245806508e9d332ed323ee&key=ef229589d2f7afa40904b6d62c852acf",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-documentaries",
+        "title": "Sky Documentaries",
+        "url": "https://linear313-it-dash1-prd.selector.skycdn.it/016a/31697/FHD/skydocumentaries/master.mpd&key_id=0036de0a1c44a2c972fcf64c9b7f4302&key=0ade9234f6c56636ad6bb1b3560ddb31",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-nature",
+        "title": "Sky Nature",
+        "url": "https://linear313-it-dash1-prd.selector.skycdn.it/016a/32695/FHD/skynature/master.mpd&key_id=0036dd4a767d1d1e6faa72be9b2edde3&key=60250673f0f5c54deac7c8f6d883c329",
+        "group": "MPD"
+    },
+    {
+        "id": "history",
+        "title": "History Channel",
+        "url": "https://linear313-it-dash1-prd.selector.skycdn.it/016a/31513/FHD/history/master.mpd&key_id=00362ec3497a383021f1db77c8556614&key=8820fb9b2afd6e1a3f4f5ab1ba4a73ad",
+        "group": "MPD"
+    },
+    {
+        "id": "sky-arte",
+        "title": "Sky Arte",
+        "url": "https://linear313-it-dash1-prd-akp2.cdn13.skycdp.com/016a/32074/FHD/skyarte/master.mpd&key_id=0036798d4dc4ce189b2f029a4b4aa06c&key=4f668ba0ef796d807c90613b9e2e61bf",
+        "group": "MPD"
+    },
+    {
+        "id": "mtv",
+        "title": "MTV",
+        "url": "https://linear315-it-dash1-prd-akg0.cdn13.skycdp.com/016a/32763/FHD/mtvnext/master.mpd&key_id=00364d417e7aab8e6a92c963f2d24549&key=a875a90e31b98eab8430e894ee5a853e",
+        "group": "MPD"
+    },
+    {
+        "id": "comedy-central",
+        "title": "Comedy Central",
+        "url": "https://linear309-it-dash1-prd-akp1.cdn13.skycdp.com/016a/32404/comedycentral/master.mpd&key_id=0036f3ec4ac7d836b5bf9fa79f3041b6&key=c02271563d97b1e7e755484279f2b55c",
+        "group": "MPD"
+    },
+    {
+        "id": "dazn-1",
+        "title": "DAZN 1",
+        "url": "https://dcf-fs-live-dazn-cdn.dazn.com/dash/dazn-linear-024/stream.mpd&key_id=8ab47741930c476780515f9a00decb0a&key=7ab4b9ae5a48aa526e511a913b832769",
+        "group": "MPD"
+    }
+]
+
+
+
 def get_247ita_channel_numeric_id(channel_name_query, html_content):
     """
     Cerca l'ID numerico di un canale specifico nell'HTML fornito.
@@ -190,6 +448,72 @@ async def get_247ita_streams(client, mfp_url=None, mfp_password=None):
         })
     return streams
 
+# --- Logica Canali Statici Interni ---
+async def get_static_channel_streams(client, mfp_url=None, mfp_password=None):
+    """
+    Recupera i canali statici definiti localmente in STATIC_CHANNELS_DATA
+    e applica la logica MFP se fornita.
+    """
+    streams = []
+    for channel_data in STATIC_CHANNELS_DATA:
+        original_channel_id = channel_data.get('id')
+        original_channel_title = channel_data.get('title')
+        original_channel_url = channel_data.get('url')
+        original_channel_logo = channel_data.get('logo')
+        group_name = channel_data.get('group', "Statici")
+
+        # Salta i canali se mancano informazioni essenziali, specialmente l'URL
+        # Modificato per non richiedere 'original_channel_logo'
+        if not all([original_channel_id, original_channel_title, original_channel_url]):
+            # print(f"DEBUG OMGTV (static): Canale statico saltato per dati mancanti (ID, Titolo o URL): {channel_data}")
+            continue
+        # print(f"DEBUG OMGTV (static): Processando canale statico: {original_channel_title}")
+
+        final_url = original_channel_url # Default to original URL
+
+        if mfp_url and mfp_password:
+            # print(f"DEBUG OMGTV (static): MFP abilitato per {original_channel_title}. URL originale: {original_channel_url}")
+            is_mpd_processed_for_mfp = False
+            mpd_marker = ".mpd"
+            try:
+                # Cerca ".mpd" nell'URL originale
+                mpd_index = original_channel_url.lower().index(mpd_marker)
+                
+                # Estrai l'URL base fino a ".mpd" incluso
+                base_mpd_url = original_channel_url[:mpd_index + len(mpd_marker)]
+                
+                # Estrai la parte della query string che segue ".mpd"
+                query_string_part = ""
+                if len(original_channel_url) > mpd_index + len(mpd_marker):
+                    potential_query_part = original_channel_url[mpd_index + len(mpd_marker):]
+                    if potential_query_part.startswith("&"): # Assumiamo che i parametri inizino con &
+                        query_string_part = potential_query_part[1:] # Rimuovi il primo &
+                
+                if query_string_part: # Se ci sono parametri come key_id e key
+                    final_url = f"{mfp_url}/proxy/mpd/manifest.m3u8?api_password={mfp_password}&d={urllib.parse.quote(base_mpd_url)}&{query_string_part}"
+                else: # MPD senza parametri di chiave esterni
+                    final_url = f"{mfp_url}/proxy/mpd/manifest.m3u8?api_password={mfp_password}&d={urllib.parse.quote(base_mpd_url)}"
+                is_mpd_processed_for_mfp = True
+                # print(f"DEBUG OMGTV (static): {original_channel_title} è MPD. Applicando proxy MFP MPD. URL finale: {final_url}")
+
+            except ValueError: # ".mpd" non trovato nell'URL
+                pass # Verrà gestito come HLS sotto
+
+            if not is_mpd_processed_for_mfp: # Se non è stato processato come MPD (es. è HLS)
+                final_url = f"{mfp_url}/proxy/hls/manifest.m3u8?api_password={mfp_password}&d={urllib.parse.quote(original_channel_url)}"
+                # print(f"DEBUG OMGTV (static): {original_channel_title} non è MPD (o marker non trovato). Applicando proxy MFP HLS. URL finale: {final_url}")
+
+        streams.append({
+            'id': f"omgtv-static-{original_channel_id}",
+            'title': f"{original_channel_title} (MPD)",
+            'url': final_url, # 'logo': original_channel_logo, # Rimosso perché non più garantito
+            'group': group_name
+        })
+        # Aggiungi il logo solo se esiste
+        if original_channel_logo:
+            streams[-1]['logo'] = original_channel_logo
+        # print(f"DEBUG OMGTV (static): Aggiunto stream: {streams[-1]}")
+    return streams
 
 async def get_omgtv_streams_for_channel_id(channel_id_full: str, client, mfp_url=None, mfp_password=None):
     """
@@ -197,12 +521,14 @@ async def get_omgtv_streams_for_channel_id(channel_id_full: str, client, mfp_url
     Esempio channel_id_full: "omgtv-247ita-sky-sport-uno"
     """
     parts = channel_id_full.split('-')
+    # print(f"DEBUG OMGTV: get_omgtv_streams_for_channel_id chiamato con: {channel_id_full}")
     if len(parts) < 3 or parts[0] != "omgtv":
         return [] # ID non valido
 
     source = parts[1] # es. "247ita"
     channel_name_query = " ".join(parts[2:]) # es. "sky sport uno"
 
+    # print(f"DEBUG OMGTV: Source: {source}, Channel Name Query: {channel_name_query}")
     if source == "247ita":
         # La funzione get_247ita_streams ora restituisce tutti i canali, quindi filtriamo qui.
         all_247ita_streams = await get_247ita_streams(client, mfp_url, mfp_password)
@@ -222,6 +548,7 @@ async def get_omgtv_streams_for_channel_id(channel_id_full: str, client, mfp_url
             # Estrai la parte del nome dall'ID dello stream: es. "sky-sport-251"
             stream_id_name_part = stream['id'].replace("omgtv-247ita-", "")
             if target_id_part_to_match == stream_id_name_part:
+                # print(f"DEBUG OMGTV (247ita): Trovato stream corrispondente: {stream}")
                 return [stream] # Restituisce una lista con lo stream trovato
 
     elif source == "calcio":
@@ -234,15 +561,30 @@ async def get_omgtv_streams_for_channel_id(channel_id_full: str, client, mfp_url
             base_title_from_stream = stream['title'].split(' (CT')[0].lower()
             if channel_name_query == base_title_from_stream:
                 collected_calcio_streams.append(stream)
+        # print(f"DEBUG OMGTV (calcio): Trovati {len(collected_calcio_streams)} streams per '{channel_name_query}'")
         return collected_calcio_streams # Restituisce la lista di tutti gli stream calcio corrispondenti
 
     elif source == "vavoo":
         all_vavoo_streams = await get_vavoo_streams(client, mfp_url, mfp_password)
         for stream in all_vavoo_streams:
             if channel_name_query.replace("-", " ") in stream['id'].replace(f"omgtv-{source}-", "").replace("-", " "):
+                # print(f"DEBUG OMGTV (vavoo): Trovato stream corrispondente: {stream}")
                 return [stream]
+
+    elif source == "static":
+        # print(f"DEBUG OMGTV (static): Entrando nel blocco static.")
+        all_static_streams = await get_static_channel_streams(client, mfp_url, mfp_password)
+        # channel_name_query è come "sky atlantic". Convertilo in "sky-atlantic" per il match.
+        channel_name_query = channel_name_query.replace(" ", "-")
+        target_static_id = f"omgtv-static-{channel_name_query}"
+        # print(f"DEBUG OMGTV (static): Cerco target_static_id: {target_static_id}")
+        for stream in all_static_streams:
+            # print(f"DEBUG OMGTV (static): Controllo stream con ID: {stream['id']}")
+            if stream['id'] == target_static_id:
+                # print(f"DEBUG OMGTV (static): Trovato stream statico corrispondente: {stream}")
+                return [stream] # Restituisce una lista con lo stream trovato
     return []
-# --- Logica Calcio ---
+# --- Logica Calcio (CT) ---
 BASE_URL_CALCIO = "https://calcionew.newkso.ru/calcio/"
 LOGO_URL_CALCIO = "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
 HEADER_CALCIO_PARAMS = "&h_user-agent=Mozilla%2F5.0+%28iPhone%3B+CPU+iPhone+OS+17_7+like+Mac+OS+X%29+AppleWebKit%2F605.1.15+%28KHTML%2C+like+Gecko%29+Version%2F18.0+Mobile%2F15E148+Safari%2F604.1&h_referer=https%3A%2F%2Fcalcionew.newkso.ru%2F&h_origin=https%3A%2F%2Fcalcionew.newkso.ru"
