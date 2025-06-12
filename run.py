@@ -219,7 +219,7 @@ async def addon_stream(request: Request,config, type, id,):
     streams = {'streams': []}
     if "|" in config:
         config_providers = config.split('|')
-    elif "%7C" in config: # Gestisce l'URL encoding di Stremio per "|"
+    elif "%7C" in config:
         config_providers = config.split('%7C')
     else: # Caso base se non ci sono provider specifici nella config (improbabile per stream)
         config_providers = []
@@ -243,12 +243,8 @@ async def addon_stream(request: Request,config, type, id,):
         MFP_CREDENTIALS = [MFP_url, MFP_password]
         if MFP_url and MFP_password:
             MFP = "1"
-        # Se MFP_url o MFP_password sono vuoti, MFP rimane "0" (dall'inizializzazione)
-        # e MFP_CREDENTIALS conterrà i valori analizzati (potenzialmente vuoti).
     else:
         MFP = "0"
-        # MFP_CREDENTIALS rimane None (dall'inizializzazione).
-
     async with AsyncSession(proxies = proxies) as client:
         if type == "tv":
             for channel in STREAM["channels"]:
