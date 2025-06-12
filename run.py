@@ -234,36 +234,20 @@ async def addon_stream(request: Request,config, type, id,):
     MFP_CREDENTIALS = None # Inizializza a None
 
     if "MFP[" in config:
-    # Extract proxy data
-        try:
-            # Trova l'indice di "MFP[" e ")"
-            start_index = config.find("MFP[") + len("MFP[")
-            end_index = config.find("])", start_index) # Cerca "])" per chiudere correttamente
-            if end_index == -1: # Fallback se "])" non è trovato (vecchio formato?)
-                end_index = config.find(")", start_index)
-
-            mfp_data_full = config[start_index:end_index]
-            
-            # Dividi per virgola, gestendo il caso in cui la password potrebbe non esserci
-            mfp_parts = mfp_data_full.split(",", 1)
-            MFP_url = mfp_parts[0].strip()
-            if len(mfp_parts) > 1:
-                MFP_password = mfp_parts[1].strip()
-                if MFP_password.endswith(']'): # Rimuove la parentesi quadra finale se presente
-                    MFP_password = MFP_password[:-1]
-            else:
-                MFP_password = "" # Password vuota se non specificata
-
-            if MFP_url: # Password può essere vuota
-                MFP_CREDENTIALS = [MFP_url, MFP_password]
-                MFP = "1"
-        except Exception as e:
-            print(f"Errore nell'estrazione dei dati MFP dalla configurazione: {e}")
-            MFP = "0"
-            MFP_CREDENTIALS = None # Ensure it's None on error
-    else: # If "MFP[" is not in config
+    # Extract proxy data between "MFP(" and ")"
+        mfp_data = config.split("MFP[")[1].split(")")[0]  
+    # Split the data by comma to get proxy URL and password
+        MFP_url, MFP_password = mfp_data.split(",")
+        MFP_password = MFP_password[:-2]
+    # Store them in a list
+        MFP_CREDENTIALS = [MFP_url, MFP_password]
+        if MFP_url and MFP_password:
+            MFP = "1"
+        # Se MFP_url o MFP_password sono vuoti, MFP rimane "0" (dall'inizializzazione)
+        # e MFP_CREDENTIALS conterrà i valori analizzati (potenzialmente vuoti).
+    else:
         MFP = "0"
-        MFP_CREDENTIALS = None
+        # MFP_CREDENTIALS rimane None (dall'inizializzazione).
 
     async with AsyncSession(proxies = proxies) as client:
         if type == "tv":
