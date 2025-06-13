@@ -86,7 +86,7 @@ MANIFEST = {
                 {
                     "name": "genre",
                     "isRequired": False,
-                    "options": ["Rai", "Mediaset", "Sky", "La7", "Discovery", "Sport", "Sportitalia", "RSI", "DAZN", "Rakuten", "Pluto", "Film & Serie", "Paramount", "Documentari", "Intrattenimento"]
+                    "options": ["Intrattenimento", "Film & Serie", "Documentari", "Sport", "Sky", "DAZN", "Rai", "Mediaset", "La7", "Discovery", "Sportitalia", "RSI", "Rakuten", "Pluto" ]
                 }
             ]
         }
