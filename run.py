@@ -505,39 +505,68 @@ async def apply_mfp_to_stream(stream_url, mfp_url, mfp_password, stream_type="hl
     """
     Applica la logica MFP a un singolo stream URL.
     """
-    if stream_type == "mpd":
+    if stream_type == "mpd": # Inizio del blocco if per MPD
         # Gestione specifica per MPD
         logging.info(f"Applying MFP to MPD stream: {stream_url}")
         mpd_marker = ".mpd"
         try:
-            # Trova l'URL base fino a .mpd incluso
+            # Trova l'URL base fino a .mpd incluso e la query string successiva
             actual_stream_url_lower = stream_url.lower()
-            mpd_index = actual_stream_url_lower.index(mpd_marker)
-            base_mpd_url_strict = stream_url[:mpd_index + len(mpd_marker)]
+            mpd_index = actual_stream_url_lower.find(mpd_marker) # Usa find per evitare ValueError
             
-            # Estrai la query string dall'URL originale completo usando urllib.parse
-            parsed_original_url = urllib.parse.urlparse(stream_url)
-            original_query_string = parsed_original_url.query
+            original_query_string = ""
+            base_mpd_url_strict = stream_url # Default a tutto l'URL se .mpd non trovato
+
+            if mpd_index != -1:
+                base_mpd_url_strict = stream_url[:mpd_index + len(mpd_marker)]
+                query_part_start_index = mpd_index + len(mpd_marker)
+                # Controlla se c'è una parte di query che inizia con '&' dopo '.mpd'
+                if query_part_start_index < len(stream_url) and stream_url[query_part_start_index] == '&':
+                    original_query_string = stream_url[query_part_start_index+1:] # Estrae la query string, escludendo la '&' iniziale
+            else:
+                logging.warning(f"'.mpd' marker not found in URL '{stream_url}' for MPD type. Cannot extract additional query parameters in the expected format.")
 
             mfp_base_query = f"api_password={mfp_password}&d={urllib.parse.quote(base_mpd_url_strict)}"
             
             final_mfp_url = f"{mfp_url}/proxy/mpd/manifest.m3u8?{mfp_base_query}"
             if original_query_string:
-                final_mfp_url += f"&{original_query_string}"
+                final_mfp_url += f"&{original_query_string}" # Aggiunge la query string estratta
             
             logging.info(f"Applying MFP to MPD: Original='{stream_url}', BaseMPD='{base_mpd_url_strict}', Query='{original_query_string}', Result='{final_mfp_url}'")
             return final_mfp_url
-        except ValueError: # Se .mpd non è in stream_url
+        except Exception as e: # Cattura eccezioni più generiche durante il parsing
             logging.warning(f"'.mpd' marker not found in URL '{stream_url}' for MPD type. Falling back to HLS for MFP.")
             # Fallback a HLS se .mpd non trovato
-            return f"{mfp_url}/proxy/hls/manifest.m3u8?api_password={mfp_password}&d={urllib.parse.quote(stream_url)}"
-    elif stream_type == "daddy":
+            # Questa parte del fallback per MPD deve essere gestita con la nuova logica HLS
+            base_stream_url_fallback = stream_url
+            additional_mfp_params_fallback = ""
+            h_param_match_fallback = re.search(r"&h_[\w-]+=", stream_url)
+            if h_param_match_fallback:
+                split_index_fallback = h_param_match_fallback.start()
+                base_stream_url_fallback = stream_url[:split_index_fallback]
+                additional_mfp_params_fallback = stream_url[split_index_fallback:]
+            encoded_base_url_fallback = urllib.parse.quote(base_stream_url_fallback)
+            return f"{mfp_url}/proxy/hls/manifest.m3u8?api_password={mfp_password}&d={encoded_base_url_fallback}{additional_mfp_params_fallback}"
+    elif stream_type == "daddy": # Inizio del blocco elif per Daddy
         logging.info(f"Applying MFP to Daddy stream: {stream_url}")
         # Gestione specifica per Daddy
         return f"{mfp_url}/extractor/video?host=DLHD&redirect_stream=true&api_password={mfp_password}&d={urllib.parse.quote(stream_url)}"
-    else:
-        # Default HLS
-        return f"{mfp_url}/proxy/hls/manifest.m3u8?api_password={mfp_password}&d={urllib.parse.quote(stream_url)}"
+    else: # Default HLS e altri casi come Vavoo, CalcioNew
+        logging.info(f"Applying MFP to HLS/default stream: {stream_url}")
+        base_stream_url = stream_url
+        additional_mfp_params = ""
+
+        h_param_match = re.search(r"&h_[\w-]+=", stream_url)
+        if h_param_match:
+            split_index = h_param_match.start()
+            base_stream_url = stream_url[:split_index]
+            additional_mfp_params = stream_url[split_index:] # Include la '&' iniziale
+            logging.debug(f"MFP HLS: Base URL='{base_stream_url}', Additional Params='{additional_mfp_params}'")
+
+        encoded_base_url = urllib.parse.quote(base_stream_url)
+        final_mfp_url = f"{mfp_url}/proxy/hls/manifest.m3u8?api_password={mfp_password}&d={encoded_base_url}{additional_mfp_params}"
+        logging.info(f"MFP HLS: Final URL='{final_mfp_url}'")
+        return final_mfp_url
 
 async def get_daddy_streams_with_mfp(client, channel_id_full, mfp_url=None, mfp_password=None):
     """Funzione separata per Daddy con gestione MFP."""
