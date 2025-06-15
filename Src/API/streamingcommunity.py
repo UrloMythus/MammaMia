@@ -114,6 +114,7 @@ async def search(query,date,ismovie, client,SC_FAST_SEARCH,movie_id):
                     print(movie_id)
                     #Here we need to convert because the IMDB ID is often bugged
                 tmdb_id = str(data['props']['title']['tmdb_id'])
+                print(tmdb_id)
                 if tmdb_id == movie_id:
                     return tid,slug,version
             elif SC_FAST_SEARCH == "1":
@@ -302,90 +303,101 @@ async def get_episode_link(episode_id,tid,version,client,MFP):
     return url,quality
 
 
+async def streamingcommunity_site(imdb,client,SC_FAST_SEARCH,MFP):
+    general = await is_movie(imdb)
+    ismovie = general[0]
+    imdb_id = general[1]
+    if ismovie == 0 : 
+        season = int(general[2])
+        episode = int(general[3])
+    #Check if fast search is enabled or disabled
+        if SC_FAST_SEARCH == "1":
+            type = "StreamingCommunityFS"
+            if "tt" in imdb:
+                    #Get showname
+                showname = await get_info_imdb(imdb_id,ismovie,type,client)
+                date = None
+            else:
+                #I just set n season to None to avoid bugs, but it is not needed if Fast search is enabled
+                date = None
+                #else just equals them
+                tmdba = imdb_id.replace("tmdb:","")
+                showname = get_info_tmdb(tmdba,ismovie,type)
+        elif SC_FAST_SEARCH == "0":
+            type = "StreamingCommunity"
+            if "tt" in imdb:
+                tmdba = await get_TMDb_id_from_IMDb_id(imdb_id,client)
+            showname,date = get_info_tmdb(tmdba,ismovie,type) 
+        #HERE THE CASE IF IT IS A MOVIE
+    else:
+        if SC_FAST_SEARCH == "1":
+            type = "StreamingCommunityFS"
+            if "tt" in imdb:
+                #Get showname
+                date = None
+                showname = await get_info_imdb(imdb_id,ismovie,type,client)
+            else:
+                    date = None
+                    tmdba = imdb_id.replace("tmdb:","")
+                    showname = get_info_tmdb(tmdba,ismovie,type) 
+        elif SC_FAST_SEARCH == "0":
+            type = "StreamingCommunity"
+            if "tt" in imdb:
+                #Get showname
+                showname,date = await get_info_imdb(imdb_id,ismovie,type,client)
+            else:
+                tmdba = imdb_id.replace("tmdb:","")
+                showname,date = get_info_tmdb(tmdba,ismovie,type)     
+    showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
+    showname = urllib.parse.quote_plus(showname)
+    query = f'{SC_DOMAIN}/api/search?q={showname}'
+    tid,slug,version = await search(query,date,ismovie,client,SC_FAST_SEARCH,imdb_id)
+    if ismovie == 1:
+    #TID means temporaly ID
+        url,quality = await get_film(tid,version,client,MFP)
+        print("MammaMia found results for StreamingCommunity")
+        return url,quality,slug
+    if ismovie == 0:
+        #Uid = URL ID
+        episode_id = await get_season_episode_id(tid,slug,season,episode,version,client)
+        url,quality = await get_episode_link(episode_id,tid,version,client,MFP)
+        return url,quality,slug
+
+async def vixsrc(imdb,client,SC_FAST_SEARCH,MFP):
+    general = await is_movie(imdb)
+    ismovie = general[0]
+    id = general[1]
+    if "tt" in imdb:
+        tmdb = await get_TMDb_id_from_IMDb_id(id,client)
+    else:
+        tmdb = id
+    if ismovie == 0 : 
+        season = int(general[2])
+        episode = int(general[3])
+        site_url = f'{SC_DOMAIN}/tv/{tmdb}/{general[2]}/{general[3]}/'
+    else:
+        site_url = f'{SC_DOMAIN}/movie/{tmdb}/' 
+    if MFP == "1":
+        quality = "Unknown"
+        return site_url,quality,""
+    else:
+        full_url,quality = await extractor(site_url,client)
+        return full_url,quality,""
+
+
 async def streaming_community(imdb,client,SC_FAST_SEARCH,MFP):
     try:
-        if "streaming" in SC_DOMAIN:
-            print("Please insert vixsrc site/Perfavore inserisci il sito di vixsrc")
-        general = await is_movie(imdb)
-        ismovie = general[0]
-        id = general[1]
-        if "tt" in imdb:
-            tmdb = await get_TMDb_id_from_IMDb_id(id,client)
-        else:
-            tmdb = id
-        if ismovie == 0 : 
-            season = int(general[2])
-            episode = int(general[3])
-            site_url = f'{SC_DOMAIN}/tv/{tmdb}/{general[2]}/{general[3]}/'
-        else:
-            site_url = f'{SC_DOMAIN}/movie/{tmdb}/' 
-        if MFP == "1":
-            quality = "Unknown"
-            return site_url,quality,""
-        else:
-            full_url,quality = await extractor(site_url,client)
-            return full_url,quality,""
+        if "vixsrc" in SC_DOMAIN:
+            url,quality,slug = await vixsrc(imdb,client,SC_FAST_SEARCH,MFP)
+        elif "streaming" in SC_DOMAIN:
+            url,quality,slug = await streamingcommunity_site(imdb,client,SC_FAST_SEARCH,MFP)
+        return url,quality,slug
     except Exception as e:
-        print("MammaMia: StreamingCommunity failed",e)
+        print("StreamingCommunity failed",e)
         return None,None,None
         
 '''
-            #Check if fast search is enabled or disabled
-            if SC_FAST_SEARCH == "1":
-                type = "StreamingCommunityFS"
-                if "tt" in imdb:
-                #Get showname
-                    showname = await get_info_imdb(imdb_id,ismovie,type,client)
-                    date = None
-                else:
-                    #I just set n season to None to avoid bugs, but it is not needed if Fast search is enabled
-                    date = None
-                    #else just equals them
-                    tmdba = imdb_id.replace("tmdb:","")
-                    showname = get_info_tmdb(tmdba,ismovie,type)
-            elif SC_FAST_SEARCH == "0":
-                type = "StreamingCommunity"
-                if "tt" in imdb:
-                    tmdba = await get_TMDb_id_from_IMDb_id(imdb_id,client)
-                showname,date = get_info_tmdb(tmdba,ismovie,type) 
-        #HERE THE CASE IF IT IS A MOVIE
-        else:
-            if SC_FAST_SEARCH == "1":
-                type = "StreamingCommunityFS"
-                if "tt" in imdb:
-                    #Get showname
-                    date = None
-                    showname = await get_info_imdb(imdb_id,ismovie,type,client)
-                else:
-                        date = None
-                        tmdba = imdb_id.replace("tmdb:","")
-                        showname = get_info_tmdb(tmdba,ismovie,type) 
-            elif SC_FAST_SEARCH == "0":
-                type = "StreamingCommunity"
-                if "tt" in imdb:
-                    #Get showname
-                    showname,date = await get_info_imdb(imdb_id,ismovie,type,client)
-                else:
-                        tmdba = imdb_id.replace("tmdb:","")
-                        showname,date = get_info_tmdb(tmdba,ismovie,type) 
-        
-        showname = showname.replace(" ", "+").replace("–", "+").replace("—","+")
-        showname = urllib.parse.quote_plus(showname)
-        query = f'{SC_DOMAIN}/api/search?q={showname}'
-        tid,slug,version = await search(query,date,ismovie,client,SC_FAST_SEARCH,imdb_id)
-        if ismovie == 1:
-            #TID means temporaly ID
-            url,quality = await get_film(tid,version,client,MFP)
-            print("MammaMia found results for StreamingCommunity")
-            return url,quality,slug
-        if ismovie == 0:
-            #Uid = URL ID
-            episode_id = await get_season_episode_id(tid,slug,season,episode,version,client)
-            url,quality = await get_episode_link(episode_id,tid,version,client,MFP)
-            return url,quality,slug
-    except Exception as e:
-        print("MammaMia: StreamingCommunity failed",e)
-        return None,None,None
+            
 '''
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
