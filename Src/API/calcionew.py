@@ -2,7 +2,6 @@ import urllib.parse
 import Src.Utilities.config as config
 
 BASE_URL_CALCIO = config.CALCIONEW_DOMAIN
-LOGO_URL_CALCIO = "https://i.postimg.cc/NFGs2Ptq/photo-2025-03-12-12-36-48.png"
 HEADER_CALCIO_PARAMS = "&h_user-agent=Mozilla%2F5.0+%28iPhone%3B+CPU+iPhone+OS+17_7+like+Mac+OS+X%29+AppleWebKit%2F605.1.15+%28KHTML%2C+like+Gecko%29+Version%2F18.0+Mobile%2F15E148+Safari%2F604.1&h_referer=https%3A%2F%2Fcalcionew.newkso.ru%2F&h_origin=https%3A%2F%2Fcalcionew.newkso.ru"
 
 CHANNELS_RAW_CALCIO = [
@@ -111,10 +110,9 @@ async def get_calcio_streams(client):
             unique_id_suffix = raw_path_part.rstrip('/').replace("calcio", "").lower()
 
             stream_data = {
-                'id': f"calcionew-{unique_id_suffix}", 
+                'id': f"{unique_id_suffix}", 
                 'title': f"{channel_display_name}{server_tag_suffix}", 
                 'url': final_url,
-                'logo': LOGO_URL_CALCIO,
                 'group': "Calcio"
             }
             streams.append(stream_data)
