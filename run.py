@@ -438,7 +438,8 @@ async def addon_stream(request: Request,config, type, id,):
                     print(f"CB01 Found Results for {id}")
                     if "mixdrop" in url_cbo1:
                         if MFP == "1":
-                            MFP_url, MFP_password = MFP_CREDENTIALS # Assicurati che siano definitiurl_cbo1 = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_cbo1}&host=Mixdrop&redirect_stream=false'
+                            MFP_url, MFP_password = MFP_CREDENTIALS # Assicurati che siano definiti
+                            url_cbo1 = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_cbo1}&host=Mixdrop&redirect_stream=false'
                             url_cbo1 = await transform_mfp(url_cbo1,client)
                             if url_cbo1:
                                 streams['streams'].append({'name': f"{Name}",'title': f'{Icon}CB01', 'url': url_cbo1, 'behaviorHints': {'bingeGroup': 'cb01'}})
