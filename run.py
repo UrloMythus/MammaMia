@@ -58,7 +58,6 @@ DDL = config.DDL
 GS = config.GS
 GHD = config.GHD
 OST = config.OST
-DADDY = config.DADDY
 VAVOO = config.VAVOO
 CALCIONEW = config.CALCIONEW
 MPDSTATIC = config.MPDSTATIC
@@ -301,7 +300,7 @@ async def addon_stream(request: Request,config, type, id,):
             
             # --- OMGTV Integration con 4 funzioni separate ---
             omgtv_sources_mapping = {
-                "daddy": get_daddy_streams_with_mfp,
+                "dlhd": get_daddy_streams_with_mfp,
                 "vavoo": get_vavoo_streams_with_mfp,
                 "calcionew": get_calcionew_streams_with_mfp,
                 "mpdstatic": get_mpdstatic_streams_with_mfp
@@ -539,7 +538,7 @@ async def apply_mfp_to_stream(stream_url, mfp_url, mfp_password, stream_type="hl
 async def get_daddy_streams_with_mfp(client, channel_id_full, mfp_url=None, mfp_password=None):
     """Funzione separata per Daddy con gestione MFP."""
     logging.info(f"Attempting to get Daddy streams for: {channel_id_full}, MFP enabled: {bool(mfp_url and mfp_password)}")
-    if DADDY != "1":
+    if DLHD  != "1":
         logging.warning("Daddy provider is disabled in config.")
         return []
     
