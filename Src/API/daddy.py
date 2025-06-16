@@ -128,7 +128,7 @@ async def get_247ita_streams(client):
             stream_url_dynamic = f"{config.DLHD_DOMAIN}/stream/stream-{stream_number}.php"
             
             streams.append({
-                'id': f"daddy-{channel_name_final_display.lower().replace(' ', '-')}",
+                'id': f"dlhd-{channel_name_final_display.lower().replace(' ', '-')}",
                 'title': f"{channel_name_final_display} (D)",
                 'url': stream_url_dynamic,
                 'logo': STATIC_LOGOS_247ITA.get(channel_name_final_display.lower(), "https://raw.githubusercontent.com/cribbiox/eventi/refs/heads/main/ddlive.png"),
@@ -139,7 +139,7 @@ async def get_247ita_streams(client):
         stream_number_dazn = "877"
         stream_url_dynamic_dazn = f"{config.DLHD_DOMAIN}/stream/stream-{stream_number_dazn}.php"
         streams.append({
-            'id': "daddy-dazn-1",
+            'id': "dlhd-dazn-1",
             'title': "DAZN 1 (D)",
             'url': stream_url_dynamic_dazn,
             'logo': STATIC_LOGOS_247ITA.get("dazn 1"),
