@@ -1,51 +1,10 @@
 import urllib.parse
 import Src.Utilities.config as config
+import requests
+from bs4 import BeautifulSoup
 
 BASE_URL_CALCIO = config.CALCIONEW_DOMAIN
 HEADER_CALCIO_PARAMS = "&h_user-agent=Mozilla%2F5.0+%28iPhone%3B+CPU+iPhone+OS+17_7+like+Mac+OS+X%29+AppleWebKit%2F605.1.15+%28KHTML%2C+like+Gecko%29+Version%2F18.0+Mobile%2F15E148+Safari%2F604.1&h_referer=https%3A%2F%2Fcalcionew.newkso.ru%2F&h_origin=https%3A%2F%2Fcalcionew.newkso.ru"
-
-CHANNELS_RAW_CALCIO = [
-    "calcioX1ac/", "calcioX1comedycentral/",
-    "calcioX1eurosport1/", "calcioX1eurosport2/", "calcioX1formula1/", "calcioX1history/",
-    "calcioX1seriesi/", "calcioX1sky258/", "calcioX1sky259/", "calcioX1skyatlantic/",
-    "calcioX1skycinemacollection/", "calcioX1skycinemacomedy/", "calcioX1skycinemadrama/",
-    "calcioX1skycinemadue/", "calcioX1skycinemafamily/", "calcioX1skycinemaromance/",
-    "calcioX1skycinemasuspence/", "calcioX1skycinemauno/", "calcioX1skycrime/",
-    "calcioX1skydocumentaries/", "calcioX1skyinvestigation/", "calcioX1skynature/",
-    "calcioX1skyserie/", "calcioX1skysport24/", "calcioX1skysport251/",
-    "calcioX1skysport252/", "calcioX1skysport253/", "calcioX1skysport254/",
-    "calcioX1skysport255/", "calcioX1skysport257/", "calcioX1skysportarena/",
-    "calcioX1skysportcalcio/", "calcioX1skysportgolf/", "calcioX1skysportmax/",
-    "calcioX1skysportmotogp/", "calcioX1skysportnba/", "calcioX1skysporttennis/",
-    "calcioX1skysportuno/", "calcioX1skyuno/", "calcioX2ac/", "calcioX2comedycentral/",
-    "calcioX2eurosport1/", "calcioX2eurosport2/", "calcioX2formula/", "calcioX2formula1/",
-    "calcioX2history/", "calcioX2laliga/", "calcioX2porto/", "calcioX2portugal/",
-    "calcioX2serie/", "calcioX2serie1/", "calcioX2seriesi/", "calcioX2sky258/",
-    "calcioX2sky259/", "calcioX2skyarte/", "calcioX2skyatlantic/", "calcioX2skycinemacollection/",
-    "calcioX2skycinemacomedy/", "calcioX2skycinemadrama/", "calcioX2skycinemadue/",
-    "calcioX2skycinemafamily/", "calcioX2skycinemaromance/", "calcioX2skycinemasuspence/",
-    "calcioX2skycinemauno/", "calcioX2skycrime/", "calcioX2skydocumentaries/",
-    "calcioX2skyinvestigation/", "calcioX2skynature/", "calcioX2skyserie/",
-    "calcioX2skysport24/", "calcioX2skysport251/", "calcioX2skysport252/",
-    "calcioX2skysport253/", "calcioX2skysport254/", "calcioX2skysport255/",
-    "calcioX2skysport256/", "calcioX2skysport257/", "calcioX2skysportarena/",
-    "calcioX2skysportcalcio/", "calcioX2skysportgolf/", "calcioX2skysportmax/",
-    "calcioX2skysportmotogp/", "calcioX2skysportnba/", "calcioX2skysporttennis/",
-    "calcioX2skysportuno/", "calcioX2skyuno/", "calcioX2solocalcio/", "calcioX2sportitalia/",
-    "calcioX2zona/", "calcioX2zonab/", "calcioXac/", "calcioXcomedycentral/",
-    "calcioXeurosport1/", "calcioXeurosport2/", "calcioXformula1/", "calcioXhistory/",
-    "calcioXseriesi/", "calcioXsky258/", "calcioXsky259/", "calcioXskyarte/",
-    "calcioXskyatlantic/", "calcioXskycinemacollection/", "calcioXskycinemacomedy/",
-    "calcioXskycinemadrama/", "calcioXskycinemadue/", "calcioXskycinemafamily/",
-    "calcioXskycinemaromance/", "calcioXskycinemasuspence/", "calcioXskycinemauno/",
-    "calcioXskycrime/", "calcioXskydocumentaries/", "calcioXskyinvestigation/",
-    "calcioXskynature/", "calcioXskyserie/", "calcioXskysport24/", "calcioXskysport251/",
-    "calcioXskysport252/", "calcioXskysport253/", "calcioXskysport254/",
-    "calcioXskysport255/", "calcioXskysport256/", "calcioXskysport257/",
-    "calcioXskysportarena/", "calcioXskysportcalcio/", "calcioXskysportgolf/",
-    "calcioXskysportmax/", "calcioXskysportmotogp/", "calcioXskysportnba/",
-    "calcioXskysporttennis/", "calcioXskysportuno/", "calcioXskyuno/"
-]
 
 EXTRA_CHANNELS_CALCIO = [("Sky Sport F1 Extra", "calcioXskysportf1/mono.m3u8")]
 
@@ -94,31 +53,95 @@ def _format_channel_name_calcio(raw_name):
     channel_display_name = name_map.get(processed_name_part.lower(), processed_name_part.capitalize())
     return channel_display_name, server_label
 
+def _fetch_html_content_calcio(url):
+    """Scarica il contenuto HTML da un URL specifico per CalcioNew."""
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        # print(f"Contenuto HTML per CalcioNew scaricato con successo da {url}")
+        return response.text
+    except requests.exceptions.RequestException as e:
+        print(f"Errore durante il download dell'HTML per CalcioNew da {url}: {e}")
+        return None
+
+def _parse_channels_from_html_calcio(html_content):
+    """Estrae i percorsi dei canali da una stringa HTML per CalcioNew."""
+    if not html_content:
+        return []
+    soup = BeautifulSoup(html_content, 'html.parser')
+    channel_paths = []
+    for link in soup.find_all('a', href=True):
+        href = link['href']
+        if href.endswith('/') and href != '../' and '?' not in href:
+            channel_paths.append(href)
+    return channel_paths
+
 async def get_calcio_streams(client):
     streams = []
-    raw_channel_list = CHANNELS_RAW_CALCIO + [item[1].split('/mono.m3u8')[0] + '/' for item in EXTRA_CHANNELS_CALCIO]
+    
+    # URL da cui scaricare l'HTML (BASE_URL_CALCIO dovrebbe essere "https://calcionew.newkso.ru/calcio/")
+    scrape_url = BASE_URL_CALCIO 
+    html_content = _fetch_html_content_calcio(scrape_url)
+    dynamic_channel_paths = _parse_channels_from_html_calcio(html_content)
 
-    if not raw_channel_list:
+    if not dynamic_channel_paths and not EXTRA_CHANNELS_CALCIO:
+        print("Nessun canale dinamico trovato e nessun canale extra definito per CalcioNew.")
         return []
 
-    for raw_path_part in raw_channel_list:
+    # Processa i canali ottenuti dinamicamente
+    for raw_path_part in dynamic_channel_paths:
         try:
             channel_display_name, server_tag_suffix = _format_channel_name_calcio(raw_path_part)
             original_stream_url = f"{BASE_URL_CALCIO}{raw_path_part}mono.m3u8"
             final_url = original_stream_url + HEADER_CALCIO_PARAMS
             
-            unique_id_suffix = raw_path_part.rstrip('/').replace("calcio", "").lower()
+            # Crea un ID univoco per il canale
+            # Rimuove "calcio" e lo slash finale, converte in minuscolo
+            unique_id_part = raw_path_part.rstrip('/').lower()
+            if unique_id_part.startswith("calcio"):
+                 unique_id_suffix = unique_id_part[len("calcio"):].lstrip('x123') # Rimuove calcio, calcioX, calcioX1, calcioX2, calcioX3
+            else:
+                 unique_id_suffix = unique_id_part
 
             stream_data = {
-                'id': f"{unique_id_suffix}", 
+                'id': f"calcionew-{unique_id_suffix}", 
                 'title': f"{channel_display_name}{server_tag_suffix}", 
                 'url': final_url,
                 'group': "Calcio"
             }
             streams.append(stream_data)
         except Exception as e:
+            print(f"Errore nel processare il canale dinamico {raw_path_part} da CalcioNew: {e}")
             continue
+    
+    # Processa i canali extra
+    for extra_name, extra_path_suffix_with_mono in EXTRA_CHANNELS_CALCIO:
+        try:
+            raw_path_part_for_extra = extra_path_suffix_with_mono.split('/mono.m3u8')[0] + '/'
+            _, server_tag_suffix = _format_channel_name_calcio(raw_path_part_for_extra) # Otteniamo il server_tag
+            original_stream_url = f"{BASE_URL_CALCIO}{extra_path_suffix_with_mono}"
+            final_url = original_stream_url + HEADER_CALCIO_PARAMS
+            unique_id_part_extra = raw_path_part_for_extra.rstrip('/').lower()
+            if unique_id_part_extra.startswith("calcio"):
+                 unique_id_suffix_extra = unique_id_part_extra[len("calcio"):].lstrip('x123')
+            else:
+                 unique_id_suffix_extra = unique_id_part_extra
             
+            stream_data_extra = {
+                'id': f"calcionew-{unique_id_suffix_extra}",
+                'title': f"{extra_name}{server_tag_suffix}", # Usiamo il nome fornito in EXTRA_CHANNELS_CALCIO
+                'url': final_url,
+                'group': "Calcio"
+            }
+            # Evita duplicati se un canale extra è anche trovato dinamicamente con lo stesso ID
+            if not any(s['id'] == stream_data_extra['id'] for s in streams):
+                streams.append(stream_data_extra)
+            # else:
+                # print(f"Canale extra CalcioNew {extra_name} (ID: {stream_data_extra['id']}) già presente, saltato.")
+        except Exception as e:
+            print(f"Errore nel processare il canale extra CalcioNew {extra_name}: {e}")
+            continue
+
     return streams
 
 async def get_calcionew_streams_for_channel_id(channel_id_full: str, client):
