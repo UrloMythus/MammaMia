@@ -19,34 +19,6 @@ HEADERS_REQUESTS_247ITA = {
 
 DADDYLIVECHANNELSURL_247ITA = f'{config.DLHD_DOMAIN}/24-7-channels.php'
 
-STATIC_LOGOS_247ITA = {
-    "sky uno": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-uno-it.png",
-    "sky cinema uno": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-cinema-uno-it.png",
-    "rai 1": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rai-1-it.png",
-    "rai 2": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rai-2-it.png",
-    "rai 3": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rai-3-it.png",
-    "italia 1": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/italia1-it.png",
-    "rete 4": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rete4-it.png",
-    "canale 5": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/canale5-it.png",
-    "la7": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/la7-it.png",
-    "tv8": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/tv8-it.png",
-    "nove": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/nove-it.png",
-    "dmax": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/dmax-it.png",
-    "real time": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/real-time-it.png",
-    "focus": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/focus-it.png",
-    "cielo": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/cielo-it.png",
-    "sky sport uno": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-uno-it.png",
-    "sky sport calcio": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-calcio-it.png",
-    "sky sport 251": "https://logodownload.org/wp-content/uploads/2020/06/sky-sports-logo-0-1.png",
-    "sky sport 252": "https://logodownload.org/wp-content/uploads/2020/06/sky-sports-logo-0-1.png",
-    "sky sport 253": "https://logodownload.org/wp-content/uploads/2020/06/sky-sports-logo-0-1.png",
-    "sky sport 254": "https://logodownload.org/wp-content/uploads/2020/06/sky-sports-logo-0-1.png",
-    "sky sport 255": "https://logodownload.org/wp-content/uploads/2020/06/sky-sports-logo-0-1.png",
-    "sky sport 256": "https://logodownload.org/wp-content/uploads/2020/06/sky-sports-logo-0-1.png",
-    "sky sport 257": "https://logodownload.org/wp-content/uploads/2020/06/sky-sports-logo-0-1.png",
-    "sky cinema uno": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-cinema-uno-it.png",
-    "dazn 1": "https://raw.githubusercontent.com/cribbiox/eventi/refs/heads/main/ddlive.png",
-}
 
 DADDYLIVE_CHANNEL_NAME_MAP = {
     "sky calcio 1": "Sky Sport 251",
@@ -131,7 +103,6 @@ async def get_247ita_streams(client):
                 'id': f"{channel_name_final_display.lower().replace(' ', '-')}",
                 'title': f"{channel_name_final_display} (D)",
                 'url': stream_url_dynamic,
-                'logo': STATIC_LOGOS_247ITA.get(channel_name_final_display.lower(), "https://raw.githubusercontent.com/cribbiox/eventi/refs/heads/main/ddlive.png"),
                 'group': "247ita"
             })
 
@@ -142,7 +113,6 @@ async def get_247ita_streams(client):
             'id': "dazn-1",
             'title': "DAZN 1 (D)",
             'url': stream_url_dynamic_dazn,
-            'logo': STATIC_LOGOS_247ITA.get("dazn 1"),
             'group': "247ita"
         })
     return streams
