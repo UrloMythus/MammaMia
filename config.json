@@ -76,10 +76,6 @@
               "enabled":"1"
           },
           "DaddyLiveHD":{
-              "url":"https://daddylive.mp",
-              "enabled":"1"
-          },
-          "Daddy":{
               "url":"https://daddylive.dad",
               "enabled":"1"
           },
