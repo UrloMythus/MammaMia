@@ -128,7 +128,7 @@ async def get_247ita_streams(client):
             stream_url_dynamic = f"{config.DLHD_DOMAIN}/stream/stream-{stream_number}.php"
             
             streams.append({
-                'id': f"dlhd-{channel_name_final_display.lower().replace(' ', '-')}",
+                'id': f"{channel_name_final_display.lower().replace(' ', '-')}",
                 'title': f"{channel_name_final_display} (D)",
                 'url': stream_url_dynamic,
                 'logo': STATIC_LOGOS_247ITA.get(channel_name_final_display.lower(), "https://raw.githubusercontent.com/cribbiox/eventi/refs/heads/main/ddlive.png"),
@@ -139,7 +139,7 @@ async def get_247ita_streams(client):
         stream_number_dazn = "877"
         stream_url_dynamic_dazn = f"{config.DLHD_DOMAIN}/stream/stream-{stream_number_dazn}.php"
         streams.append({
-            'id': "dlhd-dazn-1",
+            'id': "dazn-1",
             'title': "DAZN 1 (D)",
             'url': stream_url_dynamic_dazn,
             'logo': STATIC_LOGOS_247ITA.get("dazn 1"),
@@ -162,7 +162,7 @@ async def get_daddy_streams_for_channel_id(channel_id_full: str, client):
     target_id_part_to_match = target_channel_name_for_id_match.replace(" ", "-")
 
     for stream in all_247ita_streams:
-        stream_id_name_part = stream['id'].replace("dlhd-", "")
+        stream_id_name_part = stream['id']
         if target_id_part_to_match == stream_id_name_part:
             return [stream]
     
