@@ -47,7 +47,7 @@ def _format_channel_name_calcio(raw_name):
         "skysportcalcio": "Sky Sport Calcio", "skysportgolf": "Sky Sport Golf", "skysportmax": "Sky Sport Max",
         "skysportmotogp": "Sky Sport MotoGP", "skysportnba": "Sky Sport NBA", "skysporttennis": "Sky Sport Tennis",
         "skysportuno": "Sky Sport Uno", "skyuno": "Sky Uno", "solocalcio": "Solo Calcio", "sportitalia": "Sportitalia",
-        "zona": "Zona DAZN", "zonab": "Zona B"
+        "zona": "Zona DAZN", "zonab": "Zona B", "dazn1": "Dazn 1"
     }
     
     channel_display_name = name_map.get(processed_name_part.lower(), processed_name_part.capitalize())
