@@ -21,9 +21,6 @@ DLHD_DOMAIN = SITE['DaddyLiveHD']['url']
 GS_DOMAIN = SITE['Guardaserie']['url']
 GHD_DOMAIN = SITE['GuardaHD']['url']
 OST_DOMAIN = SITE['Onlineserietv']['domain']
-
-# Nuove configurazioni OMGTV
-DADDY_DOMAIN = SITE['Daddy']['url']
 VAVOO_DOMAIN = SITE['Vavoo']['url']
 CALCIONEW_DOMAIN = SITE['CalcioNew']['url']
 
@@ -41,9 +38,6 @@ GS = SITE['Guardaserie']['enabled']
 GHD = SITE['GuardaHD']['enabled']
 OST = SITE['Onlineserietv']['enabled']
 DLHD = SITE['DaddyLiveHD']['enabled']
-
-# Nuove configurazioni OMGTV
-DADDY = SITE['Daddy']['enabled']
 VAVOO = SITE['Vavoo']['enabled']
 CALCIONEW = SITE['CalcioNew']['enabled']
 MPDSTATIC = SITE['MPDStatic']['enabled']
