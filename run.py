@@ -307,11 +307,11 @@ async def addon_stream(request: Request,config, type, id,):
             }
             # Determina i provider OMGTV pertinenti per il canale corrente
             relevant_omgtv_providers = None
-            if channel_name_query_base in omgtv_channel_provider_map:
-                relevant_omgtv_providers = omgtv_channel_provider_map[channel_name_query_base]
-                # logging.info(f"Channel '{channel_name_query_base}' found in omgtv_channel_provider_map. Relevant providers: {relevant_omgtv_providers}")
+            if channel_name_query_base in tv_provider_map:
+                relevant_omgtv_providers = tv_provider_map[channel_name_query_base]
+                # logging.info(f"Channel '{channel_name_query_base}' found in tv_provider_map. Relevant providers: {relevant_omgtv_providers}")
             else:
-                # logging.warning(f"Channel '{channel_name_query_base}' not in omgtv_channel_provider_map. Will attempt all OMGTV sources.")
+                # logging.warning(f"Channel '{channel_name_query_base}' not in tv_provider_map. Will attempt all OMGTV sources.")
                 pass # Se non mappato, relevant_omgtv_providers rimane None, quindi tutti i provider verranno tentati
 
             for omgtv_source_key, source_function in omgtv_sources_mapping.items():
