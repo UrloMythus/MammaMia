@@ -13,13 +13,13 @@ async def get_static_channel_streams(client): # client non è usato
         original_channel_id = channel_data.get('id')
         original_channel_title = channel_data.get('title')
         original_channel_url = channel_data.get('url')
-        original_channel_logo = channel_data.get('logo') # Aggiunto per completezza
-        group_name = channel_data.get('group', "Statici") # Aggiunto per completezza
+        original_channel_logo = channel_data.get('logo')
+        group_name = channel_data.get('group', "Statici")
         if not all([original_channel_id, original_channel_title, original_channel_url]):
             # logging.warning(f"MPDSTATIC: Skipping channel due to missing data: {channel_data}")
             continue
 
-        stream_id = f"mpdstatic-{original_channel_id}"
+        stream_id = f"{original_channel_id}"
         stream_entry = {
             'id': stream_id,
             'title': f"{original_channel_title} (MPD)", # Titolo come in run.py
@@ -45,7 +45,7 @@ async def get_mpdstatic_streams_for_channel_id(channel_id_full: str, client): # 
     # Estrae la parte dell'ID del canale originale da channel_id_full
     # Esempio: se channel_id_full è "mpdstatic-sky-sport-24", original_id_part sarà "sky-sport-24"
     original_id_part = channel_id_full.replace("mpdstatic-", "")
-    target_static_id_to_match = f"mpdstatic-{original_id_part}" # Ricostruisce l'ID che ci aspettiamo di trovare
+    target_static_id_to_match = original_id_part
 
     all_static_streams = await get_static_channel_streams(client) # client non è usato qui
     
