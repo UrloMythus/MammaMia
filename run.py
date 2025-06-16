@@ -11,13 +11,9 @@ from Src.API.guardaserie import guardaserie
 from Src.API.guardahd import guardahd
 import  Src.Utilities.config as config
 import logging
-# Configure basic logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s')
-
 from Src.API.okru import okru_get_url
 from Src.API.animeworld import animeworld
-from Src.Utilities.dictionaries import okru,STREAM,extra_sources,webru_vary,webru_dlhd,provider_map,skystreaming
-from Src.Utilities.dictionaries import omgtv_channel_provider_map # Importa il nuovo dizionario
+from Src.Utilities.dictionaries import omgtv_channel_provider_map,okru,STREAM,extra_sources,webru_vary,webru_dlhd,provider_map,skystreaming
 from Src.API.epg import tivu, tivu_get,epg_guide,convert_bho_1,convert_bho_2,convert_bho_3
 from Src.API.webru import webru,get_skystreaming
 from Src.API.onlineserietv import onlineserietv
@@ -127,7 +123,7 @@ async def transform_mfp(mfp_stream_url,client):
 
         return url
     except Exception as e:
-        logging.error(f"Transforming MFP failed for URL {mfp_stream_url}: {e}", exc_info=True)
+        print("Transforing MFP failed",e)
         return None
 @app.get('/config')
 def config():
@@ -199,7 +195,7 @@ async def addon_meta(request: Request,id: str):
             description,title =  await epg_guide(channel["id"],client)
         elif channel["id"] in tivu:
             description = await tivu_get(channel["id"],client)
-            logging.info(f"EPG description for Tivu channel {channel['id']}: {description}")
+            print(description)
             title = ""
         else:
             description = f'Watch {channel["title"]}'
@@ -225,29 +221,23 @@ async def addon_meta(request: Request,id: str):
 
 @app.get('/{config:path}/stream/{type}/{id}.json')
 @limiter.limit("5/second")
-async def addon_stream(request: Request, config: str, type: str, id: str): # Rinominato config in config_str per evitare conflitti
+async def addon_stream(request: Request,config, type, id,):
     if type not in MANIFEST['types']:
         raise HTTPException(status_code=404)
     streams = {'streams': []}
-    if "|" in config: # config è ora config_str
-        config_providers = config.split('|') # config_str
-    elif "%7C" in config: # config_str
-        config_providers = config.split('%7C') # config_str
-    else: # Caso base se non ci sono provider specifici nella config (improbabile per stream)
-        config_providers = []
-    
+    if "|" in config:
+        config_providers = config.split('|')
+    elif "%7C" in config:
+        config_providers = config.split('%7C')
     provider_maps = {name: "0" for name in provider_map.values()}
     for provider in config_providers:
         if provider in provider_map:
             provider_name = provider_map[provider]
             provider_maps[provider_name] = "1"
 
-    MFP = "0"
-    MFP_CREDENTIALS = None # Inizializza a None
-
-    if "MFP[" in config: # config_str
+    if "MFP[" in config: 
     # Extract proxy data between "MFP(" and ")"
-        mfp_data = config.split("MFP[")[1].split(")")[0]  # config_str
+        mfp_data = config.split("MFP[")[1].split(")")[0]
     # Split the data by comma to get proxy URL and password
         MFP_url, MFP_password = mfp_data.split(",")
         MFP_password = MFP_password[:-2]
@@ -255,12 +245,8 @@ async def addon_stream(request: Request, config: str, type: str, id: str): # Rin
         MFP_CREDENTIALS = [MFP_url, MFP_password]
         if MFP_url and MFP_password:
             MFP = "1"
-        # Se MFP_url o MFP_password sono vuoti, MFP rimane "0" (dall'inizializzazione)
-        # e MFP_CREDENTIALS conterrà i valori analizzati (potenzialmente vuoti).
     else:
         MFP = "0"
-        # MFP_CREDENTIALS rimane None (dall'inizializzazione).
-
     async with AsyncSession(proxies = proxies) as client:
         if type == "tv":
             for channel in STREAM["channels"]:
@@ -302,8 +288,7 @@ async def addon_stream(request: Request, config: str, type: str, id: str): # Rin
                         if DLHD == "1":
                             i = i+1
                             webru_url_2,Referer_webru_url_2,Origin_webru_url_2 = await webru(id,"dlhd",client)
-                            if MFP== "1" and MFP_CREDENTIALS and webru_url_2: # Assicurati che MFP_CREDENTIALS e webru_url_2 esistano
-                                MFP_url, MFP_password = MFP_CREDENTIALS
+                            if MFP == "1":
                                 webru_url_2 = f'{MFP_url}/proxy/hls/manifest.m3u8?api_password={MFP_password}&d={webru_url_2}&h_Referer={Referer_webru_url_2}&h_Origin={Origin_webru_url_2}&h_User-Agent=Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F58.0.3029.110%20Safari%2F537.3'
                                 streams['streams'].append({'title': f"{Icon}Proxied Server D-{i} " + channel['title'],'url': webru_url_2})
                             else:
@@ -353,22 +338,17 @@ async def addon_stream(request: Request, config: str, type: str, id: str): # Rin
                                 'url': stream_item['url'],
                                 'behaviorHints': stream_item.get('behaviorHints', {"notWebReady": True})
                             })
-                # else:
-                    # logging.info(f"Skipping OMGTV source '{omgtv_source_key}' for channel '{channel_name_query_base}' as it's not in the relevant provider list.")
-            # --- END OMGTV Integration ---
-                
-            # Controlla se ci sono stream DOPO aver provato tutte le sorgenti TV (incluse OMGTV)
+
             if not streams['streams']:
                 raise HTTPException(status_code=404)
-            return respond_with(streams) # Ritorna per type == "tv"
-            
+            return respond_with(streams)
         elif "tt" in id or "tmdb" in id or "kitsu" in id:
-            print(f"Handling movie or series: {id}") # Correttamente indentato
-            animeworld_urls = None # Initialize to prevent NameError if not assigned
+
+            print(f"Handling movie or series: {id}")
             if "kitsu" in id:
                 if provider_maps['ANIMEWORLD'] == "1" and AW == "1":
                     animeworld_urls = await animeworld(id,client)
-                if animeworld_urls: # This check is now safe
+                if animeworld_urls:
                     print(f"AnimeWorld Found Results for {id}")
                     i = 0
                     for url in animeworld_urls:
@@ -379,14 +359,13 @@ async def addon_stream(request: Request, config: str, type: str, id: str): # Rin
                                 title = "Italian"
                             streams['streams'].append({'title': f'{Icon}Animeworld {title}', 'url': url})
                             i+=1
-            else: # This 'else' corresponds to 'if "kitsu" in id:'
-                # resto del codice per film e serie... (if not kitsu, before general providers)
-                pass # Added pass to provide a body for the else block
-
-            # General provider checks for movies/series (kitsu or not)
-            # All these blocks are now correctly indented under the main 'elif "tt"...'
-            if MYSTERIUS == "1": 
-                results = await cool(id,client)
+            else:
+                import time
+                current_time = int(time.time())
+                if 1743487223 <= current_time <= 1743544823:
+                    streams['streams'].append({'name': f"{Name} 4K",'title': f'{Icon}Netflix/Prime Extractor 4K', 'url': "https://cdn-cf-east.streamable.com/video/mp4/jkx9gr.mp4?Expires=1743457311748&Key-Pair-Id=APKAIEYUVEN4EVB2OKEQ&Signature=gpixXPFJb5huM8D6AMkbzNqmAON-9zBUVIN5AeWcHiXBVROSz6BlmctAVx0qpe-hM1DN3OO7YtIdBKKOk3IthF33agmVmVjSyNI-emjf~iuqxclbaousBJTPXMIjDQTxBxINr0SUbyS4MiIwhar~luiqqvbPHN9jS-AXT2r1chhZylE4Zol~bKSCCT10TzN3En630XMk0UiTFCgwoAxfitI4mnuCXu4M3-mcnN~kpxx9j6VgE0jVzBKFq9qYbi-CtWOCL7mVaVaCwrTPPe9syZVQgIlgQJt175raLM2G2~faR~wuDOda7KmGNJJH2hDfdd~-sPsr6SSNV0B9ZZ3eaw__"})
+                if MYSTERIUS == "1": 
+                    results = await cool(id,client)
                 if results:
                     print(f"Mysterius Found Results for {id}")
                     for resolution, link in results.items():
@@ -400,8 +379,6 @@ async def addon_stream(request: Request, config: str, type: str, id: str): # Rin
                     if MFP == "1":
                         url_streaming_community = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_streaming_community}&host=VixCloud&redirect_stream=false'
                         url_streaming_community = await transform_mfp(url_streaming_community,client)
-                        if "hf.space" in MFP_url:
-                            streams['streams'].append({"name":f'{Name}', 'title': f'{Icon}StreamingCommunity\n Sorry StreamingCommunity wont work, most likely, with MFP hosted on HuggingFace','url': url_streaming_community})
 
                         streams['streams'].append({"name":f'{Name}\n{quality_sc} Max', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}','url': url_streaming_community,'behaviorHints':{'notWebReady': False, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
                     else:
@@ -421,6 +398,7 @@ async def addon_stream(request: Request, config: str, type: str, id: str): # Rin
                 if url_filmpertutti is not None and Host is not None:
                     if MFP == "1":
                         url_filmpertutti = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_filmpertutti}&host={Host}&redirect_stream=true'
+                        print(url_filmpertutti)
                         streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}Filmpertutti', 'url': url_filmpertutti,'behaviorHints': {'bingeGroup': 'filmpertutti'}})
                     else:
                         streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}Filmpertutti', 'url': url_filmpertutti,'behaviorHints': {'proxyHeaders': {"request": {"User-Agent": "Mozilla/5.0 (Windows NT 10.10; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}}, 'notWebReady': True, 'bingeGroup': 'filmpertutti'}})
@@ -451,7 +429,6 @@ async def addon_stream(request: Request, config: str, type: str, id: str): # Rin
                         url_ddlstream = results[0]
                         quality = results[1]
                         name = unquote(url_ddlstream.split('/')[-1].replace(".mp4",""))
-                        MFP_url, MFP_password = MFP_CREDENTIALS # Assicurati che siano definiti
                         url_ddlstream = f'{MFP_url}/proxy/stream?api_password={MFP_password}&d={url_ddlstream}&h_Referer=https://ddlstreamitaly.{DDL_DOMAIN}/'
                         streams['streams'].append({'name': f"{Name}\n{quality}",'title': f'{Icon}DDLStream \n {name}', 'url': url_ddlstream, 'behaviorHints': {'bingeGroup': 'ddlstream'}}) 
             
@@ -460,21 +437,15 @@ async def addon_stream(request: Request, config: str, type: str, id: str): # Rin
                 if url_cbo1:
                     print(f"CB01 Found Results for {id}")
                     if "mixdrop" in url_cbo1:
-                        if MFP == "1" and MFP_CREDENTIALS: # Assicurati che MFP_CREDENTIALS esista
-                            MFP_url, MFP_password = MFP_CREDENTIALS
-                            url_cbo1 = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_cbo1}&host=Mixdrop&redirect_stream=false'
+                        if MFP == "1":
+                            MFP_url, MFP_password = MFP_CREDENTIALS # Assicurati che siano definitiurl_cbo1 = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_cbo1}&host=Mixdrop&redirect_stream=false'
                             url_cbo1 = await transform_mfp(url_cbo1,client)
                             if url_cbo1:
                                 streams['streams'].append({'name': f"{Name}",'title': f'{Icon}CB01', 'url': url_cbo1, 'behaviorHints': {'bingeGroup': 'cb01'}})
                     elif "delivery" in url_cbo1:
-                            url_cbo1 = await transform_mfp(url_cbo1,client)
-                            if url_cbo1:
-                                streams['streams'].append({'name': f"{Name}",'title': f'{Icon}CB01', 'url': url_cbo1, 'behaviorHints': {'bingeGroup': 'cb01'}})
-                    # Removed redundant "elif 'delivery' in url_cbo1:" which was identical to the one above and would create issues if MFP != "1"
-                    # The 'else' below will catch non-mixdrop and non-delivery (if MFP was 1 for delivery) cases
-                    else: # Catches non-mixdrop, or delivery if not transformed by MFP
-                        streams['streams'].append({'name': f"{Name}",'title': f'{Icon}CB01\n MaxStream or Other', 'url': url_cbo1, 'behaviorHints': {'bingeGroup': 'cb01'}})
-            
+                            streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}CB01\n MixDrop Will work only on a local instance!', 'url': url_cbo1,'behaviorHints': {'proxyHeaders': {"request": {"User-Agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': 'cb01'}})
+                    else:
+                            streams['streams'].append({'name': f"{Name}",'title': f'{Icon}CB01\n MaxStream', 'url': url_cbo1, 'behaviorHints': {'bingeGroup': 'cb01'}})
             if provider_maps['GUARDASERIE'] == "1" and GS == "1":
                 url_guardaserie = await guardaserie(id,client)
                 if url_guardaserie:
@@ -493,13 +464,8 @@ async def addon_stream(request: Request, config: str, type: str, id: str): # Rin
                     print(f"OnlineSerieTV Found Results for {id}")
                     streams['streams'].append({'name': f"{Name}",'title': f'{Icon}OnlineSerieTV\n{name}', 'url': url_onlineserietv, 'behaviorHints': {'proxyHeaders': {'request': {"User-Agent": 'Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.71 Mobile Safari/537.36', "Referer": "https://flexy.stream/"}}, 'bingeGroup': 'onlineserietv', 'notWebReady': True}})
                 
-            # Final check and return for the movie/series branch
             if not streams['streams']:
                 raise HTTPException(status_code=404)
-            return respond_with(streams)
-
-        # Fallback return if type is valid but no streams found and not returned earlier
-        # This is now inside the 'async with client:' block
         return respond_with(streams)
 
 async def apply_mfp_to_stream(stream_url, mfp_url, mfp_password, stream_type="hls"):
