@@ -17,7 +17,7 @@ HEADERS_REQUESTS_247ITA = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
 }
 
-DADDYLIVECHANNELSURL_247ITA = f'{config.DADDY_DOMAIN}/24-7-channels.php'
+DADDYLIVECHANNELSURL_247ITA = f'{config.DLHD_DOMAIN}/24-7-channels.php'
 
 STATIC_LOGOS_247ITA = {
     "sky uno": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-uno-it.png",
@@ -125,7 +125,7 @@ async def get_247ita_streams(client):
                 stream_number = "877"
                 processed_dazn1 = True
 
-            stream_url_dynamic = f"{config.DADDY_DOMAIN}/stream/stream-{stream_number}.php"
+            stream_url_dynamic = f"{config.DLHD_DOMAIN}/stream/stream-{stream_number}.php"
             
             streams.append({
                 'id': f"daddy-{channel_name_final_display.lower().replace(' ', '-')}",
@@ -137,7 +137,7 @@ async def get_247ita_streams(client):
 
     if not processed_dazn1:
         stream_number_dazn = "877"
-        stream_url_dynamic_dazn = f"{config.DADDY_DOMAIN}/stream/stream-{stream_number_dazn}.php"
+        stream_url_dynamic_dazn = f"{config.DLHD_DOMAIN}/stream/stream-{stream_number_dazn}.php"
         streams.append({
             'id': "daddy-dazn-1",
             'title': "DAZN 1 (D)",
@@ -151,10 +151,10 @@ async def get_daddy_streams_for_channel_id(channel_id_full: str, client):
     """
     Recupera uno stream specifico da Daddy basato sull'ID completo.
     """
-    if not channel_id_full.startswith("daddy-"):
+    if not channel_id_full.startswith("dlhd-"):
         return []
     
-    channel_name_query = channel_id_full.replace("daddy-", "").replace("-", " ")
+    channel_name_query = channel_id_full.replace("dlhd-", "").replace("-", " ")
     all_247ita_streams = await get_247ita_streams(client)
     
     query_normalized_for_map_lookup = channel_name_query.lower()
@@ -162,7 +162,7 @@ async def get_daddy_streams_for_channel_id(channel_id_full: str, client):
     target_id_part_to_match = target_channel_name_for_id_match.replace(" ", "-")
 
     for stream in all_247ita_streams:
-        stream_id_name_part = stream['id'].replace("daddy-", "")
+        stream_id_name_part = stream['id'].replace("dlhd-", "")
         if target_id_part_to_match == stream_id_name_part:
             return [stream]
     
