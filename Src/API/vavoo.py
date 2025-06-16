@@ -15,27 +15,6 @@ VAVOO_CHANNEL_NAME_MAP = {
     "sky calcio 7": "Sky Sport 257",
 }
 
-CHANNEL_LOGOS_VAVOO = {
-    "sky uno": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-uno-it.png",
-    "rai 1": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rai-1-it.png",
-    "sky sport 251": "https://logodownload.org/wp-content/uploads/2020/06/sky-sports-logo-0-1.png",
-    "sky sport 252": "https://logodownload.org/wp-content/uploads/2020/06/sky-sports-logo-0-1.png",
-    "sky sport 253": "https://logodownload.org/wp-content/uploads/2020/06/sky-sports-logo-0-1.png",
-    "sky sport 254": "https://logodownload.org/wp-content/uploads/2020/06/sky-sports-logo-0-1.png",
-    "sky sport 255": "https://logodownload.org/wp-content/uploads/2020/06/sky-sports-logo-0-1.png",
-    "sky sport 256": "https://logodownload.org/wp-content/uploads/2020/06/sky-sports-logo-0-1.png",
-    "sky sport 257": "https://logodownload.org/wp-content/uploads/2020/06/sky-sports-logo-0-1.png",
-    "rai 2": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rai-2-it.png",
-    "rai 3": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rai-3-it.png",
-    "italia 1": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/italia1-it.png",
-    "rete 4": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/rete4-it.png",
-    "canale 5": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/canale5-it.png",
-    "la7": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/la7-it.png",
-    "tv8": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/tv8-it.png",
-    "nove": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/nove-it.png",
-    "sky sport uno": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-uno-it.png",
-    "sky sport calcio": "https://raw.githubusercontent.com/tv-logo/tv-logos/main/countries/italy/sky-sport-calcio-it.png",
-}
 
 def _clean_channel_name_vavoo(name):
     name = re.sub(r"\s*(\|E|\|H|\(6\)|\(7\)|\.c|\.s)\s*", "", name)
@@ -61,13 +40,11 @@ async def get_vavoo_streams(client):
             final_url = original_stream_url + HEADER_VAVOO_PARAMS
 
             channel_id_safe = cleaned_effective_name.lower().replace(' ', '-').replace('+', '')
-            logo_key_for_dict = cleaned_effective_name.lower()
 
             streams.append({
-                'id': f"vavoo-{channel_id_safe}",
+                'id': f"{channel_id_safe}",
                 'title': f"{cleaned_effective_name} (V)",
                 'url': final_url,
-                'logo': CHANNEL_LOGOS_VAVOO.get(logo_key_for_dict, "https://vavoo.to/favicon.ico"),
                 'group': "Vavoo"
             })
 
@@ -84,7 +61,10 @@ async def get_vavoo_streams_for_channel_id(channel_id_full: str, client):
     all_vavoo_streams = await get_vavoo_streams(client)
     
     for stream in all_vavoo_streams:
-        if channel_name_query in stream['id'].replace("vavoo-", "").replace("-", " "):
+        stream_id_normalized_for_match = stream['id'].replace("-", " ")
+        
+        # Usiamo '==' per un match esatto dopo la normalizzazione
+        if channel_name_query == stream_id_normalized_for_match:
             return [stream]
-    
+        
     return []
