@@ -1340,7 +1340,7 @@ STATIC_CHANNELS_DATA = [
 # Questo dizionario mappa un nome di canale (che corrisponde a 'id.replace("-", " ")' da STREAM)
 # a una lista di chiavi dei provider OMGTV ("daddy", "vavoo", "calcionew", "mpdstatic")
 # dove è probabile trovare il canale.
-omgtv_channel_provider_map = {
+tv_provider_map = {
     "sky uno": ["dlhd", "mpdstatic", "calcionew", "vavoo"],
     "sky atlantic": ["dlhd", "mpdstatic", "calcionew", "vavoo"],
     "sky sport uno": ["dlhd", "mpdstatic", "calcionew", "vavoo"],
