@@ -85,7 +85,7 @@
           },
           "CalcioNew":{
               "url":"https://calcionew.newkso.ru/calcio/",
-              "enabled":"1"
+              "enabled":"0"
           },
           "MPDStatic":{
               "enabled":"1"
