@@ -76,7 +76,18 @@
               "enabled":"1"
           },
           "DaddyLiveHD":{
-              "url":"https://daddylive.mp",
+              "url":"https://daddylive.dad",
+              "enabled":"1"
+          },
+          "Vavoo":{
+              "url":"https://vavoo.to",
+              "enabled":"1"
+          },
+          "CalcioNew":{
+              "url":"https://calcionew.newkso.ru/calcio/",
+              "enabled":"0"
+          },
+          "MPDStatic":{
               "enabled":"1"
           }
    },
@@ -91,4 +102,3 @@
        "Global_Proxy": "0"
        }
   }
-  
