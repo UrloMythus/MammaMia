@@ -1086,13 +1086,13 @@ STATIC_CHANNELS_DATA = [
     {
         "id": "sky-uno", # ID originale del canale
         "title": "Sky Uno",
-        "url": "https://linear313-it-dash1-prd.selector.skycdn.it/016a/32477/FHD/skyuno/master.mpd&key_id=003610b8556000936e48061cdb4ee11a&key=2cd6bcc2160aa6ec048e5a5f7a0f73c8",
+        "url": "https://g003-lin-it-cmaf-prd-ak.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(skyuno)/master_2hr-aac.mpd&key_id=1115002b32ddb67077a31b31cc1b03c1&key=bc1a933a25b36aeed12a60f149157a3d",
         "group": "MPD"
     },
     {
         "id": "sky-atlantic",
         "title": "Sky Atlantic",
-        "url": "https://linear315-it-dash1-prd-akp2.cdn13.skycdp.com/016a/31226/FHD/skyatlantic/master.mpd&key_id=0036d37875a7307fd4551bcd6e466882&key=a8cdc74a5d05c7a45c551af45aa5549c",
+        "url": "https://g003-lin-it-cmaf-prd-ak.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(skyserie)/master_2hr-aac.mpd&key_id=1115bf01aeadce32fcec6a220375a3fa&key=9df360a2a22411897cd8b1bc48c0afc0",
         "group": "MPD"
     },
     {
@@ -1224,115 +1224,115 @@ STATIC_CHANNELS_DATA = [
     {
         "id": "sky-cinema-uno",
         "title": "Sky Cinema Uno",
-        "url": "https://linear314-it-dash1-prd.selector.skycdn.it/016a/32202/FHD/cinemauno/master.mpd&key_id=0036211ccb7bd9cfd99fb8591e67d772&key=a10923293396f30380ce411a3504ddc3",
+        "url": "https://g003-lin-it-cmaf-prd-ak.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(skycinemauno)/master_2hr-aac.mpd&key_id=111571675d8183ed169725564cded6d9&key=e077dedf383c8aed73d38567a8e6a046",
         "group": "MPD"
     },
     {
         "id": "sky-cinema-due",
         "title": "Sky Cinema Due",
-        "url": "https://linear308-it-dash1-prd-akp2.cdn13.skycdp.com/016a/32564/FHD/cinemadue/master.mpd&key_id=003629d4c6efbd39a2808a85a286b783&key=41c463cc4bf6da4dec7935eb01a7155e",
+        "url": "https://g003-lin-it-cmaf-prd-ak.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(skycinemadue)/master_2hr-aac.mpd&key_id=11152c4ea1a3bffdd277ce333e54631a&key=17f0c028800dbcb294b9aebbae1f7e0c",
         "group": "MPD"
     },
     {
         "id": "sky-cinema-comedy",
         "title": "Sky Cinema Comedy",
-        "url": "https://linear303-it-dash1-prd-akp2.cdn13.skycdp.com/016a/32030/FHD/cinemacomedy/master.mpd&key_id=003638a93ac06c9df7de5d8f349f56fd&key=45c7c2ba5a3cdfd03e90ff16e6ac15d8",
+        "url": "https://g003-lin-it-cmaf-prd-ak.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(skycinemacomedy)/master_2hr-aac.mpd&key_id=1115676eca79233f2919b53f1a1709b8&key=72298a31b1b015b52adc03ab222494c2",
         "group": "MPD"
     },
     {
         "id": "sky-cinema-action",
         "title": "Sky Cinema Action",
-        "url": "https://linear306-it-dash1-prd-akp2.cdn13.skycdp.com/016a/31206/FHD/cinemaaction/master.mpd&key_id=00368fc53eab9498463dadfc60e0f818&key=0a70fe8d3b90360035982deaa8c83a6d",
+        "url": "https://g003-lin-it-cmaf-prd-ak.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(skycinemaaction)/master_2hr-aac.mpd&key_id=11150443883da4df27e25110d10fca31&key=83b6390471a083e00f8f3aff2a271be9",
         "group": "MPD"
     },
     {
         "id": "sky-cinema-family",
         "title": "Sky Cinema Family",
-        "url": "https://linear305-it-dash1-prd-akp2.cdn13.skycdp.com/016a/31255/FHD/cinemafamily/master.mpd&key_id=0036012604394c43b063c4f513ee431d&key=2c665092aa45cbae824bf7ad4e69d767",
+        "url": "https://g003-lin-it-cmaf-prd-ak.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(skycinemafamily)/master_2hr-aac.mpd&key_id=1115074065832f74af7e279e1203adce&key=20ece4131fbec82ac7ff056838512143",
         "group": "MPD"
     },
     {
         "id": "sky-cinema-collection",
         "title": "Sky Cinema Collection",
-        "url": "https://linear302-it-dash1-prd.selector.skycdn.it/016a/31204/FHD/cinemacollection/master.mpd&key_id=003699aeb8e998fe0afed0c7302ce51f&key=4583daf5ec387c310633cdc922dd3130",
+        "url": "https://g003-lin-it-cmaf-prd-ak.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(skycinemacollection)/master_2hr-aac.mpd&key_id=11155d8a1fe0b211137c206354e16d2a&key=7f07d0ef693893a84162d51c1c7259f3",
         "group": "MPD"
     },
     {
         "id": "sky-cinema-drama",
         "title": "Sky Cinema Drama",
-        "url": "https://linear304-it-dash1-prd-akp2.cdn13.skycdp.com/016a/31769/FHD/cinemadrama/master.mpd&key_id=0036a5270d8f1d1a2f573864aed26225&key=df0e826d2eeb78051f5dcf6f166e6056",
+        "url": "https://g003-lin-it-cmaf-prd-ak.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(skycinemadrama)/master_2hr-aac.mpd&key_id=11155ad807b90b9570fb8cce067f6166&key=74c4430ed8142190e52d4b303286696f",
         "group": "MPD"
     },
     {
         "id": "sky-cinema-suspense",
         "title": "Sky Cinema Suspense",
-        "url": "https://linear307-it-dash1-prd-akp2.cdn13.skycdp.com/016a/32047/FHD/cinemasuspense/master.mpd&key_id=00365eb692a3fd6907192a4a3f0958b2&key=9f86ea0417e3458186f8ada1a2003fa5",
+        "url": "https://g003-lin-it-cmaf-prd-ak.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(skycinemasuspense)/master_2hr-aac.mpd&key_id=1115d04562a1c328a84b2dab41244cba&key=5cf8c65d4177349308d7043384880659",
         "group": "MPD"
     },
     {
         "id": "sky-cinema-romance",
         "title": "Sky Cinema Romance",
-        "url": "https://linear301-it-dash1-prd.selector.skycdn.it/016a/32231/FHD/cinemaromance/master.mpd&key_id=00362d0a5efbd10ab56a3f502f2be023&key=61c8c429f412ea52e06d9663c48ee9b7",
+        "url": "https://g003-lin-it-cmaf-prd-ak.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(skycinemaromance)/master_2hr-aac.mpd&key_id=1115dbeea57d2fadedc278956bcbfb02&key=3eee23f97ae49a81c03356599a614fca",
         "group": "MPD"
     },
     {
         "id": "sky-serie",
         "title": "Sky Serie",
-        "url": "https://linear315-it-dash1-prd-akp2.cdn13.skycdp.com/016a/31684/FHD/skyserie/master.mpd&key_id=00366cd68acfb019e5d302f452c96ed7&key=fbb59d554722277be85b0728c13051ab",
+        "url": "https://g003-lin-it-cmaf-prd-ak.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(skyserie)/master_2hr-aac.mpd&key_id=1115bf01aeadce32fcec6a220375a3fa&key=9df360a2a22411897cd8b1bc48c0afc0",
         "group": "MPD"
     },
     {
         "id": "sky-crime",
         "title": "Sky Crime",
-        "url": "https://linear315-it-dash1-prd.selector.skycdn.it/016a/32249/FHD/skycrime/master.mpd&key_id=0036de91177ccee5fdfd4929c099854f&key=f40263272212aacdcf7e405cfb4b4a91",
+        "url": "https://g003-lin-it-cmaf-prd-ak.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(skycrime)/master_2hr-aac.mpd&key_id=1115aa47cfa18cf73cb6f936cff1f8ee&key=a27e7383d481596cc34334336d3e7219",
         "group": "MPD"
     },
     {
         "id": "sky-investigation",
         "title": "Sky Investigation",
-        "url": "https://linear315-it-dash1-prd.selector.skycdn.it/016a/32686/FHD/skyinvestigation/master.mpd&key_id=003689703a245806508e9d332ed323ee&key=ef229589d2f7afa40904b6d62c852acf",
+        "url": "https://g003-lin-it-cmaf-prd-ak.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(skyinvestigation)/master_2hr-aac.mpd&key_id=11153dd8de63f9748252104afd6b7405&key=255e0c5bb81bde9602d8746080496e04",
         "group": "MPD"
     },
     {
         "id": "sky-documentaries",
         "title": "Sky Documentaries",
-        "url": "https://linear313-it-dash1-prd.selector.skycdn.it/016a/31697/FHD/skydocumentaries/master.mpd&key_id=0036de0a1c44a2c972fcf64c9b7f4302&key=0ade9234f6c56636ad6bb1b3560ddb31",
+        "url": "https://g003-lin-it-cmaf-prd-ak.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(skydocumentaries)/master_2hr-aac.mpd&key_id=111556afa3ac362bbf6d6237a0096793&key=b80627550521e85d0997e3447245f7ff",
         "group": "MPD"
     },
     {
         "id": "sky-nature",
         "title": "Sky Nature",
-        "url": "https://linear313-it-dash1-prd.selector.skycdn.it/016a/32695/FHD/skynature/master.mpd&key_id=0036dd4a767d1d1e6faa72be9b2edde3&key=60250673f0f5c54deac7c8f6d883c329",
+        "url": "https://g003-lin-it-cmaf-prd-cf.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(skynature)/master_2hr-aac.mpd&key_id=111553a2ff74eff230c8bb72efc0504c&key=80ec2c7f64b97098f4f65a15d828ce6a",
         "group": "MPD"
     },
     {
         "id": "history",
         "title": "History Channel",
-        "url": "https://linear313-it-dash1-prd.selector.skycdn.it/016a/31513/FHD/history/master.mpd&key_id=00362ec3497a383021f1db77c8556614&key=8820fb9b2afd6e1a3f4f5ab1ba4a73ad",
+        "url": "https://g003-lin-it-cmaf-prd-ak.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(historychannel)/master_2hr-aac.mpd&key_id=11158db9a2522642c8da56416d94c6a3&key=edb6a56266dde53f013d170d46b0b265",
         "group": "MPD"
     },
     {
         "id": "sky-arte",
         "title": "Sky Arte",
-        "url": "https://linear313-it-dash1-prd-akp2.cdn13.skycdp.com/016a/32074/FHD/skyarte/master.mpd&key_id=0036798d4dc4ce189b2f029a4b4aa06c&key=4f668ba0ef796d807c90613b9e2e61bf",
+        "url": "https://g003-lin-it-cmaf-prd-ak.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(skyarte)/master_2hr-aac.mpd&key_id=11158d61157893c665c5ec942528d020&key=2d4b7343dd929afbbd61ef0aa37366d9",
         "group": "MPD"
     },
     {
         "id": "mtv",
         "title": "MTV",
-        "url": "https://linear315-it-dash1-prd-akg0.cdn13.skycdp.com/016a/32763/FHD/mtvnext/master.mpd&key_id=00364d417e7aab8e6a92c963f2d24549&key=a875a90e31b98eab8430e894ee5a853e",
+        "url": "https://g003-lin-it-cmaf-prd-ak.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(mtv)/master_2hr-aac.mpd&key_id=111559b5e50a4be12901e456034285a3&key=2fedd4c9c3be1b7f90e86c7bc44131f8",
         "group": "MPD"
     },
     {
         "id": "comedy-central",
         "title": "Comedy Central",
-        "url": "https://linear309-it-dash1-prd-akp1.cdn13.skycdp.com/016a/32404/comedycentral/master.mpd&key_id=0036f3ec4ac7d836b5bf9fa79f3041b6&key=c02271563d97b1e7e755484279f2b55c",
+        "url": "https://g003-lin-it-cmaf-prd-cf.pcdn07.cssott02.com/nowitlin1/Content/CMAF_CTR_S1/Live/channel(comedycentral)/master_2hr-aac.mpd&key_id=11155778dc9b7dde1e396a9110f09208&key=c030cf978cbdc4a4c84fc68ab467942b",
         "group": "MPD"
     },
     {
         "id": "dazn-1",
         "title": "DAZN 1",
-        "url": "https://dcf-fs-live-dazn-cdn.dazn.com/dash/dazn-linear-024/stream.mpd&key_id=8ab47741930c476780515f9a00decb0a&key=7ab4b9ae5a48aa526e511a913b832769",
+        "url": "https://abe6fjxaaaaaaaamc4pg55ekcyqz4.otte.live.cf.ww.aiv-cdn.net/dub-nitro/live/clients/dash/enc/lgk8kppclc/out/v1/f51173b6b0624a4386358ab8dfee257f/cenc.mpd&key_id=8272bf6ba46f23f9da5270057b6e028a&key=74ae70dd10b4bb38ed6ffe843f3e2ccd",
         "group": "MPD"
     }
 ]
