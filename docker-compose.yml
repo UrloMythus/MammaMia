@@ -6,3 +6,5 @@ services:
     container_name: MammaMia
     ports:
       - "8080:8080"
+    environment:
+      MY_ENVIRONMENT_VARIABLE: ${MY_ENVIRONMENT_VARIABLE}
