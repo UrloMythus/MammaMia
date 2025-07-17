@@ -1,62 +1,17 @@
-
-  
-
-  
-
 # MammaMia
-
-  
-
-  
-
-  
-
-  
 
 A Stremio Addon for HTTPS Streams in Italian. Movies, Series, Anime and Live TV are supported.
 
-  
-
-  
-
-  
-
-  
-
 # Configurazione
-
-  
-
-  
-
-  
 
 Tutta la configurazione avviene tramite **variabili d'ambiente**. Puoi:
 
-  
-
-  
-
-  
-
 - Usare un file `.env` (solo in locale o se montato/copiato nel container)
 
-  
-
 - Impostare le variabili direttamente nel sistema, in Docker Compose (`environment:`), o nell'interfaccia Portainer
+ 
 
-  
-
-
-  
-
-## Environment Variables
-
-  
-
-  
-
-  
+## Environment Variables 
 
 | Variabile         | Descrizione                                      | Default/Esempio                      |
 |------------------|--------------------------------------------------|--------------------------------------|
@@ -70,73 +25,22 @@ Tutta la configurazione avviene tramite **variabili d'ambiente**. Puoi:
 
 Guarda `example.env` per un esempio completo di tutte le variabili supportate.
 
-## Esempio di docker-compose.yml
-
-  
-
-  
-
-  
+## Esempio di docker-compose.yml 
 
 ```yaml
-
-  
-
 version: '3.8'
-
-  
-
 services:
-
-  
-
   mammamia:
-
-  
-
     build: .
-
-  
-
     container_name: mammamia
-
-  
-
     ports:
-
-  
-
       - "8080:8080"
-
-  
-
     # Opzionale: usa environment: se vuoi passare le variabili direttamente
-
-  
-
     # environment:
-
-  
-
     #   - SC_DOMAIN=https://streamingunity.bio
-
-  
-
     #   - PORT=8080
-
-  
-
 ```
-
-  
-
 ## In Portainer
-
-  
-
-  
-
-  
 
 - Imposta tutte le variabili d'ambiente nella sezione "Environment variables" dello stack/container.
 
