@@ -28,7 +28,7 @@ SKY_DOMAIN = get_env_str("SKY_URL", "https://skystreaming.watch")
 CB_DOMAIN = get_env_str("CB_URL", "https://cb01net.life")
 DDL_DOMAIN = get_env_str("DDL_URL", "https://ddlstreamitaly.co")
 DLHD_DOMAIN = get_env_str("DLHD_URL", "https://daddylive.mp")
-GS_DOMAIN = get_env_str("GS_URL", "https://guardaserietv.mom")
+GS_DOMAIN = get_env_str("GS_URL", "https://guardaserietv.cc")
 GHD_DOMAIN = get_env_str("GHD_URL", "https://mostraguarda.stream")
 OST_DOMAIN = get_env_str("OST_DOMAIN", "com")
 
