@@ -13,11 +13,8 @@
 
   
 
-A Stremio Addon for  HTTPS Streams in Italian
+A Stremio Addon for HTTPS Streams in Italian. Movies, Series, Anime and Live TV are supported.
 
-Movies, Series, Anime and Live TV are supported.
-
- 
   
 
   
@@ -31,6 +28,26 @@ Movies, Series, Anime and Live TV are supported.
   
 
   
+
+  
+
+Tutta la configurazione avviene tramite **variabili d'ambiente**. Puoi:
+
+  
+
+  
+
+  
+
+- Usare un file `.env` (solo in locale o se montato/copiato nel container)
+
+  
+
+- Impostare le variabili direttamente nel sistema, in Docker Compose (`environment:`), o nell'interfaccia Portainer
+
+  
+
+**Il file `config.json` non è più necessario e non viene più usato.**
 
   
 
@@ -118,7 +135,7 @@ services:
 
   
 
-- Puoi impostare tutte le variabili d'ambiente nella sezione "Environment variables" dello stack/container.
+- Imposta tutte le variabili d'ambiente nella sezione "Environment variables" dello stack/container.
 
   
 
@@ -222,15 +239,15 @@ docker compose up --build
 
   
 
-| Variabile         | Descrizione                                 |
-|------------------|---------------------------------------------|
-| SC_DOMAIN        | URL di StreamingCommunity                    |
-| FT_DOMAIN        | URL di Filmpertutti                          |
-| ...              | ... (vedi example.env per tutte)             |
-| TMDB_KEY         | API Key di TheMovieDB                        |
-| FORWARDPROXY     | (opzionale) Proxy per siti con Cloudflare    |
-| PROXY            | (opzionale) Lista proxy per Cloudflare       |
-| PORT             | Porta su cui avviare il server (default 8080)|
+| Variabile         | Descrizione                                      | Default/Esempio                      |
+|------------------|--------------------------------------------------|--------------------------------------|
+| SC_DOMAIN        | URL di StreamingCommunity                         | https://streamingunity.bio           |
+| FT_DOMAIN        | URL di Filmpertutti                               | https://filmpertutti.motorcycles     |
+| TMDB_KEY         | API Key di TheMovieDB                             | (obbligatoria, da tmdb.org)          |
+| PORT             | Porta su cui avviare il server                    | 8080                                 |
+| FORWARDPROXY     | Proxy per siti con Cloudflare (opzionale)         |                                      |
+| PROXY            | Lista proxy per Cloudflare (opzionale, formato JSON)| ["proxy1","proxy2"]                |
+| ...              | Vedi example.env per tutte le altre variabili     |                                      |
 
 ---
 
@@ -251,10 +268,6 @@ docker compose up --build
   
 
 - In caso di errori di codifica, usa solo caratteri ASCII nel `.env`.
-
-  
-
----
 
   
 
