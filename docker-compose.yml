@@ -4,7 +4,7 @@ services:
   my-python-app:
     build:
       context: .
-      dockerfile: Dockerfile
+    container_name: MammaMia
     ports:
       - "8080:8080"
     volumes:
