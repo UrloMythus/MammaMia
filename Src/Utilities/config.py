@@ -19,13 +19,13 @@ def get_env_int(key: str, default: int = 0) -> int:
 
 # Site URLs
 FT_DOMAIN = get_env_str("FT_URL", "https://filmpertutti.motorcycles")
-SC_DOMAIN = get_env_str("SC_URL", "https://streamingcommunity.paris")
+SC_DOMAIN = get_env_str("SC_URL", "https://streamingunity.bio")
 TF_DOMAIN = get_env_str("TF_URL", "https://www.tanti.bond")
 LC_DOMAIN = get_env_str("LC_URL", "https://lordchannel.net")
 SW_DOMAIN = get_env_str("SW_URL", "https://www.streamingwatch.org")
 AW_DOMAIN = get_env_str("AW_URL", "https://www.animeworld.so")
 SKY_DOMAIN = get_env_str("SKY_URL", "https://skystreaming.watch")
-CB_DOMAIN = get_env_str("CB_URL", "https://cb01new.loan")
+CB_DOMAIN = get_env_str("CB_URL", "https://cb01net.life")
 DDL_DOMAIN = get_env_str("DDL_URL", "https://ddlstreamitaly.co")
 DLHD_DOMAIN = get_env_str("DLHD_URL", "https://daddylive.mp")
 GS_DOMAIN = get_env_str("GS_URL", "https://guardaserietv.mom")
