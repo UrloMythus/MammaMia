@@ -1,69 +1,66 @@
-#LOAD THE CONFIG
-import json
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-# Open the configuration file
-with open('config.json') as f:
-    # Load JSON data from file
-    config = json.load(f)
+SC_DOMAIN = os.getenv("SC_DOMAIN", "https://streamingunity.bio")
+FT_DOMAIN = os.getenv("FT_DOMAIN", "https://filmpertutti.motorcycles")
+TF_DOMAIN = os.getenv("TF_DOMAIN", "https://www.tanti.be")
+LC_DOMAIN = os.getenv("LC_DOMAIN", "https://lordchannel.net")
+SW_DOMAIN = os.getenv("SW_DOMAIN", "https://www.streamingwatch.org")
+AW_DOMAIN = os.getenv("AW_DOMAIN", "https://www.animeworld.ac")
+SKY_DOMAIN = os.getenv("SKY_DOMAIN", "https://skystreaming.icu")
+CB_DOMAIN = os.getenv("CB_DOMAIN", "https://cb01net.life")
+DDL_DOMAIN = os.getenv("DDL_DOMAIN", "https://ddlstreamitaly.co")
+DLHD_DOMAIN = os.getenv("DLHD_DOMAIN", "https://daddylive.dad")
+GS_DOMAIN = os.getenv("GS_DOMAIN", "https://guardaserietv.lat")
+GHD_DOMAIN = os.getenv("GHD_DOMAIN", "https://mostraguarda.stream")
+OST_DOMAIN = os.getenv("OST_DOMAIN", "com")
 
-# Accessing SC_DOMAIN
-SITE = config["Siti"]
-FT_DOMAIN = SITE["Filmpertutti"]['url']
-SC_DOMAIN = SITE["StreamingCommunity"]['url']
-TF_DOMAIN = SITE["Tantifilm"]['url']
-LC_DOMAIN = SITE["LordChannel"]['url']
-SW_DOMAIN = SITE["StreamingWatch"]['url']
-AW_DOMAIN = SITE['AnimeWorld']['url']
-SKY_DOMAIN = SITE['SkyStreaming']['url']
-CB_DOMAIN = SITE['CB01']['url']
-DDL_DOMAIN = SITE['DDLStream']['url']
-DLHD_DOMAIN = SITE['DaddyLiveHD']['url']
-GS_DOMAIN = SITE['Guardaserie']['url']
-GHD_DOMAIN = SITE['GuardaHD']['url']
-OST_DOMAIN = SITE['Onlineserietv']['domain']
-SC = SITE['StreamingCommunity']['enabled']
-FT = SITE['Filmpertutti']['enabled']
-TF = SITE['Tantifilm']['enabled']
-LC = SITE['LordChannel']['enabled']
-SW = SITE['StreamingWatch']['enabled']
-AW = SITE['AnimeWorld']['enabled']
-SKY = SITE['SkyStreaming']['enabled']
-CB = SITE['CB01']['enabled']
-DDL = SITE['DDLStream']['enabled']
-MYSTERIUS = SITE['Mysterius']['enabled']
-GS = SITE['Guardaserie']['enabled']
-GHD = SITE['GuardaHD']['enabled']
-OST = SITE['Onlineserietv']['enabled']
-DLHD = SITE['DaddyLiveHD']['enabled']
-TF_ForwardProxy = SITE['Tantifilm']["TF_ForwardProxy"]
-SC_ForwardProxy = SITE['StreamingCommunity']["SC_ForwardProxy"]
-GS_ForwardProxy = SITE['Guardaserie']["GS_ForwardProxy"]
-GH_ForwardProxy = SITE['GuardaHD']["GH_ForwardProxy"]
-VX_ForwardProxy = SITE['StreamingCommunity']["VX_ForwardProxy"]
-AW_ForwardProxy = SITE['AnimeWorld']["AW_ForwardProxy"]
-MX_ForwardProxy = SITE['CB01']["MX_ForwardProxy"]
-CB_ForwardProxy = SITE['CB01']["CB_ForwardProxy"]
-OST_ForwardProxy = SITE['Onlineserietv']["OST_ForwardProxy"]
-GS_PROXY = SITE['Guardaserie']["GS_PROXY"]
-GH_PROXY = SITE['GuardaHD']["GH_PROXY"]
-TF_PROXY = SITE['Tantifilm']["TF_PROXY"]
-CB_PROXY = SITE['CB01']["CB_PROXY"]
-SC_PROXY = SITE['StreamingCommunity']["SC_PROXY"]
-VX_PROXY = SITE['StreamingCommunity']["VX_PROXY"]
-AW_PROXY = SITE['AnimeWorld']["AW_PROXY"]
-MX_PROXY = SITE['CB01']["MX_PROXY"]
-OST_PROXY = SITE['Onlineserietv']["OST_PROXY"]
-ips4_device_key = SITE['DDLStream']['cookies']["ips4_device_key"]
-ips4_IPSSessionFront = SITE['DDLStream']['cookies']["ips4_IPSSessionFront"]
-ips4_member_id = SITE['DDLStream']['cookies']["ips4_member_id"]
-ips4_login_key = SITE['DDLStream']['cookies']["ips4_login_key"]
-#General
-GENERAL = config['General']
-dotenv = GENERAL["load_env"]
-HOST = GENERAL["HOST"]
-PORT = GENERAL["PORT"]
-Icon = GENERAL["Icon"]
-Name = GENERAL["Name"]
-Public_Instance = GENERAL["Public_Instance"]
-Remote_Instance = GENERAL["Remote_Instance"]
-Global_Proxy =  GENERAL["Global_Proxy"]
+SC = os.getenv("SC", "1")
+FT = os.getenv("FT", "1")
+TF = os.getenv("TF", "1")
+LC = os.getenv("LC", "1")
+SW = os.getenv("SW", "1")
+AW = os.getenv("AW", "1")
+SKY = os.getenv("SKY", "1")
+CB = os.getenv("CB", "1")
+DDL = os.getenv("DDL", "1")
+MYSTERIUS = os.getenv("MYSTERIUS", "0")
+GS = os.getenv("GS", "1")
+GHD = os.getenv("GHD", "1")
+OST = os.getenv("OST", "1")
+DLHD = os.getenv("DLHD", "1")
+
+TF_ForwardProxy = os.getenv("TF_ForwardProxy", "0")
+SC_ForwardProxy = os.getenv("SC_ForwardProxy", "0")
+GS_ForwardProxy = os.getenv("GS_ForwardProxy", "0")
+GH_ForwardProxy = os.getenv("GH_ForwardProxy", "0")
+VX_ForwardProxy = os.getenv("VX_ForwardProxy", "0")
+AW_ForwardProxy = os.getenv("AW_ForwardProxy", "0")
+MX_ForwardProxy = os.getenv("MX_ForwardProxy", "0")
+CB_ForwardProxy = os.getenv("CB_ForwardProxy", "0")
+OST_ForwardProxy = os.getenv("OST_ForwardProxy", "0")
+
+GS_PROXY = os.getenv("GS_PROXY", "0")
+GH_PROXY = os.getenv("GH_PROXY", "0")
+TF_PROXY = os.getenv("TF_PROXY", "0")
+CB_PROXY = os.getenv("CB_PROXY", "0")
+SC_PROXY = os.getenv("SC_PROXY", "0")
+VX_PROXY = os.getenv("VX_PROXY", "0")
+AW_PROXY = os.getenv("AW_PROXY", "0")
+MX_PROXY = os.getenv("MX_PROXY", "0")
+OST_PROXY = os.getenv("OST_PROXY", "0")
+
+ips4_device_key = os.getenv("ips4_device_key")
+ips4_IPSSessionFront = os.getenv("ips4_IPSSessionFront")
+ips4_member_id = os.getenv("ips4_member_id")
+ips4_login_key = os.getenv("ips4_login_key")
+
+dotenv_var = os.getenv("DOTENV", "0")
+HOST = os.getenv("HOST", "0.0.0.0")
+PORT = os.getenv("PORT", "8080")
+Icon = os.getenv("ICON", "🍕️")
+Name = os.getenv("NAME", "MammaMia")
+Public_Instance = os.getenv("PUBLIC_INSTANCE", "0")
+Remote_Instance = os.getenv("REMOTE_INSTANCE", "1")
+Global_Proxy = os.getenv("GLOBAL_PROXY", "0")
