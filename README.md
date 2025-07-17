@@ -190,7 +190,7 @@ To install this project on [Render](https://render.com/) follow these steps:
 
   
 
-Remember, load_env and Public Instance needs to be disabled in the config.json and Remote_Instance needs to be set to 1
+Remember, LOAD_ENV and PUBLIC_INSTANCE need to be set to 0 in the environment variables and REMOTE_INSTANCE needs to be set to 1
 
   
 
@@ -253,7 +253,7 @@ Here is [linked](https://www.themoviedb.org/settings/api) a tutorial about how t
 
   
 
-In the repo there is a config.json that you can modify to change some aspects of the addon like the domains of the sites. "1" means True, "0" means False
+Configuration is now handled through environment variables. You can modify the `example.env` file and rename it to `.env` to change aspects of the addon like the domains of the sites. "1" means True, "0" means False
 
 Down here all explained:
 
@@ -261,20 +261,20 @@ Down here all explained:
 
   
 
-| Config | Value |
+| Environment Variable | Value |
 |-------------------------|---|
-| Domain | The domain of the site, must be a string |
-|enabled | If the site is enabled or not. This will override user-preference while configuration the add-on|
-|**_ForwardProxy|If that site needs to use a ForwardProxy which needs to be given in the enviroment variables
-|**_Proxy| If that site needs to use Proxies which need to be given in the enviroment variables
-|Cookies| Cookies needed for a specific site to work. To get them you will need to log in the site and obtain cookies using Dev Tools. 
-|load_env|It needs to be enabled if you need to load a .env file. On remote hosting services, like Hugging Face or Render, it needs to be disabled. |
+| *_URL | The domain of the site, must be a string |
+|*_ENABLED | If the site is enabled or not. This will override user-preference while configuration the add-on|
+|*_FORWARD_PROXY|If that site needs to use a ForwardProxy which needs to be given in the enviroment variables
+|*_PROXY| If that site needs to use Proxies which need to be given in the enviroment variables
+|DDL_IPS4_* | Cookies needed for DDLStream to work. To get them you will need to log in the site and obtain cookies using Dev Tools. 
+|LOAD_ENV|It needs to be enabled if you need to load a .env file. On remote hosting services, like Hugging Face or Render, it needs to be disabled. |
 |HOST| The host for the Fast API APP|
 |PORT| The port for the Fast API APP. Default: 8080 |
-|Icon| The Icon for the Add-On.|
-|Public_Instance| If it's the main public instance. Most of users shouldn't care about this|
-|Remote_Instance| Set to  "1" if the server where the add-on is hosted has not the same IP of the  one where Stremio Server is.|
-|Global_Proxy| Whatever to enable a Global Proxy which will be valid for every request in the add-on.
+|ICON| The Icon for the Add-On.|
+|PUBLIC_INSTANCE| If it's the main public instance. Most of users shouldn't care about this|
+|REMOTE_INSTANCE| Set to  "1" if the server where the add-on is hosted has not the same IP of the  one where Stremio Server is.|
+|GLOBAL_PROXY| Whatever to enable a Global Proxy which will be valid for every request in the add-on.
   
 
 For now Mysterius must be kept disabled if you do not know what you are doing.
