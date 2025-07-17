@@ -51,21 +51,25 @@ Tutta la configurazione avviene tramite **variabili d'ambiente**. Puoi:
 
   
 
-## Esempio di file `.env`
+## Environment Variables
 
   
 
   
 
   
+
+| Variabile         | Descrizione                                      | Default/Esempio                      |
+|------------------|--------------------------------------------------|--------------------------------------|
+| SC_DOMAIN        | URL di StreamingCommunity                         | https://streamingunity.bio           |
+| FT_DOMAIN        | URL di Filmpertutti                               | https://filmpertutti.motorcycles     |
+| TMDB_KEY         | API Key di TheMovieDB                             | (obbligatoria, da tmdb.org)          |
+| PORT             | Porta su cui avviare il server                    | 8080                                 |
+| FORWARDPROXY     | Proxy per siti con Cloudflare (opzionale)         |                                      |
+| PROXY            | Lista proxy per Cloudflare (opzionale, formato JSON)| ["proxy1","proxy2"]                |
+| ...              | Vedi example.env per tutte le altre variabili     |                                      |
 
 Guarda `example.env` per un esempio completo di tutte le variabili supportate.
-
-  
-
-  
-
-  
 
 ## Esempio di docker-compose.yml
 
@@ -230,26 +234,6 @@ docker compose up --build
 ---
 
   
-
-# Variabili d'ambiente principali
-
-  
-
-  
-
-  
-
-| Variabile         | Descrizione                                      | Default/Esempio                      |
-|------------------|--------------------------------------------------|--------------------------------------|
-| SC_DOMAIN        | URL di StreamingCommunity                         | https://streamingunity.bio           |
-| FT_DOMAIN        | URL di Filmpertutti                               | https://filmpertutti.motorcycles     |
-| TMDB_KEY         | API Key di TheMovieDB                             | (obbligatoria, da tmdb.org)          |
-| PORT             | Porta su cui avviare il server                    | 8080                                 |
-| FORWARDPROXY     | Proxy per siti con Cloudflare (opzionale)         |                                      |
-| PROXY            | Lista proxy per Cloudflare (opzionale, formato JSON)| ["proxy1","proxy2"]                |
-| ...              | Vedi example.env per tutte le altre variabili     |                                      |
-
----
 
 # Per problemi con Docker/Portainer
 
