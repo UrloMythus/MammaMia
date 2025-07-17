@@ -47,7 +47,6 @@ Tutta la configurazione avviene tramite **variabili d'ambiente**. Puoi:
 
   
 
-**Il file `config.json` non è più necessario e non viene più usato.**
 
   
 
@@ -456,66 +455,6 @@ Open your instance URL and configure MammaMia. Once you are done you can click o
 
   
 
-# Enviroment Variables
-
-  
-
-  
-
-  
-
-  
-
-| Enviroment Variable | Value |
-|-------------------------|---|
-|TMDB_KEY|INSERT YOUR API KEY HERE|
-|FORWARDPROXY| "YOURFORWARDPROXY/"  For sites with Cloudfare Protections|
-|PROXY |  ["PROXY1","PROXY2"] For sites with Cloudfare Protections, use as many as you wish|
-
-  
-
-  
-
-Here is [linked](https://www.themoviedb.org/settings/api) a tutorial about how to get a TMDB KEY
-
-  
-
-  
-
-  
-
-# Config
-
-  
-
-  
-
-In the repo there is a config.json that you can modify to change some aspects of the addon like the domains of the sites. "1" means True, "0" means False
-
-Down here all explained:
-
-  
-
-  
-
-| Config | Value |
-|-------------------------|---|
-| Domain | The domain of the site, must be a string |
-|enabled | If the site is enabled or not. This will override user-preference while configuration the add-on|
-|**_ForwardProxy|If that site needs to use a ForwardProxy which needs to be given in the enviroment variables
-|**_Proxy| If that site needs to use Proxies which need to be given in the enviroment variables
-|Cookies| Cookies needed for a specific site to work. To get them you will need to log in the site and obtain cookies using Dev Tools. 
-|load_env|It needs to be enabled if you need to load a .env file. On remote hosting services, like Hugging Face or Render, it needs to be disabled. |
-|HOST| The host for the Fast API APP|
-|PORT| The port for the Fast API APP. Default: 8080 |
-|Icon| The Icon for the Add-On.|
-|Public_Instance| If it's the main public instance. Most of users shouldn't care about this|
-|Remote_Instance| Set to  "1" if the server where the add-on is hosted has not the same IP of the  one where Stremio Server is.|
-|Global_Proxy| Whatever to enable a Global Proxy which will be valid for every request in the add-on.
-  
-
-For now Mysterius must be kept disabled if you do not know what you are doing.
-  
 
 Check those links to get the new Domain for the providers.
 
