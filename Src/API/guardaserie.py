@@ -123,6 +123,7 @@ async def guardaserie(id,client):
         clean_id = general[1]
         season = general[2]
         episode = general[3]
+        '''
         if "tt" not in clean_id:
             clean_id = await get_IMDB_id_from_TMDb_id(clean_id,client) 
             print(clean_id)
@@ -139,9 +140,10 @@ async def guardaserie(id,client):
         if ismovie == 1:
             return None
         '''
+        page_url = await search_imdb(clean_id,client)
+        '''
         page_url = await search(showname,date,client)
         '''
-        page_url = await search_imdb(clean_id,client)
         supervideo_link =await player_url(page_url,season,episode,client)
         if supervideo_link: 
             final_url = await eval_solver(supervideo_link,proxies, ForwardProxy, client)
@@ -152,14 +154,13 @@ async def guardaserie(id,client):
     except Exception as e:
         print("MammaMia: Guardaserie Failed",e)
         return None
-    
 
 
 async def test_script():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tmdb:36247:1:1"  # This is an example ID format tt0460649
+        test_id = "tt6226232:3:18"  # This is an example ID format tt0460649
         results = await guardaserie(test_id, client)
         print(results)
 
