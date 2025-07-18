@@ -1,24 +1,164 @@
-
-  
-
-  
-
 # MammaMia
 
-  
+A Stremio Addon for HTTPS Streams in Italian. Movies, Series, Anime and Live TV are supported.
 
-  
+# Configurazione
 
-  
+Tutta la configurazione avviene tramite **variabili d'ambiente**. Puoi:
 
-  
+- Usare un file `.env` (solo in locale o se montato/copiato nel container)
 
-A Stremio Addon for  HTTPS Streams in Italian
-
-Movies, Series, Anime and Live TV are supported.
-
+- Impostare le variabili direttamente nel sistema, in Docker Compose (`environment:`), o nell'interfaccia Portainer
  
+
+## Environment Variables 
+
+| Variabile         | Descrizione                                      | Default/Esempio                      |
+|------------------|--------------------------------------------------|--------------------------------------|
+| SC_DOMAIN        | URL di StreamingCommunity                         | https://streamingunity.bio           |
+| FT_DOMAIN        | URL di Filmpertutti                               | https://filmpertutti.motorcycles     |
+| TMDB_KEY         | API Key di TheMovieDB                             | (obbligatoria, da tmdb.org)          |
+| PORT             | Porta su cui avviare il server                    | 8080                                 |
+| FORWARDPROXY     | Proxy per siti con Cloudflare (opzionale)         |                                      |
+| PROXY            | Lista proxy per Cloudflare (opzionale, formato JSON)| ["proxy1","proxy2"]                |
+| ...              | Vedi example.env per tutte le altre variabili     |                                      |
+
+Guarda `example.env` per un esempio completo di tutte le variabili supportate.
+
+## Esempio di docker-compose.yml 
+
+```yaml
+version: '3.8'
+services:
+  mammamia:
+    build: .
+    container_name: mammamia
+    ports:
+      - "8080:8080"
+    # Opzionale: usa environment: se vuoi passare le variabili direttamente
+    # environment:
+    #   - SC_DOMAIN=https://streamingunity.bio
+    #   - PORT=8080
+```
+## In Portainer
+
+- Imposta tutte le variabili d'ambiente nella sezione "Environment variables" dello stack/container.
+
   
+
+- Non serve il file `.env` se imposti tutto da Portainer.
+
+  
+
+## Avvio locale
+
+  
+
+  
+
+  
+
+1. Installa le dipendenze:
+
+  
+
+  
+
+  
+
+``pip install -r requirements.txt ``
+
+  
+
+  
+
+2. Crea un file `.env` (puoi copiare `example.env`) e personalizza le variabili.
+
+  
+
+  
+
+3. Avvia il server:
+
+  
+
+  
+
+``python3 run.py``
+
+  
+
+  
+
+## Avvio con Docker Compose
+
+  
+
+  
+
+  
+
+```sh
+
+  
+
+docker compose up --build
+
+  
+
+```
+
+  
+
+---
+
+  
+
+# Note tecniche
+
+  
+
+  
+
+  
+
+- Se usi solo variabili d'ambiente di sistema, **puoi rimuovere o commentare** la riga `load_dotenv()` dal codice.
+
+  
+
+- Se usi `.env`, assicurati che sia in UTF-8 e solo con caratteri ASCII per massima compatibilità.
+
+  
+
+- Le variabili non impostate useranno i valori di default definiti in `config.py`.
+
+  
+
+---
+
+  
+
+# Per problemi con Docker/Portainer
+
+  
+
+  
+
+  
+
+- Se usi solo variabili d'ambiente di sistema, non serve `.env`.
+
+  
+
+- Se vuoi usare `.env`, assicurati che sia montato o copiato nel container.
+
+  
+
+- In caso di errori di codifica, usa solo caratteri ASCII nel `.env`.
+
+  
+
+Per dettagli sulle variabili e la configurazione, consulta anche `example.env`.
 
   
 
@@ -219,66 +359,6 @@ Open your instance URL and configure MammaMia. Once you are done you can click o
 
   
 
-# Enviroment Variables
-
-  
-
-  
-
-  
-
-  
-
-| Enviroment Variable | Value |
-|-------------------------|---|
-|TMDB_KEY|INSERT YOUR API KEY HERE|
-|FORWARDPROXY| "YOURFORWARDPROXY/"  For sites with Cloudfare Protections|
-|PROXY |  ["PROXY1","PROXY2"] For sites with Cloudfare Protections, use as many as you wish|
-
-  
-
-  
-
-Here is [linked](https://www.themoviedb.org/settings/api) a tutorial about how to get a TMDB KEY
-
-  
-
-  
-
-  
-
-# Config
-
-  
-
-  
-
-In the repo there is a config.json that you can modify to change some aspects of the addon like the domains of the sites. "1" means True, "0" means False
-
-Down here all explained:
-
-  
-
-  
-
-| Config | Value |
-|-------------------------|---|
-| Domain | The domain of the site, must be a string |
-|enabled | If the site is enabled or not. This will override user-preference while configuration the add-on|
-|**_ForwardProxy|If that site needs to use a ForwardProxy which needs to be given in the enviroment variables
-|**_Proxy| If that site needs to use Proxies which need to be given in the enviroment variables
-|Cookies| Cookies needed for a specific site to work. To get them you will need to log in the site and obtain cookies using Dev Tools. 
-|load_env|It needs to be enabled if you need to load a .env file. On remote hosting services, like Hugging Face or Render, it needs to be disabled. |
-|HOST| The host for the Fast API APP|
-|PORT| The port for the Fast API APP. Default: 8080 |
-|Icon| The Icon for the Add-On.|
-|Public_Instance| If it's the main public instance. Most of users shouldn't care about this|
-|Remote_Instance| Set to  "1" if the server where the add-on is hosted has not the same IP of the  one where Stremio Server is.|
-|Global_Proxy| Whatever to enable a Global Proxy which will be valid for every request in the add-on.
-  
-
-For now Mysterius must be kept disabled if you do not know what you are doing.
-  
 
 Check those links to get the new Domain for the providers.
 

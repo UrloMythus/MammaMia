@@ -1,13 +1,11 @@
 import os
 import Src.Utilities.config as config
 MYSTERIUS = config.MYSTERIUS  
-dotenv = config.dotenv
+dotenv_var = config.dotenv_var
 Public_Instance = config.Public_Instance
-#You need to keep dotenv disabled on remote servers
-if dotenv == "1":
-    from dotenv import load_dotenv
-    load_dotenv(".env")
-
+# Carica sempre .env all'avvio
+from dotenv import load_dotenv
+load_dotenv(".env")
 
 def load_env():
     env_vars = {}
