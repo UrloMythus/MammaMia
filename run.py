@@ -13,16 +13,21 @@ import  Src.Utilities.config as config
 import logging
 from Src.API.okru import okru_get_url
 from Src.API.animeworld import animeworld
-from Src.Utilities.dictionaries import okru,STREAM,extra_sources,webru_vary,webru_dlhd,provider_map,skystreaming
+from Src.Utilities.dictionaries import tv_provider_map,okru,STREAM,extra_sources,webru_vary,webru_dlhd,provider_map,skystreaming
 from Src.API.epg import tivu, tivu_get,epg_guide,convert_bho_1,convert_bho_2,convert_bho_3
 from Src.API.webru import webru,get_skystreaming
 from Src.API.onlineserietv import onlineserietv
 from curl_cffi.requests import AsyncSession
+from Src.API.daddy import get_247ita_streams, get_daddy_streams_for_channel_id
+from Src.API.vavoo import get_vavoo_streams, get_vavoo_streams_for_channel_id
+from Src.API.calcionew import get_calcio_streams, get_calcionew_streams_for_channel_id
+from Src.API.mpdstatic import get_static_channel_streams, get_mpdstatic_streams_for_channel_id
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from slowapi.middleware import SlowAPIMiddleware
 from static.static import HTML
 from urllib.parse import unquote
+import re
 from Src.Utilities.m3u8 import router as m3u8_clone
 import urllib.parse
 #Configure Env Vars
@@ -53,6 +58,9 @@ DDL = config.DDL
 GS = config.GS
 GHD = config.GHD
 OST = config.OST
+VAVOO = config.VAVOO
+CALCIONEW = config.CALCIONEW
+MPDSTATIC = config.MPDSTATIC
 HOST = config.HOST
 PORT = int(config.PORT)
 Icon = config.Icon
@@ -85,7 +93,7 @@ MANIFEST = {
                 {
                     "name": "genre",
                     "isRequired": False,
-                    "options": ["Rai", "Mediaset", "Sky", "Euronews", "La7", "Warner Bros", "FIT", "Sportitalia","RSI","DAZN", "Rakuten", "Pluto", "A+E", "Paramount", "Chill"]
+                    "options": ["Intrattenimento", "Film & Serie", "Documentari", "Sport", "Sky", "DAZN", "Rai", "Mediaset", "La7", "Discovery", "Sportitalia", "RSI", "Rakuten", "Pluto" ]
                 }
             ]
         }
@@ -222,12 +230,13 @@ async def addon_stream(request: Request,config, type, id,):
         config_providers = config.split('%7C')
     provider_maps = {name: "0" for name in provider_map.values()}
     for provider in config_providers:
-            if provider in provider_map:
-                provider_name = provider_map[provider]
-                provider_maps[provider_name] = "1"
-    if "MFP[" in config:
+        if provider in provider_map:
+            provider_name = provider_map[provider]
+            provider_maps[provider_name] = "1"
+
+    if "MFP[" in config: 
     # Extract proxy data between "MFP(" and ")"
-        mfp_data = config.split("MFP[")[1].split(")")[0]  
+        mfp_data = config.split("MFP[")[1].split(")")[0]
     # Split the data by comma to get proxy URL and password
         MFP_url, MFP_password = mfp_data.split(",")
         MFP_password = MFP_password[:-2]
@@ -247,7 +256,7 @@ async def addon_stream(request: Request,config, type, id,):
                         streams['streams'].append({
                             'title': f"{Icon}Server {i} " + f" "+ channel['name'] + " " + channel['title'] ,
                             'url': channel['url']
-                            })     
+                            })
                     if id in okru:
                         i = i+1
                         channel_url = await okru_get_url(id,client)
@@ -274,144 +283,326 @@ async def addon_stream(request: Request,config, type, id,):
                         else:
                             if webru_url:
                                 streams['streams'].append({'title': f'{Icon}Server X-{i}' + channel['title'], 'url': webru_url, "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3", "Accept": "*/*", "Accept-Language": "en-US,en;q=0.5", "Origin": Origin_webru_url, "DNT": "1", "Sec-GPC": "1", "Connection": "keep-alive", "Referer": Referer_webru_url, "Sec-Fetch-Dest": "empty", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "cross-site", "Pragma": "no-cache", "Cache-Control": "no-cache", "TE": "trailers"}}}})
-
                     if id in webru_dlhd:
                         if DLHD == "1":
                             i = i+1
                             webru_url_2,Referer_webru_url_2,Origin_webru_url_2 = await webru(id,"dlhd",client)
-                            if MFP== "1":
+                            if MFP == "1":
                                 webru_url_2 = f'{MFP_url}/proxy/hls/manifest.m3u8?api_password={MFP_password}&d={webru_url_2}&h_Referer={Referer_webru_url_2}&h_Origin={Origin_webru_url_2}&h_User-Agent=Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F58.0.3029.110%20Safari%2F537.3'
                                 streams['streams'].append({'title': f"{Icon}Proxied Server D-{i} " + channel['title'],'url': webru_url_2})
                             else:
                                 streams['streams'].append({'title': f'{Icon}Server D-{i}' + channel['title'], 'url': webru_url_2, "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3", "Accept": "*/*", "Accept-Language": "en-US,en;q=0.5", "Origin": Origin_webru_url_2, "DNT": "1", "Sec-GPC": "1", "Connection": "keep-alive", "Referer": Referer_webru_url_2, "Sec-Fetch-Dest": "empty", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "cross-site", "Pragma": "no-cache", "Cache-Control": "no-cache", "TE": "trailers"}}}})
-
-
+            channel_name_query_base = id.replace('-', ' ')
+            # print(f"DEBUG RUN.PY: addon_stream per TV ID: {id}, channel_name_query_base: {channel_name_query_base}")
+            mfp_url_to_pass = MFP_CREDENTIALS[0] if MFP == "1" and MFP_CREDENTIALS else None
+            mfp_password_to_pass = MFP_CREDENTIALS[1] if MFP == "1" and MFP_CREDENTIALS else None
+            # print(f"DEBUG RUN.PY: MFP URL da passare: {mfp_url_to_pass}, MFP Password presente: {'Sì' if mfp_password_to_pass else 'No'}")
             
+            # --- OMGTV Integration con 4 funzioni separate ---
+            omgtv_sources_mapping = {
+                "dlhd": get_daddy_streams_with_mfp,
+                "vavoo": get_vavoo_streams_with_mfp,
+                "calcionew": get_calcionew_streams_with_mfp,
+                "mpdstatic": get_mpdstatic_streams_with_mfp
+            }
+            # Determina i provider OMGTV pertinenti per il canale corrente
+            relevant_omgtv_providers = None
+            if channel_name_query_base in tv_provider_map:
+                relevant_omgtv_providers = tv_provider_map[channel_name_query_base]
+                # logging.info(f"Channel '{channel_name_query_base}' found in tv_provider_map. Relevant providers: {relevant_omgtv_providers}")
+            else:
+                # logging.warning(f"Channel '{channel_name_query_base}' not in tv_provider_map. Will attempt all OMGTV sources.")
+                pass # Se non mappato, relevant_omgtv_providers rimane None, quindi tutti i provider verranno tentati
+
+            for omgtv_source_key, source_function in omgtv_sources_mapping.items():
+                # Interroga la sorgente solo se è pertinente per il canale o se non è stata trovata alcuna lista specifica
+                if relevant_omgtv_providers is None or omgtv_source_key in relevant_omgtv_providers:
+                    omgtv_channel_id_full = f"{omgtv_source_key}-{channel_name_query_base.replace(' ', '-')}"
+                    # logging.info(f"Processing OMGTV source: {omgtv_source_key} for channel ID query: {omgtv_channel_id_full}")
+                    
+                    omgtv_stream_list = await source_function(
+                        client=client,
+                        channel_id_full=omgtv_channel_id_full,
+                        mfp_url=mfp_url_to_pass,
+                        mfp_password=mfp_password_to_pass
+                    )
+                    # logging.info(f"Streams found for {omgtv_source_key} ({omgtv_channel_id_full}): {len(omgtv_stream_list) if omgtv_stream_list else 0}")
+                    
+                    if omgtv_stream_list:
+                        for stream_item in omgtv_stream_list:
+                            stream_title = f"{Icon}{stream_item.get('title', f'{channel_name_query_base.title()} ({omgtv_source_key.upper()})')}"
+                            streams['streams'].append({
+                                'name': f"{Name} - {stream_item.get('group', omgtv_source_key.upper())}",
+                                'title': stream_title,
+                                'url': stream_item['url'],
+                                'behaviorHints': stream_item.get('behaviorHints', {"notWebReady": True})
+                            })
+
             if not streams['streams']:
                 raise HTTPException(status_code=404)
             return respond_with(streams)
         elif "tt" in id or "tmdb" in id or "kitsu" in id:
-            
+
             print(f"Handling movie or series: {id}")
             if "kitsu" in id:
                 if provider_maps['ANIMEWORLD'] == "1" and AW == "1":
                     animeworld_urls = await animeworld(id,client)
-                    if animeworld_urls:
-                        print(f"AnimeWorld Found Results for {id}")
-                        i = 0
-                        for url in animeworld_urls:
-                            if url:
-                                if i == 0:
-                                    title = "Original"
-                                elif i == 1:
-                                     title = "Italian"
-                                streams['streams'].append({'title': f'{Icon}Animeworld {title}', 'url': url})
-                                i+=1
+                if animeworld_urls:
+                    print(f"AnimeWorld Found Results for {id}")
+                    i = 0
+                    for url in animeworld_urls:
+                        if url:
+                            if i == 0:
+                                title = "Original"
+                            elif i == 1:
+                                title = "Italian"
+                            streams['streams'].append({'title': f'{Icon}Animeworld {title}', 'url': url})
+                            i+=1
             else:
                 import time
                 current_time = int(time.time())
                 if 1743487223 <= current_time <= 1743544823:
                     streams['streams'].append({'name': f"{Name} 4K",'title': f'{Icon}Netflix/Prime Extractor 4K', 'url': "https://cdn-cf-east.streamable.com/video/mp4/jkx9gr.mp4?Expires=1743457311748&Key-Pair-Id=APKAIEYUVEN4EVB2OKEQ&Signature=gpixXPFJb5huM8D6AMkbzNqmAON-9zBUVIN5AeWcHiXBVROSz6BlmctAVx0qpe-hM1DN3OO7YtIdBKKOk3IthF33agmVmVjSyNI-emjf~iuqxclbaousBJTPXMIjDQTxBxINr0SUbyS4MiIwhar~luiqqvbPHN9jS-AXT2r1chhZylE4Zol~bKSCCT10TzN3En630XMk0UiTFCgwoAxfitI4mnuCXu4M3-mcnN~kpxx9j6VgE0jVzBKFq9qYbi-CtWOCL7mVaVaCwrTPPe9syZVQgIlgQJt175raLM2G2~faR~wuDOda7KmGNJJH2hDfdd~-sPsr6SSNV0B9ZZ3eaw__"})
-                if MYSTERIUS == "1":
+                if MYSTERIUS == "1": 
                     results = await cool(id,client)
-                    if results:
-                        print(f"Mysterius Found Results for {id}")
-                        for resolution, link in results.items():
-                            streams['streams'].append({'title': f'{Icon}Mysterious {resolution}', 'url': link, 'behaviorHints': {'bingeGroup': f'mysterius{resolution}'}})
-                if provider_maps['STREAMINGCOMMUNITY'] == "1" and SC == "1":
-                    SC_FAST_SEARCH = provider_maps['SC_FAST_SEARCH']
-                    url_streaming_community,quality_sc, slug_sc = await streaming_community(id,client,SC_FAST_SEARCH,MFP)
-                    if url_streaming_community is not None:
-                        print(f"StreamingCommunity Found Results for {id}")
-                        if MFP == "1":
-                            url_streaming_community = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_streaming_community}&host=VixCloud&redirect_stream=false'
-                            url_streaming_community = await transform_mfp(url_streaming_community,client)
-                            streams['streams'].append({"name":f'{Name}\n{quality_sc} Max', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}','url': url_streaming_community,'behaviorHints':{'notWebReady': False, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
-                        else:
-                            streams['streams'].append({"name":f'{Name}\n{quality_sc}p Max', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}\n This will work only on a local instance','url': url_streaming_community,'behaviorHints': {'proxyHeaders': {"request": {"user-agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
-                
-                if provider_maps['LORDCHANNEL'] == "1" and LC == "1":
-                    url_lordchannel,quality_lordchannel = await lordchannel(id,client)
-                    if quality_lordchannel == "FULL HD" and url_lordchannel !=  None:
-                        print(f"LordChannel Found Results for {id}")
-                        streams['streams'].append({'name': f"{Name}\n1080p",'title': f'{Icon}LordChannel', 'url': url_lordchannel,'behaviorHints': {'bingeGroup': 'lordchannel1080'}})
-                    elif url_lordchannel !=  None:
-                        print(f"LordChannel Found Results for {id}")
-                        streams['streams'].append({"name": f"{Name}\n720p",'title': f'{Icon}LordChannel 720p', 'url': url_lordchannel, 'behaviorHints': {'bingeGroup': 'lordchannel720'}})            
-                if provider_maps['FILMPERTUTTI'] == "1" and FT == "1":
-                    url_filmpertutti,Host = await filmpertutti(id,client, MFP)
-                    if url_filmpertutti is not None and Host is not None:
-                        if MFP == "1":
-                            url_filmpertutti = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_filmpertutti}&host={Host}&redirect_stream=true'
-                            print(url_filmpertutti)
-                            streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}Filmpertutti', 'url': url_filmpertutti,'behaviorHints': {'bingeGroup': 'filmpertutti'}})
-                        else:
-                            streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}Filmpertutti', 'url': url_filmpertutti,'behaviorHints': {'proxyHeaders': {"request": {"User-Agent": "Mozilla/5.0 (Windows NT 10.10; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}}, 'notWebReady': True, 'bingeGroup': 'filmpertutti'}})
-                        print(f"Filmpertutti Found Results for {id}")
-                        
-                if provider_maps['TANTIFILM'] == "1" and TF == "1":
-                    TF_FAST_SEARCH = provider_maps['TF_FAST_SEARCH']                    
-                    url_tantifilm = await tantifilm(id,client,TF_FAST_SEARCH)
-                    if url_tantifilm != "{'Doodstream HD': None}" and url_tantifilm != None:
-                        print(f"TantiFilm Found Results for {id}")
-                        if not isinstance(url_tantifilm, str):
-                            for title, url in url_tantifilm.items():    
-                                streams['streams'].append({'title': f'{Icon}Tantifilm {title}', 'url': url,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True, 'bingeGroup': f'tantifilm{title}'}})
-                        else:
-                            streams['streams'].append({'title': f'{Icon}Tantifilm', 'url': url_tantifilm,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True, 'bingeGroup': 'tantifilm'}})
-                if provider_maps['STREAMINGWATCH'] == "1" and SW == "1":
-                    url_streamingwatch,Referer = await streamingwatch(id,client)
-                    if url_streamingwatch: 
-                        print(f"StreamingWatch Found Results for {id}")
-                        streams['streams'].append({'name': f"{Name}\n720/1080p",'title': f'{Icon}StreamingWatch', 'url': url_streamingwatch,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": Referer}}, 'notWebReady': True, 'bingeGroup': 'streamingwatch'}})
-                if provider_maps['DDLSTREAM'] == "1" and DDL == "1":
+                if results:
+                    print(f"Mysterius Found Results for {id}")
+                    for resolution, link in results.items():
+                        streams['streams'].append({'title': f'{Icon}Mysterious {resolution}', 'url': link, 'behaviorHints': {'bingeGroup': f'mysterius{resolution}'}})
+            
+            if provider_maps['STREAMINGCOMMUNITY'] == "1" and SC == "1":
+                SC_FAST_SEARCH = provider_maps['SC_FAST_SEARCH']
+                url_streaming_community,quality_sc, slug_sc = await streaming_community(id,client,SC_FAST_SEARCH,MFP)
+                if url_streaming_community is not None:
+                    print(f"StreamingCommunity Found Results for {id}")
                     if MFP == "1":
-                        results = await ddlstream(id,client)
-                        if  results:
-                            print(f"DDLStreamItaly Found Results for {id}")
-                            url_ddlstream = results[0]
-                            quality = results[1]
-                            name = unquote(url_ddlstream.split('/')[-1].replace(".mp4",""))
-                            url_ddlstream = f'{MFP_url}/proxy/stream?api_password={MFP_password}&d={url_ddlstream}&h_Referer=https://ddlstreamitaly.{DDL_DOMAIN}/'
-                            streams['streams'].append({'name': f"{Name}\n{quality}",'title': f'{Icon}DDLStream \n {name}', 'url': url_ddlstream, 'behaviorHints': {'bingeGroup': 'ddlstream'}}) 
-                if provider_maps['CB01'] == "1" and CB == "1":
-                    url_cbo1 = await cb01(id,client,MFP)
-                    if url_cbo1:
-                        print(f"CB01 Found Results for {id}")
-                        if "mixdrop" in url_cbo1:
-                            if MFP == "1":
-                                url_cbo1 = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_cbo1}&host=Mixdrop&redirect_stream=false'
-                                url_cbo1 = await transform_mfp(url_cbo1,client)
-                                if url_cbo1:
-                                    streams['streams'].append({'name': f"{Name}",'title': f'{Icon}CB01', 'url': url_cbo1, 'behaviorHints': {'bingeGroup': 'cb01'}})
-                        elif "delivery" in url_cbo1:
-                            streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}CB01\n MixDrop Will work only on a local instance!', 'url': url_cbo1,'behaviorHints': {'proxyHeaders': {"request": {"User-Agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': 'cb01'}})
+                        url_streaming_community = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_streaming_community}&host=VixCloud&redirect_stream=false'
+                        url_streaming_community = await transform_mfp(url_streaming_community,client)
 
-                        else:
+                        streams['streams'].append({"name":f'{Name}\n{quality_sc} Max', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}','url': url_streaming_community,'behaviorHints':{'notWebReady': False, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
+                    else:
+                        streams['streams'].append({"name":f'{Name}\n{quality_sc}p Max', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}\n This will work only on a local instance','url': url_streaming_community,'behaviorHints': {'proxyHeaders': {"request": {"user-agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
+                
+            if provider_maps['LORDCHANNEL'] == "1" and LC == "1":
+                url_lordchannel,quality_lordchannel = await lordchannel(id,client)
+                if quality_lordchannel == "FULL HD" and url_lordchannel !=  None:
+                    print(f"LordChannel Found Results for {id}")
+                    streams['streams'].append({'name': f"{Name}\n1080p",'title': f'{Icon}LordChannel', 'url': url_lordchannel,'behaviorHints': {'bingeGroup': 'lordchannel1080'}})
+                elif url_lordchannel !=  None:
+                    print(f"LordChannel Found Results for {id}")
+                    streams['streams'].append({"name": f"{Name}\n720p",'title': f'{Icon}LordChannel 720p', 'url': url_lordchannel, 'behaviorHints': {'bingeGroup': 'lordchannel720'}})            
+            
+            if provider_maps['FILMPERTUTTI'] == "1" and FT == "1":
+                url_filmpertutti,Host = await filmpertutti(id,client, MFP)
+                if url_filmpertutti is not None and Host is not None:
+                    if MFP == "1":
+                        url_filmpertutti = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_filmpertutti}&host={Host}&redirect_stream=true'
+                        print(url_filmpertutti)
+                        streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}Filmpertutti', 'url': url_filmpertutti,'behaviorHints': {'bingeGroup': 'filmpertutti'}})
+                    else:
+                        streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}Filmpertutti', 'url': url_filmpertutti,'behaviorHints': {'proxyHeaders': {"request": {"User-Agent": "Mozilla/5.0 (Windows NT 10.10; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}}, 'notWebReady': True, 'bingeGroup': 'filmpertutti'}})
+                    print(f"Filmpertutti Found Results for {id}")
+                    
+            if provider_maps['TANTIFILM'] == "1" and TF == "1":
+                TF_FAST_SEARCH = provider_maps['TF_FAST_SEARCH']                    
+                url_tantifilm = await tantifilm(id,client,TF_FAST_SEARCH)
+                if url_tantifilm != "{'Doodstream HD': None}" and url_tantifilm != None:
+                    print(f"TantiFilm Found Results for {id}")
+                    if not isinstance(url_tantifilm, str):
+                        for title, url in url_tantifilm.items():    
+                            streams['streams'].append({'title': f'{Icon}Tantifilm {title}', 'url': url,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True, 'bingeGroup': f'tantifilm{title}'}})
+                    else:
+                        streams['streams'].append({'title': f'{Icon}Tantifilm', 'url': url_tantifilm,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True, 'bingeGroup': 'tantifilm'}})
+            
+            if provider_maps['STREAMINGWATCH'] == "1" and SW == "1":
+                url_streamingwatch,Referer = await streamingwatch(id,client)
+                if url_streamingwatch: 
+                    print(f"StreamingWatch Found Results for {id}")
+                    streams['streams'].append({'name': f"{Name}\n720/1080p",'title': f'{Icon}StreamingWatch', 'url': url_streamingwatch,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": Referer}}, 'notWebReady': True, 'bingeGroup': 'streamingwatch'}})
+            
+            if provider_maps['DDLSTREAM'] == "1" and DDL == "1":
+                if MFP == "1":
+                    results = await ddlstream(id,client)
+                    if  results:
+                        print(f"DDLStreamItaly Found Results for {id}")
+                        url_ddlstream = results[0]
+                        quality = results[1]
+                        name = unquote(url_ddlstream.split('/')[-1].replace(".mp4",""))
+                        url_ddlstream = f'{MFP_url}/proxy/stream?api_password={MFP_password}&d={url_ddlstream}&h_Referer=https://ddlstreamitaly.{DDL_DOMAIN}/'
+                        streams['streams'].append({'name': f"{Name}\n{quality}",'title': f'{Icon}DDLStream \n {name}', 'url': url_ddlstream, 'behaviorHints': {'bingeGroup': 'ddlstream'}}) 
+            
+            if provider_maps['CB01'] == "1" and CB == "1":
+                url_cbo1 = await cb01(id,client,MFP)
+                if url_cbo1:
+                    print(f"CB01 Found Results for {id}")
+                    if "mixdrop" in url_cbo1:
+                        if MFP == "1":
+                            MFP_url, MFP_password = MFP_CREDENTIALS # Assicurati che siano definiti
+                            url_cbo1 = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_cbo1}&host=Mixdrop&redirect_stream=false'
+                            url_cbo1 = await transform_mfp(url_cbo1,client)
+                            if url_cbo1:
+                                streams['streams'].append({'name': f"{Name}",'title': f'{Icon}CB01', 'url': url_cbo1, 'behaviorHints': {'bingeGroup': 'cb01'}})
+                    elif "delivery" in url_cbo1:
+                            streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}CB01\n MixDrop Will work only on a local instance!', 'url': url_cbo1,'behaviorHints': {'proxyHeaders': {"request": {"User-Agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': 'cb01'}})
+                    else:
                             streams['streams'].append({'name': f"{Name}",'title': f'{Icon}CB01\n MaxStream', 'url': url_cbo1, 'behaviorHints': {'bingeGroup': 'cb01'}})
             if provider_maps['GUARDASERIE'] == "1" and GS == "1":
                 url_guardaserie = await guardaserie(id,client)
                 if url_guardaserie:
                     print(f"Guardaserie Found Results for {id}")
                     streams['streams'].append({'name': f"{Name}",'title': f'{Icon}Guardaserie', 'url': url_guardaserie, 'behaviorHints': {'bingeGroup': 'guardaserie'}})
+            
             if provider_maps['GUARDAHD'] == "1" and GHD == "1":
                 url_guardahd = await guardahd(id,client)
                 if url_guardahd:
                     print(f"GuardaHD Found Results for {id}")
                     streams['streams'].append({'name': f"{Name}",'title': f'{Icon}GuardaHD', 'url': url_guardahd, 'behaviorHints': {'bingeGroup': 'guardahd'}})
+            
             if provider_maps['ONLINESERIETV'] == "1" and OST == "1":
                 url_onlineserietv,name = await onlineserietv(id,client)
                 if url_onlineserietv:
                     print(f"OnlineSerieTV Found Results for {id}")
                     streams['streams'].append({'name': f"{Name}",'title': f'{Icon}OnlineSerieTV\n{name}', 'url': url_onlineserietv, 'behaviorHints': {'proxyHeaders': {'request': {"User-Agent": 'Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.71 Mobile Safari/537.36', "Referer": "https://flexy.stream/"}}, 'bingeGroup': 'onlineserietv', 'notWebReady': True}})
+                
+            if not streams['streams']:
+                raise HTTPException(status_code=404)
+        return respond_with(streams)
+
+async def apply_mfp_to_stream(stream_url, mfp_url, mfp_password, stream_type="hls"):
+    """
+    Applica la logica MFP a un singolo stream URL.
+    """
+    if stream_type == "mpd": # Inizio del blocco if per MPD
+        # Gestione specifica per MPD
+        logging.info(f"Applying MFP to MPD stream: {stream_url}")
+        mpd_marker = ".mpd"
+        try:
+            # Trova l'URL base fino a .mpd incluso e la query string successiva
+            actual_stream_url_lower = stream_url.lower()
+            mpd_index = actual_stream_url_lower.find(mpd_marker) # Usa find per evitare ValueError
             
-        if not streams['streams']:
-            raise HTTPException(status_code=404)
+            original_query_string = ""
+            base_mpd_url_strict = stream_url # Default a tutto l'URL se .mpd non trovato
 
-    return respond_with(streams)
+            if mpd_index != -1:
+                base_mpd_url_strict = stream_url[:mpd_index + len(mpd_marker)]
+                query_part_start_index = mpd_index + len(mpd_marker)
+                # Controlla se c'è una parte di query che inizia con '&' dopo '.mpd'
+                if query_part_start_index < len(stream_url) and stream_url[query_part_start_index] == '&':
+                    original_query_string = stream_url[query_part_start_index+1:] # Estrae la query string, escludendo la '&' iniziale
+            else:
+                logging.warning(f"'.mpd' marker not found in URL '{stream_url}' for MPD type. Cannot extract additional query parameters in the expected format.")
 
+            mfp_base_query = f"api_password={mfp_password}&d={urllib.parse.quote(base_mpd_url_strict)}"
+            
+            final_mfp_url = f"{mfp_url}/proxy/mpd/manifest.m3u8?{mfp_base_query}"
+            if original_query_string:
+                final_mfp_url += f"&{original_query_string}" # Aggiunge la query string estratta
+            
+            logging.info(f"Applying MFP to MPD: Original='{stream_url}', BaseMPD='{base_mpd_url_strict}', Query='{original_query_string}', Result='{final_mfp_url}'")
+            return final_mfp_url
+        except Exception as e: # Cattura eccezioni più generiche durante il parsing
+            logging.warning(f"'.mpd' marker not found in URL '{stream_url}' for MPD type. Falling back to HLS for MFP.")
+            # Fallback a HLS se .mpd non trovato
+            # Questa parte del fallback per MPD deve essere gestita con la nuova logica HLS
+            base_stream_url_fallback = stream_url
+            additional_mfp_params_fallback = ""
+            h_param_match_fallback = re.search(r"&h_[\w-]+=", stream_url)
+            if h_param_match_fallback:
+                split_index_fallback = h_param_match_fallback.start()
+                base_stream_url_fallback = stream_url[:split_index_fallback]
+                additional_mfp_params_fallback = stream_url[split_index_fallback:]
+            encoded_base_url_fallback = urllib.parse.quote(base_stream_url_fallback)
+            return f"{mfp_url}/proxy/hls/manifest.m3u8?api_password={mfp_password}&d={encoded_base_url_fallback}{additional_mfp_params_fallback}"
+    elif stream_type == "daddy": # Inizio del blocco elif per Daddy
+        logging.info(f"Applying MFP to Daddy stream: {stream_url}")
+        # Gestione specifica per Daddy
+        return f"{mfp_url}/extractor/video?host=DLHD&redirect_stream=true&api_password={mfp_password}&d={urllib.parse.quote(stream_url)}"
+    else: # Default HLS e altri casi come Vavoo, CalcioNew
+        logging.info(f"Applying MFP to HLS/default stream: {stream_url}")
+        base_stream_url = stream_url
+        additional_mfp_params = ""
+
+        h_param_match = re.search(r"&h_[\w-]+=", stream_url)
+        if h_param_match:
+            split_index = h_param_match.start()
+            base_stream_url = stream_url[:split_index]
+            additional_mfp_params = stream_url[split_index:] # Include la '&' iniziale
+            logging.debug(f"MFP HLS: Base URL='{base_stream_url}', Additional Params='{additional_mfp_params}'")
+
+        encoded_base_url = urllib.parse.quote(base_stream_url)
+        final_mfp_url = f"{mfp_url}/proxy/hls/manifest.m3u8?api_password={mfp_password}&d={encoded_base_url}{additional_mfp_params}"
+        logging.info(f"MFP HLS: Final URL='{final_mfp_url}'")
+        return final_mfp_url
+
+async def get_daddy_streams_with_mfp(client, channel_id_full, mfp_url=None, mfp_password=None):
+    """Funzione separata per Daddy con gestione MFP."""
+    logging.info(f"Attempting to get Daddy streams for: {channel_id_full}, MFP enabled: {bool(mfp_url and mfp_password)}")
+    if DLHD  != "1":
+        logging.warning("Daddy provider is disabled in config.")
+        return []
+    
+    streams = await get_daddy_streams_for_channel_id(channel_id_full, client)
+    logging.info(f"Raw Daddy streams for {channel_id_full}: {len(streams) if streams else 0}")
+    
+    # Applica MFP se abilitato
+    if mfp_url and mfp_password and streams:
+        for stream in streams:
+            original_url = stream['url']
+            stream['url'] = await apply_mfp_to_stream(stream['url'], mfp_url, mfp_password, "daddy")
+            logging.info(f"Daddy stream for {channel_id_full}: Original URL: {original_url}, MFP URL: {stream['url']}")
+    elif streams:
+        logging.info(f"MFP not applied to Daddy streams for {channel_id_full} (MFP not enabled or no streams).")
+    return streams
+
+async def get_vavoo_streams_with_mfp(client, channel_id_full, mfp_url=None, mfp_password=None):
+    """Funzione separata per Vavoo con gestione MFP."""
+    if VAVOO != "1":
+        return []
+    
+    streams = await get_vavoo_streams_for_channel_id(channel_id_full, client)
+    
+    # Applica MFP se abilitato
+    if mfp_url and mfp_password and streams:
+        for stream in streams:
+            stream['url'] = await apply_mfp_to_stream(stream['url'], mfp_url, mfp_password, "hls")
+    
+    return streams
+
+async def get_calcionew_streams_with_mfp(client, channel_id_full, mfp_url=None, mfp_password=None):
+    """Funzione separata per CalcioNew con gestione MFP."""
+    logging.info(f"Attempting to get CalcioNew streams for: {channel_id_full}, MFP enabled: {bool(mfp_url and mfp_password)}")
+    if CALCIONEW != "1":
+        logging.warning("CalcioNew provider is disabled in config.")
+        return []
+    
+    streams = await get_calcionew_streams_for_channel_id(channel_id_full, client)
+    logging.info(f"Raw CalcioNew streams for {channel_id_full}: {len(streams) if streams else 0}")
+    
+    # Applica MFP se abilitato
+    if mfp_url and mfp_password and streams:
+        for stream in streams:
+            original_url = stream['url']
+            stream['url'] = await apply_mfp_to_stream(stream['url'], mfp_url, mfp_password, "hls")
+            logging.info(f"CalcioNew stream for {channel_id_full}: Original URL: {original_url}, MFP URL: {stream['url']}")
+    elif streams:
+        logging.info(f"MFP not applied to CalcioNew streams for {channel_id_full} (MFP not enabled or no streams).")
+    return streams
+
+async def get_mpdstatic_streams_with_mfp(client, channel_id_full, mfp_url=None, mfp_password=None):
+    """Funzione separata per MPD Static con gestione MFP."""
+    if MPDSTATIC != "1":
+        return []
+    
+    streams = await get_mpdstatic_streams_for_channel_id(channel_id_full, client)
+    
+    # Applica MFP se abilitato
+    if mfp_url and mfp_password and streams:
+        for stream in streams:
+            stream['url'] = await apply_mfp_to_stream(stream['url'], mfp_url, mfp_password, "mpd")
+    
+    return streams
 
 if __name__ == '__main__':
     import uvicorn
     uvicorn.run("run:app", host=HOST, port=PORT, log_level="info")
-    
