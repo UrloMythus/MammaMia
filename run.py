@@ -327,25 +327,18 @@ async def addon_stream(request: Request,config, type, id,):
                         if MFP == "1":
                             url_streaming_community = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_streaming_community}&host=VixCloud&redirect_stream=false'
                             url_streaming_community = await transform_mfp(url_streaming_community,client)
-                            streams['streams'].append({"name":f'{Name}
-{quality_sc} Max', 'title': f'{Icon}StreamingCommunity
- {slug_sc.replace("-"," ").capitalize()} [IT]', 'languages': ['it'], 'url': url_streaming_community,'behaviorHints':{'notWebReady': False, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
+                            streams['streams'].append({"name":f'{Name}\n{quality_sc} Max', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()} [IT]', 'languages': ['it'], 'url': url_streaming_community,'behaviorHints':{'notWebReady': False, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
                         else:
-                            streams['streams'].append({"name":f'{Name}
-{quality_sc}p Max', 'title': f'{Icon}StreamingCommunity
- {slug_sc.replace("-"," ").capitalize()}
- This will work only on a local instance [IT]', 'languages': ['it'], 'url': url_streaming_community,'behaviorHints': {'proxyHeaders': {"request": {"user-agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
+                            streams['streams'].append({"name":f'{Name}\n{quality_sc}p Max', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}\n This will work only on a local instance [IT]', 'languages': ['it'], 'url': url_streaming_community,'behaviorHints': {'proxyHeaders': {"request": {"user-agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
                 
                 if provider_maps['LORDCHANNEL'] == "1" and LC == "1":
                     url_lordchannel,quality_lordchannel = await lordchannel(id,client)
                     if quality_lordchannel == "FULL HD" and url_lordchannel !=  None:
                         print(f"LordChannel Found Results for {id}")
-                        streams['streams'].append({'name': f"{Name}
-1080p",'title': f'{Icon}LordChannel [IT]', 'url': url_lordchannel, 'languages': ['it'], 'behaviorHints': {'bingeGroup': 'lordchannel1080'}})
+                        streams['streams'].append({'name': f"{Name}\n1080p",'title': f'{Icon}LordChannel [IT]', 'url': url_lordchannel, 'languages': ['it'], 'behaviorHints': {'bingeGroup': 'lordchannel1080'}})
                     elif url_lordchannel !=  None:
                         print(f"LordChannel Found Results for {id}")
-                        streams['streams'].append({"name": f"{Name}
-720p",'title': f'{Icon}LordChannel 720p [IT]', 'url': url_lordchannel, 'languages': ['it'], 'behaviorHints': {'bingeGroup': 'lordchannel720'}})            
+                        streams['streams'].append({"name": f"{Name}\n720p",'title': f'{Icon}LordChannel 720p [IT]', 'url': url_lordchannel, 'languages': ['it'], 'behaviorHints': {'bingeGroup': 'lordchannel720'}})            
                 if provider_maps['FILMPERTUTTI'] == "1" and FT == "1":
                     url_filmpertutti,Host = await filmpertutti(id,client, MFP)
                     if url_filmpertutti is not None and Host is not None:
@@ -371,8 +364,7 @@ async def addon_stream(request: Request,config, type, id,):
                     url_streamingwatch,Referer = await streamingwatch(id,client)
                     if url_streamingwatch: 
                         print(f"StreamingWatch Found Results for {id}")
-                        streams['streams'].append({'name': f"{Name}
-720/1080p",'title': f'{Icon}StreamingWatch [IT]', 'url': url_streamingwatch, 'languages': ['it'], 'behaviorHints': {'proxyHeaders': {"request": {"Referer": Referer}}, 'notWebReady': True, 'bingeGroup': 'streamingwatch'}})
+                        streams['streams'].append({'name': f"{Name}\n720/1080p",'title': f'{Icon}StreamingWatch [IT]', 'url': url_streamingwatch, 'languages': ['it'], 'behaviorHints': {'proxyHeaders': {"request": {"Referer": Referer}}, 'notWebReady': True, 'bingeGroup': 'streamingwatch'}})
                 if provider_maps['DDLSTREAM'] == "1" and DDL == "1":
                     if MFP == "1":
                         results = await ddlstream(id,client)
@@ -382,9 +374,7 @@ async def addon_stream(request: Request,config, type, id,):
                             quality = results[1]
                             name = unquote(url_ddlstream.split('/')[-1].replace(".mp4",""))
                             url_ddlstream = f'{MFP_url}/proxy/stream?api_password={MFP_password}&d={url_ddlstream}&h_Referer=https://ddlstreamitaly.{DDL_DOMAIN}/'
-                            streams['streams'].append({'name': f"{Name}
-{quality}",'title': f'{Icon}DDLStream 
- {name} [IT]', 'url': url_ddlstream, 'languages': ['it'], 'behaviorHints': {'bingeGroup': 'ddlstream'}}) 
+                            streams['streams'].append({'name': f"{Name}\n{quality}",'title': f'{Icon}DDLStream \n {name} [IT]', 'url': url_ddlstream, 'languages': ['it'], 'behaviorHints': {'bingeGroup': 'ddlstream'}}) 
                 if provider_maps['CB01'] == "1" and CB == "1":
                     url_cbo1 = await cb01(id,client,MFP)
                     if url_cbo1:
@@ -396,12 +386,10 @@ async def addon_stream(request: Request,config, type, id,):
                                 if url_cbo1:
                                     streams['streams'].append({'name': f"{Name}",'title': f'{Icon}CB01 [IT]', 'url': url_cbo1, 'languages': ['it'], 'behaviorHints': {'bingeGroup': 'cb01'}})
                         elif "delivery" in url_cbo1:
-                            streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}CB01
- MixDrop Will work only on a local instance! [IT]', 'url': url_cbo1, 'languages': ['it'], 'behaviorHints': {'proxyHeaders': {"request": {"User-Agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': 'cb01'}})
+                            streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}CB01\n MixDrop Will work only on a local instance! [IT]', 'url': url_cbo1, 'languages': ['it'], 'behaviorHints': {'proxyHeaders': {"request": {"User-Agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': 'cb01'}})
 
                         else:
-                            streams['streams'].append({'name': f"{Name}",'title': f'{Icon}CB01
- MaxStream [IT]', 'url': url_cbo1, 'languages': ['it'], 'behaviorHints': {'bingeGroup': 'cb01'}})
+                            streams['streams'].append({'name': f"{Name}",'title': f'{Icon}CB01\n MaxStream [IT]', 'url': url_cbo1, 'languages': ['it'], 'behaviorHints': {'bingeGroup': 'cb01'}})
             if provider_maps['GUARDASERIE'] == "1" and GS == "1":
                 url_guardaserie = await guardaserie(id,client)
                 if url_guardaserie:
@@ -416,8 +404,7 @@ async def addon_stream(request: Request,config, type, id,):
                 url_onlineserietv,name = await onlineserietv(id,client)
                 if url_onlineserietv:
                     print(f"OnlineSerieTV Found Results for {id}")
-                    streams['streams'].append({'name': f"{Name}",'title': f'{Icon}OnlineSerieTV
-{name} [IT]', 'url': url_onlineserietv, 'languages': ['it'], 'behaviorHints': {'proxyHeaders': {'request': {"User-Agent": 'Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.71 Mobile Safari/537.36', "Referer": "https://flexy.stream/"}}, 'bingeGroup': 'onlineserietv', 'notWebReady': True}})
+                    streams['streams'].append({'name': f"{Name}",'title': f'{Icon}OnlineSerieTV\n{name} [IT]', 'url': url_onlineserietv, 'languages': ['it'], 'behaviorHints': {'proxyHeaders': {'request': {"User-Agent": 'Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.71 Mobile Safari/537.36', "Referer": "https://flexy.stream/"}}, 'bingeGroup': 'onlineserietv', 'notWebReady': True}})
             
         if not streams['streams']:
             raise HTTPException(status_code=404)
