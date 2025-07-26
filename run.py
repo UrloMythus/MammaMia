@@ -244,46 +244,54 @@ async def addon_stream(request: Request,config, type, id,):
                     i = 0
                     if 'url' in channel:
                         i = i+1
+                        # Add language support for streams
+                        lang_display = "ITA"  # Default to Italian
                         streams['streams'].append({
-                            'title': f"{Icon}Server {i} " + f" "+ channel['name'] + " " + channel['title'] ,
-                            'url': channel['url']
+                            'title': f"{Icon}Server {i} [{lang_display}] " + f" "+ channel['name'] + " " + channel['title'] ,
+                            'url': channel['url'],
+                            'language': 'Italian'  # For compatibility with other addons
                             })     
                     if id in okru:
                         i = i+1
+                        lang_display = "ITA"  # Default to Italian
                         channel_url = await okru_get_url(id,client)
-                        streams['streams'].append({'title':  f"{Icon}Server {i} " +  channel['title'] + " OKRU",'url': channel_url,  "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": User_Agent}}}})
+                        streams['streams'].append({'title':  f"{Icon}Server {i} [{lang_display}] " +  channel['title'] + " OKRU",'url': channel_url, 'language': 'Italian', "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": User_Agent}}}})
                     if id in extra_sources:
                         list_sources = extra_sources[id]
                         for item in list_sources:
                             i = i+1
+                            lang_display = "ITA"  # Default to Italian
                             if "iran" in item:
-                                streams['streams'].append({'title':f"{Icon}Server {i} " + channel['title'],'url': item, "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"Origin": "https://babaktv.com", "Referer": "https://babaktv.com/"}}}})
+                                streams['streams'].append({'title':f"{Icon}Server {i} [{lang_display}] " + channel['title'],'url': item, 'language': 'Italian', "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"Origin": "https://babaktv.com", "Referer": "https://babaktv.com/"}}}})
                             else:
-                                streams['streams'].append({'title':f"{Icon}Server {i} " + channel['title'],'url': item})
+                                streams['streams'].append({'title':f"{Icon}Server {i} [{lang_display}] " + channel['title'],'url': item, 'language': 'Italian'})
                     if id in skystreaming and SKY == "1":
                         url,Host,Sky_Origin = await get_skystreaming(id,client)
                         i = i+1
+                        lang_display = "ITA"  # Default to Italian
                         if url:
-                            streams['streams'].append({'title': f'{Icon}Server S {i}' + channel['title'], 'url': url, "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:127.0) Gecko/20100101 Firefox/127.0", "Accept": "*/*", "Accept-Language": "en-US,en;q=0.5", "Origin": Sky_Origin, "DNT": "1", "Sec-GPC": "1", "Connection": "keep-alive", "Referer": f"{Sky_Origin}/", "Sec-Fetch-Dest": "empty", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "cross-site", "Pragma": "no-cache", "Cache-Control": "no-cache", "TE": "trailers","Host": Host}}}})
+                            streams['streams'].append({'title': f'{Icon}Server S {i} [{lang_display}]' + channel['title'], 'url': url, 'language': 'Italian', "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:127.0) Gecko/20100101 Firefox/127.0", "Accept": "*/*", "Accept-Language": "en-US,en;q=0.5", "Origin": Sky_Origin, "DNT": "1", "Sec-GPC": "1", "Connection": "keep-alive", "Referer": f"{Sky_Origin}/", "Sec-Fetch-Dest": "empty", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "cross-site", "Pragma": "no-cache", "Cache-Control": "no-cache", "TE": "trailers","Host": Host}}}})
                     if id in webru_vary:
                         i = i+1
+                        lang_display = "ITA"  # Default to Italian
                         webru_url, Referer_webru_url,Origin_webru_url = await webru(id,"vary",client)
                         if MFP== "1" and webru_url:
                             webru_url = f'{MFP_url}/proxy/hls/manifest.m3u8?api_password={MFP_password}&d={webru_url}&h_Referer={Referer_webru_url}&h_Origin={Origin_webru_url}&h_User-Agent=Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F58.0.3029.110%20Safari%2F537.3'
-                            streams['streams'].append({'title': f"{Icon}Proxied Server X-{i} " + channel['title'],'url': webru_url})
+                            streams['streams'].append({'title': f"{Icon}Proxied Server X-{i} [{lang_display}] " + channel['title'],'url': webru_url, 'language': 'Italian'})
                         else:
                             if webru_url:
-                                streams['streams'].append({'title': f'{Icon}Server X-{i}' + channel['title'], 'url': webru_url, "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3", "Accept": "*/*", "Accept-Language": "en-US,en;q=0.5", "Origin": Origin_webru_url, "DNT": "1", "Sec-GPC": "1", "Connection": "keep-alive", "Referer": Referer_webru_url, "Sec-Fetch-Dest": "empty", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "cross-site", "Pragma": "no-cache", "Cache-Control": "no-cache", "TE": "trailers"}}}})
+                                streams['streams'].append({'title': f'{Icon}Server X-{i} [{lang_display}]' + channel['title'], 'url': webru_url, 'language': 'Italian', "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3", "Accept": "*/*", "Accept-Language": "en-US,en;q=0.5", "Origin": Origin_webru_url, "DNT": "1", "Sec-GPC": "1", "Connection": "keep-alive", "Referer": Referer_webru_url, "Sec-Fetch-Dest": "empty", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "cross-site", "Pragma": "no-cache", "Cache-Control": "no-cache", "TE": "trailers"}}}})
 
                     if id in webru_dlhd:
                         if DLHD == "1":
                             i = i+1
+                            lang_display = "ITA"  # Default to Italian
                             webru_url_2,Referer_webru_url_2,Origin_webru_url_2 = await webru(id,"dlhd",client)
                             if MFP== "1":
                                 webru_url_2 = f'{MFP_url}/proxy/hls/manifest.m3u8?api_password={MFP_password}&d={webru_url_2}&h_Referer={Referer_webru_url_2}&h_Origin={Origin_webru_url_2}&h_User-Agent=Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F58.0.3029.110%20Safari%2F537.3'
-                                streams['streams'].append({'title': f"{Icon}Proxied Server D-{i} " + channel['title'],'url': webru_url_2})
+                                streams['streams'].append({'title': f"{Icon}Proxied Server D-{i} [{lang_display}] " + channel['title'],'url': webru_url_2, 'language': 'Italian'})
                             else:
-                                streams['streams'].append({'title': f'{Icon}Server D-{i}' + channel['title'], 'url': webru_url_2, "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3", "Accept": "*/*", "Accept-Language": "en-US,en;q=0.5", "Origin": Origin_webru_url_2, "DNT": "1", "Sec-GPC": "1", "Connection": "keep-alive", "Referer": Referer_webru_url_2, "Sec-Fetch-Dest": "empty", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "cross-site", "Pragma": "no-cache", "Cache-Control": "no-cache", "TE": "trailers"}}}})
+                                streams['streams'].append({'title': f'{Icon}Server D-{i} [{lang_display}]' + channel['title'], 'url': webru_url_2, 'language': 'Italian', "behaviorHints": {"notWebReady": True, "proxyHeaders": {"request": {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3", "Accept": "*/*", "Accept-Language": "en-US,en;q=0.5", "Origin": Origin_webru_url_2, "DNT": "1", "Sec-GPC": "1", "Connection": "keep-alive", "Referer": Referer_webru_url_2, "Sec-Fetch-Dest": "empty", "Sec-Fetch-Mode": "cors", "Sec-Fetch-Site": "cross-site", "Pragma": "no-cache", "Cache-Control": "no-cache", "TE": "trailers"}}}})
 
 
             
@@ -303,9 +311,11 @@ async def addon_stream(request: Request,config, type, id,):
                             if url:
                                 if i == 0:
                                     title = "Original"
+                                    lang_display = "ITA"
                                 elif i == 1:
-                                     title = "Italian"
-                                streams['streams'].append({'title': f'{Icon}Animeworld {title}', 'url': url})
+                                    title = "Italian"
+                                    lang_display = "ITA"
+                                streams['streams'].append({'title': f'{Icon}Animeworld {title} [{lang_display}]', 'url': url, 'language': 'Italian'})
                                 i+=1
             else:
                 import time
@@ -323,30 +333,34 @@ async def addon_stream(request: Request,config, type, id,):
                     url_streaming_community,quality_sc, slug_sc = await streaming_community(id,client,SC_FAST_SEARCH,MFP)
                     if url_streaming_community is not None:
                         print(f"StreamingCommunity Found Results for {id}")
+                        lang_display = "ITA"
                         if MFP == "1":
                             url_streaming_community = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_streaming_community}&host=VixCloud&redirect_stream=false'
                             url_streaming_community = await transform_mfp(url_streaming_community,client)
-                            streams['streams'].append({"name":f'{Name}\n{quality_sc} Max', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}','url': url_streaming_community,'behaviorHints':{'notWebReady': False, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
+                            streams['streams'].append({"name":f'{Name}\n{quality_sc} Max', 'title': f'{Icon}StreamingCommunity [{lang_display}]\n {slug_sc.replace("-"," ").capitalize()}','url': url_streaming_community, 'language': 'Italian','behaviorHints':{'notWebReady': False, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
                         else:
-                            streams['streams'].append({"name":f'{Name}\n{quality_sc}p Max', 'title': f'{Icon}StreamingCommunity\n {slug_sc.replace("-"," ").capitalize()}\n This will work only on a local instance','url': url_streaming_community,'behaviorHints': {'proxyHeaders': {"request": {"user-agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
+                            streams['streams'].append({"name":f'{Name}\n{quality_sc}p Max', 'title': f'{Icon}StreamingCommunity [{lang_display}]\n {slug_sc.replace("-"," ").capitalize()}\n This will work only on a local instance','url': url_streaming_community, 'language': 'Italian','behaviorHints': {'proxyHeaders': {"request": {"user-agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': f'streamingcommunity{quality_sc}'}})
                 
                 if provider_maps['LORDCHANNEL'] == "1" and LC == "1":
                     url_lordchannel,quality_lordchannel = await lordchannel(id,client)
                     if quality_lordchannel == "FULL HD" and url_lordchannel !=  None:
                         print(f"LordChannel Found Results for {id}")
-                        streams['streams'].append({'name': f"{Name}\n1080p",'title': f'{Icon}LordChannel', 'url': url_lordchannel,'behaviorHints': {'bingeGroup': 'lordchannel1080'}})
+                        lang_display = "ITA"
+                        streams['streams'].append({'name': f"{Name}\n1080p",'title': f'{Icon}LordChannel [{lang_display}]', 'url': url_lordchannel, 'language': 'Italian','behaviorHints': {'bingeGroup': 'lordchannel1080'}})
                     elif url_lordchannel !=  None:
                         print(f"LordChannel Found Results for {id}")
-                        streams['streams'].append({"name": f"{Name}\n720p",'title': f'{Icon}LordChannel 720p', 'url': url_lordchannel, 'behaviorHints': {'bingeGroup': 'lordchannel720'}})            
+                        lang_display = "ITA"
+                        streams['streams'].append({"name": f"{Name}\n720p",'title': f'{Icon}LordChannel 720p [{lang_display}]', 'url': url_lordchannel, 'language': 'Italian', 'behaviorHints': {'bingeGroup': 'lordchannel720'}})            
                 if provider_maps['FILMPERTUTTI'] == "1" and FT == "1":
                     url_filmpertutti,Host = await filmpertutti(id,client, MFP)
                     if url_filmpertutti is not None and Host is not None:
+                        lang_display = "ITA"
                         if MFP == "1":
                             url_filmpertutti = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_filmpertutti}&host={Host}&redirect_stream=true'
                             print(url_filmpertutti)
-                            streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}Filmpertutti', 'url': url_filmpertutti,'behaviorHints': {'bingeGroup': 'filmpertutti'}})
+                            streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}Filmpertutti [{lang_display}]', 'url': url_filmpertutti,'behaviorHints': {'bingeGroup': 'filmpertutti'}})
                         else:
-                            streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}Filmpertutti', 'url': url_filmpertutti,'behaviorHints': {'proxyHeaders': {"request": {"User-Agent": "Mozilla/5.0 (Windows NT 10.10; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}}, 'notWebReady': True, 'bingeGroup': 'filmpertutti'}})
+                            streams['streams'].append({'name': f'{Name}', 'title': f'{Icon}Filmpertutti [{lang_display}]', 'url': url_filmpertutti,'behaviorHints': {'proxyHeaders': {"request": {"User-Agent": "Mozilla/5.0 (Windows NT 10.10; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}}, 'notWebReady': True, 'bingeGroup': 'filmpertutti'}})
                         print(f"Filmpertutti Found Results for {id}")
                         
                 if provider_maps['TANTIFILM'] == "1" and TF == "1":
@@ -354,11 +368,12 @@ async def addon_stream(request: Request,config, type, id,):
                     url_tantifilm = await tantifilm(id,client,TF_FAST_SEARCH)
                     if url_tantifilm != "{'Doodstream HD': None}" and url_tantifilm != None:
                         print(f"TantiFilm Found Results for {id}")
+                        lang_display = "ITA"
                         if not isinstance(url_tantifilm, str):
                             for title, url in url_tantifilm.items():    
-                                streams['streams'].append({'title': f'{Icon}Tantifilm {title}', 'url': url,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True, 'bingeGroup': f'tantifilm{title}'}})
+                                streams['streams'].append({'title': f'{Icon}Tantifilm {title} [{lang_display}]', 'url': url,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True, 'bingeGroup': f'tantifilm{title}'}})
                         else:
-                            streams['streams'].append({'title': f'{Icon}Tantifilm', 'url': url_tantifilm,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True, 'bingeGroup': 'tantifilm'}})
+                            streams['streams'].append({'title': f'{Icon}Tantifilm [{lang_display}]', 'url': url_tantifilm,  'behaviorHints': {'proxyHeaders': {"request": {"Referer": "https://d000d.com/"}}, 'notWebReady': True, 'bingeGroup': 'tantifilm'}})
                 if provider_maps['STREAMINGWATCH'] == "1" and SW == "1":
                     url_streamingwatch,Referer = await streamingwatch(id,client)
                     if url_streamingwatch: 
