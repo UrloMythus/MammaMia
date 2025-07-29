@@ -34,39 +34,72 @@ async def get_streamtape(link,client):
 
 
 async def search(query,imdb_id,client,season,ismovie):
-    response = await client.get(query)
-    response = response.json()
-    #Get link tid of every item and then open the link to see if the date = date
-    for json in response:
-        link = json['link']
-        tid = json['id']
-        series_response = await client.get(link, headers=headers, allow_redirects=True, timeout = 30)
-        series_soup = BeautifulSoup(series_response.text, 'lxml')
-        imdb_pattern = r"'imdb_id':\s*'([^']+)'"
-        imdb_match = re.search(imdb_pattern, series_response.text)
-        if imdb_match:
-            id = imdb_match.group(1)
-            print(id)
-            if id == imdb_id:
-                url = link
-                tid = tid
-                if ismovie == 0:
-                    Seasons = series_soup.find_all('span', class_="season-name")
-                    i = 0
-                    for item in Seasons:
-                        season_text = item.text.strip()
-                        if season in season_text and "SUB" not in season_text:
-                            actual_season = i
-                            return url, tid, actual_season
-                        else:
-                            i = i + 1 
-                            continue
-                else:        
-                    actual_season = None
-                    return url, tid, actual_season 
+    try:
+        response = await client.get(query)
+        
+        if response.status_code != 200:
+            print(f"Filmpertutti search failed with status: {response.status_code}")
+            return None
             
-        else:
-            print("There's no IMDB_ID")
+        try:
+            response_data = response.json()
+            if not response_data:
+                print("Filmpertutti: No data in response")
+                return None
+        except (ValueError, KeyError) as e:
+            print(f"Filmpertutti JSON parsing error: {e}")
+            print(f"Response text: {response.text[:200]}...")
+            return None
+            
+        #Get link tid of every item and then open the link to see if the date = date
+        for json_item in response_data:
+            if not json_item or 'link' not in json_item or 'id' not in json_item:
+                continue
+                
+            link = json_item['link']
+            tid = json_item['id']
+            
+            try:
+                series_response = await client.get(link, headers=headers, allow_redirects=True, timeout = 30)
+                
+                if series_response.status_code != 200:
+                    continue
+                    
+                series_soup = BeautifulSoup(series_response.text, 'lxml')
+                imdb_pattern = r"'imdb_id':\s*'([^']+)'"
+                imdb_match = re.search(imdb_pattern, series_response.text)
+                
+                if imdb_match:
+                    id = imdb_match.group(1)
+                    if id == imdb_id:
+                        url = link
+                        tid = tid
+                        if ismovie == 0:
+                            Seasons = series_soup.find_all('span', class_="season-name")
+                            i = 0
+                            for item in Seasons:
+                                if item and item.text:
+                                    season_text = item.text.strip()
+                                    if season in season_text and "SUB" not in season_text:
+                                        actual_season = i
+                                        return url, tid, actual_season
+                                    else:
+                                        i = i + 1 
+                                        continue
+                        else:        
+                            actual_season = None
+                            return url, tid, actual_season 
+                            
+            except Exception as e:
+                print(f"Filmpertutti: Error processing item: {e}")
+                continue
+                
+        print("Filmpertutti: No matching IMDB ID found")
+        return None
+        
+    except Exception as e:
+        print(f"Filmpertutti search error: {e}")
+        return None
 
 def get_episode_link(actual_season,episode,tid,url): 
     #Get the link from where we have to obtain mixdrop link
