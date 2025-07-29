@@ -128,6 +128,10 @@ async def ddlstream(imdb,client):
                 showname = await get_info_imdb(id,ismovie,type,client)
         else:
             showname = get_info_tmdb(id,ismovie,type)
+        
+        if not showname:
+            print("DDLStream: Failed to get showname")
+            return None
         if ismovie == 0:
             season  = general[2]
             episode = general[3]

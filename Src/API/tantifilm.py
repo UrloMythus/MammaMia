@@ -236,12 +236,27 @@ async def tantifilm(imdb,client,TF_FAST_SEARCH):
             if "tt" in imdb:
                 if TF_FAST_SEARCH == "0":
                     type = "Tantifilm"
-                    showname,date = await get_info_imdb(imdb_id,ismovie,type,client)
-                    url,embed_id = await search(showname,ismovie,date,client)
+                    info_result = await get_info_imdb(imdb_id,ismovie,type,client)
+                    if not info_result or len(info_result) < 2:
+                        print("Tantifilm: Failed to get show info")
+                        return None
+                    showname, date = info_result
+                    search_result = await search(showname,ismovie,date,client)
+                    if not search_result:
+                        print("Tantifilm: Search returned no results")
+                        return None
+                    url, embed_id = search_result
                 elif TF_FAST_SEARCH == "1":
                     type = "TantifilmFS"
                     showname = await get_info_imdb(imdb_id,ismovie,type,client)
-                    url,embed_id = await fast_search(showname,ismovie,client)
+                    if not showname:
+                        print("Tantifilm: Failed to get showname")
+                        return None
+                    search_result = await fast_search(showname,ismovie,client)
+                    if not search_result:
+                        print("Tantifilm: Fast search returned no results")
+                        return None
+                    url, embed_id = search_result
             else:
                     #else just equals them
                     tmdba = imdb_id.replace("tmdb:","")
@@ -261,13 +276,28 @@ async def tantifilm(imdb,client,TF_FAST_SEARCH):
                 #Get showname
                     if TF_FAST_SEARCH == "0":
                         type = "Tantifilm"
-                        showname,date = await get_info_imdb(imdb_id,ismovie,type,client)
-                        tid,url = await search(showname,ismovie,date,client)
+                        info_result = await get_info_imdb(imdb_id,ismovie,type,client)
+                        if not info_result or len(info_result) < 2:
+                            print("Tantifilm: Failed to get movie info")
+                            return None
+                        showname, date = info_result
+                        search_result = await search(showname,ismovie,date,client)
+                        if not search_result:
+                            print("Tantifilm: Movie search returned no results")
+                            return None
+                        tid, url = search_result
                     elif TF_FAST_SEARCH == "1":
                         type = "TantifilmFS"
                         showname = await get_info_imdb(imdb_id,ismovie,type,client)
+                        if not showname:
+                            print("Tantifilm: Failed to get movie showname")
+                            return None
                         date = None
-                        tid,url = await fast_search(showname,ismovie,client)
+                        search_result = await fast_search(showname,ismovie,client)
+                        if not search_result:
+                            print("Tantifilm: Movie fast search returned no results")
+                            return None
+                        tid, url = search_result
             else:
                 if TF_FAST_SEARCH == "0":
                     type = "Tantifilm"
