@@ -119,13 +119,24 @@ async def player_url(page_url, season, episode,client):
 async def guardaserie(id,client):
     try:
         general = await is_movie(id)
-        if not general or len(general) < 4:
+        if not general or len(general) < 2:
             print("Guardaserie: Invalid general info")
             return None
+        
         ismovie = general[0]
         clean_id = general[1]
-        season = general[2]
-        episode = general[3]
+        
+        # For series, we need season and episode
+        if ismovie == 0:
+            if len(general) < 4:
+                print("Guardaserie: Missing season/episode info for series")
+                return None
+            season = general[2]
+            episode = general[3]
+        else:
+            # For movies, Guardaserie typically doesn't work, but let's handle gracefully
+            print("Guardaserie: Movies not supported")
+            return None
         '''
         if "tt" not in clean_id:
             clean_id = await get_IMDB_id_from_TMDb_id(clean_id,client) 

@@ -136,11 +136,20 @@ async def ddlstream(imdb,client):
             season  = general[2]
             episode = general[3]
             page_link = await search_series(client,id,season,episode,showname)
+            if not page_link:
+                print("DDLStream: No series page found")
+                return None
             mp4_link = await get_episode(client,page_link,episode)
+            if not mp4_link:
+                print("DDLStream: No episode link found")
+                return None
             final_url = await get_mp4(client,mp4_link)
             return final_url
         else:
              page_link = await search_movie(client,showname,id)
+             if not page_link:
+                 print("DDLStream: No movie page found")
+                 return None
              mp4_link = page_link + "?area=online"
              final_url = await get_mp4(client,mp4_link)
              return final_url
