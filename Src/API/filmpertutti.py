@@ -138,9 +138,16 @@ async def filmpertutti(imdb,client,MFP):
         #   Build the query
         query = f'{FT_DOMAIN}/wp-json/wp/v2/posts?search={showname}&page=1&_fields=link,id'
         try:
-            url,tid,actual_season = await search(query,imdb_id,client,season,ismovie)
-        except:
-            print("MammaMia: No results found for Filmpertutti")
+            search_result = await search(query,imdb_id,client,season,ismovie)
+            if not search_result:
+                print("MammaMia: No results found for Filmpertutti")
+                return None, None
+            if len(search_result) < 3:
+                print("Filmpertutti: Incomplete search result")
+                return None, None
+            url, tid, actual_season = search_result
+        except Exception as e:
+            print(f"Filmpertutti search failed: {e}")
             return None,None
         if ismovie == 0:
             episode_link =  get_episode_link(actual_season,episode,tid,url)

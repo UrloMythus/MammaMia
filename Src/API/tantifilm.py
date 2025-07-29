@@ -19,7 +19,18 @@ async def search(showname,ismovie,date,client):
     showname = showname.replace(" ","+")
     url = f'{TF_DOMAIN}/ajax/posts?q={showname}'
     response =  await client.get(url, allow_redirects=True)
-    response = response.json()['data']
+    if response.status_code != 200:
+        print(f"Tantifilm search failed with status: {response.status_code}")
+        return None
+    try:
+        response_data = response.json()
+        if not response_data or 'data' not in response_data:
+            print("Tantifilm: No data in response")
+            return None
+        response = response_data['data']
+    except (ValueError, KeyError) as e:
+        print(f"Tantifilm JSON parsing error: {e}")
+        return None
     if ismovie == 1:
         for link in response:
             url = link['url']

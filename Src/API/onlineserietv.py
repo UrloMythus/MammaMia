@@ -131,7 +131,14 @@ async def onlineserietv(id,client):
         else:
             showname,date = get_info_tmdb(clean_id,ismovie,type)
         showname = showname.replace("'"," ")
-        flexy_link,name = await search(showname,date,client,ismovie,episode,season)
+        search_result = await search(showname,date,client,ismovie,episode,season)
+        if not search_result or len(search_result) < 2:
+            print("OnlineSerieTV: Search returned no results")
+            return None, None
+        flexy_link, name = search_result
+        if not flexy_link:
+            print("OnlineSerieTV: No flexy link found")
+            return None, None
         flexy_link = flexy_link.replace("fxf","fxe")
         real_url = await client.head(ForwardProxy + flexy_link, headers=headers, impersonate = "chrome124", proxies = proxies)
         real_url = real_url.url

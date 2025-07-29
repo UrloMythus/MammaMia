@@ -283,9 +283,22 @@ async def cb01(id,client,MFP):
         real_id = general[1]
         type = "Cb01"
         if "tt" in id:
-            showname, date = await get_info_imdb(real_id,ismovie,type,client)
+            info_result = await get_info_imdb(real_id,ismovie,type,client)
         elif  "tmdb" in real_id:
-            showname, date = get_info_tmdb(real_id,ismovie,type)
+            info_result = get_info_tmdb(real_id,ismovie,type)
+        else:
+            print("CB01: Invalid ID format")
+            return None
+        
+        if not info_result or len(info_result) < 2:
+            print("CB01: Failed to get show info")
+            return None
+        
+        showname, date = info_result
+        
+        if not showname or not date:
+            print("CB01: Missing showname or date")
+            return None
         if ismovie == 0:
             season = general[2]
             episode = general[3]

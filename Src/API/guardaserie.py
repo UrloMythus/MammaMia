@@ -119,6 +119,9 @@ async def player_url(page_url, season, episode,client):
 async def guardaserie(id,client):
     try:
         general = await is_movie(id)
+        if not general or len(general) < 4:
+            print("Guardaserie: Invalid general info")
+            return None
         ismovie = general[0]
         clean_id = general[1]
         season = general[2]
