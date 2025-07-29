@@ -10,19 +10,35 @@ env_vars = load_env()
 GH_PROXY = config.GH_PROXY
 proxies = {}
 if GH_PROXY == "1":
-    PROXY_CREDENTIALS = env_vars.get('PROXY_CREDENTIALS')
-    proxy_list = json.loads(PROXY_CREDENTIALS)
-    proxy = random.choice(proxy_list)
-    if proxy == "":
+    try:
+        PROXY_CREDENTIALS = env_vars.get('PROXY_CREDENTIALS')
+        if PROXY_CREDENTIALS:
+            proxy_list = json.loads(PROXY_CREDENTIALS)
+            if proxy_list and len(proxy_list) > 0:
+                proxy = random.choice(proxy_list)
+                if proxy and proxy.strip() != "":
+                    proxies = {
+                        "http": proxy,
+                        "https": proxy
+                    }
+                    print(f"GuardaHD: Using proxy: {proxy}")
+                else:
+                    print("GuardaHD: Empty proxy selected, using direct connection")
+            else:
+                print("GuardaHD: No proxies available in PROXY_CREDENTIALS")
+        else:
+            print("GuardaHD: PROXY_CREDENTIALS not found in environment")
+    except (json.JSONDecodeError, Exception) as e:
+        print(f"GuardaHD: Error parsing proxy credentials: {e}")
         proxies = {}
-    else:
-        proxies = {
-            "http": proxy,
-            "https": proxy
-        }   
+
 GH_ForwardProxy = config.GH_ForwardProxy
 if GH_ForwardProxy == "1":
-    ForwardProxy = env_vars.get('ForwardProxy')
+    ForwardProxy = env_vars.get('ForwardProxy', "")
+    if ForwardProxy:
+        print(f"GuardaHD: Using ForwardProxy: {ForwardProxy}")
+    else:
+        print("GuardaHD: ForwardProxy enabled but not configured")
 else:
     ForwardProxy = ""
 #Get domain
@@ -65,13 +81,51 @@ async def get_supervideo_link(link,client):
 
 async def search(clean_id,client):
     headers = random_headers.generate()
-    response = await client.get(ForwardProxy + f"{GHD_DOMAIN}/set-movie-a/{clean_id}", allow_redirects=True, impersonate = "chrome124", headers = headers, proxies = proxies)
-    if response.status_code != 200:
-            print(f"GuardaHD Failed to fetch search results: {response.status_code}")
-    soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('li'))
-    li_tag = soup.find('li')
-    href = "https:" + li_tag['data-link']
-    return href
+    
+    # Try multiple approaches to handle proxy/connection issues
+    urls_to_try = []
+    
+    # Add ForwardProxy URL if configured
+    if ForwardProxy:
+        urls_to_try.append(ForwardProxy + f"{GHD_DOMAIN}/set-movie-a/{clean_id}")
+    
+    # Add direct URL as fallback
+    urls_to_try.append(f"{GHD_DOMAIN}/set-movie-a/{clean_id}")
+    
+    for url in urls_to_try:
+        try:
+            # Try with proxies first, then without if it fails
+            proxy_configs = [proxies, {}] if proxies else [{}]
+            
+            for proxy_config in proxy_configs:
+                try:
+                    response = await client.get(
+                        url, 
+                        allow_redirects=True, 
+                        impersonate="chrome124", 
+                        headers=headers, 
+                        proxies=proxy_config,
+                        timeout=15
+                    )
+                    
+                    if response.status_code == 200:
+                        soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('li'))
+                        li_tag = soup.find('li')
+                        if li_tag and li_tag.get('data-link'):
+                            href = "https:" + li_tag['data-link']
+                            return href
+                    else:
+                        print(f"GuardaHD search failed with status {response.status_code} for URL: {url}")
+                        
+                except Exception as proxy_error:
+                    print(f"GuardaHD proxy error for {url}: {proxy_error}")
+                    continue
+                    
+        except Exception as url_error:
+            print(f"GuardaHD URL error for {url}: {url_error}")
+            continue
+    
+    raise Exception("GuardaHD: All search attempts failed")
 
 
 
