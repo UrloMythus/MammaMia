@@ -141,17 +141,61 @@ async def eval_solver(stream_link,proxies, ForwardProxy, client):
         headers = random_headers.generate()
         headers["user-agent"] = "Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.71 Mobile Safari/537.36"
         headers["User-Agent"] = "Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.71 Mobile Safari/537.36"
-        response = await client.get( ForwardProxy + stream_link,  allow_redirects=True, timeout=30, headers = headers, proxies = proxies, impersonate = "chrome124")
-        print("Eval:",response.status_code)
-        soup = BeautifulSoup(response.text, "lxml",parse_only=SoupStrainer("script"))
-        script_all = soup.find_all("script")
-        for i in script_all:
-            if detect(i.text):
-                unpacked_code = unpack(i.text)
-                match = re.search( r'file:"(.*?)"', unpacked_code)
-                if match:
-                    m3u8_url = match.group(1)
-                    return m3u8_url
+        
+        # Try multiple URL configurations to handle proxy issues
+        urls_to_try = []
+        
+        # Add ForwardProxy URL if configured
+        if ForwardProxy:
+            urls_to_try.append(ForwardProxy + stream_link)
+        
+        # Add direct URL as fallback
+        urls_to_try.append(stream_link)
+        
+        for url in urls_to_try:
+            try:
+                # Try with proxies first, then without if it fails
+                proxy_configs = [proxies, {}] if proxies else [{}]
+                
+                for proxy_config in proxy_configs:
+                    try:
+                        response = await client.get(
+                            url, 
+                            allow_redirects=True, 
+                            timeout=20, 
+                            headers=headers, 
+                            proxies=proxy_config, 
+                            impersonate="chrome124"
+                        )
+                        
+                        print(f"Eval solver - URL: {url}, Status: {response.status_code}")
+                        
+                        if response.status_code == 200:
+                            soup = BeautifulSoup(response.text, "lxml", parse_only=SoupStrainer("script"))
+                            script_all = soup.find_all("script")
+                            
+                            for i in script_all:
+                                if detect(i.text):
+                                    unpacked_code = unpack(i.text)
+                                    match = re.search(r'file:"(.*?)"', unpacked_code)
+                                    if match:
+                                        m3u8_url = match.group(1)
+                                        print(f"Eval solver success: Found m3u8 URL")
+                                        return m3u8_url
+                        else:
+                            print(f"Eval solver - Non-200 status: {response.status_code}")
+                            
+                    except Exception as proxy_error:
+                        print(f"Eval solver proxy error for {url}: {proxy_error}")
+                        continue
+                        
+            except Exception as url_error:
+                print(f"Eval solver URL error for {url}: {url_error}")
+                continue
+        
+        print("Eval solver: No valid m3u8 URL found in any attempt")
+        raise Exception("Error in eval_solver: All attempts failed")
+        
     except Exception as e:
         print("Eval solver error\n",e)
         raise Exception("Error in eval_solver")
