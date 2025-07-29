@@ -80,12 +80,6 @@ async def get_supervideo_link(link,client):
     return final_url
 
 async def search(clean_id,client):
-    headers = random_headers.generate()
-    
-    print(f"GuardaHD Debug: Using domain: {GHD_DOMAIN}")
-    print(f"GuardaHD Debug: ForwardProxy: {ForwardProxy}")
-    print(f"GuardaHD Debug: Proxies: {proxies}")
-    
     # Try multiple domain options in case of issues
     domains_to_try = [
         GHD_DOMAIN,
@@ -97,9 +91,14 @@ async def search(clean_id,client):
     seen = set()
     domains_to_try = [x for x in domains_to_try if not (x in seen or seen.add(x))]
     
+    # Try different user agents for 403 issues
+    user_agents = [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    ]
+    
     for domain in domains_to_try:
-        print(f"GuardaHD Debug: Trying domain: {domain}")
-        
         urls_to_try = []
         
         # Add ForwardProxy URL if configured
@@ -110,45 +109,43 @@ async def search(clean_id,client):
         urls_to_try.append(f"{domain}/set-movie-a/{clean_id}")
         
         for url in urls_to_try:
-            try:
-                # Try with proxies first, then without if it fails
-                proxy_configs = [proxies, {}] if proxies else [{}]
-                
-                for proxy_config in proxy_configs:
-                    try:
-                        print(f"GuardaHD Debug: Attempting URL: {url}")
-                        response = await client.get(
-                            url, 
-                            allow_redirects=True, 
-                            impersonate="chrome124", 
-                            headers=headers, 
-                            proxies=proxy_config,
-                            timeout=15
-                        )
-                        
-                        print(f"GuardaHD Debug: Response status: {response.status_code} for {url}")
-                        
-                        if response.status_code == 200:
-                            soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('li'))
-                            li_tag = soup.find('li')
-                            if li_tag and li_tag.get('data-link'):
-                                href = "https:" + li_tag['data-link']
-                                print(f"GuardaHD Debug: Success! Found link: {href}")
-                                return href
-                            else:
-                                print("GuardaHD Debug: No valid li tag with data-link found")
-                        elif response.status_code == 403:
-                            print(f"GuardaHD Debug: 403 Forbidden for {url} - trying next option")
-                        else:
-                            print(f"GuardaHD search failed with status {response.status_code} for URL: {url}")
+            # Try different user agents for 403 issues
+            for user_agent in user_agents:
+                try:
+                    # Try with proxies first, then without if it fails
+                    proxy_configs = [proxies, {}] if proxies else [{}]
+                    
+                    for proxy_config in proxy_configs:
+                        try:
+                            headers = random_headers.generate()
+                            headers["User-Agent"] = user_agent
                             
-                    except Exception as proxy_error:
-                        print(f"GuardaHD proxy error for {url}: {proxy_error}")
-                        continue
-                        
-            except Exception as url_error:
-                print(f"GuardaHD URL error for {url}: {url_error}")
-                continue
+                            response = await client.get(
+                                url, 
+                                allow_redirects=True, 
+                                impersonate="chrome124", 
+                                headers=headers, 
+                                proxies=proxy_config,
+                                timeout=15
+                            )
+                            
+                            if response.status_code == 200:
+                                soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('li'))
+                                li_tag = soup.find('li')
+                                if li_tag and li_tag.get('data-link'):
+                                    href = "https:" + li_tag['data-link']
+                                    return href
+                            elif response.status_code == 403:
+                                # Try next user agent
+                                continue
+                            else:
+                                print(f"GuardaHD search failed with status {response.status_code} for URL: {url}")
+                                
+                        except Exception as proxy_error:
+                            continue
+                            
+                except Exception as url_error:
+                    continue
     
     raise Exception("GuardaHD: All search attempts failed")
 
