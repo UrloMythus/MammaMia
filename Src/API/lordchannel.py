@@ -6,6 +6,7 @@ import Src.Utilities.config as config
 import re
 import json
 LC_DOMAIN = config.LC_DOMAIN
+
 async def search(showname,date,season,episode,ismovie,client):
     cookies = {
         'csrftoken': '7lvc502CZe8Zbx7iSX1xkZOBA1NbDxJZ',
@@ -123,7 +124,7 @@ async def lordchannel(imdb,client):
             
         search_result = await search(showname,date,season,episode,ismovie,client)
         
-        if search_result[0] is None or search_result[1] is None:
+        if not search_result or search_result[0] is None or search_result[1] is None:
             print("LordChannel: Search returned no results")
             return None, None
             
@@ -145,7 +146,9 @@ async def lordchannel(imdb,client):
         
     except Exception as e:
         print("MammaMia: Lordchannel Failed",e)
-        return None,None'''
+        return None,None
+
+'''
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
