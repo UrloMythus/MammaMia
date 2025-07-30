@@ -128,15 +128,28 @@ async def ddlstream(imdb,client):
                 showname = await get_info_imdb(id,ismovie,type,client)
         else:
             showname = get_info_tmdb(id,ismovie,type)
+        
+        if not showname:
+            print("DDLStream: Failed to get showname")
+            return None
         if ismovie == 0:
             season  = general[2]
             episode = general[3]
             page_link = await search_series(client,id,season,episode,showname)
+            if not page_link:
+                print("DDLStream: No series page found")
+                return None
             mp4_link = await get_episode(client,page_link,episode)
+            if not mp4_link:
+                print("DDLStream: No episode link found")
+                return None
             final_url = await get_mp4(client,mp4_link)
             return final_url
         else:
              page_link = await search_movie(client,showname,id)
+             if not page_link:
+                 print("DDLStream: No movie page found")
+                 return None
              mp4_link = page_link + "?area=online"
              final_url = await get_mp4(client,mp4_link)
              return final_url

@@ -94,90 +94,106 @@ def get_info_tmdb(tmbda,ismovie,type):
             date = date.split("-")[0]
             return showname,date
 
-async def get_info_imdb(imdb_id, ismovie, type,client):
-    resp = await client.get(f'https://api.themoviedb.org/3/find/{imdb_id}?api_key={TMDB_KEY}&language=it&external_source=imdb_id')
-    data = resp.json()
-    if ismovie == 0:
-        showname = data['tv_results'][0]['name']
-        if type == "Filmpertutti":
-            return showname
-        elif type == "StreamingCommunity":
-            date = data['tv_results'][0]['first_air_date']
-            date = date.split("-")[0]
-            return showname,date
-        elif type == "StreamingCommunityFS":
-            return showname
-        elif type == "Tantifilm":
-            date = data['tv_results'][0]['first_air_date']
-            date = date.split("-")[0]
-            return showname,date
-        elif type == "TantifilmFS":
+async def get_info_imdb(imdb_id, ismovie, type, client):
+    try:
+        resp = await client.get(f'https://api.themoviedb.org/3/find/{imdb_id}?api_key={TMDB_KEY}&language=it&external_source=imdb_id')
+        data = resp.json()
+        
+        if ismovie == 0:
+            if not data.get('tv_results') or len(data['tv_results']) == 0:
+                print(f"No TV results found for {imdb_id}")
+                return None
+            showname = data['tv_results'][0]['name']
+            
+            if type == "Filmpertutti":
                 return showname
-        elif type == "Cool":
-            return showname
-        elif type == "DDLStream":
-            return showname
-        elif type == "Cb01":
-            date = data['tv_results'][0]['first_air_date']
-            date = date.split("-")[0]
-            return showname,date
-        elif type == "Whvx":
-            date = data['tv_results'][0]['first_air_date']
-            date = date.split("-")[0]
-            return showname,date
-        elif type == "Onlineserietv":
-            date = data['tv_results'][0]['first_air_date']
-            date = date.split("-")[0]
-            return showname,date
-        elif type == "Guardaserie":
-            date = data['tv_results'][0]['first_air_date'] 
-            date = date.split("-")[0]
-            return showname,date
+            elif type == "StreamingCommunity":
+                date = data['tv_results'][0]['first_air_date']
+                date = date.split("-")[0]
+                return showname,date
+            elif type == "StreamingCommunityFS":
+                return showname
+            elif type == "Tantifilm":
+                date = data['tv_results'][0]['first_air_date']
+                date = date.split("-")[0]
+                return showname,date
+            elif type == "TantifilmFS":
+                return showname
+            elif type == "Cool":
+                return showname
+            elif type == "DDLStream":
+                return showname
+            elif type == "Cb01":
+                date = data['tv_results'][0]['first_air_date']
+                date = date.split("-")[0]
+                return showname,date
+            elif type == "Whvx":
+                date = data['tv_results'][0]['first_air_date']
+                date = date.split("-")[0]
+                return showname,date
+            elif type == "Onlineserietv":
+                date = data['tv_results'][0]['first_air_date']
+                date = date.split("-")[0]
+                return showname,date
+            elif type == "Guardaserie":
+                date = data['tv_results'][0]['first_air_date'] 
+                date = date.split("-")[0]
+                return showname,date
 
-    elif ismovie == 1:
-        showname= data['movie_results'][0]['title']
-        if type == "Filmpertutti":
-            return showname
-        elif type == "StreamingCommunity":
-            date = data['movie_results'][0]['release_date']
-            date = date.split("-")[0]
-            return showname,date
-        elif type == "StreamingCommunityFS":
-            return showname
-        elif type == "Tantifilm":
-            date = data['movie_results'][0]['release_date']
-            date = date.split("-")[0]
-            return showname,date
-        elif type == "Cool":
-            return showname
-        elif type == "DDLStream":
-            return showname
-        elif type == "Cb01":
-            date = data['movie_results'][0]['release_date']
-            date = date.split("-")[0]
-            return showname,date
-        elif type == "Whvx":
-            date = data['movie_results'][0]['release_date']
-            date = date.split("-")[0]
-            return showname,date
-        elif type == "Onlineserietv":
-            date = data['movie_results'][0]['release_date']
-            date = date.split("-")[0]
-            return showname,date
+        elif ismovie == 1:
+            if not data.get('movie_results') or len(data['movie_results']) == 0:
+                print(f"No movie results found for {imdb_id}")
+                return None
+            showname = data['movie_results'][0]['title']
+            
+            if type == "Filmpertutti":
+                return showname
+            elif type == "StreamingCommunity":
+                date = data['movie_results'][0]['release_date']
+                date = date.split("-")[0]
+                return showname,date
+            elif type == "StreamingCommunityFS":
+                return showname
+            elif type == "Tantifilm":
+                date = data['movie_results'][0]['release_date']
+                date = date.split("-")[0]
+                return showname,date
+            elif type == "Cool":
+                return showname
+            elif type == "DDLStream":
+                return showname
+            elif type == "Cb01":
+                date = data['movie_results'][0]['release_date']
+                date = date.split("-")[0]
+                return showname,date
+            elif type == "Whvx":
+                date = data['movie_results'][0]['release_date']
+                date = date.split("-")[0]
+                return showname,date
+            elif type == "Onlineserietv":
+                date = data['movie_results'][0]['release_date']
+                date = date.split("-")[0]
+                return showname,date
+                
+    except Exception as e:
+        print(f"Error in get_info_imdb for {imdb_id}: {e}")
+        return None
 
 
 async def get_info_kitsu(kitsu_id,client):
-    api_url = f'https://kitsu.io/api/edge/anime/{kitsu_id}'
-    response = await client.get(api_url)
-    data = json.loads(response.text)
     try:
-        showname = data['data']['attributes']['titles']['en']
+        api_url = f'https://kitsu.io/api/edge/anime/{kitsu_id}'
+        response = await client.get(api_url)
+        data = json.loads(response.text)
+        try:
+            showname = data['data']['attributes']['titles']['en']
+        except Exception as e:
+            showname = data['data']['attributes']['canonicalTitle']
+        date = data['data']['attributes']['startDate']
+        return showname,date
     except Exception as e:
-        showname = data['data']['attributes']['canonicalTitle']
-    date = data['data']['attributes']['startDate']
-    return showname,date           
-
-
+        print(f"Error in get_info_kitsu for {kitsu_id}: {e}")
+        return None
 
 
 async def is_movie(imdb_id):
