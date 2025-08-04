@@ -157,9 +157,7 @@ async def get_true_link_mixdrop(real_link,client,MFP):
         if "club" in real_link:
             real_link = real_link.replace("club","ps").split('/2')[0] 
 
-        if MFP == "1":
-             return real_link
-             
+                     
         headers = fake_headers.generate()
         response = await client.get(real_link, headers=headers, allow_redirects=True, timeout=30, impersonate="chrome124")
         
