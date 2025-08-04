@@ -157,7 +157,6 @@ async def get_true_link_mixdrop(real_link,client,MFP):
         if "club" in real_link:
             real_link = real_link.replace("club","ps").split('/2')[0] 
 
-                     
         headers = fake_headers.generate()
         response = await client.get(real_link, headers=headers, allow_redirects=True, timeout=30, impersonate="chrome124")
         
@@ -309,6 +308,10 @@ async def get_true_link_mixdrop(real_link,client,MFP):
         # Validate the URL format
         if not decoded_url.startswith('https://') or '.mp4' not in decoded_url:
             return None
+        
+        # If MFP is enabled, return the original Mixdrop link for proxy processing
+        if MFP == "1":
+            return real_link
             
         return decoded_url
     except Exception as e:
