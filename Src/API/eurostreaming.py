@@ -10,9 +10,10 @@ from fake_headers import Headers
 random_headers = Headers()
 try:
     import pytesseract
+    from PIL import Image
 except Exception as e:
     print("You can not use ES")
-from PIL import Image
+
 import base64
 from io import BytesIO
 import time
