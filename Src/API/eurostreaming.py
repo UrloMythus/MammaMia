@@ -202,10 +202,10 @@ async def scraping_links(atag,MFP,client):
 async def search(showname,date,season,episode,MFP,client):
     headers = random_headers.generate()
 
-    response = await client.get(ForwardProxy + f'{ES_DOMAIN}/wp-json/wp/v2/search?search={showname}&_fields=id', proxies = proxies, headers = headers)
+    response = await client.get(ForwardProxy + f"{ES_DOMAIN}/wp-json/wp/v2/search?search={showname}&_fields=id", proxies = proxies, headers = headers)
     results = response.json()
     for i in results:
-        response = await client.get(ForwardProxy + f'{ES_DOMAIN}/wp-json/wp/v2/posts/{i['id']}?_fields=content', proxies = proxies, headers = headers)
+        response = await client.get(ForwardProxy + f"{ES_DOMAIN}/wp-json/wp/v2/posts/{i['id']}?_fields=content", proxies = proxies, headers = headers)
         if f'ID articolo non valido' in response.text:
             continue
         description = response.json()
