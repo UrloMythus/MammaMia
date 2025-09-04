@@ -8,7 +8,10 @@ from bs4 import BeautifulSoup,SoupStrainer
 env_vars = load_env()
 from fake_headers import Headers  
 random_headers = Headers()
-import pytesseract
+try:
+    import pytesseract
+except Exception as e:
+    print("You can not use ES")
 from PIL import Image
 import base64
 from io import BytesIO
