@@ -1,8 +1,9 @@
 import json
 from Src.Utilities.info import get_info_tmdb,is_movie
 from Src.Utilities.convert import get_TMDb_id_from_IMDb_id
-from Src.Utilities.loadenv import load_env
+from Src.Utilities.loadenv import load_env  
 env_vars = load_env()
+ForwardProxy = env_vars.get('ALTERNATIVE_LINK')
 MYSTERIUS_KEY = env_vars.get('MYSTERIUS_KEY')
 
 async def get_links(slug,season,episode,ismovie,client):
@@ -16,7 +17,7 @@ async def get_links(slug,season,episode,ismovie,client):
         ap_session = Auths.get('auth')
         
         cookies = {'ap_session': ap_session}
-
+        print(cookies)
         headers = {
             'accept': 'application/json, text/plain, */*',
             'accept-language': 'it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7',
@@ -140,7 +141,7 @@ async def cool(imdb,client):
     except Exception as e:
         print("Cool Error",e)
         return None
-'''
+
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
@@ -151,4 +152,3 @@ async def test_animeworld():
 if __name__ == "__main__":
     import asyncio
     asyncio.run(test_animeworld())
-'''

@@ -12,7 +12,7 @@ async def search(showname,date,season,episode,ismovie,client):
     }
 
     headers = {
-        'authority': f'lordchannel.{LC_DOMAIN}',
+        'authority': f'{LC_DOMAIN}',
         'accept': '*/*',
         'accept-language': 'it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7',
         # 'cookie': 'csrftoken=7lvc502CZe8Zbx7iSX1xkZOBA1NbDxJZ',
@@ -31,7 +31,7 @@ async def search(showname,date,season,episode,ismovie,client):
         'media': showname,
         '_': '1724421723999',
     }
-    response = await client.get(f'{LC_DOMAIN}/live_search/', params=params, cookies=cookies, headers=headers, allow_redirects=True, impersonate = "chrome120")
+    response = await client.get(f'{LC_DOMAIN}/live_search/', params=params, cookies=cookies, headers=headers, allow_redirects=True, impersonate = "chrome124")
     data = json.loads(response.text)
     for entry in data['data']:
         if entry is not None:  # check if the a_tag exists
@@ -98,7 +98,6 @@ async def lordchannel(imdb,client):
         print("MammaMia: Lordchannel Failed",e)
         return None,None
     
-'''
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
@@ -109,4 +108,3 @@ if __name__ == "__main__":
     import asyncio
     asyncio.run(test_animeworld())  
     #python3 -m Src.API.lordchannel
-'''

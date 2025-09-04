@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup, SoupStrainer
 from Src.Utilities.info import get_info_imdb, is_movie, get_info_tmdb
 import urllib.parse
 import Src.Utilities.config as config
-import urllib.parse
+
 DDL_DOMAIN = config.DDL_DOMAIN
 ips4_device_key = config.ips4_device_key
 ips4_login_key = config.ips4_login_key
@@ -14,12 +14,12 @@ cookies = {
     'ips4_device_key': ips4_device_key,
     'ips4_IPSSessionFront': ips4_IPSSessionFront,
     'ips4_member_id': ips4_member_id,
-    'ips4_login_key': ips4_login_key,
+    'ips4_login_key': ips4_login_key
     }
 
 async def search_series(client,id,season,episode,showname):
     showname = showname.replace(" ", "%20").replace("–", "+").replace("—","+")
-    response = await client.get(f"{DDL_DOMAIN}/search/?&q={showname}%20{season}%20Streaming&type=videobox_video&quick=1&nodes=11,36&search_and_or=and&search_in=titles&sortby=relevancy")
+    response = await client.get(f"{DDL_DOMAIN}/search/?&q={showname}%20{season}%20Streaming&type=videobox_video&quick=1&nodes=11,36&search_and_or=and&search_in=titles&sortby=relevancy", cookies = cookies)
     soup = BeautifulSoup(response.text, 'lxml',parse_only=SoupStrainer('a'))
     a_tags = soup.find_all('a', {'data-linktype': 'link'})
     for a in a_tags:
@@ -55,7 +55,6 @@ async def get_episode(client,link,episode):
         'Sec-Fetch-Site': 'same-origin',
         'Sec-Fetch-User': '?1',
         'Connection': 'keep-alive',
-    #   'Cookie': 'ips4_device_key=b6f084be79c28bb53ecfc556fd7a2a70; ips4_IPSSessionFront=f2b9db91793e084cf2003a07c563e6aa; ips4_ipsTimezone=Europe/Rome; ips4_hasJS=true; ips4_noCache=1; ips4_announcement_3=true; ips4_member_id=4029711; ips4_login_key=41b6a70b16cce2fd39482f5b21a9c35f; ips4_loggedIn=1725985598',
         'Priority': 'u=1',
         'Pragma': 'no-cache',
         'Cache-Control': 'no-cache',
@@ -65,8 +64,7 @@ async def get_episode(client,link,episode):
     }
 
 
-    response = await client.get(link, cookies = cookies, headers = headers, params = params, impersonate="chrome120")
-
+    response = await client.get(link, cookies = cookies, headers = headers, params = params, impersonate="chrome124")
     pattern = rf'<a\s+href="([^"]+)"[^>]*>\s*Part {episode}\s*</a>'
     match = re.search(pattern, response.text)
     mp4_link = match.group(1)
@@ -98,7 +96,7 @@ async def search_movie(client,showname,id):
 
 
 async def get_mp4(client,link):
-    response = await client.get(link, cookies = cookies)   
+    response = await client.get(link, cookies = cookies)
     soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('source'))
     source_tag = soup.find('source')
     final_url = source_tag['src']
@@ -149,7 +147,7 @@ async def ddlstream(imdb,client):
 async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
-        test_id = "tt14948432"  # This is an example ID format
+        test_id = "tt3148266:3:4"  # This is an example ID format
         results = await ddlstream(test_id, client)
         print(results)
 

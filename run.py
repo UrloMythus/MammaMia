@@ -17,6 +17,7 @@ from Src.Utilities.dictionaries import okru,STREAM,extra_sources,webru_vary,webr
 from Src.API.epg import tivu, tivu_get,epg_guide,convert_bho_1,convert_bho_2,convert_bho_3
 from Src.API.webru import webru,get_skystreaming
 from Src.API.onlineserietv import onlineserietv
+from Src.API.eurostreaming import eurostreaming
 from curl_cffi.requests import AsyncSession
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -53,6 +54,7 @@ DDL = config.DDL
 GS = config.GS
 GHD = config.GHD
 OST = config.OST
+ES = config.ES
 HOST = config.HOST
 PORT = int(config.PORT)
 Icon = config.Icon
@@ -68,7 +70,7 @@ app.include_router(m3u8_clone)
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_middleware(SlowAPIMiddleware)
-User_Agent= "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:127.0) Gecko/20100101 Firefox/127.0"
+User_Agent= "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
 MANIFEST = {
     "id": "org.stremio.mammamia",
     "version": "1.5.0",
@@ -111,10 +113,9 @@ async def transform_mfp(mfp_stream_url,client):
         for i in data['request_headers']:
             url += f"&h_{i}={urllib.parse.quote(data['request_headers'][i])}"
 
-
         return url
     except Exception as e:
-        print("Transforing MFP failed",e)
+        print("Converting MFP failed",e)
         return None
 @app.get('/config')
 def config():
@@ -404,7 +405,30 @@ async def addon_stream(request: Request,config, type, id,):
                 if url_onlineserietv:
                     print(f"OnlineSerieTV Found Results for {id}")
                     streams['streams'].append({'name': f"{Name}",'title': f'{Icon}OnlineSerieTV\n{name}', 'url': url_onlineserietv, 'behaviorHints': {'proxyHeaders': {'request': {"User-Agent": 'Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.71 Mobile Safari/537.36', "Referer": "https://flexy.stream/"}}, 'bingeGroup': 'onlineserietv', 'notWebReady': True}})
-            
+            if provider_maps['EUROSTREAMING'] == "1" and ES == "1":
+                urls_eurostreaming = await eurostreaming(id,client,MFP)
+                if urls_eurostreaming:
+                    i = 0
+                    for url_eurostreaming,name_es in urls_eurostreaming.items():
+                        if len(urls_eurostreaming) == 1:
+                            language = "ITA/SUB ITA"
+                        elif len(urls_eurostreaming)>1:
+                            if i == 0:
+                                language = "ITA"
+                            else:
+                                language = "SUB ITA"
+                        if "cdn.net" in url_eurostreaming:
+                            streams['streams'].append({'name': f"{Name}\n{language}",'title': f'{Icon}Eurostreaming\nDeltabit\n{name_es}', 'url': url_eurostreaming, 'behaviorHints': {'bingeGroup': 'eurostreaming'}})
+                        elif "delivery" in url_eurostreaming:
+                            streams['streams'].append({'name': f"{Name}\n{language}",'title': f'{Icon}Eurostreaming\nMixDrop\n{name_es}', 'url': url_eurostreaming, 'behaviorHints': {'proxyHeaders': {"request": {"User-Agent": 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36'}}, 'notWebReady': True, 'bingeGroup': 'eurostreaming'}})
+                        elif "mixdrop" in url_eurostreaming:
+                            if MFP == "1":
+                                url_eurostreaming = f'{MFP_url}/extractor/video?api_password={MFP_password}&d={url_eurostreaming}&host=Mixdrop&redirect_stream=false'
+                                url_eurostreaming = await transform_mfp(url_eurostreaming,client)
+                                if url_eurostreaming:
+                                    streams['streams'].append({'name': f"{Name}\n{language}",'title': f'{Icon}Eurostreaming\nMixDrop\n{name_es}', 'url': url_eurostreaming, 'behaviorHints':{'bingeGroup': 'eurostreaming'}})
+                        i+=1
+
         if not streams['streams']:
             raise HTTPException(status_code=404)
 

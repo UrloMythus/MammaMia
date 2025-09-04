@@ -1,7 +1,7 @@
 {
     "Siti": {
            "StreamingCommunity": {
-               "url": "https://streamingcommunity.paris",
+               "url": "https://vixsrc.to",
                "SC_ForwardProxy": "0",
                "SC_PROXY": "0",
                "VX_ForwardProxy": "0",
@@ -10,20 +10,20 @@
            },
            "Filmpertutti": {
                "url": "https://filmpertutti.motorcycles",
-               "enabled": "1"
+               "enabled": "0"
            },
            "Tantifilm":{
                "url": "https://www.tanti.bond",
-               "TF_ForwardProxy": "0",
+               "TF_ForwardProxy": "1",
                "TF_PROXY": "0",
-               "enabled": "1"
+               "enabled": "0"
            },
            "Mysterius":{
                "enabled": "0"    
            },
           "LordChannel":{
                "url":"https://lordchannel.net",
-               "enabled":"1"
+               "enabled":"0"
           },
           "StreamingWatch":{
               "url":"https://www.streamingwatch.org",
@@ -45,10 +45,10 @@
                   "ips4_member_id": null,
                   "ips4_login_key": null
                   },
-              "enabled":"1"
+              "enabled":"0"
           },
           "Guardaserie":{
-              "url":"https://guardaserietv.mom",
+              "url":"https://guardaserietv.cc",
               "enabled":"1",
               "GS_ForwardProxy":"0",
               "GS_PROXY":"0"
@@ -61,10 +61,16 @@
           },
           "Onlineserietv":{
               "domain":"com",
-              "enabled":"1",
+              "enabled":"0",
               "OST_ForwardProxy":"0",
               "OST_PROXY":"0"
           },
+          "Eurostreaming":{
+            "url": "https://eurostreaming.garden",
+            "enabled": "1",
+            "ES_ForwardProxy": "0",
+            "ES_PROXY": "0"
+        },  
           "AnimeWorld":{
               "url":"https://www.animeworld.so",
               "enabled":"1",
@@ -83,12 +89,11 @@
    "General":{
        "load_env": "0",
        "HOST": "0.0.0.0",
-       "PORT": "8080",
+       "PORT": 8080,
        "Name": "MammaMia",
        "Icon": "🍕️",
        "Public_Instance": "0",
-       "Remote_Instance": "1",
+       "Remote_Instance": "0",
        "Global_Proxy": "0"
        }
   }
-  

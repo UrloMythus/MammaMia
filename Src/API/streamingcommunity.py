@@ -114,7 +114,6 @@ async def search(query,date,ismovie, client,SC_FAST_SEARCH,movie_id):
                     print(movie_id)
                     #Here we need to convert because the IMDB ID is often bugged
                 tmdb_id = str(data['props']['title']['tmdb_id'])
-                print(tmdb_id)
                 if tmdb_id == movie_id:
                     return tid,slug,version
             elif SC_FAST_SEARCH == "1":

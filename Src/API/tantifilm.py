@@ -288,7 +288,7 @@ async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt1839578:1:1"  # This is an example ID format
+        test_id = "tt3148266:1:1"  # This is an example ID format
         results = await tantifilm(test_id, client,"0")
         print(results)
 

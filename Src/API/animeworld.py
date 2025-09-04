@@ -151,7 +151,7 @@ async def animeworld(id,client):
 async def test_animeworld():
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "kitsu:508:2"  # This is an example ID format
+        test_id = "kitsu:46474:1"  # This is an example ID format
         results = await animeworld(test_id, client)
         print(results)
 

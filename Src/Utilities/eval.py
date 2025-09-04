@@ -139,8 +139,8 @@ random_headers = Headers()
 async def eval_solver(stream_link,proxies, ForwardProxy, client):
     try:
         headers = random_headers.generate()
-        headers["user-agent"] = "Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.71 Mobile Safari/537.36"
-        headers["User-Agent"] = "Mozilla/5.0 (Linux; Android 12) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.71 Mobile Safari/537.36"
+        headers["User-Agent"] = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+        headers["accept-language"] = 'en-US,en;q=0.5'
         response = await client.get( ForwardProxy + stream_link,  allow_redirects=True, timeout=30, headers = headers, proxies = proxies, impersonate = "chrome124")
         print("Eval:",response.status_code)
         soup = BeautifulSoup(response.text, "lxml",parse_only=SoupStrainer("script"))
@@ -148,10 +148,28 @@ async def eval_solver(stream_link,proxies, ForwardProxy, client):
         for i in script_all:
             if detect(i.text):
                 unpacked_code = unpack(i.text)
-                match = re.search( r'file:"(.*?)"', unpacked_code)
+                if "mixdrop" in stream_link:
+                     pattern = r'MDCore.wurl ?= ?"(.*?)"'
+                     
+                else:
+                    pattern = r'file:"(.*?)"'
+                match = re.search(pattern, unpacked_code)
                 if match:
                     m3u8_url = match.group(1)
                     return m3u8_url
     except Exception as e:
         print("Eval solver error\n",e)
         raise Exception("Error in eval_solver")
+
+
+#Testing
+async def test_animeworld():
+    from curl_cffi.requests import AsyncSession
+    async with AsyncSession() as client:
+        results = await eval_solver("https://mixdrop.cv/e/l6kqxrm4t4l4or",{},"",client)
+        print("https:"+results)
+
+if __name__ == "__main__":
+    import asyncio
+    asyncio.run(test_animeworld())  
+    #python3 -m Src.Utilities.eval
