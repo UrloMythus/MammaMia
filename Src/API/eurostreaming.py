@@ -81,7 +81,8 @@ async def deltabit(page_url,client):
     page_url = response.url
 
     #Often deltabit redirects to another deltabit link. We need the redirected link to put it in the headers.
-    headers['origin'] = f'https://{page_url.split('/')[2]}'
+    origin = page_url.split('/')[2]
+    headers['origin'] = f'https://{origin}'
     headers['referer'] = page_url
     headers['user-agent'] =  'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36'
 
