@@ -266,18 +266,12 @@ HTML = """
         const providers = {
             "streamingcommunity": "SC",
             "fast_search_sc": "SC_FS",
-            "lordchannel": "LC",
             "streamingwatch": "SW",
-            "tantifilm": "TF",
-            "fast_search_tf": "TF_FS",
-            "filmpertutti": "FT",
             "animeworld": "AW",
             "livetv": "LIVETV",
             "cb01": "CB",
-            "ddlstream": "DDL",
             "guardaserie": "GS",
             "guardahd": "GHD",
-            "onlineserietv": "OST",
             "mediaflowproxy": "MFP"
         };
 
