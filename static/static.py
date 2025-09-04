@@ -188,11 +188,6 @@ HTML = """
         <h3 class="gives">Select Providers:</h3>
         <form class="pure-form" id="provider-form">
             <div class="provider-group">
-                <label for="lordchannel" class="provider-label">
-                    <input type="checkbox" id="lordchannel"> LordChannel
-                </label>
-            </div>
-            <div class="provider-group">
                 <label for="streamingwatch" class="provider-label">
                     <input type="checkbox" id="streamingwatch"> StreamingWatch
                 </label>
@@ -214,43 +209,16 @@ HTML = """
                     <input type="checkbox" id="guardahd"> GuardaHD
                 </label>
             </div>
-            <div class="provider-group">
-                <label for="guardahd" class="provider-label">
-                    <input type="checkbox" id="onlineserietv"> OnlineSerieTV
-                </label>
-            </div>
-            <div class="provider-group">
-                <label for="tantifilm" class="provider-label">
-                    <input type="checkbox" id="tantifilm"> Tantifilm
-                </label>
-                <span class="fast-search">
-                    <label for="fast_search_tf">
-                        <input type="checkbox" id="fast_search_tf"> Fast Search
-                    </label>
-                </span>
-             </div>
           <div>
-            <p>To use the following providers you need to use a local instance or else you need to set up Mediaflow-proxy... Search it on GitHub
+            <p>Mediaflowproxy
             </p>
-            </div>
-            <div class="provider-group">
-                <label for="filmpertutti" class="provider-label">
-                    <input type="checkbox" id="filmpertutti"> 
-                    Filmpertutti
-                </label>
-            </div>
-          
+            </div>          
             <div class="provider-group">
                 <label for="cb01" class="provider-label">
                     <input type="checkbox" id="cb01"> CB01
                 </label>
             </div>
-             <div class="provider-group">
-                <label for="ddlstream" class="provider-label">
-                    <input type="checkbox" id="ddlstream"> DDLStream Italy
-                </label>
-            </div>
-            <p>To use the following provider you need to use a local instance or else you need to set up Mediaflow-proxy with an IP not blocked by the site</p>
+            <p>Local/MFP with good IP</p>
             <div class="provider-group">
                 <label for="streamingcommunity" class="provider-label">
                     <input type="checkbox" id="streamingcommunity"> StreamingCommunity
