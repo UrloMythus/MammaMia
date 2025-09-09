@@ -20,7 +20,7 @@ import time
 from Src.Utilities.eval import eval_solver
 import os
 import json
-
+import difflib
 import random
 ES_DOMAIN = config.ES_DOMAIN
 
@@ -202,43 +202,51 @@ async def scraping_links(atag,MFP,client):
         print("Just give up")
         return None,""
 
-
+async def episodes_find(description,season,episode,MFP,client):
+    episode = episode.zfill(2)
+    pattern = rf'{season}&#215;{episode}\s*(.*?)(?=<br\s*/?>)'
+    match = re.findall(pattern, description)
+    urls= {}
+    if match:
+        for episode_details in match:
+            if "href" in episode_details:
+                full_url,name = await scraping_links(episode_details.split(' – ', 1)[1],MFP,client)
+                if full_url:
+                    urls[full_url] = name
+        return urls
 async def search(showname,date,season,episode,MFP,client):
     headers = random_headers.generate()
 
-    response = await client.get(ForwardProxy + f"{ES_DOMAIN}/wp-json/wp/v2/search?search={showname}&_fields=id", proxies = proxies, headers = headers)
+    response = await client.get(ForwardProxy + f"{ES_DOMAIN}/wp-json/wp/v2/search?search={quote(showname)}&_fields=id", proxies = proxies, headers = headers)
     results = response.json()
     for i in results:
-        response = await client.get(ForwardProxy + f"{ES_DOMAIN}/wp-json/wp/v2/posts/{i['id']}?_fields=content", proxies = proxies, headers = headers)
+        response = await client.get(ForwardProxy + f"{ES_DOMAIN}/wp-json/wp/v2/posts/{i['id']}?_fields=content,title", proxies = proxies, headers = headers)
         if f'ID articolo non valido' in response.text:
             continue
         description = response.json()
+        title = description['title']['rendered']
         description = description['content']['rendered']
-        year_pattern = re.compile(r'(?<!/)(19|20)\d{2}(?!/)')
-        match = year_pattern.search(description)
-        if match:
-            year = match.group(0)
-
+        ratio = difflib.SequenceMatcher(None, title, showname).ratio()
+        if ratio >=0.96:
+            urls = await episodes_find(description,season,episode,MFP,client)
+            return urls
         else:
-            pattern = r'<a\s+href="([^"]+)"[^>]*>Continua a leggere</a>'
-            match = re.search(pattern, description)
+            year_pattern = re.compile(r'(?<!/)(19|20)\d{2}(?!/)')
+            match = year_pattern.search(description)
             if match:
-                href_value = match.group(1)
-                response_2 = await client.get(ForwardProxy + href_value, proxies = proxies, headers = headers)
-                match = year_pattern.search(response_2.text)
+                year = match.group(0)
+
+            else:
+                pattern = r'<a\s+href="([^"]+)"[^>]*>Continua a leggere</a>'
+                match = re.search(pattern, description)
                 if match:
-                    year = match.group(0)
-        if year == str(date):
-            episode = episode.zfill(2)
-            pattern = rf'{season}&#215;{episode}\s*(.*?)(?=<br\s*/?>)'
-            match = re.findall(pattern, description)
-            urls= {}
-            if match:
-                for episode_details in match:
-                    if "href" in episode_details:
-                        full_url,name = await scraping_links(episode_details.split(' – ', 1)[1],MFP,client)
-                        if full_url:
-                            urls[full_url] = name
+                    href_value = match.group(1)
+                    response_2 = await client.get(ForwardProxy + href_value, proxies = proxies, headers = headers)
+                    match = year_pattern.search(response_2.text)
+                    if match:
+                        year = match.group(0)
+            if abs(int(year) - int(date)) <=1:
+                urls = await episodes_find(description,season,episode,MFP,client)
                 return urls
 
 
@@ -260,7 +268,6 @@ async def eurostreaming(id,client,MFP):
         else:
             showname,date = await get_info_imdb(clean_id,ismovie,type,client)
         print(showname)
-        showname = quote(showname)
         urls = await search(showname,date, season,episode,MFP,client)
         return urls
     except Exception as e:
@@ -272,7 +279,7 @@ async def eurostreaming(id,client,MFP):
 async def test_euro():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
-        results = await eurostreaming("tt6156584:4:5",client,0)
+        results = await eurostreaming("tt2261391:6:1",client,0)
         print(results)
 
 async def test_deltabit():
@@ -286,4 +293,5 @@ if __name__ == "__main__":
     asyncio.run(test_euro())  
     #python3 -m Src.API.eurostreaming
 
-'''tt11950864'''
+'''tt11950864
+'''
