@@ -11,6 +11,8 @@ from Src.API.extractors.dropload import dropload
 import logging
 from Src.Utilities.config import setup_logging
 level = config.LEVEL
+import json
+import random
 logger = setup_logging(level)
 env_vars = load_env()
 random_headers = Headers()
@@ -130,7 +132,7 @@ async def guardoserie(streams,id,client,MFP,MFP_CREDENTIALS):
 async def test_guardoserie():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
-        results = await guardoserie({'streams': []},"tt16426418",client,"1",['test','test'])
+        results = await guardoserie({'streams': []},"tt10919420:1:1",client,"1",['test','test'])
         print(results)
 
         
