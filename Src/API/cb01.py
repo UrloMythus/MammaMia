@@ -165,6 +165,7 @@ async def series_redirect_url(link,season,episode,client,MFP,MFP_CREDENTIALS,str
                         mixdrop_real_link = await get_stayonline(mixdrop_link,client)
                         streams = await mixdrop(mixdrop_real_link,client,MFP,MFP_CREDENTIALS,streams,"CB01",proxies,ForwardProxy,"")  
                     return streams
+        return streams
 
 
 
