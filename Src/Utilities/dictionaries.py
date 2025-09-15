@@ -1,17 +1,4 @@
 import Src.Utilities.config as config
-SKY_DOMAIN = config.SKY_DOMAIN
-okru = {
-    "rai-1": "https://ok.ru/videoembed/9340203179632?nochat=1", 
-    "rai-2": "https://ok.ru/videoembed/9267281010288?nochat=1",
-    "canale-5": "https://ok.ru/videoembed/7871149252208?nochat=1",
-    "italia-1": "https://ok.ru/videoembed/7393558339184?nochat=1",
-    "rai-premium": "https://ok.ru/videoembed/7363152715376?nochat=1",
-    "rai-movie": "https://ok.ru/videoembed/7384012693104?nochat=1",
-    "tv8": "https://ok.ru/videoembed/8077072998000?nochat=1",
-    "rsi-la-2": "https://ok.ru/videoembed/7681648107120?nochat=1",
-    "mediaset-extra": "https://ok.ru/videoembed/7363151601264?nochat=1",
-    "mediaset-infinity": "https://ok.ru/videoembed/6323249159792%3Fnochat=1"
-}
 
 STREAM = {
     "channels": [
@@ -29,7 +16,7 @@ STREAM = {
             "name": "Full HD Http",
             "genres": ["Rai"],
             "poster": "https://i.imgur.com/bb72vqh.jpeg",
-            "url": "http://173.208.52.200/rai1/index.m3u8"
+            "url": "https://viamotionhsi.netplus.ch/live/eds/rai1/browser-HLS8/rai1.m3u8"
         },
         {
             "id": "rai-2",
@@ -37,7 +24,7 @@ STREAM = {
             "name": "Full HD Http",
             "genres": ["Rai"],
             "poster": "https://i.imgur.com/jX95Qod.jpeg",
-            "url": "http://173.208.52.200/rai2/index.m3u8"
+            "url": "https://viamotionhsi.netplus.ch/live/eds/rai2/browser-HLS8/rai2.m3u8"
         },
         {
             "id": "rai-3",
@@ -45,7 +32,7 @@ STREAM = {
             "name": "Full HD Http",
             "genres": ["Rai"],
             "poster": "https://i.imgur.com/fgAh9if.jpeg",
-            "url": "http://173.208.52.200/rai3/index.m3u8"
+            "url": "https://viamotionhsi.netplus.ch/live/eds/rai3/browser-HLS8/rai3.m3u8"
         },
         {
             "id": "rai-4",
@@ -53,7 +40,7 @@ STREAM = {
             "name": "Full HD Http",
             "genres": ["Rai"],
             "poster": "https://i.imgur.com/NryLzhA.jpeg",
-            "url": "http://173.208.52.200/rai4/index.m3u8"
+            "url": "https://raiquattro1-dash-live.akamaized.net/dash/live/663977/raiquattro1/manifest.mpd"
         },
         {
             "id": "rai-premium",
@@ -61,7 +48,7 @@ STREAM = {
             "name": "Full HD",
             "genres": ["Rai"],
             "poster": "https://www.sorrisi.com/guidatv/bundles/tvscnewsite/css/images/loghi/rai-premium_c.png",
-            "url": "https://mediapolis.rai.it/relinker/relinkerServlet.htm?cont=746992" 
+            "url": "https://raipremium1-dash-live.akamaized.net/dash/live/663979/raipremium1/manifest.mpd" 
         },
         {
             "id": "rai-4k",
@@ -78,7 +65,7 @@ STREAM = {
             "name": "",
             "genres": ["Rai"],
             "poster": "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/31/05/eb/3105eb24-a953-7bb9-876d-0fcfb0a19055/AppIcon-0-0-1x_U007epad-0-10-0-0-85-220.png/1200x630wa.png",
-            "url": "https://streamcdnb4-8e7439fdb1694c8da3a0fd63e4dda518.msvdn.net/rainews1/hls/playlist_mo.m3u8"
+            "url": "https://streamcdnb2-8e7439fdb1694c8da3a0fd63e4dda518.msvdn.net/rainews1/hls/playlist_mo.m3u8"
         },
         {
             "id": "rai-movie",
@@ -86,7 +73,7 @@ STREAM = {
             "name": "",
             "genres": ["Rai"],
             "poster": "https://www.sorrisi.com/guidatv/bundles/tvscnewsite/css/images/loghi/rai-movie_c.png",
-            "url": "https://m3u.iranvids.com/rai-movie/output.m3u8"
+            "url": "https://raimovie1-dash-live.akamaized.net/dash/live/663983/raimovie1/manifest.mpd"
         },
         {
             "id": "rai-sport",
@@ -94,7 +81,7 @@ STREAM = {
             "name": "",
             "genres": ["Rai"],
             "poster": "https://www.sorrisi.com/guidatv/bundles/tvscnewsite/css/images/loghi/rai-sport_c.png",
-            "url": "https://m3u.iranvids.com/rai-sport01/output.m3u8"
+            "url": "https://viamotionhsi.netplus.ch/live/eds/raisport1/browser-HLS8/raisport1.m3u8"
         },
         {
             "id": "rete-4",
@@ -102,7 +89,7 @@ STREAM = {
             "name": "Full HD Http",
             "genres": ["Mediaset"],
             "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Rete_4_2018.svg/1024px-Rete_4_2018.svg.png",
-            "url": "http://173.208.52.200/rete4/index.m3u8"
+            "url": "https://live02-seg.msf.cdn.mediaset.net/live/ch-r4/r4-clr.isml/index.m3u8"
         },
         {
             "id": "euronews",
@@ -118,7 +105,7 @@ STREAM = {
             "name": "Full HD Http",
             "genres": ["Mediaset"],
             "poster": "https://www.sorrisi.com/guidatv/bundles/tvscnewsite/css/images/loghi/canale-5_c.png",
-            "url": "http://173.208.52.200/canale5/index.m3u8"
+            "url": "https://viamotionhsi.netplus.ch/live/eds/canale5/browser-HLS8/canale5.m3u8"
         },
         {
             "id": "italia-1",
@@ -126,7 +113,7 @@ STREAM = {
             "name": "Full HD Http",
             "genres": ["Mediaset"],
             "poster": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e2/Italia_1.svg/1024px-Italia_1.svg.png",
-            "url": "http://173.208.52.200/italia1/index.m3u8"
+            "url": "https://viamotionhsi.netplus.ch/live/eds/italia1/browser-HLS8/italia1.m3u8"
         },
         {
             "id": "topcrime",
@@ -543,12 +530,12 @@ webru_dlhd = {
 
 }
 extra_sources = {
-    "rai-1": ["https://m3u.iranvids.com/rai01/output.m3u8"],
-    "rai-2": ["https://m3u.iranvids.com/rai02/output.m3u8"],
-    "rai-3": ["https://dash2.antik.sk/live/test_rai_tre_tizen/playlist.m3u8","https://wzstreaming.rai.it/TVlive/liveStream/playlist.m3u8","https://list.iptvcat.com/my_list/s/1f22856f68f2fba4a993c47f47c78a64.m3u8","https://list.iptvcat.com/my_list/s/a372048a4fb440e752aec141aa02885f.m3u8","https://list.iptvcat.com/my_list/s/c7efe17aa0dc8096561967bfb828d4f3.m3u8","https://list.iptvcat.com/my_list/s/2d1f14bbb3370d263d8d3f0d9f5128e0.m3u8"],
-    "rete-4":["https://tvit.leicaflorianrobert.dev/mediaset/rete-4/stream.m3u8","https://live02-seg.msf.cdn.mediaset.net/live/ch-r4/r4-clr.isml/index.m3u8"],
-    "canale-5":["https://live02-seg.msf.cdn.mediaset.net/live/ch-c5/c5-clr.isml/index.m3u8","https://tvit.leicaflorianrobert.dev/mediaset/canale-5/stream.m3u8"],
-    "italia-1":["https://tvit.leicaflorianrobert.dev/mediaset/italia-1/stream.m3u8","https://live02-seg.msf.cdn.mediaset.net/live/ch-i1/i1-clr.isml/index.m3u8"],
+    "rai-1": ["https://ilglobotv-live.akamaized.net/channels/RAI1/Live.m3u8"],
+    "rai-2": ["https://ilglobotv-live.akamaized.net/channels/RAI2/Live.m3u8"],
+    "rai-3": ["https://ilglobotv-live.akamaized.net/channels/RAI2/Live.m3u8","https://dash2.antik.sk/live/test_rai_tre_tizen/playlist.m3u8","https://wzstreaming.rai.it/TVlive/liveStream/playlist.m3u8","https://list.iptvcat.com/my_list/s/1f22856f68f2fba4a993c47f47c78a64.m3u8","https://list.iptvcat.com/my_list/s/a372048a4fb440e752aec141aa02885f.m3u8","https://list.iptvcat.com/my_list/s/c7efe17aa0dc8096561967bfb828d4f3.m3u8","https://list.iptvcat.com/my_list/s/2d1f14bbb3370d263d8d3f0d9f5128e0.m3u8"],
+    "rete-4":["https://tvit.leicaflorianrobert.dev/mediaset/rete-4/stream.m3u8","https://timlivetu0.cb.ticdn.it/Content/DASH/Live/channel(rete4)/manifest.mpd"],
+    "canale-5":["https://timlivetu0.cb.ticdn.it/Content/DASH/Live/channel(canale5)/manifest.mpd","https://tvit.leicaflorianrobert.dev/mediaset/canale-5/stream.m3u8",'https://timlivetu0.cb.ticdn.it/Content/DASH/Live/channel(canale5)/manifest.mpd','https://live02-seg.msf.cdn.mediaset.net/live/ch-c5/c5-clr.isml/index.m3u8'],
+    "italia-1":["https://tvit.leicaflorianrobert.dev/mediaset/italia-1/stream.m3u8","https://live02-seg.msf.cdn.mediaset.net/live/ch-i1/i1-clr.isml/index.m3u8",'https://timlivetu0.cb.ticdn.it/Content/DASH/Live/channel(italia1)/manifest.mpd'],
     "rai-4k": ["https://list.iptvcat.com/my_list/s/fbf04fbd9694eee71b5af9f12e49538d.m3u8"],
     "rai-news":["https://8e7439fdb1694c8da3a0fd63e4dda518.msvdn.net/rainews1/hls/playlist_mo.m3u8"],
     "topcrime": ["https://tvit.leicaflorianrobert.dev/mediaset/top-crime/stream.m3u8"],
@@ -564,33 +551,7 @@ extra_sources = {
     "doctor-who": ["https://amg00793-amg00793c17-samsung-it-4577.playouts.now.amagi.tv/playlist/amg00793-bbcstudios-drwhoitaly-samsungit/playlist.m3u8"],
     "supertennis": ["https://live-embed.supertennix.hiway.media/restreamer/supertennix_client/gpu-a-c0-16/restreamer/outgest/h24_supertennix/manifest.m3u8"]
 }
-skystreaming ={
-    "sky-sport-tennis": f"{SKY_DOMAIN}/embed/MKCKP",
-    "sky-sport-24": f"{SKY_DOMAIN}/embed/GB7zq",
-    "sky-sport-251": f"{SKY_DOMAIN}/embed/drHbM",
-    "sky-sport-252": f"{SKY_DOMAIN}/embed/m5kfg",
-    "sky-sport-253": f"{SKY_DOMAIN}/embed/YprHf",
-    "sky-sport-254": f"{SKY_DOMAIN}/embed/wroRV",
-    "sky-sport-255": f"{SKY_DOMAIN}/embed/0TixN",
-    "sky-sport-256": f"{SKY_DOMAIN}/embed/8g8bh",
-    "sky-sport-257": f"{SKY_DOMAIN}/embed/ri859",
-    "sky-sport-258": f"{SKY_DOMAIN}/embed/UoJuW",
-    "sky-sport-259": f"{SKY_DOMAIN}/embed/squCy",
-    "sky-sport-260": f"{SKY_DOMAIN}/embed/Z5h2e",
-    "sky-sport-261": f"{SKY_DOMAIN}/embed/Hz9FW",
-    "sky-sport-uno": f"{SKY_DOMAIN}/embed/tb1np",
-    "sky-sport-f1": f"{SKY_DOMAIN}/embed/MLkym",
-    "sky-sport-motogp": f"{SKY_DOMAIN}/embed/ARFFv",
-    "sky-sport-calcio": f"{SKY_DOMAIN}/embed/STOZT",
-    "sky-sport-arena": f"{SKY_DOMAIN}/embed/NkEda",
-    "sky-sport-max": f"{SKY_DOMAIN}/embed/4QzWz",
-    "sky-sport-nba": f"{SKY_DOMAIN}/embed/saR8j",
-    "sky-sport-golf": f"{SKY_DOMAIN}/embed/s9L5f",
-    "eurosport-1": f"{SKY_DOMAIN}/embed/Vyv99",
-    "eurosport-2": f"{SKY_DOMAIN}/embed/um8E5",
-    "dazn-zona-a": ["https://hls.kangal.sbs/hls/serie/index.m3u8","https://hls.kangal.sbs/hls/serie/index.m3u8"],
-    "sportitalia": "https://hls.kangal.sbs/hls/sportitalia/index.m3u8",
-}
+
 huhu = {
     "canale-5": "1101559666",
     "sky-sport-motogp": "2090703806",
@@ -619,5 +580,7 @@ provider_map = {
         "GS": "GUARDASERIE",
         "GHD": "GUARDAHD",
         "OST": "ONLINESERIETV",
-        "ES": "EUROSTREAMING"
+        "ES": "EUROSTREAMING",
+        "GO": "GUARDOSERIE",
+        "GF": "GUARDAFLIX"
     }

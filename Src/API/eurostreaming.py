@@ -2,11 +2,16 @@ from Src.Utilities.info import get_info_tmdb, is_movie, get_info_imdb
 import Src.Utilities.config as config
 from fake_headers import Headers  
 from urllib.parse import quote
-from Src.Utilities.loadenv import load_env  
+from Src.Utilities.loadenv import load_env 
+from Src.API.extractors.mixdrop import mixdrop
+from Src.API.extractors.deltabit import deltabit 
 import re
+import logging
+from Src.Utilities.config import setup_logging
+level = config.LEVEL
+logger = setup_logging(level)
 from bs4 import BeautifulSoup,SoupStrainer
 env_vars = load_env()
-from fake_headers import Headers  
 random_headers = Headers()
 try:
     import pytesseract
@@ -17,11 +22,11 @@ except Exception as e:
 import base64
 from io import BytesIO
 import time
-from Src.Utilities.eval import eval_solver
 import os
 import json
 import difflib
 import random
+from Src.Utilities.mfp import build_mfp
 ES_DOMAIN = config.ES_DOMAIN
 
 ES_PROXY = config.ES_PROXY
@@ -43,82 +48,6 @@ if ES_ForwardProxy == "1":
 else:
     ForwardProxy = ""
 
-
-
-
-'''
-OK <a href="https://uprot.net/msf/fwbtgsssmt0q" target="_blank" rel="noopener">MaxStream</a> – <a href="https://clicka.cc/delta/6svqpze62r8z" target="_blank" rel="noopener">DeltaBit</a> – <a href="https://clicka.cc/tv/5eumjxxt" target="_blank" rel="noopener">Turbovid</a>
-pattern = r'href="([^"]+)"'
-match = re.search(pattern, text)
- href_value = match.group(1)
-'''
-async def mixdrop(url,MFP,client):
-    """Extract Mixdrop URL."""
-    if "club" in url:
-        url = url.replace("club", "cv").split("/2")[0]
-    if "cfd" in url:
-        url = url.replace("cfd", "cv").replace("emb","e").split("/2")[0]
-    if MFP == "1": 
-        return url,""
-    headers = {"accept-language": "en-US,en;q=0.5"}
-    final_url = f"https:{await eval_solver(url, proxies , ForwardProxy, client)}"
-    return final_url,""
-
-async def deltabit(page_url,client):
-    """Extract Deltabit URL."""
-    i = 0
-    #Set up some headers
-    headers = random_headers.generate()
-    headers2 = random_headers.generate()
-
-    #Get the redirected link, so the actual deltabit link.
-    page_url_response = await client.get(ForwardProxy + page_url,headers={**headers, 'Range': 'bytes=0-0'}, proxies=proxies)
-    page_url = page_url_response.url
-    print("Page_URl is",page_url)
-
-    #Change the referer  and user agent of the generated headers
-    headers2['referer'] = 'https://safego.cc/'
-    headers2['user-agent'] =  'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36'
-
-    #Request to the deltabit link
-    response = await client.get(ForwardProxy + page_url, headers = headers2, allow_redirects = True, proxies = proxies)
-    page_url = response.url
-
-    #Often deltabit redirects to another deltabit link. We need the redirected link to put it in the headers.
-    origin = page_url.split('/')[2]
-    headers['origin'] = f'https://{origin}'
-    headers['referer'] = page_url
-    headers['user-agent'] =  'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36'
-
-    #We check the page for the data such as hash and fname.
-    soup = BeautifulSoup(response.text, 'lxml', parse_only=SoupStrainer('input'))
-    data = {}
-    for input in soup:
-        name = input.get('name')
-        value = input.get('value')
-        data[name] = value 
-    data['imhuman'] = ''
-    data['referer']= page_url
-
-    #We need to wait 2.5 seconds or the request will fail
-    time.sleep(2.5)
-    
-    
-    
-    fname = data['fname']
-    #Request to the deltabit link
-    response = await client.post(ForwardProxy + page_url, data = data, headers = headers, proxies = proxies)
-    link = re.findall(r'sources:\s*\["([^"]+)"', response.text, re.DOTALL)
-    print(link)
-    if not link:
-        if not i >= 3:
-            link,fname = await deltabit(page_url,client)
-            i +=1
-    else:
-        link = link[0]
-    
-    
-    return link,fname
 
 
 def convert_numbers(base64_data):
@@ -154,7 +83,7 @@ async def real_page(safego_url,client):
         if len(soup)>= 1:
             return soup.a['href']
         else:
-            print("Getting numbers")
+            logger.info("Getting numbers")
             numbers,cookies = await get_numbers(safego_url,client)
             numbers = convert_numbers(numbers)
             data = {'captch4': numbers}
@@ -166,7 +95,7 @@ async def real_page(safego_url,client):
             soup = BeautifulSoup(response.text,'lxml', parse_only=SoupStrainer('a'))
             return soup.a['href']
     except Exception as e:
-        print(e)
+        logger.info(f"ES{e}")
 async def get_host_link(pattern,atag,client):
     match = re.search(pattern, atag)
     headers = random_headers.generate()
@@ -176,45 +105,54 @@ async def get_host_link(pattern,atag,client):
         href_value = response.url
         href = await real_page(href_value,client)
         return href
-async def scraping_links(atag,MFP,client):
+async def scraping_links(atag,MFP,MFP_CREDENTIALS,client,streams,language):
     #Check which hosts are avaiable and extract the links from one of them. Turbovid uses Cloudflare therefore is not avaiable. Maxstream has a captcha. 
-    if "MixDrop" and "DeltaBit" in atag:
+    if "MixDrop" in atag and "DeltaBit" in atag:
         pattern = r'<a\s+href="([^"]+)"[^>]*rel="noopener"[^>]*>DeltaBit</a>'
         href = await get_host_link(pattern,atag,client)
         try:
-            full_url,name = await deltabit(href,client)
+            streams = await deltabit(href,client,streams,"Eurostreaming",proxies,ForwardProxy,language)
         except Exception as e:
             pattern = r'<a\s+href="([^"]+)"[^>]*rel="noopener"[^>]*>MixDrop</a>'
             href = await get_host_link(pattern,atag,client)
-            full_url,name = await mixdrop(href,MFP,client)
-        return full_url,name
+            streams = await mixdrop(href,client,MFP,MFP_CREDENTIALS,streams,"Eurostreaming",proxies,ForwardProxy,language)
+        return streams
     if "MixDrop" in atag and  "DeltaBit" not in atag:
-        pattern = r'<a\s+href="([^"]+)"[^>]*rel="noopener"[^>]*>MixDrop</a>'
-        href = await get_host_link(pattern,atag,client)
-        full_url,name = await mixdrop(href,MFP,client)
-        return full_url,name
+        try:
+            pattern = r'<a\s+href="([^"]+)"[^>]*rel="noopener"[^>]*>MixDrop</a>'
+            href = await get_host_link(pattern,atag,client)
+            streams = await mixdrop(href,client,MFP,MFP_CREDENTIALS,streams,"Eurostreaming",proxies,ForwardProxy,language)
+            return streams
+        except Exception as e:
+            return streams
     if 'DeltaBit' in atag and "MixDrop" not in atag:
-        pattern = r'<a\s+href="([^"]+)"[^>]*rel="noopener"[^>]*>DeltaBit</a>'
-        href = await get_host_link(pattern,atag,client)
-        full_url,name = await deltabit(href,client)
-        return full_url,name
+        try:
+            pattern = r'<a\s+href="([^"]+)"[^>]*rel="noopener"[^>]*>DeltaBit</a>'
+            href = await get_host_link(pattern,atag,client)
+            streams = await deltabit(href,client,streams,"Eurostreaming",proxies,ForwardProxy,language)
+            return streams
+        except Exception as e:
+            return streams
     if 'DeltaBit' not in atag and 'MixDrop' not in atag:
-        print("Just give up")
-        return None,""
+        logger.info("Just give up")
+        return streams
 
-async def episodes_find(description,season,episode,MFP,client):
+async def episodes_find(description,season,episode,MFP,MFP_CREDENTIALS,client,streams):
+    t = 0
     episode = episode.zfill(2)
     pattern = rf'{season}&#215;{episode}\s*(.*?)(?=<br\s*/?>)'
     match = re.findall(pattern, description)
-    urls= {}
     if match:
         for episode_details in match:
             if "href" in episode_details:
-                full_url,name = await scraping_links(episode_details.split(' – ', 1)[1],MFP,client)
-                if full_url:
-                    urls[full_url] = name
-        return urls
-async def search(showname,date,season,episode,MFP,client):
+                if t == 0:
+                    language = "\nITA"
+                elif t == 1:
+                    language = "\nSUB-ITA"
+                t +=1
+                streams = await scraping_links(episode_details.split(' – ', 1)[1],MFP,MFP_CREDENTIALS,client,streams,language)
+    return streams
+async def search(showname,date,season,episode,MFP,MFP_CREDENTIALS,client,streams):
     headers = random_headers.generate()
 
     response = await client.get(ForwardProxy + f"{ES_DOMAIN}/wp-json/wp/v2/search?search={quote(showname)}&_fields=id", proxies = proxies, headers = headers)
@@ -228,8 +166,8 @@ async def search(showname,date,season,episode,MFP,client):
         description = description['content']['rendered']
         ratio = difflib.SequenceMatcher(None, title, showname).ratio()
         if ratio >=0.96:
-            urls = await episodes_find(description,season,episode,MFP,client)
-            return urls
+            streams = await episodes_find(description,season,episode,MFP,MFP_CREDENTIALS,client,streams)
+            return streams
         else:
             year_pattern = re.compile(r'(?<!/)(19|20)\d{2}(?!/)')
             match = year_pattern.search(description)
@@ -246,13 +184,13 @@ async def search(showname,date,season,episode,MFP,client):
                     if match:
                         year = match.group(0)
             if abs(int(year) - int(date)) <=1:
-                urls = await episodes_find(description,season,episode,MFP,client)
-                return urls
+                streams = await episodes_find(description,season,episode,MFP,MFP_CREDENTIALS,client,streams)
+                return streams
+    return streams
 
 
 
-
-async def eurostreaming(id,client,MFP):
+async def eurostreaming(streams,id,client,MFP,MFP_CREDENTIALS):
     try:
         general = await is_movie(id)
         ismovie = general[0]
@@ -262,16 +200,17 @@ async def eurostreaming(id,client,MFP):
             season = str(general[2])
             episode = str(general[3])
         elif ismovie == 1:
-            return None
+            return streams
         if "tmdb" in id:
             showname,date = get_info_tmdb(clean_id,ismovie,type)
         else:
             showname,date = await get_info_imdb(clean_id,ismovie,type,client)
-        print(showname)
-        urls = await search(showname,date, season,episode,MFP,client)
-        return urls
+        logger.info(f"ES {showname}")
+        streams = await search(showname,date, season,episode,MFP,MFP_CREDENTIALS,client,streams)
+        return streams
     except Exception as e:
-        print(e)
+        logger.warning(f"ES {e}")
+        return streams
 
 
 
@@ -279,7 +218,7 @@ async def eurostreaming(id,client,MFP):
 async def test_euro():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
-        results = await eurostreaming("tt2261391:6:1",client,0)
+        results = await eurostreaming({'streams': []},"tt9253284:1:4",client,"0",['test','test'])
         print(results)
 
 async def test_deltabit():

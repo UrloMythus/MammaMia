@@ -1,11 +1,19 @@
 
 from bs4 import BeautifulSoup
 import datetime
+import logging
 import json
 from Src.Utilities.info import get_info_kitsu
 import Src.Utilities.config as config
 import re
 from fake_headers import Headers  
+import  Src.Utilities.config as config
+from Src.Utilities.config import setup_logging
+level = config.LEVEL
+logger = setup_logging(level)
+Icon = config.Icon
+Name = config.Name
+
 random_headers = Headers()
 proxies = {}
 from Src.Utilities.loadenv import load_env  
@@ -55,7 +63,7 @@ async def security_cookie (response):
             f"SecurityAW-{unknown_chars}": Security_Cookie
         }
         return cookies
-async def get_mp4(anime_url,ismovie,episode,client):
+async def get_mp4(anime_url,ismovie,episode,client,i,streams):
     cookies = {}
     if ForwardProxy != "":
         response = await client.get(ForwardProxy + anime_url,allow_redirects=True,impersonate = "chrome124",proxies=proxies)
@@ -82,12 +90,18 @@ async def get_mp4(anime_url,ismovie,episode,client):
     response = await client.head(url)
     if response.status_code == 404:
         url = None
-    return url
+    if url:
+        if i == 0:
+            language = "Original"
+        elif i == 1:
+            language = "Italian"
+        streams['streams'].append({'title': f'{Icon}Animeworld {language}', 'url': url,'behaviorHints': {'bingeGroup': 'animeworld'}})
+    return streams
 
 
 
 
-async def search(showname,date,ismovie,episode,client):
+async def search(showname,date,ismovie,episode,client,streams):
     search_year = date[:4] 
     headers = random_headers.generate()
     link = f'{AW_DOMAIN}/filter?year={search_year}&sort=2&keyword={showname}'
@@ -99,7 +113,7 @@ async def search(showname,date,ismovie,episode,client):
         cookies = {}
     soup = BeautifulSoup(response.text,'lxml')
     anime_list = soup.find_all('a', class_=['poster', 'tooltipstered'])
-    final_urls = []
+    i = 0
     for anime in anime_list:
         anime_info_url = f'{AW_DOMAIN}/{anime["data-tip"]}'
         response = await client.get(ForwardProxy + anime_info_url,allow_redirects=True, impersonate = "chrome124", cookies = cookies, proxies = proxies)
@@ -118,12 +132,13 @@ async def search(showname,date,ismovie,episode,client):
     release_date == (datetime.datetime.strptime(date, "%Y-%m-%d") + datetime.timedelta(days=1)).strftime("%Y-%m-%d") or
     release_date == (datetime.datetime.strptime(date, "%Y-%m-%d") - datetime.timedelta(days=1)).strftime("%Y-%m-%d")):
             anime_url = f'{AW_DOMAIN}{anime["href"]}'
-            final_url = await get_mp4(anime_url,ismovie,episode,client)
-            if final_url:
-                final_urls.append(final_url)
-    return final_urls
+            streams = await get_mp4(anime_url,ismovie,episode,client,i,streams)
+            i+=1
+            logger.info(f"AnimeWorld Found Results for current ID")
 
-async def animeworld(id,client):
+    return streams
+
+async def animeworld(streams,id,client):
     try:
         kitsu_id = id.split(":")[1]
         ismovie = 1 if len(id.split(":")) == 2 else 0
@@ -142,11 +157,11 @@ async def animeworld(id,client):
                     showname = showname.split("’")[0]
                 if ":" in showname:
                     showname = showname.split(":")[0]
-        final_urls = await search(showname,date,ismovie,episode,client)
-        return final_urls
+        streams = await search(showname,date,ismovie,episode,client,streams)
+        return streams
     except Exception as e:
-        print("Animeworld failed",e)
-        return None
+        logger.warning(f"Animeworld failed {e}")
+        return streams
 
 async def test_animeworld():
     async with AsyncSession() as client:
@@ -200,7 +215,7 @@ async def old_search(showname,date,ismovie,episode,client):
         'keyword': showname,
     }
 
-    response = await client.post(f'https://www.animeworld.{AW_DOMAIN}/api/search/v2', params=params, cookies=cookies, headers=headers,allow_redirects=True, impersonate = "chrome124")
+    response = await client.post(f'https://www.animeworld.{AW_DOMAIN}/api/search/v2', params=params, cookies=cookies, headers=headers,allow_redirects=True)
 
     data = json.loads(response.text)
     final_urls = []
@@ -221,7 +236,7 @@ async def old_search(showname,date,ismovie,episode,client):
     params = {
         'keyword': showname,
     }
-    response = await client.post(ForwardProxy + f'https://www.animeworld.{AW_DOMAIN}/api/search/v2', params=params, cookies=cookies, headers=headers, allow_redirects=True, impersonate = "chrome124", proxies = proxies)
+    response = await client.post(ForwardProxy + f'https://www.animeworld.{AW_DOMAIN}/api/search/v2', params=params, cookies=cookies, headers=headers, allow_redirects=True, proxies = proxies)
     data = json.loads(response.text)
     for anime in data["animes"]:
         release_date = anime["release"]

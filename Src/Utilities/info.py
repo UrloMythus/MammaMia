@@ -57,6 +57,10 @@ def get_info_tmdb(tmbda,ismovie,type):
             date = show.first_air_date
             date = date.split("-")[0]
             return showname,date
+        elif type == "Guardoserie":
+            date = show.first_air_date
+            date = date.split("-")[0]
+            return showname,date
     
     elif ismovie == 1:
         movie = Movie()
@@ -94,6 +98,14 @@ def get_info_tmdb(tmbda,ismovie,type):
             date = date.split("-")[0]
             return showname,date
         elif type == "Whvx":
+            date = show.release_date
+            date = date.split("-")[0]
+            return showname,date
+        elif type == "Guardoserie":
+            date = show.release_date
+            date = date.split("-")[0]
+            return showname,date
+        elif type == 'Guardaflix':
             date = show.release_date
             date = date.split("-")[0]
             return showname,date
@@ -141,7 +153,10 @@ async def get_info_imdb(imdb_id, ismovie, type,client):
             date = data['tv_results'][0]['first_air_date'] 
             date = date.split("-")[0]
             return showname,date
-
+        elif type == "Guardoserie":
+            date = data['tv_results'][0]['first_air_date'] 
+            date = date.split("-")[0]
+            return showname,date
     elif ismovie == 1:
         showname= data['movie_results'][0]['title']
         if type == "Filmpertutti":
@@ -169,6 +184,14 @@ async def get_info_imdb(imdb_id, ismovie, type,client):
             date = date.split("-")[0]
             return showname,date
         elif type == "Onlineserietv":
+            date = data['movie_results'][0]['release_date']
+            date = date.split("-")[0]
+            return showname,date
+        elif type == "Guardoserie":
+            date = data['movie_results'][0]['release_date']
+            date = date.split("-")[0]
+            return showname,date
+        elif type == 'Guardaflix':
             date = data['movie_results'][0]['release_date']
             date = date.split("-")[0]
             return showname,date

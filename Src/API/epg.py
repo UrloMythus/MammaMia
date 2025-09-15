@@ -1,5 +1,9 @@
 from bs4 import BeautifulSoup
-
+import Src.Utilities.config as config
+import logging
+from Src.Utilities.config import setup_logging
+level = config.LEVEL
+logger = setup_logging(level)
 tivu = {
     "dazn-zona-a": "801",
 }
@@ -171,7 +175,7 @@ async def tivu_get(id,client):
         description = hour_range + " " + program_name
         return description
     except Exception as e:
-        print(e)
+        logger.warning(f"EPG {e}")
         description = f'Watch {id}'
         return description
 
@@ -194,10 +198,10 @@ async def epg_guide(id,client):
         data = response.json()
         description = data['description'].replace("- EPG by epg-guide.com","").replace("No description","")
         title = data['title']
-        print("MammaMia: EPG FOUND")
+        logger.info("MammaMia: EPG FOUND")
         return description,title   
     except Exception as e:
-        print(e)
+        logger.debug(e)
         description = f'Watch {id}'
         title = ""
         return description,title

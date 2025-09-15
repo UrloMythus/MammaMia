@@ -13,10 +13,8 @@ async def get_TMDb_id_from_IMDb_id(imdb_id,client):
     else:
         return None
 async def get_IMDB_id_from_TMDb_id(tmdb_id,client):
-    print(tmdb_id)
     url = f"https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={TMDB_KEY}"
     response = await client.get(url)
-    print(response.text)
     if response.status_code == 200:
         data = response.json()
         imdb_id = data.get('imdb_id')
