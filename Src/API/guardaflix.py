@@ -75,6 +75,7 @@ async def search(showname,date,MFP,MFP_CREDENTIALS,client,streams):
             page_link = iframe.get('data-src') or iframe.get('src')
             streams = await get_player(page_link,MFP,MFP_CREDENTIALS,client, headers,streams)
             return streams
+    return streams
         
 
 

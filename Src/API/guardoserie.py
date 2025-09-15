@@ -83,7 +83,7 @@ async def search(showname,date,season,episode,MFP, MFP_CREDENTIALS,ismovie,clien
                     page_link = href
                 streams = await get_player(page_link,MFP,MFP_CREDENTIALS,client, headers,streams)
                 return streams
-
+    return streams
 
 
 
