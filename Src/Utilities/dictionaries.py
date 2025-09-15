@@ -13,7 +13,7 @@ STREAM = {
         {
             "id": "rai-1",
             "title": "Rai 1",
-            "name": "Full HD Http",
+            "name": "Full HD ",
             "genres": ["Rai"],
             "poster": "https://i.imgur.com/bb72vqh.jpeg",
             "url": "https://viamotionhsi.netplus.ch/live/eds/rai1/browser-HLS8/rai1.m3u8"
@@ -21,7 +21,7 @@ STREAM = {
         {
             "id": "rai-2",
             "title": "Rai 2",
-            "name": "Full HD Http",
+            "name": "Full HD ",
             "genres": ["Rai"],
             "poster": "https://i.imgur.com/jX95Qod.jpeg",
             "url": "https://viamotionhsi.netplus.ch/live/eds/rai2/browser-HLS8/rai2.m3u8"
@@ -29,7 +29,7 @@ STREAM = {
         {
             "id": "rai-3",
             "title": "Rai 3",
-            "name": "Full HD Http",
+            "name": "Full HD ",
             "genres": ["Rai"],
             "poster": "https://i.imgur.com/fgAh9if.jpeg",
             "url": "https://viamotionhsi.netplus.ch/live/eds/rai3/browser-HLS8/rai3.m3u8"
@@ -37,7 +37,7 @@ STREAM = {
         {
             "id": "rai-4",
             "title": "Rai 4",
-            "name": "Full HD Http",
+            "name": "Full HD ",
             "genres": ["Rai"],
             "poster": "https://i.imgur.com/NryLzhA.jpeg",
             "url": "https://raiquattro1-dash-live.akamaized.net/dash/live/663977/raiquattro1/manifest.mpd"
@@ -86,7 +86,7 @@ STREAM = {
         {
             "id": "rete-4",
             "title": "Rete 4",
-            "name": "Full HD Http",
+            "name": "Full HD",
             "genres": ["Mediaset"],
             "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Rete_4_2018.svg/1024px-Rete_4_2018.svg.png",
             "url": "https://live02-seg.msf.cdn.mediaset.net/live/ch-r4/r4-clr.isml/index.m3u8"
@@ -97,12 +97,11 @@ STREAM = {
             "name": "720p",
             "genres": ["Euronews"],
             "poster": "https://yt3.googleusercontent.com/t3slq37NYJRuP2UoEZDoPKyMClKyQULG8-j2DEfzL1XXcBvFpR6z6HD7rtc0wDn8Mqt0OtpU=s900-c-k-c0x00ffffff-no-rj",
-            "url": "https://rakuten-euronews-3-it.samsung.wurl.tv/manifest/playlist.m3u8"
         },
         {
             "id": "canale-5",
             "title": "Canale 5",
-            "name": "Full HD Http",
+            "name": "Full HD",
             "genres": ["Mediaset"],
             "poster": "https://www.sorrisi.com/guidatv/bundles/tvscnewsite/css/images/loghi/canale-5_c.png",
             "url": "https://viamotionhsi.netplus.ch/live/eds/canale5/browser-HLS8/canale5.m3u8"
@@ -110,7 +109,7 @@ STREAM = {
         {
             "id": "italia-1",
             "title": "Italia 1",
-            "name": "Full HD Http",
+            "name": "Full HD",
             "genres": ["Mediaset"],
             "poster": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e2/Italia_1.svg/1024px-Italia_1.svg.png",
             "url": "https://viamotionhsi.netplus.ch/live/eds/italia1/browser-HLS8/italia1.m3u8"
@@ -163,13 +162,6 @@ STREAM = {
             "poster": "https://www.sorrisi.com/guidatv/bundles/tvscnewsite/css/images/loghi/history_c.png"
         },
         {
-            "id": "comedy-central",
-            "title": "Comedy Central",
-            "name": "",
-            "genres": ["Paramount"],
-            "poster": "https://www.sorrisi.com/guidatv/bundles/tvscnewsite/css/images/loghi/comedy-central_c.png"
-        },
-        {
             "id": "sky-tg-24",
             "title": "Sky TG24",
             "name": "",
@@ -199,7 +191,7 @@ STREAM = {
             "name": "",
             "genres": ["Warner Bros"],
             "poster": "https://www.sorrisi.com/guidatv/bundles/tvscnewsite/css/images/loghi/d-max_c.png",
-            "url": "https://amg16146-wbdi-amg16146c8-samsung-it-1841.playouts.now.amagi.tv/playlist/amg16146-warnerbrosdiscoveryitalia-dmax-samsungit/playlist.m3u8"
+            "url": "https://d2j2nqgg7bzth.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-02k1gv1j0ufwn/DMAX_IT.m3u8"
         },
         {
             "id": "foodnetwork",
@@ -207,7 +199,7 @@ STREAM = {
             "name": "",
             "genres": ["Warner Bros"],
             "poster":"https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Food_Network_logo.svg/1024px-Food_Network_logo.svg.png",
-            "url": "https://amg16146-wbdi-amg16146c3-samsung-it-1836.playouts.now.amagi.tv/playlist/amg16146-warnerbrosdiscoveryitalia-foodnetwork-samsungit/playlist.m3u8"
+            "url": "https://dk3okdd5036kz.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-o4pw0nc02sthz/Foodnetwork_IT.m3u8"
         },
         {
             "id": "frisbee",
@@ -215,7 +207,7 @@ STREAM = {
             "name": "",
             "genres": ["Warner Bros"],
             "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/FRISBEE_LOGO_2015.png/1280px-FRISBEE_LOGO_2015.png",
-            "url": "https://amg16146-wbdi-amg16146c7-samsung-it-1840.playouts.now.amagi.tv/playlist/amg16146-warnerbrosdiscoveryitalia-frisbee-samsungit/playlist.m3u8"
+            "url": "https://d6m7lubks416z.cloudfront.net/v1/manifest/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-zmbstsedxme9s/2fbb852d-6778-4a74-955b-59164269c705/0.m3u8"
         },
         {
             "id": "giallo",
@@ -223,7 +215,7 @@ STREAM = {
             "name": "",
             "genres": ["Warner Bros"],
             "poster": "https://www.sorrisi.com/guidatv/bundles/tvscnewsite/css/images/loghi/giallo_c.png",
-            "url": "https://amg16146-wbdi-amg16146c5-samsung-it-1838.playouts.now.amagi.tv/playlist/amg16146-warnerbrosdiscoveryitalia-giallo-samsungit/playlist.m3u8"
+            "url": "https://d9fqo6nfqlv2h.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-ulukbrgm1n3yb/Giallo_IT.m3u8"
         },
         {
             "id": "hgtv",
@@ -231,7 +223,7 @@ STREAM = {
             "name": "",
             "genres": ["Warner Bros"],
             "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/HGTV_2010.svg/1920px-HGTV_2010.svg.png",
-            "url": "https://amg16146-wbdi-amg16146c9-samsung-it-1842.playouts.now.amagi.tv/playlist/amg16146-warnerbrosdiscoveryitalia-hgtv-samsungit/playlist.m3u8"
+            "url": "https://timlivetu0.cb.ticdn.it/Content/DASH/Live/channel(hgtvhd)/manifest.mpd"
         },
         {
             "id": "k2",
@@ -239,7 +231,7 @@ STREAM = {
             "name": "",
             "genres": ["Warner Bros"],
             "poster": "https://upload.wikimedia.org/wikipedia/it/thumb/7/70/K2_logo_%282013%29.svg/800px-K2_logo_%282013%29.svg.png",
-            "url": "https://amg16146-wbdi-amg16146c6-samsung-it-1839.playouts.now.amagi.tv/playlist/amg16146-warnerbrosdiscoveryitalia-k2-samsungit/playlist.m3u8"
+            "url": "https://d1pmpe0hs35ka5.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-39hsskpppgf72/K2_IT.m3u8"
         },
         {
             "id": "nove",
@@ -247,7 +239,7 @@ STREAM = {
             "name": "",
             "genres": ["Warner Bros"],
             "poster": "https://www.sorrisi.com/guidatv/bundles/tvscnewsite/css/images/loghi/nove_c.png",
-            "url": "https://amg16146-wbdi-amg16146c1-samsung-it-1831.playouts.now.amagi.tv/playlist/amg16146-warnerbrosdiscoveryitalia-nove-samsungit/playlist.m3u8"
+            "url": "https://d31mw7o1gs0dap.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-y5pbi2sq9r609/NOVE_IT.m3u8"
         },
 
         {
@@ -256,7 +248,7 @@ STREAM = {
             "name": "",
             "genres": ["Warner Bros"],
             "poster": "https://www.sorrisi.com/guidatv/bundles/tvscnewsite/css/images/loghi/real-time_c.png",
-            "url": "https://amg16146-wbdi-amg16146c2-samsung-it-1835.playouts.now.amagi.tv/playlist/amg16146-warnerbrosdiscoveryitalia-realtime-samsungit/playlist.m3u8"
+            "url": "https://d3562mgijzx0zq.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-kizqtzpvvl3i8/Realtime_IT.m3u8"
         },
         {
             "id": "supertennis",
@@ -264,7 +256,7 @@ STREAM = {
             "name": "",
             "genres": ["FIT"],
             "poster": "https://upload.wikimedia.org/wikipedia/commons/0/02/SUPERTENNIS_HD.png",
-            "url": "https://live-embed.supertennix.hiway.media/restreamer/supertennix_client/gpu-a-c0-16/restreamer/rtmp/hls/h24_supertennix/manifest.m3u8"
+            "url": "https://live-embed.supertennix.hiway.media/restreamer/supertennix_client/gpu-a-c0-16/restreamer/outgest/aa3673f1-e178-44a9-a947-ef41db73211a/manifest.m3u8"
         },
         {
             "id": "solocalcio",
@@ -280,22 +272,15 @@ STREAM = {
             "name": "",
             "genres": ["Sportitalia"],
             "poster": "https://upload.wikimedia.org/wikipedia/en/5/55/Sportitalia.jpg",
-            "url": "https://di-kzbhv8pw.vo.lswcdn.net/sportitalia/sihd/playlist.m3u8"
-        },
-        {
-            "id": "sportitalia24",
-            "title": "Sportitalia 24",
-            "name": "",
-            "genres": ["Sportitalia"],
-            "poster": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/SI_Live_24_logo_%282019%29.svg/1280px-SI_Live_24_logo_%282019%29.svg.png",
-            "url": "https://di-kzbhv8pw.vo.lswcdn.net/sportitalia/sihd/playlist.m3u8"
+            "url": "https://origin.streamup.eu/sportitaliain/sisolocalcio/playlist.m3u8"
         },
         {
             "id": "rsi-la-2",
             "title": "RSI LA 2",
             "name": "",
             "genres": ["RSI"],
-            "poster": "https://livehere.one/img/rsi.png"    
+            "poster": "https://livehere.one/img/rsi.png",
+            "url": "https://viamotionhsi.netplus.ch/live/eds/rsila2hd/browser-HLS8/rsila2hd.m3u8"    
         },
         {
             "id": "baby-shark-tv",
@@ -304,22 +289,14 @@ STREAM = {
             "genres": ["Rakuten"],
             "poster": "https://flxt.tmsimg.com/assets/p19459897_b_v13_aa.jpg",
             "url": "https://c0c65b821b3542c3a4dca92702f59944.mediatailor.us-east-1.amazonaws.com/v1/master/04fd913bb278d8775298c26fdca9d9841f37601f/RakutenTV-eu_BabySharkTV/playlist.m3u8?ads.content_classification=6&ads.device_lmt=1&ads.device_make=&ads.device_model=&ads.device_type=web&ads.device_year=&ads.env=prod&ads.gdpr_consent=&ads.market=it&ads.player_height=&ads.player_width=&ads.pod_type=playerpage_midroll&ads.ppid=&ads.rtv_content_id=3623&ads.rtv_content_language=eng&ads.rtvid=271861&ads.streaming_id=17ded124-30eb-47bc-ab57-ddfce3a16599&ads.user_type=visitor&ads.wurl_channel=696"
-        },
-        {
-            "id": "adrenaline-movies",
-            "title": "Rakuten Adrenaline Movies",
-            "name": "",
-            "genres": ["Rakuten"],
-            "poster": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/ITBC11000050E_20231213T033148SQUARE.png_20231213033148.png",
-            "url": "https://minerva-fullmoon-1-eu.plex.wurl.tv/4300.m3u8"
-        },
+        }, 
         {
             "id": "bizzarro-movies",
             "title": "Bizzarro Movies",
             "name": "",
             "genres": ["Rakuten"],
             "poster": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/ITBA3300024IU_20240214T034959SQUARE.png_20240214034959.png",
-            "url": "https://minerva-bizzarromovies-1-eu.plex.wurl.tv/4300.m3u8"
+            "url": "https://797fbe152cbe418697be037aef3a708f.mediatailor.us-east-1.amazonaws.com/v1/master/44f73ba4d03e9607dcd9bebdcb8494d86964f1d8/Samsung-it_BizzarroMovies/playlist.m3u8"
         },
         {
             "id": "cinema-italiano",
@@ -327,7 +304,7 @@ STREAM = {
             "name": "",
             "genres": ["Rakuten"],
             "poster": "https://tvpnlogopeu.samsungcloud.tv/platform/image/sourcelogo/vc/00/02/34/ITBA33000238E_20240313T074122SQUARE.png",
-            "url": "https://minerva-cinemasegreto-1-eu.plex.wurl.tv/4300.m3u8"
+            "url": "http://stitcher-ipv4.pluto.tv/v1/stitch/embed/hls/channel/608aa512d67fd900072323db/master.m3u8?deviceType=samsung-tvplus&deviceMake=samsung&deviceModel=samsung&deviceVersion=unknown&appVersion=unknown&deviceLat=0&deviceLon=0&deviceDNT=%7BTARGETOPT%7D&deviceId=%7BPSID%7D&advertisingId=%7BPSID%7D&us_privacy=1YNY&samsung_app_domain=%7BAPP_DOMAIN%7D&samsung_app_name=%7BAPP_NAME%7D&profileFloor=&profileLimit=&embedPartner=samsung-tvplus"
         },
         {
             "id": "le-vite-degli-altri",
@@ -436,99 +413,6 @@ STREAM = {
     ]
 }
 
-
-
-
-webru_vary = {
-    "sky-cinema-action": "calcioXac",
-    "comedy-central": "calcioXcomedycentral",
-    "history": "calcioXhistory",
-    "sky-arte": "calcioXskyarte",
-    "sky-atlantic": "calcioXskyatlantic",
-    "sky-cinema-collection": "calcioXskycinemacollection",
-    "sky-cinema-comedy": "calcioXskycinemacomedy",
-    "sky-cinema-drama": "calcioXskycinemadrama",
-    "sky-cinema-due": "calcioXskycinemadue",
-    "sky-cinema-family": "calcioXskycinemafamily",
-    "sky-cinema-romance": "calcioXskycinemaromance",
-    "sky-cinema-suspence": "calcioXskycinemasuspence",
-    "sky-cinema-uno": "calcioXskycinemauno",
-    "sky-crime": "calcioXskycrime",
-    "sky-documentaries": "calcioXskydocumentaries",
-    "sky-investigation": "calcioXskyinvestigation",
-    "sky-nature": "calcioXskynature",
-    "sky-serie": "calcioXskyserie",
-    "sky-uno": "calcioXskyuno",
-    "sky-sport-24": "calcioXskysport24",  
-    "sky-sport-golf": "calcioXskysportgolf",
-    "sky-sport-251": "calcioXskysport251",
-    "sky-sport-253": "calcioXskysport253",
-    "sky-sport-max": "calcioXskysportmax",
-    "sky-sport-255": "calcioXskysport255",
-    "sky-sport-259": "calcioXsky259",
-    "sky-sport-252": "calcioXskysport252",
-    "sky-sport-254": "calcioXskysport254",
-    "sky-sport-256": "calcioXskysport256",
-    "sky-sport-257": "calcioXskysport257",
-    "sky-sport-258": "calcioXsky258",
-    "sky-sport-259": "calcioXsky259",
-    "sky-sport-260": "calcioXsky260",
-    "sky-sport-261": "calcioXsky261",
-    "eurosport-1": "calcioXeurosport1",
-    "eurosport-2": "calcioXeurosport2",
-    "sky-sport-uno": "calcioXskysportuno",
-    "sky-sport-f1": "calcioXskysportf1",
-    "sky-sport-motogp": "calcioXskysportmotogp",
-    "sky-sport-calcio": "calcioXskysportcalcio",
-    "sky-sport-arena": "calcioXskysportarena",
-    "sky-sport-tennis": "calcioXskysporttennis",
-    "sky-sport-nba": "calcioXskysportnba", 
-    "dazn-1": "Xserie"
-}
-#"dazn-zona-a": "https://webuit.mizhls.ru/lb/calcioXzona/index.m3u8"
-webru_dlhd = {
-    "sky-sport-tennis": "premium576",
-    "sky-sport-uno": "premium461",
-    "sky-cinema-collection": "premium859",
-    "sky-cinema-romance": "premium864",
-    "sky-sport-24": "premium869",
-    "sky-sport-254": "premium874",
-    "sky-sport-f1": "premium577",
-    "sky-sport-arena": "premium462",
-    "sky-cinema-uno": "premium860",
-    "sky-cinema-family": "premium865",
-    "sky-sport-calcio": "premium870",
-    "sky-sport-255": "premium875",
-    "sky-cinema-action": "premium861",
-    "sky-cinema-due": "premium866",
-    "sky-sport-251": "premium871",
-    "sky-sport-256": "premium876",
-    "sky-sport-golf": "premium574",
-    "sky-uno": "premium881",
-    "sky-cinema-comedy": "premium862",
-    "sky-cinema-drama": "premium867",
-    "sky-sport-252": "premium872",
-    "sky-sport-257": "premium877",
-    "sky-sport-motogp": "premium575",
-    "sky-sport-football": "premium460",
-    "sky-cinema-uno-24": "premium863",
-    "sky-cinema-suspence": "premium868",
-    "sky-sport-253": "premium873",
-    "sky-serie": "premium880",
-    "dazn-1": "premium877",
-    "rai-1": "premium850",
-    "rai-2": "premium851",
-    "rai-3": "premium852",
-    "canale-5": "premium853",
-    "rai-sport": "premium882",
-    "rai-premium": "premium858",
-    "italia-1" : "premium854",
-    "la7": "premium855",
-    "la7d": "premium856",
-    "mediaset-20": "premium857",
-    "la5": "premium856",
-
-}
 extra_sources = {
     "rai-1": ["https://ilglobotv-live.akamaized.net/channels/RAI1/Live.m3u8"],
     "rai-2": ["https://ilglobotv-live.akamaized.net/channels/RAI2/Live.m3u8"],
@@ -552,20 +436,6 @@ extra_sources = {
     "supertennis": ["https://live-embed.supertennix.hiway.media/restreamer/supertennix_client/gpu-a-c0-16/restreamer/outgest/h24_supertennix/manifest.m3u8"]
 }
 
-huhu = {
-    "canale-5": "1101559666",
-    "sky-sport-motogp": "2090703806",
-    "rai-1": "1225653759",
-    "sky-cinema-drama": "1235530177",
-    "sky-cinema-action": "3812796171",
-    "Dazn": "2745635299",
-    "sky-sport-uno": "3192996672",
-    "canale-5": "1534161807",
-    "mediaset-extra": "477466531",
-    "Dazn-1": "1376440573",
-    "sky-sport-24": "2775802255",
-    "sky-sport-24": "3445562519",
-}
 provider_map = {
         'SC': 'STREAMINGCOMMUNITY',
         'SC_FS': 'SC_FAST_SEARCH',
