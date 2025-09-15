@@ -136,9 +136,13 @@ HTML = """
             padding: 2vh;
             background: rgba(255, 255, 255, 0.2);
             border-radius: 5px;
-            display: none;
+            display: none; /* Initially hidden */
             text-align: left;
-            white-space: pre-wrap;
+            white-space: pre-wrap; /* Preserves whitespace and wraps text */
+            overflow-wrap: break-word; /* Breaks long words to prevent overflow */
+            word-wrap: break-word; /* For older browsers */
+            max-width: 100%; /* Ensures it doesn't exceed the container width */
+            border: 1px solid #ccc; /* Optional: Add a border for visibility */
         }
         #generateManifestButton {
             background: #4CAF50;
