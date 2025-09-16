@@ -15,7 +15,7 @@ async def uqload(player_link,client,MFP,MFP_CREDENTIALS,streams,site_name,proxie
     headers = random_headers.generate()
     if MFP == "1":
         url = await build_mfp(MFP_CREDENTIALS, player_link, "Uqload",client)
-        streams['streams'].append({'name': f"{Name} 🕵️‍♂️",'title': f'{Icon}Guardaflix\n▶️ Uqload', 'url': url, 'behaviorHints': {'proxyHeaders': {"request": {"User-Agent": 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36'}}, 'notWebReady': True, 'bingeGroup': 'guardaflix'}})
+        streams['streams'].append({'name': f"{Name} 🕵️‍♂️",'title': f'{Icon}{site_name}\n▶️ Uqload', 'url': url, 'behaviorHints': {'proxyHeaders': {"request": {"User-Agent": 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36'}}, 'notWebReady': True, 'bingeGroup': 'guardaflix'}})
         return streams
     response = await client.get(ForwardProxy + player_link, headers = headers, proxies = proxies)
     video_url_match = re.search(r'sources: \["(.*?)"]', response.text)
