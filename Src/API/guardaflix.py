@@ -57,7 +57,6 @@ async def search(showname,date,MFP,MFP_CREDENTIALS,client,streams):
     headers['Origin'] = f'{GF_DOMAIN}'
     headers['Referer'] = f'{GF_DOMAIN}/'
     headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
-    showname = quote(showname)
     data = {
     'action': 'action_tr_search_suggest',
     'nonce': '20115729b4',
@@ -111,7 +110,7 @@ async def guardaflix(streams,id,client,MFP,MFP_CREDENTIALS):
 async def test_guardaflix():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
-        results = await guardaflix({'streams': []},"tt16426418",client,"0",['test','test'])
+        results = await guardaflix({'streams': []},"tt9218128",client,"0",['test','test'])
         print(results)
 
         
