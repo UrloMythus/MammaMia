@@ -53,7 +53,7 @@
             "GO_PROXY": "1"
         },
         "AnimeWorld": {
-            "url": "https://www.animeworld.so",
+            "url": "https://www.animeworld.ac",
             "enabled": "1",
             "AW_ForwardProxy": "0",
             "AW_PROXY": "0"
