@@ -1,6 +1,10 @@
 import json
 import requests
 from urllib.parse import urlparse
+import urllib3
+
+# Disabilita i warning SSL (solo per siti con certificati invalidi)
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; DomainUpdater/1.0)"}
 
@@ -26,7 +30,7 @@ def extract_full_domain(domain, site_key):
     if site_key in ['Tantifilm', 'StreamingWatch'] and not netloc.startswith('www.'):
         test_url = f"{scheme}://www.{netloc}"
         try:
-            r = requests.head(test_url, headers=HEADERS, timeout=5)
+            r = requests.head(test_url, headers=HEADERS, timeout=5, verify=False)
             if r.status_code < 400:
                 netloc = 'www.' + netloc
         except requests.RequestException:
@@ -40,7 +44,8 @@ def check_redirect(domain, site_key):
         domain = 'http://' + domain
 
     try:
-        response = requests.get(domain, allow_redirects=True, headers=HEADERS, timeout=10)
+        # Ignora SSL per tutti i domini (così anche quelli con certificato rotto vengono aggiornati)
+        response = requests.get(domain, allow_redirects=True, headers=HEADERS, timeout=10, verify=False)
         final_url = response.url
         final_domain = extract_full_domain(final_url, site_key)
         return final_domain
