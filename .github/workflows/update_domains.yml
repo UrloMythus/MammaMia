@@ -2,7 +2,7 @@ name: Update Domains
 
 on:
   schedule:
-    - cron: "0 20 * * *"  # Esegui alle 20:00
+    - cron: "0 20 * * *"  # Esegui alle 20:00 ogni giorno
   workflow_dispatch:      # Permette di avviare manualmente il workflow
 
 jobs:
