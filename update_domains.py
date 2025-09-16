@@ -2,47 +2,52 @@ import json
 import requests
 from urllib.parse import urlparse
 
+HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; DomainUpdater/1.0)"}
+
+
 def get_domains(pastebin_url):
     try:
-        response = requests.get(pastebin_url)
+        response = requests.get(pastebin_url, headers=HEADERS, timeout=10)
         response.raise_for_status()
         domains = response.text.strip().split('\n')
-        domains = [domain.strip().replace('\r', '') for domain in domains]
+        domains = [domain.strip().replace('\r', '') for domain in domains if domain.strip()]
         return domains
     except requests.RequestException as e:
         print(f"❌ Errore durante il recupero dei domini: {e}")
         return []
+
 
 def extract_full_domain(domain, site_key):
     parsed_url = urlparse(domain)
     scheme = parsed_url.scheme if parsed_url.scheme else 'https'
     netloc = parsed_url.netloc or parsed_url.path
 
-    if site_key in ['Tantifilm', 'StreamingWatch']:
-        if not netloc.startswith('www.'):
-            netloc = 'www.' + netloc
-        return f"{scheme}://{netloc}"
-    else:
-        return f"{scheme}://{netloc}"
+    # Alcuni siti preferiscono "www." → controlla prima che risponda
+    if site_key in ['Tantifilm', 'StreamingWatch'] and not netloc.startswith('www.'):
+        test_url = f"{scheme}://www.{netloc}"
+        try:
+            r = requests.head(test_url, headers=HEADERS, timeout=5)
+            if r.status_code < 400:
+                netloc = 'www.' + netloc
+        except requests.RequestException:
+            pass  # se www non risponde, tieni quello base
 
-def extract_tld(domain_url):
-    parsed = urlparse(domain_url)
-    netloc = parsed.netloc or parsed.path
-    if '.' in netloc:
-        return netloc.split('.')[-1]
-    return ''
+    return f"{scheme}://{netloc}"
+
 
 def check_redirect(domain, site_key):
     if not domain.startswith(('http://', 'https://')):
         domain = 'http://' + domain
 
     try:
-        response = requests.get(domain, allow_redirects=True)
+        response = requests.get(domain, allow_redirects=True, headers=HEADERS, timeout=10)
         final_url = response.url
         final_domain = extract_full_domain(final_url, site_key)
-        return domain, final_domain
+        return final_domain
     except requests.RequestException as e:
-        return domain, f"Error: {str(e)}"
+        print(f"❌ Redirect fallito per {domain}: {e}")
+        return None
+
 
 def update_json_file():
     try:
@@ -58,7 +63,7 @@ def update_json_file():
     pastebin_url = 'https://pastebin.com/raw/HFx8qvKF'
     domain_list = get_domains(pastebin_url)
 
-    if len(domain_list) < 13:
+    if len(domain_list) < 9:
         print("❌ Lista dei domini troppo corta. Controlla il Pastebin, fratm.")
         return
 
@@ -76,14 +81,12 @@ def update_json_file():
 
     for site_key, domain_url in site_mapping.items():
         if site_key in data['Siti']:
-            original, final_domain = check_redirect(domain_url, site_key)
-            if "Error" in final_domain:
-                print(f"❌ Errore nel redirect di {original}: {final_domain}")
-                continue
-
-            # Aggiorna l'URL del sito
-            data['Siti'][site_key]['url'] = final_domain
-            print(f"✅ Aggiornato {site_key}: {final_domain}")
+            final_domain = check_redirect(domain_url, site_key)
+            if final_domain:
+                data['Siti'][site_key]['url'] = final_domain
+                print(f"✅ Aggiornato {site_key}: {final_domain}")
+            else:
+                print(f"⚠️ Nessun aggiornamento per {site_key}, mantengo il vecchio URL.")
 
     try:
         with open('config.json', 'w', encoding='utf-8') as file:
@@ -91,6 +94,7 @@ def update_json_file():
         print("💾 File config.json aggiornato con successo! Alleluja!")
     except Exception as e:
         print(f"❌ Errore durante il salvataggio del file JSON: {e}")
+
 
 if __name__ == '__main__':
     update_json_file()
