@@ -19,32 +19,34 @@ async def vixcloud(link,client,MFP,MFP_CREDENTIALS,streams,site_name,proxies,For
         final_url = await build_mfp(MFP_CREDENTIALS, link, "VixCloud",client)
         quality = ""
         mfp_icon = '🕵️‍♂️'
-    else:
-        mfp_icon = ''
-        headers =  random_headers.generate()
-        headers['Referer'] = f"{SC_DOMAIN}/"
-        headers['Origin'] = f"{SC_DOMAIN}"
-        headers['User-Agent'] = User_Agent
-        headers['user-agent'] = User_Agent
-        response = await client.get(link)        
-        if response.status_code != 200:
-            logger.warning("Failed to extract URL components, Invalid Request")
-        soup = BeautifulSoup(response.text, "lxml", parse_only=SoupStrainer("body"))
-        if soup:
-            script = soup.find("body").find("script").text
-            token = re.search(r"'token':\s*'(\w+)'", script).group(1)
-            expires = re.search(r"'expires':\s*'(\d+)'", script).group(1)
-            server_url = re.search(r"url:\s*'([^']+)'", script).group(1)
-            try:
-                quality = re.search(r'"quality":(\d+)', script).group(1)
-            except:
-                quality = ""
-            if "?b=1" in server_url:
-                final_url = f'{server_url}&token={token}&expires={expires}'
-            else:
-                final_url = f"{server_url}?token={token}&expires={expires}"
-            if "window.canPlayFHD = true" in script:
-                final_url += "&h=1"
+        if final_url:
+            streams['streams'].append({"name":f'{Name} {mfp_icon}\n{quality}', 'title': f'{Icon} StreamingCommunity\n▶️ Vixcloud','url': final_url,'behaviorHints': {'bingeGroup': f'{site_name.lower()}{quality}'}})
+            return streams
+    mfp_icon = ''
+    headers =  random_headers.generate()
+    headers['Referer'] = f"{SC_DOMAIN}/"
+    headers['Origin'] = f"{SC_DOMAIN}"
+    headers['User-Agent'] = User_Agent
+    headers['user-agent'] = User_Agent
+    response = await client.get(link)        
+    if response.status_code != 200:
+        logger.warning("Failed to extract URL components, Invalid Request")
+    soup = BeautifulSoup(response.text, "lxml", parse_only=SoupStrainer("body"))
+    if soup:
+        script = soup.find("body").find("script").text
+        token = re.search(r"'token':\s*'(\w+)'", script).group(1)
+        expires = re.search(r"'expires':\s*'(\d+)'", script).group(1)
+        server_url = re.search(r"url:\s*'([^']+)'", script).group(1)
+        try:
+            quality = re.search(r'"quality":(\d+)', script).group(1)
+        except:
+            quality = ""
+        if "?b=1" in server_url:
+            final_url = f'{server_url}&token={token}&expires={expires}'
+        else:
+            final_url = f"{server_url}?token={token}&expires={expires}"
+        if "window.canPlayFHD = true" in script:
+            final_url += "&h=1"
     if final_url:
         logger.info(f"Vixcloud Found Results for the current ID")
         streams['streams'].append({"name":f'{Name} {mfp_icon}\n{quality}', 'title': f'{Icon} StreamingCommunity\n▶️ Vixcloud','url': final_url,'behaviorHints': {'proxyHeaders': {"request": {"user-agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': f'{site_name.lower()}{quality}'}})
