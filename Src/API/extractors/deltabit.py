@@ -59,7 +59,7 @@ async def deltabit(page_url,client,streams,site_name,proxies,ForwardProxy,langua
     if not link:
         if not i >= 3:
             page_url = 'https://deltabit.co/q4r8w4assff4'
-            link,fname = await deltabit(page_url,client)
+            link,fname = await deltabit(page_url,client,streams,site_name,proxies,ForwardProxy,language)
             i +=1
     else:
         link = link[0]
@@ -68,3 +68,18 @@ async def deltabit(page_url,client,streams,site_name,proxies,ForwardProxy,langua
 
     
     return streams
+
+
+
+
+#Testing
+async def test_deltabit():
+    from curl_cffi.requests import AsyncSession
+    async with AsyncSession() as client:
+        results = await deltabit("https://deltabit.co/a54ehb8w42pe",client,{'streams': []},'Deltabit', {},"","")
+        print(results)
+if __name__ == "__main__":
+    import asyncio
+    asyncio.run(test_deltabit()) 
+
+# https://loadm.cam/#cfnqx
