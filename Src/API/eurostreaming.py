@@ -218,7 +218,7 @@ async def eurostreaming(streams,id,client,MFP,MFP_CREDENTIALS):
 async def test_euro():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
-        results = await eurostreaming({'streams': []},"tt9253284:1:4",client,"0",['test','test'])
+        results = await eurostreaming({'streams': []},"tt6156584:4:1",client,"0",['test','test'])
         print(results)
 
 async def test_deltabit():
