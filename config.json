@@ -38,19 +38,19 @@
             "url": "https://eurostreaming.garden",
             "enabled": "1",
             "ES_ForwardProxy": "0",
-            "ES_PROXY": "0"
+            "ES_PROXY": "1"
           },  
           "Guardaflix":{
             "url": "https://guardaflix.live",
             "enabled": "1",
             "GF_ForwardProxy": "0",
-            "GF_PROXY": "0"
+            "GF_PROXY": "1"
           },
           "Guardoserie":{
             "url": "https://guardoserie.live",
             "enabled": "1",
             "GO_ForwardProxy": "0",
-            "GO_PROXY": "0"
+            "GO_PROXY": "1"
           },
           "AnimeWorld":{
             "url":"https://www.animeworld.so",
