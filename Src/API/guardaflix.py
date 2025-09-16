@@ -110,7 +110,7 @@ async def guardaflix(streams,id,client,MFP,MFP_CREDENTIALS):
 async def test_guardaflix():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
-        results = await guardaflix({'streams': []},"tt9218128",client,"0",['test','test'])
+        results = await guardaflix({'streams': []},"tt4045450",client,"0",['test','test'])
         print(results)
 
         
