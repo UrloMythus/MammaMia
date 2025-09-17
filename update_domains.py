@@ -1,29 +1,15 @@
-import json
+import re
 import requests
-from urllib.parse import urlparse
 import urllib3
+from urllib.parse import urlparse
 
-# Disabilita i warning SSL (per certificati invalidi o scaduti)
+# Disabilita i warning SSL
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; DomainUpdater/3.0)"}
+HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; DomainUpdater/3.1)"}
 
-# URL RAW di GitHub (non quello "blob", ma la versione raw del file)
+# Link RAW del config.json su GitHub
 CONFIG_URL = "https://raw.githubusercontent.com/UrloMythus/MammaMia/main/config.json"
-
-
-def load_config_from_github():
-    """Scarica config.json dal repository GitHub."""
-    try:
-        response = requests.get(CONFIG_URL, headers=HEADERS, timeout=10)
-        response.raise_for_status()
-        return json.loads(response.text)
-    except requests.RequestException as e:
-        print(f"❌ Errore durante il download di config.json: {e}")
-        return None
-    except json.JSONDecodeError:
-        print("❌ Errore: config.json non è un JSON valido.")
-        return None
 
 
 def extract_full_domain(domain, site_key):
@@ -46,47 +32,62 @@ def extract_full_domain(domain, site_key):
 
 
 def check_redirect(domain, site_key):
-    """Controlla redirect e restituisce l'URL finale valido."""
+    """Segue i redirect e restituisce l'URL finale valido."""
     if not domain.startswith(('http://', 'https://')):
         domain = 'http://' + domain
 
     try:
         response = requests.get(domain, allow_redirects=True, headers=HEADERS, timeout=10, verify=False)
         final_url = response.url
-        final_domain = extract_full_domain(final_url, site_key)
-        return final_domain
+        return extract_full_domain(final_url, site_key)
     except requests.RequestException as e:
         print(f"❌ Redirect fallito per {domain}: {e}")
         return None
 
 
-def update_json_file():
-    data = load_config_from_github()
-    if not data:
+def update_config_file():
+    try:
+        # Scarica il file config.json da GitHub
+        response = requests.get(CONFIG_URL, headers=HEADERS, timeout=10)
+        response.raise_for_status()
+        config_text = response.text
+    except requests.RequestException as e:
+        print(f"❌ Errore durante il download del file config.json: {e}")
         return
 
-    sites = data.get("Siti", {})
+    updated_lines = []
+    current_site = None
 
-    for site_key, site_info in sites.items():
-        domain_url = site_info.get("url")
-        if not domain_url:
-            print(f"⚠️ Nessun URL trovato per {site_key}, salto…")
-            continue
+    # Regex per intercettare le righe con "url"
+    url_pattern = re.compile(r'("url"\s*:\s*")([^"]+)(")')
 
-        final_domain = check_redirect(domain_url, site_key)
-        if final_domain:
-            data['Siti'][site_key]['url'] = final_domain
-            print(f"✅ Aggiornato {site_key}: {domain_url} → {final_domain}")
-        else:
-            print(f"⚠️ Nessun aggiornamento per {site_key}, mantengo {domain_url}")
+    for line in config_text.splitlines():
+        match = url_pattern.search(line)
+        if match:
+            old_url = match.group(2)
+            # Ricava la "chiave sito" leggendo la riga precedente col nome del sito
+            if current_site:
+                site_key = current_site
+            else:
+                site_key = "Sito"
 
-    try:
-        with open('config.json', 'w', encoding='utf-8') as file:
-            json.dump(data, file, indent=4, ensure_ascii=False)
-        print("💾 File config.json aggiornato in locale con successo!")
-    except Exception as e:
-        print(f"❌ Errore durante il salvataggio del file JSON: {e}")
+            new_url = check_redirect(old_url, site_key)
+            if new_url:
+                print(f"✅ Aggiornato {site_key}: {old_url} → {new_url}")
+                line = url_pattern.sub(rf'\1{new_url}\3', line)
+            else:
+                print(f"⚠️ Nessun aggiornamento per {site_key}, mantengo {old_url}")
+        # Se la riga contiene il nome del sito, lo memorizzo
+        elif line.strip().endswith("{") and '"' in line:
+            current_site = line.strip().split('"')[1]
+        updated_lines.append(line)
+
+    # Scrive il nuovo config.json in locale
+    with open("config.json", "w", encoding="utf-8") as f:
+        f.write("\n".join(updated_lines))
+
+    print("💾 File config.json aggiornato: solo le righe 'url' sono state modificate.")
 
 
-if __name__ == '__main__':
-    update_json_file()
+if __name__ == "__main__":
+    update_config_file()
