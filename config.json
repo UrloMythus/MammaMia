@@ -1,7 +1,7 @@
 {
     "Siti": {
            "StreamingCommunity": {
-               "url": "https://vixsrc.xx",
+               "url": "https://vixsrc.to",
                "SC_ForwardProxy": "0",
                "SC_PROXY": "0",
                "VX_ForwardProxy": "0",
@@ -9,51 +9,51 @@
                "enabled": "1"
            },
           "StreamingWatch":{
-              "url":"https://www.streamingwatch.xx",
+              "url":"https://www.streamingwatch.org",
               "SW_PROXY": "0",
               "SW_ForwardProxy": "0",
               "enabled":"1"
           },
           "CB01":{
-              "url":"https://cb01net.xx",
-              "CB_PROXY":"1",
+              "url":"https://cb01net.fun",
+              "CB_PROXY":"0",
               "CB_ForwardProxy":"0",
               "MX_ForwardProxy":"0",
               "MX_PROXY":"0",
               "enabled":"1"
           },
           "Guardaserie":{
-              "url":"https://guardaserie.xx",
+              "url":"https://guardaserie.qpon",
               "enabled":"1",
               "GS_ForwardProxy":"0",
-              "GS_PROXY":"1"
+              "GS_PROXY":"0"
           },
           "GuardaHD":{
-              "url":"https://mostraguarda.xx",
+              "url":"https://mostraguarda.stream",
               "enabled":"1",
               "GH_ForwardProxy":"0",
-              "GH_PROXY":"1"
+              "GH_PROXY":"0"
           },
           "Eurostreaming":{
-            "url": "https://eurostreaming.xx",
+            "url": "https://eurostreaming.wedding",
             "enabled": "1",
             "ES_ForwardProxy": "0",
-            "ES_PROXY": "1"
+            "ES_PROXY": "0"
           },  
           "Guardaflix":{
-            "url": "https://guardaflix.xx",
+            "url": "https://guardaflix.live",
             "enabled": "1",
             "GF_ForwardProxy": "0",
-            "GF_PROXY": "1"
+            "GF_PROXY": "0"
           },
           "Guardoserie":{
-            "url": "https://guardoserie.xx",
+            "url": "https://guardoserie.live",
             "enabled": "1",
             "GO_ForwardProxy": "0",
-            "GO_PROXY": "1"
+            "GO_PROXY": "0"
           },
           "AnimeWorld":{
-            "url":"https://www.animeworld.xx",
+            "url":"https://www.animeworld.ac",
             "enabled":"1",
             "AW_ForwardProxy":"0",
             "AW_PROXY":"0"
@@ -63,8 +63,8 @@
        "load_env": "0",
        "HOST": "0.0.0.0",
        "PORT": 8080,
-       "Name": "Nello",
-       "Icon": "🐶",
+       "Name": "MammaMia",
+       "Icon": "🍕️",
        "level": "info",
        "Global_Proxy": "0"
        }
