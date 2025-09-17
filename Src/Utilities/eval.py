@@ -14,6 +14,11 @@ from fake_headers import Headers
 """Unpacker for Dean Edward's p.a.c.k.e.r"""
 import re
 from bs4 import BeautifulSoup, SoupStrainer
+import logging
+import Src.Utilities.config as config
+from Src.Utilities.config import setup_logging
+level = config.LEVEL
+logger = setup_logging(level)
 
 def detect(source):
     if "eval(function(p,a,c,k,e,d)" in source:
@@ -142,7 +147,7 @@ async def eval_solver(stream_link,proxies, ForwardProxy, client):
         headers["User-Agent"] = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
         headers["accept-language"] = 'en-US,en;q=0.5'
         response = await client.get( ForwardProxy + stream_link,  allow_redirects=True, timeout=30, headers = headers, proxies = proxies, impersonate = "chrome124")
-        print("Eval:",response.status_code)
+        logger.debug("Eval:",response.status_code)
         soup = BeautifulSoup(response.text, "lxml",parse_only=SoupStrainer("script"))
         script_all = soup.find_all("script")
         for i in script_all:
@@ -158,7 +163,7 @@ async def eval_solver(stream_link,proxies, ForwardProxy, client):
                     m3u8_url = match.group(1)
                     return m3u8_url
     except Exception as e:
-        print("Eval solver error\n",e)
+        logger.debug("Eval solver error\n",e)
         raise Exception("Error in eval_solver")
 
 
@@ -167,7 +172,6 @@ async def test_animeworld():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         results = await eval_solver("https://mixdrop.cv/e/l6kqxrm4t4l4or",{},"",client)
-        print("https:"+results)
 
 if __name__ == "__main__":
     import asyncio

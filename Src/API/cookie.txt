@@ -1,1 +1,1 @@
-{}
+{'PHPSESSID': 'aq7rf8gu6nd9fuk0r711899blp', 'captch4': 'bc3c5526ddc7d0a3ad827e7848f5678f'}

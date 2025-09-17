@@ -9,3 +9,5 @@ lxml
 slowapi
 curl_cffi
 fake-headers
+pycryptodome
+rich

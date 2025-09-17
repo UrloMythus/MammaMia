@@ -1,6 +1,6 @@
 # static.py
 
-HTML = """
+CONFIGURE = """
 <!DOCTYPE html>
 <html>
 <head>
