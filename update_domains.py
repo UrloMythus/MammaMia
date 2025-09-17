@@ -6,7 +6,7 @@ from urllib.parse import urlparse
 # Disabilita i warning SSL
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; DomainUpdater/3.1)"}
+HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; DomainUpdater/3.2)"}
 
 # Link RAW del config.json su GitHub
 CONFIG_URL = "https://raw.githubusercontent.com/UrloMythus/MammaMia/main/config.json"
@@ -18,7 +18,6 @@ def extract_full_domain(domain, site_key):
     scheme = parsed_url.scheme if parsed_url.scheme else 'https'
     netloc = parsed_url.netloc or parsed_url.path
 
-    # Alcuni siti preferiscono "www."
     if site_key in ['Tantifilm', 'StreamingWatch'] and not netloc.startswith('www.'):
         test_url = f"{scheme}://www.{netloc}"
         try:
@@ -47,7 +46,6 @@ def check_redirect(domain, site_key):
 
 def update_config_file():
     try:
-        # Scarica il file config.json da GitHub
         response = requests.get(CONFIG_URL, headers=HEADERS, timeout=10)
         response.raise_for_status()
         config_text = response.text
@@ -58,18 +56,14 @@ def update_config_file():
     updated_lines = []
     current_site = None
 
-    # Regex per intercettare le righe con "url"
+    # Regex che intercetta SOLO la riga url
     url_pattern = re.compile(r'("url"\s*:\s*")([^"]+)(")')
 
     for line in config_text.splitlines():
         match = url_pattern.search(line)
         if match:
             old_url = match.group(2)
-            # Ricava la "chiave sito" leggendo la riga precedente col nome del sito
-            if current_site:
-                site_key = current_site
-            else:
-                site_key = "Sito"
+            site_key = current_site if current_site else "Sito"
 
             new_url = check_redirect(old_url, site_key)
             if new_url:
@@ -77,16 +71,18 @@ def update_config_file():
                 line = url_pattern.sub(rf'\1{new_url}\3', line)
             else:
                 print(f"⚠️ Nessun aggiornamento per {site_key}, mantengo {old_url}")
-        # Se la riga contiene il nome del sito, lo memorizzo
+
+        # salvo il nome del sito leggendo la riga che apre il blocco
         elif line.strip().endswith("{") and '"' in line:
             current_site = line.strip().split('"')[1]
+
         updated_lines.append(line)
 
-    # Scrive il nuovo config.json in locale
+    # Scrive il nuovo config.json locale
     with open("config.json", "w", encoding="utf-8") as f:
         f.write("\n".join(updated_lines))
 
-    print("💾 File config.json aggiornato: solo le righe 'url' sono state modificate.")
+    print("💾 File config.json aggiornato: SOLO le righe 'url' sono state modificate.")
 
 
 if __name__ == "__main__":
