@@ -6,31 +6,21 @@ from urllib.parse import urlparse
 # Disabilita i warning SSL
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; DomainUpdater/3.2)"}
+HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; DomainUpdater/3.3)"}
 
 # Link RAW del config.json su GitHub
 CONFIG_URL = "https://raw.githubusercontent.com/UrloMythus/MammaMia/main/config.json"
 
 
-def extract_full_domain(domain, site_key):
-    """Normalizza dominio con schema + eventuale www."""
+def extract_full_domain(domain):
+    """Normalizza dominio con schema."""
     parsed_url = urlparse(domain)
     scheme = parsed_url.scheme if parsed_url.scheme else 'https'
     netloc = parsed_url.netloc or parsed_url.path
-
-    if site_key in ['Tantifilm', 'StreamingWatch'] and not netloc.startswith('www.'):
-        test_url = f"{scheme}://www.{netloc}"
-        try:
-            r = requests.head(test_url, headers=HEADERS, timeout=5, verify=False)
-            if r.status_code < 400:
-                netloc = 'www.' + netloc
-        except requests.RequestException:
-            pass
-
     return f"{scheme}://{netloc}"
 
 
-def check_redirect(domain, site_key):
+def check_redirect(domain):
     """Segue i redirect e restituisce l'URL finale valido."""
     if not domain.startswith(('http://', 'https://')):
         domain = 'http://' + domain
@@ -38,7 +28,7 @@ def check_redirect(domain, site_key):
     try:
         response = requests.get(domain, allow_redirects=True, headers=HEADERS, timeout=10, verify=False)
         final_url = response.url
-        return extract_full_domain(final_url, site_key)
+        return extract_full_domain(final_url)
     except requests.RequestException as e:
         print(f"❌ Redirect fallito per {domain}: {e}")
         return None
@@ -54,31 +44,21 @@ def update_config_file():
         return
 
     updated_lines = []
-    current_site = None
-
-    # Regex che intercetta SOLO la riga url
     url_pattern = re.compile(r'("url"\s*:\s*")([^"]+)(")')
 
     for line in config_text.splitlines():
         match = url_pattern.search(line)
         if match:
             old_url = match.group(2)
-            site_key = current_site if current_site else "Sito"
-
-            new_url = check_redirect(old_url, site_key)
+            new_url = check_redirect(old_url)
             if new_url:
-                print(f"✅ Aggiornato {site_key}: {old_url} → {new_url}")
+                print(f"✅ Aggiornato: {old_url} → {new_url}")
+                # sostituisce solo l'URL, lascia tutto il resto invariato
                 line = url_pattern.sub(rf'\1{new_url}\3', line)
             else:
-                print(f"⚠️ Nessun aggiornamento per {site_key}, mantengo {old_url}")
-
-        # salvo il nome del sito leggendo la riga che apre il blocco
-        elif line.strip().endswith("{") and '"' in line:
-            current_site = line.strip().split('"')[1]
-
+                print(f"⚠️ Nessun aggiornamento per {old_url}, mantengo invariato")
         updated_lines.append(line)
 
-    # Scrive il nuovo config.json locale
     with open("config.json", "w", encoding="utf-8") as f:
         f.write("\n".join(updated_lines))
 
