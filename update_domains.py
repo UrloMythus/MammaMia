@@ -8,14 +8,18 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; DomainUpdater/3.0)"}
 
+# URL RAW di GitHub (non quello "blob", ma la versione raw del file)
+CONFIG_URL = "https://raw.githubusercontent.com/UrloMythus/MammaMia/main/config.json"
 
-def load_config():
-    """Carica il file config.json locale."""
+
+def load_config_from_github():
+    """Scarica config.json dal repository GitHub."""
     try:
-        with open('config.json', 'r', encoding='utf-8') as file:
-            return json.load(file)
-    except FileNotFoundError:
-        print("❌ Errore: config.json non trovato.")
+        response = requests.get(CONFIG_URL, headers=HEADERS, timeout=10)
+        response.raise_for_status()
+        return json.loads(response.text)
+    except requests.RequestException as e:
+        print(f"❌ Errore durante il download di config.json: {e}")
         return None
     except json.JSONDecodeError:
         print("❌ Errore: config.json non è un JSON valido.")
@@ -28,7 +32,7 @@ def extract_full_domain(domain, site_key):
     scheme = parsed_url.scheme if parsed_url.scheme else 'https'
     netloc = parsed_url.netloc or parsed_url.path
 
-    # Alcuni siti vogliono "www."
+    # Alcuni siti preferiscono "www."
     if site_key in ['Tantifilm', 'StreamingWatch'] and not netloc.startswith('www.'):
         test_url = f"{scheme}://www.{netloc}"
         try:
@@ -57,14 +61,14 @@ def check_redirect(domain, site_key):
 
 
 def update_json_file():
-    data = load_config()
+    data = load_config_from_github()
     if not data:
         return
 
     sites = data.get("Siti", {})
 
     for site_key, site_info in sites.items():
-        domain_url = site_info.get("url")  # 👈 legge solo il campo "url"
+        domain_url = site_info.get("url")
         if not domain_url:
             print(f"⚠️ Nessun URL trovato per {site_key}, salto…")
             continue
@@ -72,14 +76,14 @@ def update_json_file():
         final_domain = check_redirect(domain_url, site_key)
         if final_domain:
             data['Siti'][site_key]['url'] = final_domain
-            print(f"✅ Aggiornato {site_key}: {final_domain}")
+            print(f"✅ Aggiornato {site_key}: {domain_url} → {final_domain}")
         else:
             print(f"⚠️ Nessun aggiornamento per {site_key}, mantengo {domain_url}")
 
     try:
         with open('config.json', 'w', encoding='utf-8') as file:
             json.dump(data, file, indent=4, ensure_ascii=False)
-        print("💾 File config.json aggiornato con successo!")
+        print("💾 File config.json aggiornato in locale con successo!")
     except Exception as e:
         print(f"❌ Errore durante il salvataggio del file JSON: {e}")
 
