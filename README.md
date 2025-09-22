@@ -171,7 +171,7 @@ Whatever you want
 
 To install this project on [Render](https://render.com/) follow these steps:
 
-[!WARNING] Render might ban your account. Modify the static.py file might help with that!
+[!WARNING] Render might ban your account. Modify the static.py file might help with that
 
 
   
