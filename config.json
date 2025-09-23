@@ -15,7 +15,7 @@
               "enabled":"1"
           },
           "CB01":{
-              "url": "https://cb01net.fun",
+              "url": "https://cb01net.space",
               "CB_PROXY":"1",
               "CB_ForwardProxy":"0",
               "MX_ForwardProxy":"0",
@@ -35,7 +35,7 @@
               "GH_PROXY":"1"
           },
           "Eurostreaming":{
-            "url": "https://eurostreaming.wedding",
+            "url": "https://eurostreaming.ventures",
             "enabled": "1",
             "ES_ForwardProxy": "0",
             "ES_PROXY": "1"
