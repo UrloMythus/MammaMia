@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir pytesseract
 EXPOSE 8080
 
 # Run run.py when the container launches
-ENTRYPOINT uvicorn run:app --host 0.0.0.0 --port $PORT --workers 4 --proxy-headers
+ENTRYPOINT ["python","run.py"]
