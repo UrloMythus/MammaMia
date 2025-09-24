@@ -50,7 +50,7 @@
             "url": "https://guardoserie.live",
             "enabled": "1",
             "GO_ForwardProxy": "0",
-            "GO_PROXY": "1"
+            "GO_PROXY": "0"
           },
           "AnimeWorld":{
             "url":"https://www.animeworld.so",
@@ -60,7 +60,7 @@
           }
    },
    "General":{
-       "load_env": "1",
+       "load_env": "0",
        "HOST": "0.0.0.0",
        "PORT": 8080,
        "Name": "MammaMia",
