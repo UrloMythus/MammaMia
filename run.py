@@ -280,4 +280,5 @@ async def addon_stream(request: Request,config, type, id,):
 if __name__ == '__main__':
     import uvicorn
     uvicorn.run("run:app", host=HOST, port=PORT, log_level=level)
+    print("Beamup Logs: Here is the port!, let's see if it is the correct:",PORT)
     

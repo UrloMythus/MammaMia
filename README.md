@@ -171,7 +171,8 @@ Whatever you want
 
 To install this project on [Render](https://render.com/) follow these steps:
 
-  
+[!WARNING] Render might ban your account. Modify the static.py file might help with that
+
 
   
 
@@ -344,5 +345,4 @@ This project uses Mediaflow-Proxy to bypass some protections. You can find instr
 We hereby issue this notice to inform you that this Add-On just function like an ordinary browser (like your browser) that fetch video files from internet, and do not violate the provisions of the Digital Millennium Copyright Act (DMCA). The Content these extensions may access is not hosted  or made avaiable by us or the Stremio application but the websites they are browsing in their autonomous mode. It is sole responsibility of the user and his/her countries' or states' law. If you think they are violating any intellectual property then please contact the actual file hosts not the owners of this repository or the Stremio app.
 
 Thank You.
-
 
