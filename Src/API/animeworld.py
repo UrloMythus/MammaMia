@@ -77,7 +77,7 @@ async def get_mp4(anime_url,ismovie,episode,client,i,streams):
     if ismovie == 0:
         episode_page = soup.find('a', {'data-episode-num':episode })
         if episode_page is None:
-            return None
+            return streams
         episode_page = f'{AW_DOMAIN}{episode_page["href"]}'
         response = await client.get(ForwardProxy + episode_page,allow_redirects=True, cookies = cookies,impersonate = "chrome124", proxies=proxies)
         if response.status_code == 202:
@@ -166,8 +166,8 @@ async def animeworld(streams,id,client):
 async def test_animeworld():
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "kitsu:46474:1"  # This is an example ID format
-        results = await animeworld(test_id, client)
+        test_id = "kitsu:12:1"  # This is an example ID format
+        results = await animeworld({'streams': []},test_id, client)
         print(results)
 
 if __name__ == "__main__":
