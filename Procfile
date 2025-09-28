@@ -1,1 +1,2 @@
+release: apt-get update && apt-get install -y tesseract-ocr libtesseract-dev && apt-get clean && rm -rf /var/lib/apt/lists/* && pip install --no-cache-dir pytesseract
 web: uvicorn run:app --host=0.0.0.0 --port=$PORT --workers 2
