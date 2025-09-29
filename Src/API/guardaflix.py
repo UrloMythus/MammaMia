@@ -63,6 +63,10 @@ async def search(showname,date,MFP,MFP_CREDENTIALS,client,streams):
     'term': showname,
     }
     response = await client.post(ForwardProxy + f'{GF_DOMAIN}/wp-admin/admin-ajax.php', headers=headers, data=data, proxies = proxies)
+    if response.status_code != 200:
+            logger.warning(f"Guardaflix Failed to fetch search results: {response.status_code}")
+            response = requests.get('https://floral.urlo30.workers.dev/')
+            print(response)
     soup = BeautifulSoup(response.text,'lxml', parse_only=  SoupStrainer('a'))
     a_tags = soup.find_all('a')
     for a in a_tags:
