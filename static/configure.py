@@ -75,6 +75,7 @@ CONFIGURE = """
             border-radius: 5px;
             overflow: hidden;
             width: 100%;
+
         }
         .provider-group label {
             display: flex;
@@ -87,6 +88,11 @@ CONFIGURE = """
         }
         .provider-group input[type="checkbox"] {
             margin-right: 1.5vh;
+            width: 4vh;
+            height: 4vh;
+        }
+        .provider-group input[type="checkbox"][id$="_mfp"] {
+            margin-left: 2.2vh;
             width: 4vh;
             height: 4vh;
         }
@@ -174,11 +180,11 @@ CONFIGURE = """
             <img src="https://creazilla-store.fra1.digitaloceanspaces.com/emojis/49647/pizza-emoji-clipart-md.png" alt="Logo">
         </div>
         <h1 class="name">Mamma Mia</h1>
-        <h2 class="version">v2.0.1</h2>
+        <h2 class="version">v2.0.2</h2>
         <div id="additionalText">
             <h2>This addon provides Movie, Series, Anime, and Live TV HTTPS Streams.<br> https://github.com/UrloMythus/MammaMia/</h2>
         </div>
-        <p class="description">🕵️‍♂️ = Mediaflowproxy might be needed</p>
+        <p class="description">🕵️‍♂️ = Mediaflowproxy might be needed <br>Select the box with this icon if you want to enable MFP for that source<br></p>
         <h3 class="gives">Select Providers:</h3>
         <form class="pure-form" id="provider-form">
             <div class="provider-group">
@@ -221,6 +227,7 @@ CONFIGURE = """
             <div class="provider-group">
                 <label for="streamingcommunity" class="provider-label">
                     <input type="checkbox" id="streamingcommunity"> StreamingCommunity 🕵️‍♂️
+                    <input type="checkbox" id="streamingcommunity_mfp" checked> 🕵️‍♂️
                 </label>
             </div>
              <div class="provider-group">
@@ -273,6 +280,7 @@ CONFIGURE = """
             "guardoserie": "GO",
             "guardaflix": "GF",
             "eurostreaming": "ES",
+            "streamingcommunity_mfp": "SC_MFP",
             "mediaflowproxy": "MFP"
         };
 

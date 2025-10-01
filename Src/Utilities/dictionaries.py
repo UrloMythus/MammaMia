@@ -438,7 +438,7 @@ extra_sources = {
 
 provider_map = {
         'SC': 'STREAMINGCOMMUNITY',
-        'SC_FS': 'SC_FAST_SEARCH',
+        'SC_MFP': 'SC_MFP',
         'LC': 'LORDCHANNEL',
         'SW': 'STREAMINGWATCH',
         'TF_FS': 'TF_FAST_SEARCH',
