@@ -9,51 +9,51 @@
                "enabled": "1"
            },
           "StreamingWatch":{
-              "url":"https://www.streamingwatch.org",
+              "url": "https://www.streamingwatch.org",
               "SW_PROXY": "0",
               "SW_ForwardProxy": "0",
               "enabled":"1"
           },
           "CB01":{
-              "url":"https://cb01.uno",
-              "CB_PROXY":"0",
+              "url": "https://cb01net.xyz",
+              "CB_PROXY":"1",
               "CB_ForwardProxy":"0",
               "MX_ForwardProxy":"0",
               "MX_PROXY":"0",
               "enabled":"1"
           },
           "Guardaserie":{
-              "url":"https://guardaserie.qpon",
+              "url": "https://guardaserietv.help",
               "enabled":"1",
               "GS_ForwardProxy":"0",
-              "GS_PROXY":"0"
+              "GS_PROXY":"1"
           },
           "GuardaHD":{
-              "url":"https://mostraguarda.stream",
+              "url": "https://mostraguarda.stream",
               "enabled":"1",
               "GH_ForwardProxy":"0",
-              "GH_PROXY":"0"
+              "GH_PROXY":"1"
           },
           "Eurostreaming":{
-            "url": "https://eurostreaming.garden",
+            "url": "https://eurostreaming.dating",
             "enabled": "1",
             "ES_ForwardProxy": "0",
-            "ES_PROXY": "0"
+            "ES_PROXY": "1"
           },  
           "Guardaflix":{
             "url": "https://guardaflix.live",
             "enabled": "1",
             "GF_ForwardProxy": "0",
-            "GF_PROXY": "0"
+            "GF_PROXY": "1"
           },
           "Guardoserie":{
-            "url": "https://guardoserie.live",
+            "url": "https://guardoserie.monster",
             "enabled": "1",
             "GO_ForwardProxy": "0",
-            "GO_PROXY": "0"
+            "GO_PROXY": "1"
           },
           "AnimeWorld":{
-            "url":"https://www.animeworld.so",
+            "url": "https://www.animeworld.ac",
             "enabled":"1",
             "AW_ForwardProxy":"0",
             "AW_PROXY":"0"
@@ -63,8 +63,8 @@
        "load_env": "0",
        "HOST": "0.0.0.0",
        "PORT": 8080,
-       "Name": "MammaMia",
-       "Icon": "🍕️",
+       "Name": "Nello",
+       "Icon": "🐶",
        "level": "info",
        "Global_Proxy": "0"
        }
