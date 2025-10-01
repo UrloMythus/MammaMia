@@ -30,7 +30,7 @@ async def vixcloud(link,client,MFP,MFP_CREDENTIALS,streams,site_name,proxies,For
     headers['user-agent'] = User_Agent
     response = await client.get(link)        
     if response.status_code != 200:
-        logger.warning("Failed to extract URL components, Invalid Request")
+        logger.warning(f"Failed to extract URL components from VixSRC, Invalid Request: {response.status_code}") 
     soup = BeautifulSoup(response.text, "lxml", parse_only=SoupStrainer("body"))
     if soup:
         script = soup.find("body").find("script").text
@@ -49,6 +49,10 @@ async def vixcloud(link,client,MFP,MFP_CREDENTIALS,streams,site_name,proxies,For
             final_url += "&h=1"
     if final_url:
         logger.info(f"Vixcloud Found Results for the current ID")
+        #We add .m3u8 after the VixID in order to make the video playable by ExoPlayer
+        parts_final_url = final_url.split("?")
+        first_part_final_url = parts_final_url[0] + ".m3u8"
+        final_url = first_part_final_url + "?" + parts_final_url[1]
         streams['streams'].append({"name":f'{Name} {mfp_icon}\n{quality}', 'title': f'{Icon} StreamingCommunity\n▶️ Vixcloud','url': final_url,'behaviorHints': {'proxyHeaders': {"request": {"user-agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': f'{site_name.lower()}{quality}'}})
 
     return streams
