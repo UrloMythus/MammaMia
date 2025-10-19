@@ -17,6 +17,9 @@ A Stremio Addon for  HTTPS Streams in Italian
 
 Movies, Series, Anime and Live TV are supported.
 
+
+https://kickboxer91-streammm.hf.space
+https://kickboxer91-streammm.hf.space/configure
  
   
 
