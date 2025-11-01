@@ -258,6 +258,8 @@ async def addon_stream(request: Request,config, type, id,):
                 if provider_maps['STREAMINGCOMMUNITY'] == "1" and SC == "1":
                     if provider_maps['SC_MFP'] != "0":
                         SC_MFP = "1"
+                    else:
+                        SC_MFP = '0'
                     streams = await streaming_community(streams,id,client,SC_MFP,MFP_CREDENTIALS)
                 if provider_maps['STREAMINGWATCH'] == "1" and SW == "1":
                     streams = await streamingwatch(streams,id,client)
