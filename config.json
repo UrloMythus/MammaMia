@@ -16,7 +16,7 @@
           },
           "CB01":{
               "url": "https://cb01net.xyz",
-              "CB_PROXY":"1",
+              "CB_PROXY":"0",
               "CB_ForwardProxy":"0",
               "MX_ForwardProxy":"0",
               "MX_PROXY":"0",
