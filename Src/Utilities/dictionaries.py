@@ -413,6 +413,11 @@ STREAM = {
     ]
 }
 
+
+REALTIME = {}
+
+
+
 extra_sources = {
     "rai-1": ["https://ilglobotv-live.akamaized.net/channels/RAI1/Live.m3u8"],
     "rai-2": ["https://ilglobotv-live.akamaized.net/channels/RAI2/Live.m3u8"],
@@ -452,5 +457,6 @@ provider_map = {
         "OST": "ONLINESERIETV",
         "ES": "EUROSTREAMING",
         "GO": "GUARDOSERIE",
+        "RT": "REALTIME",
         "GF": "GUARDAFLIX"
     }

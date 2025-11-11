@@ -41,7 +41,7 @@
             "ES_PROXY": "0"
           },  
           "Guardaflix":{
-            "url": "https://guardaflix.live",
+            "url": "https://guardaflix.center",
             "enabled": "1",
             "GF_ForwardProxy": "0",
             "GF_PROXY": "0"
@@ -57,6 +57,12 @@
             "enabled":"1",
             "AW_ForwardProxy":"0",
             "AW_PROXY":"0"
+          },
+          "Realtime": {
+            "url": "https://realtime.it",
+            "enabled": "1",
+            "RT_ForwardProxy": "0",
+            "RT_PROXY": "0"
           }
    },
    "General":{

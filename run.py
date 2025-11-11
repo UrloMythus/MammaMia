@@ -16,7 +16,9 @@ from Src.API.animeworld import animeworld
 from Src.API.guardaflix import guardaflix
 from Src.API.guardoserie import guardoserie
 from Src.API.eurostreaming import eurostreaming
-
+from Src.API.realtime import search_catalog as realtime
+from Src.API.realtime import meta_catalog as meta_catalog_realtime
+from Src.API.realtime import realtime as streams_realtime
 from Src.Utilities.dictionaries import STREAM,extra_sources,provider_map
 from Src.API.epg import tivu, tivu_get,epg_guide,convert_bho_1,convert_bho_2,convert_bho_3
 
@@ -53,6 +55,7 @@ GHD = config.GHD
 ES = config.ES
 GF = config.GF
 GO = config.GO
+RT = config.RT
 HOST = config.HOST
 PORT = int(config.PORT)
 if env_vars.get('PORT_ENV'):
@@ -84,6 +87,17 @@ MANIFEST = {
                     "options": ["Rai", "Mediaset", "Sky", "Euronews", "La7", "Warner Bros", "FIT", "Sportitalia","RSI","DAZN", "Rakuten", "Pluto", "A+E", "Paramount", "Chill"]
                 }
             ]
+        },
+        {
+            'id': 'realtime',
+            'type': "series",
+            "name": "realtime",
+            'extra' :[
+                {
+                    "name": "search",
+                    "isRequired": True
+                }
+            ]
         }
     ],
     "resources": ["stream", "catalog", "meta"],
@@ -113,13 +127,21 @@ def config(request: Request):
 def addon_manifest(config: str): 
     manifest_copy = MANIFEST.copy() 
     config = base64.b64decode(config).decode('utf-8')
-    if "LIVETV"  in config:
-        return respond_with(manifest_copy)
-    elif "LIVETV" not in config:
-        manifest_copy["catalogs"] = []
+    if "LIVETV" not in config:
         if "catalog" in manifest_copy["resources"]:
-            manifest_copy["resources"].remove("catalog")
-        return respond_with(manifest_copy)
+            for item in manifest_copy['catalogs']:
+                if item['id'] == 'tv_channels':
+                    manifest_copy['catalogs'].remove(item)
+            if not any(manifest_copy['catalogs']):
+                manifest_copy["resources"].remove('catalog')
+    if 'RT' not in config or RT == '0':
+        if "catalog" in manifest_copy["resources"]:
+            for item in manifest_copy['catalogs']:
+                if item['id'] == 'realtime':
+                    manifest_copy['catalogs'].remove(item)
+            if not any(manifest_copy['catalogs']):
+                manifest_copy["resources"].remove('catalog')
+    return respond_with(manifest_copy)
 
 @app.get('/manifest.json')
 def manifest():
@@ -164,6 +186,14 @@ async def first_catalog(type: str, id: str, genre: str = None):
     catalogs = await addon_catalog(type, id,genre)
     return respond_with(catalogs)
 
+@app.get('/{config:path}/catalog/{type}/{id}/search={query}.json')
+async def realtime_catalog(type:str,id:str,query: str = None):
+    if type != 'series':
+        raise HTTPException(status_code=404)
+    catalogs = {"query": query,'cacheMaxAge': 86400,"metas": []}
+    async with AsyncSession(proxies = proxies) as client:
+        catalogs = await realtime(query, catalogs,client)
+    return respond_with(catalogs)
 @app.get('/{config:path}/meta/tv/{id}.json')
 @limiter.limit("20/second")
 async def addon_meta(request: Request,id: str):
@@ -199,7 +229,14 @@ async def addon_meta(request: Request,id: str):
         meta['meta']['url'] = channel['url']  # Using the stream URL as a website link
     return respond_with(meta)
 
-
+@app.get('/{config:path}/meta/series/{id}.json')
+async def addon_meta(request: Request,id: str):
+    meta = {'meta': {'videos':[], 'status': 'Continuing', 'type': 'series', 'id': id}}
+    async with AsyncSession(proxies = proxies) as client:
+        if 'realtime' not in id:
+            raise HTTPException(status_code=404)
+        meta = await meta_catalog_realtime(id,meta,client)
+    return respond_with(meta)
 @app.get('/{config:path}/stream/{type}/{id}.json')
 @limiter.limit("5/second")
 async def addon_stream(request: Request,config, type, id,):
@@ -249,6 +286,9 @@ async def addon_stream(request: Request,config, type, id,):
             if not streams['streams']:
                 raise HTTPException(status_code=404)
             return respond_with(streams)
+        elif "realtime" in id and RT == '1':
+            streams = await streams_realtime(streams,id,client)
+            return respond_with(streams)
         elif "tt" in id or "tmdb" in id or "kitsu" in id:
             logger.info(f"Handling movie or series: {id}")
             if "kitsu" in id:
@@ -275,6 +315,9 @@ async def addon_stream(request: Request,config, type, id,):
                     streams = await guardaflix(streams,id,client,MFP,MFP_CREDENTIALS)
                 if provider_maps['GUARDOSERIE'] == "1" and GO == "1":
                     streams = await guardoserie(streams,id,client,MFP,MFP_CREDENTIALS)
+                if provider_maps['REALTIME'] == '1' and RT == '1':
+                    streams = await streams_realtime(streams,id,client)
+            return respond_with(streams)
         if not streams['streams']:
             raise HTTPException(status_code=404)
 

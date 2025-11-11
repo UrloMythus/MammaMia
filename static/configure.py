@@ -236,6 +236,11 @@ CONFIGURE = """
                 </label>
             </div>
             <div class="provider-group">
+                <label for="realtime" class="provider-label">
+                    <input type="checkbox" id="realtime"> Realtime
+                </label>
+            </div>
+            <div class="provider-group">
                 <label for="livetv" class="provider-label">
                     <input type="checkbox" id="livetv"> LiveTV
                 </label>
@@ -280,6 +285,7 @@ CONFIGURE = """
             "guardoserie": "GO",
             "guardaflix": "GF",
             "eurostreaming": "ES",
+            "realtime": "RT",
             "streamingcommunity_mfp": "SC_MFP",
             "mediaflowproxy": "MFP"
         };
