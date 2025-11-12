@@ -182,69 +182,75 @@ async def search_catalog(query,catalog,client):
     return catalog
 
 async def meta_catalog(id,catalog,client):
-    headers = {
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:143.0) Gecko/20100101 Firefox/143.0',
-    'Accept': '*/*',
-    'Accept-Language': 'en-US,en;q=0.5',
-    'Referer': 'https://realtime.it/',
-    'Origin': 'https://realtime.it',
-    'Sec-GPC': '1',
-    'Connection': 'keep-alive',
-    'Sec-Fetch-Dest': 'empty',
-    'Sec-Fetch-Mode': 'cors',
-    'Sec-Fetch-Site': 'cross-site',
-    'DNT': '1',
-    'Priority': 'u=4',
-    }
-    parts = id.split(':')
-    slug = parts[1]
-    parts2 = parts[0].split('realtime')
-    typeof= parts2[1]
-    if typeof == 'showpage':
-        link = f'https://public.aurora.enhanced.live/site/page/{slug}/?include=default&filter[environment]=realtime&v=2&parent_slug=programmi-real-time'
-    elif typeof == 'article':
-        link = f'https://public.aurora.enhanced.live/site/page/{slug}/?include=default&filter[environment]=realtime&v=2'
+    try:
+        headers = {
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:143.0) Gecko/20100101 Firefox/143.0',
+        'Accept': '*/*',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Referer': 'https://realtime.it/',
+        'Origin': 'https://realtime.it',
+        'Sec-GPC': '1',
+        'Connection': 'keep-alive',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'cross-site',
+        'DNT': '1',
+        'Priority': 'u=4',
+        }
+        parts = id.split(':')
+        slug = parts[1]
+        parts2 = parts[0].split('realtime')
+        typeof= parts2[1]
+        if typeof == 'showpage':
+            link = f'https://public.aurora.enhanced.live/site/page/{slug}/?include=default&filter[environment]=realtime&v=2&parent_slug=programmi-real-time'
+        elif typeof == 'article':
+            link = f'https://public.aurora.enhanced.live/site/page/{slug}/?include=default&filter[environment]=realtime&v=2'
 
-    response = await client.get(ForwardProxy + link,headers = headers, proxies = proxies)
-    data = response.json()
-    title = data['title']
-    subtitle = data['subtitle']
+        response = await client.get(ForwardProxy + link,headers = headers, proxies = proxies)
+        data = response.json()
+        title = data['title']
+        subtitle = data['subtitle']
     
-    if  data['type'] == 'articlepage':
-        if data['blocks'][1]['sonicOverrideEnabled'] == True:
-            platform = 'IT'
-        else:
-            platform = 'DPLAY'
-    elif data['type'] == 'showpage':
-        
-        if 'aurora' in data['blocks'][0]['item']['poster']['src']:
-            platform = 'IT'
-        elif 'eu1-prod' in data['blocks'][0]['item']['poster']['src']:
-            platform = 'DPLAY'
-    if typeof == 'showpage':
-        for item in reversed(data['blocks'][1]['items']):
+        if  data['type'] == 'articlepage':
+            if data['blocks'][1]['sonicOverrideEnabled'] == True:
+                platform = 'IT'
+            else:
+                platform = 'DPLAY'
+        elif data['type'] == 'showpage':
+            if 'aurora' in data['blocks'][0]['item']['poster']['src']:
+                platform = 'IT'
+            elif 'eu1-prod' in data['blocks'][0]['item']['poster']['src']:
+                platform = 'DPLAY'
+        if typeof == 'showpage':
+            for item in reversed(data['blocks'][1]['items']):
+                id = item['id']
+                description = item['description']
+                episode = item['episodeNumber']
+                season = item['seasonNumber']
+                poster = item['poster']
+                date = item['publishStart']
+                catalog['meta']['videos'].append({'title': f'S{season}'+ f'E{episode}','season': season, 'episode': episode,'firstAired':date,'overview': description, 'thumbnail': poster['src'], 'id': f'realtime{platform}:id:'+id})
+        elif typeof == 'article':
+            item = data['blocks'][1]['item']
             id = item['id']
             description = item['description']
             episode = item['episodeNumber']
             season = item['seasonNumber']
             poster = item['poster']
             date = item['publishStart']
-            catalog['meta']['videos'].append({'title': f'S{season}'+ f'E{episode}','season': season, 'episode': episode,'firstAired':date,'overview': description, 'thumbnail': poster['src'], 'id': f'realtime{platform}:id:'+id})
-    elif typeof == 'article':
-        item = data['blocks'][1]['item']
-        id = item['id']
-        description = item['description']
-        episode = item['episodeNumber']
-        season = item['seasonNumber']
-        poster = item['poster']
-        date = item['publishStart']
-        catalog['meta']['videos'].append({'title': f'{title}','season': season, 'episode': episode,'firstAired':date,'overview': description, 'thumbnail': poster['src'], 'id': f'realtime{platform}:id:'+id})
+            catalog['meta']['videos'].append({'title': f'{title}','season': season, 'episode': episode,'firstAired':date,'overview': description, 'thumbnail': poster['src'], 'id': f'realtime{platform}:id:'+id})
 
-    catalog['meta']['name'] = title
-    catalog['meta']['description'] = subtitle 
-    catalog['meta']['releaseInfo'] = '-' + data['datePublished'].split('-')[0]
-    catalog['meta']['background'] = data['metaMedia'][0]['media']['url']
-    return catalog
+        catalog['meta']['name'] = title
+        catalog['meta']['description'] = subtitle 
+        catalog['meta']['releaseInfo'] = '-' + data['datePublished'].split('-')[0]
+        catalog['meta']['background'] = data['metaMedia'][0]['media']['url']
+        return catalog
+    except Exception as e:
+        catalog['meta']['name'] = title
+        catalog['meta']['description'] = subtitle 
+        catalog['meta']['releaseInfo'] = '-' + data['datePublished'].split('-')[0]
+        catalog['meta']['background'] = data['metaMedia'][0]['media']['url']
+        return catalog
 async def realtime(streams,id,client):
     try:
         if 'realtime' in id:
