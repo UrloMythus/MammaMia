@@ -2,7 +2,7 @@
     "Siti": {
            "StreamingCommunity": {
                "url": "https://vixsrc.to",
-               "SC_ForwardProxy": "0",
+               "SC_ForwardProxy": "1",
                "SC_PROXY": "0",
                "VX_ForwardProxy": "0",
                "VX_PROXY": "0",
@@ -10,7 +10,7 @@
            },
           "StreamingWatch":{
               "url": "https://www.streamingwatch.org",
-              "SW_PROXY": "0",
+              "SW_PROXY": "1",
               "SW_ForwardProxy": "0",
               "enabled":"1"
           },
