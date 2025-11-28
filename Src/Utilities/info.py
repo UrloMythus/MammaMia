@@ -61,6 +61,9 @@ def get_info_tmdb(tmbda,ismovie,type):
             date = show.first_air_date
             date = date.split("-")[0]
             return showname,date
+        elif type == 'Realtime':
+            date = show.first_air_date
+            return showname,date
     
     elif ismovie == 1:
         movie = Movie()
@@ -109,7 +112,9 @@ def get_info_tmdb(tmbda,ismovie,type):
             date = show.release_date
             date = date.split("-")[0]
             return showname,date
-
+        elif type == 'Realtime':
+            date = show.release_date
+            return showname,date
 async def get_info_imdb(imdb_id, ismovie, type,client):
     resp = await client.get(f'https://api.themoviedb.org/3/find/{imdb_id}?api_key={TMDB_KEY}&language=it&external_source=imdb_id')
     data = resp.json()
@@ -157,6 +162,9 @@ async def get_info_imdb(imdb_id, ismovie, type,client):
             date = data['tv_results'][0]['first_air_date'] 
             date = date.split("-")[0]
             return showname,date
+        elif type == 'Realtime':
+            return showname,data['tv_results'][0]['first_air_date'] 
+
     elif ismovie == 1:
         showname= data['movie_results'][0]['title']
         if type == "Filmpertutti":
@@ -195,6 +203,10 @@ async def get_info_imdb(imdb_id, ismovie, type,client):
             date = data['movie_results'][0]['release_date']
             date = date.split("-")[0]
             return showname,date
+        elif type == 'Realtime':
+            date = data['movie_results'][0]['release_date']
+            return showname,date
+
 
 
 async def get_info_kitsu(kitsu_id,client):
