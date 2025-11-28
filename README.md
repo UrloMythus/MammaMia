@@ -20,7 +20,7 @@ Movies, Series, Anime and Live TV are supported.
 
 [Hugging Face space](https://huggingface.co/spaces/kickboxer91/streamMM)  
 [Config page](https://kickboxer91-streammm.hf.space/configure)  
- 
+[Hugging Face mediaflow-proxy space](https://kickboxer91-streammfp.hf.space)
   
 
   
