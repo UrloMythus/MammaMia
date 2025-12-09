@@ -15,42 +15,42 @@
               "enabled":"1"
           },
           "CB01":{
-              "url": "https://cb01net.cam",
-              "CB_PROXY":"0",
+              "url": "https://cb01net.blog",
+              "CB_PROXY":"1",
               "CB_ForwardProxy":"0",
               "MX_ForwardProxy":"0",
               "MX_PROXY":"0",
               "enabled":"1"
           },
           "Guardaserie":{
-              "url": "https://guardaserietv.help",
+              "url": "https://guardaserietv.cfd",
               "enabled":"1",
               "GS_ForwardProxy":"0",
-              "GS_PROXY":"0"
+              "GS_PROXY":"1"
           },
           "GuardaHD":{
               "url": "https://mostraguarda.stream",
               "enabled":"1",
               "GH_ForwardProxy":"0",
-              "GH_PROXY":"0"
+              "GH_PROXY":"1"
           },
           "Eurostreaming":{
-            "url": "https://eurostreamings.vip/",
+            "url": "https://eurostreamings.pics",
             "enabled": "1",
             "ES_ForwardProxy": "0",
-            "ES_PROXY": "0"
+            "ES_PROXY": "1"
           },  
           "Guardaflix":{
-            "url": "https://guardaflix.wtf",
+            "url": "https://guardaflix.onl",
             "enabled": "1",
             "GF_ForwardProxy": "0",
-            "GF_PROXY": "0"
+            "GF_PROXY": "1"
           },
           "Guardoserie":{
-            "url": "https://guardoserie.wtf",
+            "url": "https://guardoserie.buzz",
             "enabled": "1",
             "GO_ForwardProxy": "0",
-            "GO_PROXY": "0"
+            "GO_PROXY": "1"
           },
           "AnimeWorld":{
             "url": "https://www.animeworld.ac",
