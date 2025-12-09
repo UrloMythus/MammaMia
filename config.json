@@ -6,13 +6,13 @@
                "SC_PROXY": "0",
                "VX_ForwardProxy": "0",
                "VX_PROXY": "0",
-               "enabled": "1"
+               "abilitato": "1"
            },
           "StreamingWatch":{
               "url": "https://www.streamingwatch.org",
               "SW_PROXY": "0",
               "SW_ForwardProxy": "0",
-              "enabled":"1"
+              "abilitato":"1"
           },
           "CB01":{
               "url": "https://cb01net.blog",
@@ -20,58 +20,58 @@
               "CB_ForwardProxy":"0",
               "MX_ForwardProxy":"0",
               "MX_PROXY":"0",
-              "enabled":"1"
+              "abilitato":"1"
           },
           "Guardaserie":{
               "url": "https://guardaserietv.cfd",
-              "enabled":"1",
+              "abilitato":"1",
               "GS_ForwardProxy":"0",
               "GS_PROXY":"1"
           },
           "GuardaHD":{
               "url": "https://mostraguarda.stream",
-              "enabled":"1",
+              "abilitato":"1",
               "GH_ForwardProxy":"0",
               "GH_PROXY":"1"
           },
           "Eurostreaming":{
             "url": "https://eurostreamings.pics",
-            "enabled": "1",
+            "abilitato": "1",
             "ES_ForwardProxy": "0",
             "ES_PROXY": "1"
           },  
           "Guardaflix":{
             "url": "https://guardaflix.onl",
-            "enabled": "1",
+            "abilitato": "1",
             "GF_ForwardProxy": "0",
             "GF_PROXY": "1"
           },
           "Guardoserie":{
             "url": "https://guardoserie.buzz",
-            "enabled": "1",
+            "abilitato": "1",
             "GO_ForwardProxy": "0",
             "GO_PROXY": "1"
           },
           "AnimeWorld":{
             "url": "https://www.animeworld.ac",
-            "enabled":"1",
+            "abilitato":"1",
             "AW_ForwardProxy":"0",
             "AW_PROXY":"0"
           },
-          "Realtime": {
+          "In tempo reale": {
             "url": "https://realtime.it",
-            "enabled": "1",
+            "abilitato": "1",
             "RT_ForwardProxy": "0",
             "RT_PROXY": "0"
           }
    },
-   "General":{
+   "Generale":{
        "load_env": "0",
        "HOST": "0.0.0.0",
-       "PORT": 8080,
-       "Name": "MammaMia",
-       "Icon": "🍕",
-       "level": "info",
-       "Global_Proxy": "0"
+       "PORTA": 8080,
+       "Nome": "MammaMia",
+       "Icona": "🍕",
+       "livello": "info",
+       "Proxy_Globale": "0"
        }
   }
