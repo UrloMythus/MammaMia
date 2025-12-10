@@ -31,8 +31,8 @@ if MX_PROXY == "1":
             "https": proxy
         }      
 if CB_PROXY == "1":
-    PROXY_CREDENTIALS = env_vars.get('PROXY_CREDENTIALS')
-    proxy_list = json.loads(PROXY_CREDENTIALS)
+    PROXY_CREDENTIALS = os.environ.get('PROXY_CREDENTIALS', '[]')
+    proxy_list = json.loads(PROXY_CREDENTIALS) if PROXY_CREDENTIALS else []
     proxy = random.choice(proxy_list)
     if proxy == "":
         proxies = {}
