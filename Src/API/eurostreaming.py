@@ -60,8 +60,9 @@ def convert_numbers(base64_data):
 
 async def get_numbers(safego_url,client):
     headers = random_headers.generate()
-    headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64; rv:138.0) Gecko/20100101 Firefox/138.0'
-    response = await client.get(ForwardProxy + safego_url,headers = headers, proxies = proxies)
+    headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0'
+    headers['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    response = await client.get(ForwardProxy + safego_url,headers = headers, proxies = proxies, impersonate = 'chrome')
     cookies = (response.cookies.get_dict())
     soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('img'))
     numbers = soup.img['src'].split(',')[1]
@@ -74,7 +75,8 @@ async def real_page(safego_url,client):
         headers = random_headers.generate()
         headers['Origin'] = 'https://safego.cc'
         headers['Referer'] = safego_url
-        headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64; rv:138.0) Gecko/20100101 Firefox/138.0'
+        headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0'
+        
         with open(file_path, 'r') as file:
             cookies = file.read()
         cookies = json.loads(cookies.replace("'", '"'))
@@ -86,7 +88,7 @@ async def real_page(safego_url,client):
             logger.info("Getting numbers")
             numbers,cookies = await get_numbers(safego_url,client)
             numbers = convert_numbers(numbers)
-            data = {'captch4': numbers}
+            data = {'captch5': numbers}
             response = await client.post(ForwardProxy + safego_url,headers=headers, data=data, cookies = cookies, proxies = proxies)
             cap4 = response.headers.get('set-cookie').split(';')[0]
             cookies[cap4.split('=')[0]] = cap4.split('=')[1]
@@ -221,11 +223,6 @@ async def test_euro():
         results = await eurostreaming({'streams': []},"tt6156584:4:1",client,"0",['test','test'])
         print(results)
 
-async def test_deltabit():
-    from curl_cffi.requests import AsyncSession
-    async with AsyncSession() as client:
-        results = await deltabit("https://deltabit.co/fgeki2456ab1",client)
-        print(results)
 
 if __name__ == "__main__":
     import asyncio
