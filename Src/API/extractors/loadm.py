@@ -72,10 +72,15 @@ async def loadm(player_link,client,streams,referer,site_name,proxies,ForwardProx
     #We get the hls
     hls = data['cf']
     title = data['title']
+    m3u8 = data['source']
     if hls:
-        streams['streams'].append({'name': f"{Name}",'title': f'{Icon}{site_name}\n▶️ Loadm\n{title}', 'url': hls, 'behaviorHints': {'proxyHeaders': {"request": {"Referer": player_url}}, 'notWebReady': True, 'bingeGroup': f'{site_name.lower()}'}})
-        logger.info(f"{site_name} on Loadm found results for the current ID")
-        return streams
+        streams['streams'].append({'name': f"{Name}",'title': f'{Icon}{site_name}\n▶️ Loadm\nPlayer One\n{title}', 'url': hls, 'behaviorHints': {'proxyHeaders': {"request": {"Referer": player_url}}, 'notWebReady': True, 'bingeGroup': f'{site_name.lower()}hls'}})
+        logger.info(f"{site_name} on Loadm found results for player one in the current ID")
+    if m3u8:
+        streams['streams'].append({'name': f"{Name}",'title': f'{Icon}{site_name}\n▶️ Loadm\nPlayer Two\n{title}', 'url': m3u8, 'behaviorHints': {'proxyHeaders': {"request": {"Referer": player_url}}, 'notWebReady': True, 'bingeGroup': f'{site_name.lower()}m3u8'}})
+        logger.info(f"{site_name} on Loadm found results for player two in the current ID")
+
+    return streams
 
 
 
