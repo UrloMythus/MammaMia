@@ -445,7 +445,6 @@ provider_map = {
         'SC': 'STREAMINGCOMMUNITY',
         'SC_MFP': 'SC_MFP',
         'LC': 'LORDCHANNEL',
-        'SW': 'STREAMINGWATCH',
         'TF_FS': 'TF_FAST_SEARCH',
         'TF': 'TANTIFILM',  # Assuming 'TF' should also be handled
         'FT': 'FILMPERTUTTI',
@@ -458,5 +457,6 @@ provider_map = {
         "ES": "EUROSTREAMING",
         "GO": "GUARDOSERIE",
         "RT": "REALTIME",
+        "TI": "TOONITALIA",
         "GF": "GUARDAFLIX"
     }

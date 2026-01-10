@@ -134,7 +134,7 @@ async def guardoserie(streams,id,client,MFP,MFP_CREDENTIALS):
 async def test_guardoserie():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
-        results = await guardoserie({'streams': []},"tt10919420:1:1",client,"1",['test','test'])
+        results = await guardoserie({'streams': []},"tt9165438:3:1",client,"1",['test','test'])
         print(results)
 
         

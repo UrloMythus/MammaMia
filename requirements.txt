@@ -11,3 +11,4 @@ curl_cffi
 fake-headers
 pycryptodome
 rich
+python-multipart

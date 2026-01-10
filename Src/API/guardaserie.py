@@ -51,7 +51,7 @@ async def search_imdb(clean_id,client):
     except Exception as e:
         logger.warning(f'GS {e}')
         return None
-
+'''
 async def search(showname,date,client):
     try:
         headers = random_headers.generate()
@@ -71,7 +71,7 @@ async def search(showname,date,client):
 
     except Exception as e:
         return None
-
+'''
 
 
 async def player_url(page_url, season, episode,client):

@@ -1,3 +1,4 @@
 .env
 __pycache__/
 .vercel
+beamup.json

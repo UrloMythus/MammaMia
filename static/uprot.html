@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Mamma Mia</title>
+    <link rel="icon" href="https://creazilla-store.fra1.digitaloceanspaces.com/emojis/49647/pizza-emoji-clipart-md.png" type="image/x-icon">
+    <title>Fast Search Example</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 2.2vh;
+            font-family: 'Open Sans', Arial, sans-serif;
+            color: white;
+            background: url('https://i.postimg.cc/ry3p76HY/italian-seamless-free-vector-pattern3.png') center center repeat;
+            background-size: cover;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            overflow-y: auto;
+        }
+        #captcha {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 0.5vh;
+            border-radius: 10px;
+            width: 65vh;
+            max-width: 100%;
+            text-align: center;
+            margin-top: 10vh;
+        }
+        .logo {
+            width: 12vh;
+            margin: 0 auto;
+            margin-bottom: 3vh;
+            margin-top: -3vh;
+        }
+        .logo img {
+            width: 100%;
+            height: auto;
+        }
+        .captchaimg img {
+            width: 80%; 
+            height: auto;
+            object-fit: contain; 
+            display: block;
+            margin: 0 auto;
+        }
+        h1, h2, h3 {
+            margin: 0;
+            text-shadow: 0 0 1vh rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            font-size: 4.5vh;
+            font-weight: 700;
+        }
+        h2 {
+            font-size: 2vh;
+            font-weight: normal;
+            font-style: italic;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+        h3 {
+            font-size: 2.2vh;
+            margin-bottom: 10px;
+        }
+        #additionalText {
+            margin-top: 2vh;
+            font-size: 1.8vh;
+            text-align: left;
+        }
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 600px) {
+            .provider-group label {
+                font-size: 2vh;
+                white-space: nowrap;
+            }
+        }
+        form {
+            border: 0;
+            outline: 0;
+            color: white;
+            background: #8A5AAB;
+            padding: 1.2vh 3.5vh;
+            text-align: center;
+            font-family: 'Open Sans', Arial, sans-serif;
+            font-size: 2.2vh;
+            font-weight: 600;
+            cursor: pointer;
+            display: block;
+            box-shadow: 0 0.5vh 1vh rgba(0, 0, 0, 0.2);
+            transition: box-shadow 0.1s ease-in-out;
+            width: 80%;
+            max-width: 35vh;
+            margin: 1vh auto;
+        }
+        form:hover {
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="captcha">
+        <div class="logo">
+            <img src="https://creazilla-store.fra1.digitaloceanspaces.com/emojis/49647/pizza-emoji-clipart-md.png" alt="Logo">
+        </div>
+        <h1 class="name">Uprot Captcha</h1>
+        <h2 class="version">Per abilitare MaxStream</h2>
+        <div id="additionalText">
+            <h2>Inserire i numeri in foto per abilitare la fonte MaxStream per la durata di un giorno<br> https://github.com/UrloMythus/MammaMia/</h2>
+        <div class="captchaimg">
+            <img src="{{ image_url }}" alt="captcha1">
+        </div>
+        <form id = 'form' action="/uprot" method="post">
+            <input type="text" name="user_input" required>
+            <button type="submit">Submit</button>
+        </form>
+  
+
+</body>
+</html>

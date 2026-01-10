@@ -153,7 +153,7 @@ async def eval_solver(stream_link,proxies, ForwardProxy, client):
         for i in script_all:
             if detect(i.text):
                 unpacked_code = unpack(i.text)
-                if "mixdrop" in stream_link:
+                if "xdrop" in stream_link:
                      pattern = r'MDCore.wurl ?= ?"(.*?)"'
                      
                 else:

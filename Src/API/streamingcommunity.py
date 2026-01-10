@@ -87,7 +87,7 @@ async def test_vixsrc():
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
         test_id = "tt6468322:1:1"  # This is an example ID format
-        results = await streaming_community(test_id, client,"0","0")
+        results = await streaming_community({'streams': []},test_id, client,"0",['test','welp'])
         print(results)
 
 if __name__ == "__main__":

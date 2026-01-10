@@ -180,18 +180,13 @@ CONFIGURE = """
             <img src="https://creazilla-store.fra1.digitaloceanspaces.com/emojis/49647/pizza-emoji-clipart-md.png" alt="Logo">
         </div>
         <h1 class="name">Mamma Mia</h1>
-        <h2 class="version">v2.0.2</h2>
+        <h2 class="version">v2.1.0</h2>
         <div id="additionalText">
             <h2>This addon provides Movie, Series, Anime, and Live TV HTTPS Streams.<br> https://github.com/UrloMythus/MammaMia/</h2>
         </div>
         <p class="description">🕵️‍♂️ = Mediaflowproxy might be needed <br>Select the box with this icon if you want to enable MFP for that source<br></p>
         <h3 class="gives">Select Providers:</h3>
         <form class="pure-form" id="provider-form">
-            <div class="provider-group">
-                <label for="streamingwatch" class="provider-label">
-                    <input type="checkbox" id="streamingwatch"> StreamingWatch
-                </label>
-            </div>
              <div class="provider-group">
                 <label for="guardoserie" class="provider-label">
                     <input type="checkbox" id="guardoserie"> Guardoserie
@@ -237,9 +232,15 @@ CONFIGURE = """
             </div>
             <div class="provider-group">
                 <label for="realtime" class="provider-label">
+                    <input type="checkbox" id="toonitalia"> Toonitalia
+                </label>
+            </div>
+            <div class="provider-group">
+                <label for="realtime" class="provider-label">
                     <input type="checkbox" id="realtime"> Realtime
                 </label>
             </div>
+        
             <div class="provider-group">
                 <label for="livetv" class="provider-label">
                     <input type="checkbox" id="livetv"> LiveTV
@@ -276,7 +277,6 @@ CONFIGURE = """
         let manifest = "|";
         const providers = {
             "streamingcommunity": "SC",
-            "streamingwatch": "SW",
             "animeworld": "AW",
             "livetv": "LIVETV",
             "cb01": "CB",
@@ -286,6 +286,7 @@ CONFIGURE = """
             "guardaflix": "GF",
             "eurostreaming": "ES",
             "realtime": "RT",
+            "toonitalia": "TI",
             "streamingcommunity_mfp": "SC_MFP",
             "mediaflowproxy": "MFP"
         };

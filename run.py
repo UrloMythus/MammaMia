@@ -1,14 +1,12 @@
-from fastapi import FastAPI, HTTPException,Request
+from fastapi import FastAPI, HTTPException,Request, Form,Cookie
 from fastapi.responses import JSONResponse,RedirectResponse,HTMLResponse
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from slowapi.middleware import SlowAPIMiddleware
 from static.static import HTML
 from static.configure import  CONFIGURE
-
-
+from fastapi.templating import Jinja2Templates
 from  Src.API.streamingcommunity import streaming_community
-from  Src.API.streamingwatch import streamingwatch
 from Src.API.cb01 import cb01
 from Src.API.guardaserie import guardaserie
 from Src.API.guardahd import guardahd
@@ -16,12 +14,13 @@ from Src.API.animeworld import animeworld
 from Src.API.guardaflix import guardaflix
 from Src.API.guardoserie import guardoserie
 from Src.API.eurostreaming import eurostreaming
+from Src.API.toonitalia import toonitalia
 from Src.API.realtime import search_catalog as realtime
 from Src.API.realtime import meta_catalog as meta_catalog_realtime
 from Src.API.realtime import realtime as streams_realtime
 from Src.Utilities.dictionaries import STREAM,extra_sources,provider_map
 from Src.API.epg import tivu, tivu_get,epg_guide,convert_bho_1,convert_bho_2,convert_bho_3
-
+from Src.API.extractors.uprot import get_uprot_numbers,generate_uprot_txt
 import logging
 from urllib.parse import unquote
 from curl_cffi.requests import AsyncSession
@@ -47,7 +46,6 @@ else:
 # Configure config
 SC = config.SC
 SC_DOMAIN = config.SC_DOMAIN
-SW = config.SW
 AW = config.AW
 CB = config.CB
 GS = config.GS
@@ -56,6 +54,7 @@ ES = config.ES
 GF = config.GF
 GO = config.GO
 RT = config.RT
+TI = config.TI
 HOST = config.HOST
 PORT = int(config.PORT)
 if env_vars.get('PORT_ENV'):
@@ -68,6 +67,9 @@ limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_middleware(SlowAPIMiddleware)
 User_Agent= "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+#Tells Where to look for static files
+static = Jinja2Templates(directory="static")
+
 MANIFEST = {
     "id": "org.stremio.mammamia",
     "version": "2.0.0",
@@ -145,7 +147,7 @@ def addon_manifest(config: str):
 
 @app.get('/manifest.json')
 def manifest():
-    return RedirectResponse(url="/|SC|LC|SW|/manifest.json")
+    return RedirectResponse(url="/|SC|LC|/manifest.json")
 
 @app.get('/', response_class=HTMLResponse)
 def root(request: Request):
@@ -301,8 +303,6 @@ async def addon_stream(request: Request,config, type, id,):
                     else:
                         SC_MFP = '0'
                     streams = await streaming_community(streams,id,client,SC_MFP,MFP_CREDENTIALS)
-                if provider_maps['STREAMINGWATCH'] == "1" and SW == "1":
-                    streams = await streamingwatch(streams,id,client)
                 if provider_maps['CB01'] == "1" and CB == "1":
                     streams = await cb01(streams,id,MFP,MFP_CREDENTIALS,client)
                 if provider_maps['GUARDASERIE'] == "1" and GS == "1":
@@ -317,12 +317,33 @@ async def addon_stream(request: Request,config, type, id,):
                     streams = await guardoserie(streams,id,client,MFP,MFP_CREDENTIALS)
                 if provider_maps['REALTIME'] == '1' and RT == '1':
                     streams = await streams_realtime(streams,id,client)
+                if provider_maps['TOONITALIA'] == '1' and TI == '1':
+                    streams = await toonitalia(streams,id,client,MFP,MFP_CREDENTIALS)
             return respond_with(streams)
         if not streams['streams']:
             raise HTTPException(status_code=404)
 
     return respond_with(streams)
 
+@app.get('/uprot')
+async def uprot(request: Request):
+    async with AsyncSession(proxies = proxies) as client:
+        image, cookies = await get_uprot_numbers(client)
+    response = static.TemplateResponse('uprot.html',{'request':request,"image_url": image})
+    response.set_cookie(key='PHPSESSID', value=cookies['PHPSESSID'],httponly=True)
+
+    return response
+@app.post("/uprot")
+async def execute_uprot(request: Request,user_input = Form(...),PHPSESSID: str = Cookie(None)):
+    async with AsyncSession(proxies = proxies) as client:
+        cookies = {
+            'PHPSESSID': PHPSESSID
+        }
+        status = await generate_uprot_txt(user_input,cookies,client)
+    if status == True:
+        response = static.TemplateResponse('uprot.html',{'request':request,"image_url": 'https://tinyurl.com/doneokdone'})
+    elif status == False:
+        return static.TemplateResponse('uprot.html',{'request':request,"image_url": 'https://tinyurl.com/tryagaindumb'})
 
 if __name__ == '__main__':
     import uvicorn

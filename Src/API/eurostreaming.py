@@ -5,6 +5,8 @@ from urllib.parse import quote
 from Src.Utilities.loadenv import load_env 
 from Src.API.extractors.mixdrop import mixdrop
 from Src.API.extractors.deltabit import deltabit 
+from Src.API.extractors.maxstream import maxstream
+from Src.API.extractors.uprot import bypass_uprot
 import re
 import logging
 from Src.Utilities.config import setup_logging
@@ -48,6 +50,18 @@ if ES_ForwardProxy == "1":
 else:
     ForwardProxy = ""
 
+
+async def get_maxstream(uprot_link,streams,language,client):
+    maxstream_link = await bypass_uprot(client,uprot_link)
+    if  maxstream_link:
+        streams = await maxstream(maxstream_link,client,streams,'Eurostreaming',language,proxies,ForwardProxy)
+    else:
+        if  maxstream_link == False:
+            return streams 
+        else:
+            streams['streams'].append({'name': f"{Name}",'title': f'{Icon}Eurostreaming\n▶️ Please do the captcha at /uprot in order to be able to play this content! \n Remember to refresh the sources!\nIf you recently did the captcha then dont worry, just refresh the sources', 'url': 'https://github.com/UrloMythus/MammaMia', 'behaviorHints': { 'bingeGroup': 'cb01'}})
+
+    return streams
 
 
 def convert_numbers(base64_data):
@@ -117,13 +131,13 @@ async def scraping_links(atag,MFP,MFP_CREDENTIALS,client,streams,language):
         except Exception as e:
             pattern = r'<a\s+href="([^"]+)"[^>]*rel="noopener"[^>]*>MixDrop</a>'
             href = await get_host_link(pattern,atag,client)
-            streams = await mixdrop(href,client,MFP,MFP_CREDENTIALS,streams,"Eurostreaming",proxies,ForwardProxy,language)
+            streams,status = await mixdrop(href,client,MFP,MFP_CREDENTIALS,streams,"Eurostreaming",proxies,ForwardProxy,language)
         return streams
     if "MixDrop" in atag and  "DeltaBit" not in atag:
         try:
             pattern = r'<a\s+href="([^"]+)"[^>]*rel="noopener"[^>]*>MixDrop</a>'
             href = await get_host_link(pattern,atag,client)
-            streams = await mixdrop(href,client,MFP,MFP_CREDENTIALS,streams,"Eurostreaming",proxies,ForwardProxy,language)
+            streams,status = await mixdrop(href,client,MFP,MFP_CREDENTIALS,streams,"Eurostreaming",proxies,ForwardProxy,language)
             return streams
         except Exception as e:
             return streams
@@ -135,14 +149,24 @@ async def scraping_links(atag,MFP,MFP_CREDENTIALS,client,streams,language):
             return streams
         except Exception as e:
             return streams
-    if 'DeltaBit' not in atag and 'MixDrop' not in atag:
+    if 'DeltaBit' not in atag and 'MixDrop' not in atag and 'MaxStream' in atag:
+        try:
+            pattern = r'<a\s+href="([^"]+)"[^>]*rel="noopener"[^>]*>MaxStream</a>'
+            match = re.search(pattern, atag)
+            if match:
+                href_value = match.group(1)
+                streams = await get_maxstream(href_value,streams,language,client)
+            return streams
+        except Exception as e:
+            return streams
+    if 'DeltaBit' not in atag and 'MixDrop' not in atag and 'MaxStream' not in atag:
         logger.info("Just give up")
         return streams
 
 async def episodes_find(description,season,episode,MFP,MFP_CREDENTIALS,client,streams):
     t = 0
     episode = episode.zfill(2)
-    pattern = rf'{season}&#215;{episode}\s*(.*?)(?=<br\s*/?>)'
+    pattern = rf'\b{season}&#215;{episode}\s*(.*?)(?=<br\s*/?>)'
     match = re.findall(pattern, description)
     if match:
         for episode_details in match:
@@ -220,7 +244,7 @@ async def eurostreaming(streams,id,client,MFP,MFP_CREDENTIALS):
 async def test_euro():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
-        results = await eurostreaming({'streams': []},"tt6156584:4:1",client,"0",['test','test'])
+        results = await eurostreaming({'streams': []},"tt0460681:11:1",client,"0",['test','test'])
         print(results)
 
 

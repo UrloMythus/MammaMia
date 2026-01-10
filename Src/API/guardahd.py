@@ -40,8 +40,10 @@ async def search(clean_id,client):
     if response.status_code != 200:
             logger.warning(f"GuardaHD Failed to fetch search results: {response.status_code}")
     soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('li'))
-    li_tag = soup.find('li')
-    href = "https:" + li_tag['data-link']
+    li_tags = soup.find_all('li')
+    for tag in li_tags:
+        if 'supervideo' in tag['data-link']:
+            href = 'https:' + tag['data-link']
     return href
 
 
@@ -64,7 +66,7 @@ async def test_script():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
         # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt16426418"  # This is an example ID format
+        test_id = "tt12300742"  # This is an example ID format
         results = await guardahd({'streams': []},test_id, client)
         print(results)
 

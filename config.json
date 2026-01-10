@@ -8,14 +8,8 @@
                "VX_PROXY": "0",
                "enabled": "1"
            },
-          "StreamingWatch":{
-              "url": "https://www.streamingwatch.org",
-              "SW_PROXY": "0",
-              "SW_ForwardProxy": "0",
-              "enabled":"1"
-          },
           "CB01":{
-              "url": "https://cb01net.cam",
+              "url": "https://cb01.uno",
               "CB_PROXY":"0",
               "CB_ForwardProxy":"0",
               "MX_ForwardProxy":"0",
@@ -23,7 +17,7 @@
               "enabled":"1"
           },
           "Guardaserie":{
-              "url": "https://guardaserietv.help",
+              "url": "https://guardaserietv.asia",
               "enabled":"1",
               "GS_ForwardProxy":"0",
               "GS_PROXY":"0"
@@ -35,19 +29,19 @@
               "GH_PROXY":"0"
           },
           "Eurostreaming":{
-            "url": "https://eurostreamings.vip/",
+            "url": "https://eurostreamings.life",
             "enabled": "1",
             "ES_ForwardProxy": "0",
             "ES_PROXY": "0"
           },  
           "Guardaflix":{
-            "url": "https://guardaflix.wtf",
+            "url": "https://guardaplay.blog",
             "enabled": "1",
             "GF_ForwardProxy": "0",
             "GF_PROXY": "0"
           },
           "Guardoserie":{
-            "url": "https://guardoserie.wtf",
+            "url": "https://guardoserie.blog",
             "enabled": "1",
             "GO_ForwardProxy": "0",
             "GO_PROXY": "0"
@@ -63,10 +57,22 @@
             "enabled": "1",
             "RT_ForwardProxy": "0",
             "RT_PROXY": "0"
+          },
+          "Toonitalia": {
+            "url": "https://toonitalia.xyz",
+            "enabled": "1",
+            "TI_ForwardProxy": "0",
+            "TI_PROXY": "0"
           }
    },
+   "Captcha":{
+    "Uprot": {
+      "UT_ForwardProxy": "0",
+      "UT_PROXY": "0"
+    }
+   },
    "General":{
-       "load_env": "0",
+       "load_env": "1",
        "HOST": "0.0.0.0",
        "PORT": 8080,
        "Name": "MammaMia",
