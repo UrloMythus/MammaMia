@@ -104,7 +104,7 @@ async def toonitalia(streams,id,client,MFP,MFP_CREDENTIALS):
         streams = await search(showname,date, season,episode,MFP,MFP_CREDENTIALS,ismovie,client,streams)
         return streams
     except Exception as e:
-        print(e)
+        logger.warning(f'Toonitalia Error: {e}')
         return streams
 
 
