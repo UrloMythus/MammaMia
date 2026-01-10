@@ -71,6 +71,7 @@ async def search(showname,date,season,episode,MFP,MFP_CREDENTIALS,ismovie,client
         else:
             streams = await voe(url,streams,'ToonItalia',MFP,MFP_CREDENTIALS,proxies,ForwardProxy,client)
         return streams
+    return streams
 
 
 
