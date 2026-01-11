@@ -330,7 +330,8 @@ async def uprot(request: Request):
     async with AsyncSession(proxies = proxies) as client:
         image, cookies = await get_uprot_numbers(client)
     response = static.TemplateResponse('uprot.html',{'request':request,"image_url": image})
-    response.set_cookie(key='PHPSESSID', value=cookies['PHPSESSID'],httponly=True)
+    if cookies:
+        response.set_cookie(key='PHPSESSID', value=cookies.get('PHPSESSID'),httponly=True)
 
     return response
 @app.post("/uprot")
