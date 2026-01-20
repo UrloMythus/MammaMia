@@ -1,15 +1,23 @@
+##Use an official Python runtime as a parent image
 FROM python:3.11-slim-bullseye
 
+# Set the working directory in the container to /app
 WORKDIR /app
 
+# Install git
 RUN apt-get update && apt-get install -y git
 
-RUN git clone https://github.com/UrloMythus/MammaMia.git .
+# Clone the repository
+RUN git clone https://github.com/vitouchiha/MammaMia.git .
 
+# Copy the local config.json file to the container
 COPY config.json /app/config.json
 
+# Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Expose the port, for now default is 8080 cause it's the only one really allowed by HuggingFace
 EXPOSE 8080
 
+# Run run.py when the container launches
 ENTRYPOINT ["python", "run.py"]
