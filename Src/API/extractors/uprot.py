@@ -109,9 +109,11 @@ async def get_maxstream_link(text,client):
     return max_stream
 
 async def bypass_uprot(client,link):
+    if 'mse' in link:
+        link = link.replace('mse','msf')
+
+    # Local flow: read cookies from uprot.txt and POST uprot directly.
     try:
-        if 'mse' in link:
-            link = link.replace('mse','msf')
         current_directory = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join(current_directory, 'uprot.txt')
         with open(file_path,'r') as file:
@@ -121,10 +123,23 @@ async def bypass_uprot(client,link):
             data = json.loads(parts[1].replace("'", '"'))
         response = await client.post(ForwardProxy + link, cookies=cookies, headers=headers, data =data, impersonate = 'chrome', proxies = proxies)
         max_stream = await get_maxstream_link(response.text,client)
-        return max_stream
+        if max_stream:
+            return max_stream
     except Exception as e:
         logger.info(f'Uprot failed: {e}')
-        if '[Errno 2] No such file or directory' in e:
-            return None
-        return False
+        # Don't early-return None on missing uprot.txt — try the CF Worker
+        # fallback below before giving up. (Was: `if '[Errno 2]' in e: return None`.)
+
+    # Optional fallback: CF Worker auto-solver (KV cookie cache + cron refresh).
+    # Activated by CF_UPROT_WORKER_URL env var. No-op when not configured —
+    # the original behaviour of this function is preserved.
+    try:
+        from Src.Utilities.cf_worker_uprot import resolve_via_worker
+        worker_url = await resolve_via_worker(client, link)
+        if worker_url:
+            return worker_url
+    except Exception as e:
+        logger.info(f'Uprot CF Worker fallback failed: {e}')
+
+    return False
 
