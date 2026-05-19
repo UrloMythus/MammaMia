@@ -60,7 +60,7 @@ async def guardahd(streams,id,client,MFP,MFP_CREDENTIALS):
         results = await search(clean_id,client)
         status = False
         if 'streamhg' in results:
-            streams,status = await streamhg(results['streamhg'], client,streams,"GuardaHD",proxies, ForwardProxy)
+            streams,status = await streamhg(results['streamhg'], client,MFP,MFP_CREDENTIALS,streams,"GuardaHD",proxies, ForwardProxy)
         if 'mixdrop' in results and not status:
             streams,status = await mixdrop(results['mixdrop'],client,MFP,MFP_CREDENTIALS,streams,"GuardaHD",proxies,ForwardProxy,'')
         return streams
