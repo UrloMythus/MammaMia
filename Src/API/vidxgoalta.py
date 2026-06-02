@@ -21,7 +21,7 @@ if VD_PROXY == "1":
             "http": proxy,
             "https": proxy
         }   
-VD_ForwardProxy = config.GH_ForwardProxy
+VD_ForwardProxy = config.VD_ForwardProxy
 if VD_ForwardProxy == "1":
     ForwardProxy = env_vars.get('ForwardProxy')
 else:
@@ -30,7 +30,7 @@ VD_DOMAIN = config.VD_DOMAIN
 
 
 
-async def vidxgoalta(streams,id,client):
+async def vidxgoalta(streams,id,client,instance_url):
     try:
         general = await is_movie(id)
         ismovie = general[0]
@@ -44,7 +44,7 @@ async def vidxgoalta(streams,id,client):
             link = f'{VD_DOMAIN}/{clean_id}/{season}/{episode}'
         elif ismovie == 1:
             link = f'{VD_DOMAIN}/{clean_id}'
-        streams = await vidxgo(link,client,streams,proxies,ForwardProxy)  
+        streams = await vidxgo(link,client,streams,instance_url)  
         return streams 
     except Exception as e:
         logger.info("Vidxgo failed due to ")

@@ -30,9 +30,9 @@ async def vixcloud(link,client,MFP,MFP_CREDENTIALS,streams,site_name,proxies,For
     headers['user-agent'] = User_Agent
     # I will get real link from API 
     parts = link.split(SC_DOMAIN)
-    response = await client.get(SC_DOMAIN + '/api' + parts[1])
+    response = await client.get(ForwardProxy + SC_DOMAIN + '/api' + parts[1],proxies=proxies)
     link = SC_DOMAIN + '/' + response.json()['src']
-    response = await client.get(link,headers=headers)        
+    response = await client.get(ForwardProxy + link,headers=headers, proxies = proxies)        
     if response.status_code != 200:
         logger.warning(f"Failed to extract URL components from VixSRC, Invalid Request: {response.status_code}") 
     soup = BeautifulSoup(response.text, "lxml", parse_only=SoupStrainer("body"))
@@ -73,7 +73,7 @@ async def vixcloud(link,client,MFP,MFP_CREDENTIALS,streams,site_name,proxies,For
 async def test_vixcloud():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
-        results = await vixcloud("https://vixsrc.to/tv/204082/1/3/",client,"0",['',''],{'streams': []},'guardoserie.live', {},'')
+        results = await vixcloud("https://vixsrc.to/tv/76479/5/6/",client,"0",['',''],{'streams': []},'guardoserie.live', {},'')
         print(results)
 if __name__ == "__main__":
     import asyncio
