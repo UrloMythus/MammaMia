@@ -41,13 +41,14 @@ async def clone_m3u8(d: str = None):
             url = b64decode(d).decode('utf-8')
             m3u8_content,status = await fetch_m3u8(url)
             if status != 200:
-                match = re.search(r'hls\/\w*\/([\d\w//]*)\/master',url)
+                match = re.search(r'hls[\w/]*/(\d{2}\d*[/]*\d*[/]*\d*)[\w/]+master',url)
                 if match:
                     id = match.group(1)
                     url = await vidxgo_refresh("",id)
 
                     m3u8_content,status =await fetch_m3u8(url)
             m3u8_content = re.sub(r'(&b=\d+)',rf'\1&base={d}',m3u8_content)
+
             return Response(content=m3u8_content, media_type='application/vnd.apple.mpegurl')
         except Exception as e:
             logger.info(f"Failed to fetch M3U8 file: {e}")
@@ -60,12 +61,11 @@ async def index_route(suffix: str, base: str):
         text = text2.replace("master.m3u8",f'index{suffix}')
 
         m3u8_content,status = await fetch_m3u8(text)
-        match = re.search(r'hls\/\w*\/([\d\w//]*)\/master',text2)
+        match = re.search(r'hls[\w/]*/(\d{2}\d*[/]*\d*[/]*\d*)[\w/]+master',text2)
         if match:
                 id = match.group(1)
         else:
             raise HTTPException(status_code=502, detail="ID  not found")  
-
         if status != 200:
             text = await vidxgo_refresh("",id)
             text = text.replace("master.m3u8",f'index{suffix}')
@@ -95,7 +95,7 @@ async def ts_route(suffix:str,id:str,date: str,t:str,e:str,b:str):
 async def test_fetch():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
-        results = await clone_m3u8('aHR0cHM6Ly9tZWRpYS00OTguZDJiLnlvdTo4NDQzL3Byb3h5L21lZGlhLTc0Mi9obHMvdHYvMzQ0Mzc5NzIvMS8xL21hc3Rlci5tM3U4P3Q9Yzc1Nzg2ZjUzYTQyM2Y4OSZlPTE3ODA0MDE1Nzg0ODImYj0xNjIx')
+        results = await index_route('-v1-a1','aHR0cHM6Ly9jZG4udjMubWVkaWEtNjg0LmQyYi55b3UvcHJveHkvbWVkaWEtNDAyL2hscy8xNjQyNjQxOC9tYXN0ZXIubTN1OD90PTJiYjg0MGYwMzFjY2MzNmYmZT0xNzgwNTA2OTk2Njk5JmI9Mjk3Ng====')
         print(results)
 
         
