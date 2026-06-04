@@ -16,6 +16,7 @@ import base64
 from bs4 import BeautifulSoup,SoupStrainer
 VD_DOMAIN = config.VD_DOMAIN
 from curl_cffi.requests import AsyncSession
+import json
 VD_PROXY = config.VD_PROXY
 proxies = {}
 if VD_PROXY == "1":
@@ -89,11 +90,17 @@ async def vidxgo(link,client,streams,instance_url):
         for i in range(len(decoded)):
             u[i] = decoded[i] ^ ord(key[i % len(key)])
         decrypted_code = u.decode('utf-8')
-
         match = re.search(r'currentSrc.+"(https:[^";]+)',decrypted_code)
+        submatch = re.search(r'window.__EXTERNAL_SUBS\s+=\s+(\[.*]);',decrypted_code)
         if match:
             url = match.group(1).replace("\\","")
-            streams['streams'].append({'name': f"{Name}",'title': f'{Icon}Vidxgo\n ▶️ Vidxgo', 'url': f'{instance_url}/clone/manifest.m3u8?d={b64encode(url.encode("utf-8")).decode("utf-8")}',  'behaviorHints': {'proxyHeaders': {"request": {"User-Agent": 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36',"Accept": "*/*", "Accept-Language":"en-US,en;q=0.9","Referer":VD_DOMAIN+"/","Origin":VD_DOMAIN,"Sec-GPC": "1","Connection": "keep-alive","Sec-Fetch-Dest":"empty","Sec-Fetch-Mode":"cors","Sec-Fetch-Site":"cross-site","DNT": "1","Priority":"u=0"}}, 'notWebReady': True, 'bingeGroup': f'vidxgo'}})
+            subtitles = []
+            if submatch:
+                subtitles = json.loads(submatch.group(1))
+                for item in subtitles: 
+                    del item['forced']
+                    del item['url']
+            streams['streams'].append({'name': f"{Name}",'title': f'{Icon}Vidxgo\n ▶️ Vidxgo', 'url': f'{instance_url}/clone/manifest.m3u8?d={b64encode(url.encode("utf-8")).decode("utf-8")}',  'behaviorHints': {'proxyHeaders': {"request": {"User-Agent": 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36',"Accept": "*/*", "Accept-Language":"en-US,en;q=0.9","Referer":VD_DOMAIN+"/","Origin":VD_DOMAIN,"Sec-GPC": "1","Connection": "keep-alive","Sec-Fetch-Dest":"empty","Sec-Fetch-Mode":"cors","Sec-Fetch-Site":"cross-site","DNT": "1","Priority":"u=0"}}, 'notWebReady': True, 'bingeGroup': f'vidxgo'},'subtitles' : subtitles})
             logger.info(f"Vidxgo found results for the current ID")
 
     return streams
@@ -102,7 +109,7 @@ async def vidxgo(link,client,streams,instance_url):
 async def test_vidxgo():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
-        results = await vidxgo("https://v.vidxgo.co/tt34437972/1/1",client,{'streams': []})
+        results = await vidxgo("https://v.vidxgo.co/tt16426418",client,{'streams': []},"localhost")
         print(results)
 if __name__ == "__main__":
     import asyncio
