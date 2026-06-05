@@ -92,6 +92,7 @@ async def vidxgo(link,client,streams,instance_url):
         decrypted_code = u.decode('utf-8')
         match = re.search(r'currentSrc.+"(https:[^";]+)',decrypted_code)
         submatch = re.search(r'window.__EXTERNAL_SUBS\s+=\s+(\[.*]);',decrypted_code)
+        print(submatch.group(1))
         suburlmatch = re.search(r'window.__SUBS_ORIGIN\s+=\s*"(.*)";',decrypted_code)
         if match:
             url = match.group(1).replace("\\","")
@@ -99,6 +100,8 @@ async def vidxgo(link,client,streams,instance_url):
             if submatch and suburlmatch:
                 subtitles = json.loads(submatch.group(1))
                 for item in subtitles: 
+                    if item['forced'] == True:
+                        item['lang'] += '-forced'
                     del item['forced']
                     del item['file']
                     item['url'] = suburlmatch.group(1).replace('\\','') + item['url']
@@ -111,7 +114,7 @@ async def vidxgo(link,client,streams,instance_url):
 async def test_vidxgo():
     from curl_cffi.requests import AsyncSession
     async with AsyncSession() as client:
-        results = await vidxgo("https://v.vidxgo.co/tt1190634/1/1",client,{'streams': []},"localhost")
+        results = await vidxgo("https://v.vidxgo.co/tt0816692",client,{'streams': []},"localhost")
         print(results)
 if __name__ == "__main__":
     import asyncio
