@@ -92,7 +92,6 @@ async def vidxgo(link,client,streams,instance_url):
         decrypted_code = u.decode('utf-8')
         match = re.search(r'currentSrc.+"(https:[^";]+)',decrypted_code)
         submatch = re.search(r'window.__EXTERNAL_SUBS\s+=\s+(\[.*]);',decrypted_code)
-        print(submatch.group(1))
         suburlmatch = re.search(r'window.__SUBS_ORIGIN\s+=\s*"(.*)";',decrypted_code)
         if match:
             url = match.group(1).replace("\\","")
