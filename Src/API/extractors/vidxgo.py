@@ -100,7 +100,9 @@ async def vidxgo(link,client,streams,instance_url):
                 subtitles = json.loads(submatch.group(1))
                 for item in subtitles: 
                     if item['forced'] == True:
-                        item['lang'] += '-forced'
+                        item['id'] = item['lang'] + '-forced'
+                    else:
+                        item['id'] = item['lang']
                     del item['forced']
                     del item['file']
                     item['url'] = suburlmatch.group(1).replace('\\','') + item['url']
