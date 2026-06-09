@@ -34,6 +34,7 @@ level = config.LEVEL
 logger = setup_logging(level)
 from Src.Utilities.loadenv import load_env
 env_vars = load_env()
+from Src.Utilities.manifest import router as clone
 
 #Configure Env Vars
 Global_Proxy = config.Global_Proxy
@@ -66,8 +67,8 @@ if env_vars.get('PORT_ENV'):
     PORT = int(env_vars.get('PORT_ENV'))
 Icon = config.Icon
 Name = config.Name
-    #Cool code to set the hugging face if the service is hosted there.
 app = FastAPI()
+app.include_router(clone)
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_middleware(SlowAPIMiddleware)
@@ -277,6 +278,10 @@ async def addon_stream(request: Request,config, type, id,):
     else:
         MFP = "0"
         MFP_CREDENTIALS = ['','']
+    #Get instance URL to pass it to vidxgo
+    forwarded_proto = request.headers.get("x-forwarded-proto")
+    scheme = forwarded_proto if forwarded_proto else request.url.scheme
+    instance_url = f"{scheme}://{request.url.netloc}"
     async with AsyncSession(proxies = proxies) as client:
         if type == "tv":
             for channel in STREAM["channels"]:
@@ -308,6 +313,7 @@ async def addon_stream(request: Request,config, type, id,):
                     else:
                         SC_MFP = '0'
                     streams = await streaming_community(streams,id,client,SC_MFP,MFP_CREDENTIALS)
+                
                 if provider_maps['CB01'] == "1" and CB == "1":
                     streams = await cb01(streams,id,MFP,MFP_CREDENTIALS,client)
                 if provider_maps['GUARDASERIE'] == "1" and GS == "1":
@@ -327,7 +333,8 @@ async def addon_stream(request: Request,config, type, id,):
                 if provider_maps['ONLINESERIETV'] == '1' and OST == '1':
                     streams = await onlineserietv(streams,id,client)
                 if provider_maps['VIDXGO'] == '1' and VD == '1':
-                    streams = await vidxgoalta(streams,id,client)
+                    streams = await vidxgoalta(streams,id,client,instance_url)
+                
             return respond_with(streams)
         if not streams['streams']:
             raise HTTPException(status_code=404)
