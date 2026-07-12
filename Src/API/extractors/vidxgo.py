@@ -80,8 +80,8 @@ async def vidxgo(link,client,streams,instance_url):
     response = await client.get(ForwardProxy + link, allow_redirects=True, headers = headers, proxies = proxies)
     soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('script'))
     scripts = soup.find_all('script')
-    text = scripts[6]
-    match = re.search(r"var .+'(.*)',d=atob\('(.*)'",text.text)
+    text = [item for item in scripts if len(item.text) > 3000]
+    match = re.search(r"var .+'(.*)',d=atob\('(.*)'",text[0].text)
     if match:
         key = match.group(1)
         base64_text = match.group(2)
