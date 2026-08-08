@@ -197,7 +197,6 @@ async def series_search_streams(text,search_text,response_text,headers,season,ep
             response = await client.get(ForwardProxy + captcha.group(1), headers = headers, allow_redirects = True, proxies = proxies)
             season = season.zfill(2)
             match = re.search(rf"(S{season}E{episode}|{season}x{episode}).+?href='([^']+)",response.text)
-            print(match.group(2))
             if match:
                 streams = await get_maxstream(match.group(2),streams,client)
     else:
