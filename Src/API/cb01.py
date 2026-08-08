@@ -89,63 +89,92 @@ async def get_maxstream(link,streams,client):
             streams['streams'].append({'name': f"{Name}",'title': f'{Icon}CB01\n▶️ Please do the captcha at /uprot in order to be able to play this content! \n Remember to refresh the sources!\nIf you recently did the captcha then dont worry, just refresh the sources', 'url': 'https://github.com/UrloMythus/MammaMia', 'behaviorHints': { 'bingeGroup': 'cb01'}})
 
     return streams
+def title_variants(showname):
+    """Yield search queries to try for a title, most specific first.
+
+    TMDB returns titles that carry extra text the site does not index:
+
+      "Desperate Housewives - I segreti di Wisteria Lane"  -> "Desperate Housewives"
+      "The Office (US)"                                    -> "The Office"
+
+    CB01 lists the short forms, so searching the full string returns nothing.
+    Try the exact title first, then progressively simpler forms.
+
+    The caller still checks the release year of every candidate result, so a
+    broader query cannot silently match an unrelated show - "The Office" finds
+    both the 2005 US and 2001 UK series, and the year check picks the right one.
+    """
+    variants = [showname]
+    for separator in (" - ", " \u2013 ", ": "):
+        if separator in showname:
+            head = showname.split(separator)[0].strip()
+            if head and head not in variants:
+                variants.append(head)
+    without_parenthetical = re.sub(r"\s*\([^)]*\)\s*$", "", showname).strip()
+    if without_parenthetical and without_parenthetical not in variants:
+        variants.append(without_parenthetical)
+    return variants
+
+
+
 async def search_movie(showname,date,client):
     try:
-        showname = showname.replace(" ","+").replace("ò","o").replace("è","e").replace("à","a").replace("ù","u").replace("ì","i")  
         headers = fake_headers.generate()
         headers['Referer'] = f'{CB_DOMAIN}/'
-        query = f'{CB_DOMAIN}/?s={showname}'
-        response = await client.get(ForwardProxy + query,headers=headers, proxies = proxies)
-        if response.status_code != 200:
-            logger.warning(f"CB01 Failed to fetch search results: {response.status_code}")
-        soup = BeautifulSoup(response.text, 'lxml',parse_only=SoupStrainer('div', class_='card-content'))
-        cards = soup.find_all('div', class_='card-content')
         year_pattern = re.compile(r'(19|20)\d{2}')
-        for card in cards:
-    # Find the link inside the current card
-            link_tag = card.find('h3', class_='card-title').find('a')
-            href = link_tag['href']
-    # Find the date span and extract possible years
-
-            date_text = href.split("/")[-2]
+        for candidate in title_variants(showname):
+            candidate = candidate.replace(" ","+").replace("\u00f2","o").replace("\u00e8","e").replace("\u00e0","a").replace("\u00f9","u").replace("\u00ec","i")
+            query = f'{CB_DOMAIN}/?s={candidate}'
+            response = await client.get(ForwardProxy + query,headers=headers, proxies = proxies)
+            if response.status_code != 200:
+                logger.warning(f"CB01 Failed to fetch search results: {response.status_code}")
+            soup = BeautifulSoup(response.text, 'lxml',parse_only=SoupStrainer('div', class_='card-content'))
+            cards = soup.find_all('div', class_='card-content')
+            for card in cards:
+                # Find the link inside the current card
+                link_tag = card.find('h3', class_='card-title').find('a')
+                href = link_tag['href']
+                # Find the date span and extract possible years
+                date_text = href.split("/")[-2]
                 # Search for the first occurrence of a year (starting with 19 or 20)
-            match = year_pattern.search(date_text)
-            if match:
-                year = match.group(0)
-                if year == date :
-                    return href
+                match = year_pattern.search(date_text)
+                if match:
+                    year = match.group(0)
+                    if year == date :
+                        return href
     except Exception as e:
         logger.warning(f'MammaMia: Error in search_series cb01: {e}')
 
 
 async def search_series(showname,date,client):
     try:
-        showname = showname.replace(" ","+")
         headers = fake_headers.generate()
         headers['Referer'] = f'{CB_DOMAIN}/serietv/'
-        query = f'{CB_DOMAIN}/serietv/?s={showname}'
-        response = await client.get(ForwardProxy + query,headers=headers, proxies = proxies)
-        if response.status_code != 200:
-            logger.warning(f"CB01 Failed to fetch search results: {response.status_code}")
-        soup = BeautifulSoup(response.text, 'lxml',parse_only=SoupStrainer('div', class_='card-content'))
-        cards = soup.find_all('div', class_='card-content')
         year_pattern = re.compile(r'(19|20)\d{2}')
-        for card in cards:
-    # Find the link inside the current card
-            link_tag = card.find('h3', class_='card-title').find('a')
-            href = link_tag['href']
-    # Find the date span and extract possible years
-            date_span = card.find('span', style=re.compile('color'))
-            if date_span:
-                date_text = date_span.text
-                # Search for the first occurrence of a year (starting with 19 or 20)
-                match = year_pattern.search(date_text)
-                if match:
-                    year = match.group(0)
-                    if (int(year) - int(date)) == 0 or (int(year)-int(date)) == 1 or (int(year)-int(date)) == -1 :  # Check if the year is 2011
-                        return href
+        for candidate in title_variants(showname):
+            query = f'{CB_DOMAIN}/serietv/?s={candidate.replace(" ","+")}'
+            response = await client.get(ForwardProxy + query,headers=headers, proxies = proxies)
+            if response.status_code != 200:
+                logger.warning(f"CB01 Failed to fetch search results: {response.status_code}")
+            soup = BeautifulSoup(response.text, 'lxml',parse_only=SoupStrainer('div', class_='card-content'))
+            cards = soup.find_all('div', class_='card-content')
+            for card in cards:
+                # Find the link inside the current card
+                link_tag = card.find('h3', class_='card-title').find('a')
+                href = link_tag['href']
+                # Find the date span and extract possible years
+                date_span = card.find('span', style=re.compile('color'))
+                if date_span:
+                    date_text = date_span.text
+                    # Search for the first occurrence of a year (starting with 19 or 20)
+                    match = year_pattern.search(date_text)
+                    if match:
+                        year = match.group(0)
+                        if (int(year) - int(date)) == 0 or (int(year)-int(date)) == 1 or (int(year)-int(date)) == -1 :
+                            return href
     except Exception as e:
         logger.warning(f'MammaMia: Error in search_series cb01: {e}')
+
 
 async def movie_redirect_url(link,client,MFP,MFP_CREDENTIALS,streams):
         headers = fake_headers.generate()
