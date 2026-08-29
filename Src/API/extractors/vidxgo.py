@@ -50,7 +50,7 @@ headers = {
     'Sec-Fetch-Mode': 'navigate',
     'Sec-Fetch-Site': 'none',
     'DNT': '1',
-    'Referer': 'https://altadefinizionegratis.press/',
+    'Referer': 'https://altadefinizionex.live/',
     'Sec-Fetch-Storage-Access': 'none',
     '-': '-',
     'Priority': 'u=0, i',
@@ -78,6 +78,8 @@ async def vidxgo_refresh(link,id):
 async def vidxgo(link,client,streams,instance_url):
     #headers = random_headers.generate()
     response = await client.get(ForwardProxy + link, allow_redirects=True, headers = headers, proxies = proxies)
+    if response.status_code == 403:
+        headers['Referer'] = response.get(headers['Referer']).url
     soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('script'))
     scripts = soup.find_all('script')
     text = [item for item in scripts if len(item.text) > 3000]
