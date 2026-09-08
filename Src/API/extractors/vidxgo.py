@@ -41,7 +41,6 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:150.0) Gecko/20100101 Firefox/150.0',
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
     'Accept-Language': 'en-US,en;q=0.9',
-    # 'Accept-Encoding': 'gzip, deflate, br, zstd',
     'Sec-GPC': '1',
     'Alt-Used': 'v.vidxgo.co',
     'Connection': 'keep-alive',
@@ -50,7 +49,7 @@ headers = {
     'Sec-Fetch-Mode': 'navigate',
     'Sec-Fetch-Site': 'none',
     'DNT': '1',
-    'Referer': 'https://altadefinizionex.live/',
+    'Referer': 'https://altadefinizionex.live',
     'Sec-Fetch-Storage-Access': 'none',
     '-': '-',
     'Priority': 'u=0, i',
@@ -72,14 +71,16 @@ headers2 = {
 async def vidxgo_refresh(link,id):
     async with AsyncSession() as client:
         headers['Referer'] = f'{VD_DOMAIN}/t/{id}'
-        response = await client.get(ForwardProxy + f'{VD_DOMAIN}/t/{id}', allow_redirects=True, headers = headers2, proxies = proxies)
+        response = await client.get(ForwardProxy + f'{VD_DOMAIN}/t/{id}', allow_redirects=True, headers = headers2, proxies = proxies,impersonate='chrome')
         return response.json()['url'].replace('\\','')
 
 async def vidxgo(link,client,streams,instance_url):
     #headers = random_headers.generate()
-    response = await client.get(ForwardProxy + link, allow_redirects=True, headers = headers, proxies = proxies)
+    response = await client.get(ForwardProxy + link, allow_redirects=True, headers = headers, proxies = proxies,impersonate='chrome')
     if response.status_code == 403:
-        headers['Referer'] = response.get(headers['Referer']).url
+        response = await client.get(headers['Referer'])
+        headers['Referer'] = response.url
+        response = await client.get(ForwardProxy + link, allow_redirects=True, headers = headers, proxies = proxies,impersonate='chrome')
     soup = BeautifulSoup(response.text,'lxml',parse_only=SoupStrainer('script'))
     scripts = soup.find_all('script')
     text = [item for item in scripts if len(item.text) > 3000]
