@@ -222,12 +222,18 @@ async def cb01(streams,id,MFP,MFP_CREDENTIALS,client):
             season = general[2]
             episode = general[3]
             link = await search_series(showname,date,client)
+            if not link:
+                logger.info(f'CB01: no series match for {showname} ({date})')
+                return streams
             streams = await series_redirect_url(link,season,episode,client,MFP,MFP_CREDENTIALS,streams)
             return streams
         elif ismovie == 1:
             season = None
             episode = None
             link = await search_movie(showname,date,client)
+            if not link:
+                logger.info(f'CB01: no movie match for {showname} ({date})')
+                return streams
             streams = await movie_redirect_url(link,client,MFP,MFP_CREDENTIALS,streams)
             return streams
     except Exception as e:
