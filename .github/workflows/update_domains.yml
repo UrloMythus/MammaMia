@@ -2,8 +2,8 @@ name: Update Domains
 
 on:
   schedule:
-    - cron: "0 20 * * *"  # Esegui alle 20:00 ogni giorno
-  workflow_dispatch:      # Permette di avviare manualmente il workflow
+    - cron: "0 20 * * *" # Esegui alle 20:00 ogni giorno
+  workflow_dispatch: # Permette di avviare manualmente il workflow
 
 jobs:
   update-domains:
@@ -26,11 +26,24 @@ jobs:
         run: |
           python update_domains.py
 
-      - name: Commit and push changes
+      - name: Ignora i backup in Git
+        run: |
+          echo "config.json.bak_*" >> .gitignore
+
+      - name: Commit and push changes (solo se necessari)
         run: |
           git config --global user.email "your-email@example.com"
           git config --global user.name "Your Name"
-          git add config.json
+
+          # Aggiunge solo file tracciati, compreso .gitignore aggiornato
+          git add config.json .gitignore || true
+
+          # Se non ci sono modifiche staged, esci senza errore
+          if git diff --cached --quiet; then
+            echo "Nessuna modifica da committare."
+            exit 0
+          fi
+
           git commit -m "Aggiornamento domini in config.json"
           git push
         env:
