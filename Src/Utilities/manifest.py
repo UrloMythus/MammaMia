@@ -16,7 +16,7 @@ logger = setup_logging(level)
 VD_DOMAIN = config.VD_DOMAIN
 router = APIRouter()
 headers = {
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:150.0) Gecko/20100101 Firefox/150.0',
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:155.0) Gecko/20100101 Firefox/155.0',
     'Accept': '*/*',
     'Accept-Language': 'en-US,en;q=0.9',
     'Referer': f'{VD_DOMAIN}/',

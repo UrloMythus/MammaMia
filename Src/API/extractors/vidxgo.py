@@ -38,25 +38,14 @@ else:
 VD_DOMAIN = config.VD_DOMAIN
 
 headers = {
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:150.0) Gecko/20100101 Firefox/150.0',
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:155.0) Gecko/20100101 Firefox/155.0',
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-    'Accept-Language': 'en-US,en;q=0.9',
-    'Sec-GPC': '1',
-    'Alt-Used': 'v.vidxgo.co',
-    'Connection': 'keep-alive',
-    'Upgrade-Insecure-Requests': '1',
     'Sec-Fetch-Dest': 'iframe',
-    'Sec-Fetch-Mode': 'navigate',
-    'Sec-Fetch-Site': 'none',
-    'DNT': '1',
-    'Referer': 'https://altadefinizionex.live',
-    'Sec-Fetch-Storage-Access': 'none',
-    '-': '-',
-    'Priority': 'u=0, i',
+    'Referer': 'https://altadefinizione.fast'
 }
 
 headers2 = {
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:150.0) Gecko/20100101 Firefox/150.0',
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:155.0) Gecko/20100101 Firefox/155.0',
     'Accept': '*/*',
     'Accept-Language': 'en-US,en;q=0.9',
     'Referer': 'https://v.vidxgo.co/tt34437972',
