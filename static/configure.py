@@ -282,6 +282,30 @@ CONFIGURE = """
         passwordInputContainer.style.display = passwordInputContainer.style.display === 'none' ? 'block' : 'none';
     });
 
+    // Restore the configuration embedded in the installed manifest URL.
+    const configuredPath = window.location.pathname.match(/^\/(.+)\/configure\/?$/);
+    if (configuredPath) {
+        const saved = atob(decodeURIComponent(configuredPath[1]));
+        const proxy = saved.match(/MFP\[([\s\S]*?)\]\|/);
+        const codes = saved.replace(/MFP\[[\s\S]*?\]\|/, 'MFP|').split('|');
+        const fields = {
+            streamingcommunity: 'SC', animeworld: 'AW', livetv: 'LIVETV', cb01: 'CB',
+            guardaserie: 'GS', guardahd: 'GHD', guardoserie: 'GO', guardaflix: 'GF',
+            eurostreaming: 'ES', realtime: 'RT', toonitalia: 'TI', onlineserietv: 'OST',
+            vidxgo: 'VD', streamingcommunity_mfp: 'SC_MFP', mediaflowproxy: 'MFP'
+        };
+        for (const [id, code] of Object.entries(fields)) {
+            document.getElementById(id).checked = codes.includes(code);
+        }
+        if (proxy) {
+            const separator = proxy[1].indexOf(',');
+            document.getElementById('mediaFlowProxyInput').value = proxy[1].slice(0, separator);
+            document.getElementById('mediaFlowProxyPassword').value = proxy[1].slice(separator + 1);
+            document.getElementById('mediaFlowProxyInputContainer').style.display = 'block';
+            document.getElementById('mediaFlowProxyPasswordContainer').style.display = 'block';
+        }
+    }
+
     // Function to generate the manifest URL
     function generateManifest() {
         let manifest = "|";
