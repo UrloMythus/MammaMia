@@ -28,6 +28,7 @@ import logging
 from urllib.parse import unquote, quote
 from curl_cffi.requests import AsyncSession
 import base64
+from copy import deepcopy
 import json
 import  Src.Utilities.config as config
 from Src.Utilities.config import setup_logging
@@ -79,17 +80,14 @@ static = Jinja2Templates(directory="static")
 
 MANIFEST = {
     "id": "org.stremio.mammamia",
-    "version": "2.0.0",
+    "version": "2.0.1",
+    "behaviorHints": {"configurable": True, "configurationRequired": False},
     "catalogs": [
         {
             "type": "tv",
             "id": "tv_channels",
             "name": "MammaMia",
-            "behaviorHints": {
-                "configurable": True,
-                "configurationRequired": True
-                },
-            "extra": [
+"extra": [
                 {
                     "name": "genre",
                     "isRequired": False,
@@ -126,15 +124,19 @@ def respond_with(data):
 
 
 @app.get('/configure',response_class=HTMLResponse)
-def config(request: Request):
+def addon_configure(request: Request):
     forwarded_proto = request.headers.get("x-forwarded-proto")
     scheme = forwarded_proto if forwarded_proto else request.url.scheme
     instance_url = f"{scheme}://{request.url.netloc}"
     html_content = CONFIGURE.replace("{instance_url}", instance_url)
     return html_content
+@app.get('/{config:path}/configure', response_class=HTMLResponse)
+def configured_addon_configure(request: Request, config: str):
+    return addon_configure(request)
+
 @app.get('/{config:path}/manifest.json')
 def addon_manifest(config: str):
-    manifest_copy = MANIFEST.copy()
+    manifest_copy = deepcopy(MANIFEST)
     config = base64.b64decode(config).decode('utf-8')
     if "LIVETV" not in config:
         if "catalog" in manifest_copy["resources"]:
