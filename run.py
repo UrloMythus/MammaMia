@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException,Request, Form,Cookie
-from fastapi.responses import JSONResponse,RedirectResponse,HTMLResponse
+from fastapi.responses import JSONResponse,RedirectResponse,HTMLResponse,Response
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from slowapi.middleware import SlowAPIMiddleware
@@ -25,7 +25,7 @@ from Src.Utilities.update_config import update_all_sites
 from Src.API.epg import tivu, tivu_get,epg_guide,convert_bho_1,convert_bho_2,convert_bho_3
 from Src.API.extractors.uprot import get_uprot_numbers,generate_uprot_txt
 import logging
-from urllib.parse import unquote
+from urllib.parse import unquote, quote
 from curl_cffi.requests import AsyncSession
 import base64
 import json
@@ -41,7 +41,7 @@ from Src.Utilities.manifest import router as clone
 Global_Proxy = config.Global_Proxy
 if Global_Proxy == "1":
     PROXY_CREDENTIALS = env_vars.get('PROXY_CREDENTIALS')
-        
+
     proxies = {
     "http": PROXY_CREDENTIALS,
     "https": PROXY_CREDENTIALS
@@ -133,8 +133,8 @@ def config(request: Request):
     html_content = CONFIGURE.replace("{instance_url}", instance_url)
     return html_content
 @app.get('/{config:path}/manifest.json')
-def addon_manifest(config: str): 
-    manifest_copy = MANIFEST.copy() 
+def addon_manifest(config: str):
+    manifest_copy = MANIFEST.copy()
     config = base64.b64decode(config).decode('utf-8')
     if "LIVETV" not in config:
         if "catalog" in manifest_copy["resources"]:
@@ -166,13 +166,13 @@ def root(request: Request):
 async def addon_catalog(type: str, id: str, genre: str = None):
     if type != "tv":
         raise HTTPException(status_code=404)
-    
+
     catalogs = {"metas": []}
-    
+
     for channel in STREAM["channels"]:
         if genre and genre not in channel.get("genres", []):
             continue  # Skip channels that don't match the selected genre
-        
+
         description = f'Watch {channel["title"]}'
         catalogs["metas"].append({
             "id": channel["id"],
@@ -208,7 +208,7 @@ async def realtime_catalog(type:str,id:str,query: str = None):
 async def addon_meta(request: Request,id: str):
     # Find the channel by ID
     channel = next((ch for ch in STREAM['channels'] if ch['id'] == id), None)
-    
+
     if not channel:
         raise HTTPException(status_code=404, detail="Channel not found")
     async with AsyncSession(proxies = proxies) as client:
@@ -264,7 +264,7 @@ async def addon_stream(request: Request,config, type, id,):
                 provider_maps[provider_name] = "1"
     if "MFP[" in config:
     # Extract proxy data between "MFP(" and ")"
-        mfp_data = config.split("MFP[")[1].split(")")[0]  
+        mfp_data = config.split("MFP[")[1].split(")")[0]
     # Split the data by comma to get proxy URL and password
         MFP_url, MFP_password = mfp_data.split(",")
         MFP_password = MFP_password[:-2]
@@ -275,7 +275,7 @@ async def addon_stream(request: Request,config, type, id,):
         MFP_CREDENTIALS = [MFP_url, MFP_password]
         if MFP_url and MFP_password:
             MFP = "1"
-            
+
     else:
         MFP = "0"
         MFP_CREDENTIALS = ['','']
@@ -290,7 +290,7 @@ async def addon_stream(request: Request,config, type, id,):
                     i = 0
                     if 'url' in channel:
                         i = i+1
-                        streams['streams'].append({'title': f"{Icon}Server {i} " + f" "+ channel['name'] + " " + channel['title'] ,'url': channel['url']})     
+                        streams['streams'].append({'title': f"{Icon}Server {i} " + f" "+ channel['name'] + " " + channel['title'] ,'url': channel['url']})
                     if id in extra_sources:
                         list_sources = extra_sources[id]
                         for item in list_sources:
@@ -298,10 +298,10 @@ async def addon_stream(request: Request,config, type, id,):
                             streams['streams'].append({'title':f"{Icon}Server {i} " + channel['title'],'url': item})
             if not streams['streams']:
                 raise HTTPException(status_code=404)
-            return respond_with(streams)
+            return respond_with_streams(streams, request, type, id)
         elif "realtime" in id and RT == '1':
             streams = await streams_realtime(streams,id,client)
-            return respond_with(streams)
+            return respond_with_streams(streams, request, type, id)
         elif "tt" in id or "tmdb" in id or "kitsu" in id:
             logger.info(f"Handling movie or series: {id}")
             if "kitsu" in id:
@@ -314,7 +314,7 @@ async def addon_stream(request: Request,config, type, id,):
                     else:
                         SC_MFP = '0'
                     streams = await streaming_community(streams,id,client,SC_MFP,MFP_CREDENTIALS)
-                
+
                 if provider_maps['CB01'] == "1" and CB == "1":
                     streams = await cb01(streams,id,MFP,MFP_CREDENTIALS,client)
                 if provider_maps['GUARDASERIE'] == "1" and GS == "1":
@@ -335,11 +335,20 @@ async def addon_stream(request: Request,config, type, id,):
                     streams = await onlineserietv(streams,id,client)
                 if provider_maps['VIDXGO'] == '1' and VD == '1':
                     streams = await vidxgoalta(streams,id,client,instance_url)
-                
-            return respond_with(streams)
+
+            return respond_with_streams(streams, request, type, id)
         if not streams['streams']:
             raise HTTPException(status_code=404)
 
+    return respond_with_streams(streams, request, type, id)
+
+def respond_with_streams(streams, request, type, id):
+    if not request.url.path.startswith('/vlc/'):
+        scheme = request.headers.get('x-forwarded-proto', request.url.scheme)
+        endpoint = f"{scheme}://{request.url.netloc}/vlc/{type}/{quote(id, safe=':')}.m3u8"
+        for stream in streams.get('streams', []):
+            if stream.get('name', '').endswith(' TV Proxy') and stream.get('url'):
+                stream['url'] = endpoint
     return respond_with(streams)
 
 @app.get('/vlc/{type}/{id}.m3u8')
@@ -352,7 +361,14 @@ async def vlc_stream(request: Request, type: str, id: str):
     stream = next((s for s in candidates if s.get('name', '').endswith(' TV Proxy') and s.get('url')), None)
     if stream is None:
         raise HTTPException(status_code=404, detail='No TV Proxy stream available')
-    response = RedirectResponse(stream['url'], status_code=302)
+    async with AsyncSession() as client:
+        upstream = await client.get(stream['url'], timeout=30)
+    if upstream.status_code != 200 or not upstream.text.startswith('#EXTM3U'):
+        raise HTTPException(status_code=502, detail='Unable to fetch HLS manifest')
+    manifest = upstream.text
+    if '#EXT-X-VERSION:' not in manifest:
+        manifest = manifest.replace('#EXTM3U', '#EXTM3U\n#EXT-X-VERSION:6', 1)
+    response = Response(content=manifest, media_type='application/vnd.apple.mpegurl')
     response.headers['Cache-Control'] = 'no-store'
     return response
 
@@ -364,7 +380,7 @@ async def uprot(request: Request):
         'request': request,
         'image_url': image
     }
-    
+
     response = static.TemplateResponse(name='uprot.html',context=context,request=request)
     if cookies:
         response.set_cookie(key='PHPSESSID', value=cookies.get('PHPSESSID'),httponly=True)
@@ -403,4 +419,4 @@ async def update(request: Request):
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run("run:app", host=HOST, port=PORT, log_level=level)    
+    uvicorn.run("run:app", host=HOST, port=PORT, log_level=level)

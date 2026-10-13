@@ -24,7 +24,7 @@ Apri `http://IP_DEL_SERVER:8080/configure` per la configurazione originale dell'
 
 ### Test diretto con VLC su iPhone
 
-Per isolare un problema nel passaggio del link da Stremio a VLC, apri in VLC un URL breve del server: `https://IL_TUO_DOMINIO/vlc/series/tt0413573:22:15.m3u8` (Grey's Anatomy S22E15), oppure `/vlc/movie/tt0816692.m3u8` per un film. Per la LAN puoi usare `http://IP_DEL_SERVER:8080` come base. L'endpoint recupera un flusso TV Proxy aggiornato e risponde con un redirect non memorizzabile. Richiede HLS_PROXY_URL e un proxy raggiungibile dall'iPhone. Non è una conferma di compatibilità con ogni versione di VLC.
+Per isolare un problema nel passaggio del link da Stremio a VLC, apri in VLC un URL breve del server: `https://IL_TUO_DOMINIO/vlc/series/tt0413573:22:15.m3u8` (Grey's Anatomy S22E15), oppure `/vlc/movie/tt0816692.m3u8` per un film. Per la LAN puoi usare `http://IP_DEL_SERVER:8080` come base. L'endpoint recupera un flusso TV Proxy aggiornato e restituisce la playlist con un tag EXT-X-VERSION iniziale, senza memorizzarla in cache. Questo consente a VLC 3 di riconoscere HLS anche quando molte tracce di sottotitoli spostano EXT-X-STREAM-INF oltre i primi 8 KB. Le sorgenti TV Proxy passano automaticamente attraverso questo endpoint; non serve scegliere un flusso aggiuntivo. Richiede HLS_PROXY_URL e un proxy raggiungibile dall'iPhone. Non è una conferma di compatibilità con ogni versione di VLC.
 
 - `HLS_PROXY_URL` in ambiente ha priorità su `General.HLS_PROXY_URL` in `config.json`.
 - Con SC_MFP attivo, senza URL MediaFlow e con HLS_PROXY_URL impostato, viene mostrato soltanto il flusso TV Proxy di Vixcloud. Gli altri provider restano invariati.
