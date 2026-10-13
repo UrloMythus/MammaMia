@@ -28,6 +28,7 @@ import logging
 from urllib.parse import unquote
 from curl_cffi.requests import AsyncSession
 import base64
+import json
 import  Src.Utilities.config as config
 from Src.Utilities.config import setup_logging
 level = config.LEVEL
@@ -340,6 +341,20 @@ async def addon_stream(request: Request,config, type, id,):
             raise HTTPException(status_code=404)
 
     return respond_with(streams)
+
+@app.get('/vlc/{type}/{id}.m3u8')
+async def vlc_stream(request: Request, type: str, id: str):
+    # Keep the iOS handoff URL free of nested, percent-encoded proxy queries.
+    if type not in ('movie', 'series'):
+        raise HTTPException(status_code=404)
+    response = await addon_stream(request=request, config='fFNDfFNDX01GUHw=', type=type, id=id)
+    candidates = json.loads(response.body).get('streams', [])
+    stream = next((s for s in candidates if s.get('name', '').endswith(' TV Proxy') and s.get('url')), None)
+    if stream is None:
+        raise HTTPException(status_code=404, detail='No TV Proxy stream available')
+    response = RedirectResponse(stream['url'], status_code=302)
+    response.headers['Cache-Control'] = 'no-store'
+    return response
 
 @app.get('/uprot')
 async def uprot(request: Request):
