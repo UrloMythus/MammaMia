@@ -6,6 +6,8 @@ import  Src.Utilities.config as config
 Icon = config.Icon
 Name = config.Name
 from Src.Utilities.mfp import build_mfp
+from urllib.parse import urlencode
+import os
 import logging
 from Src.Utilities.config import setup_logging
 level = config.LEVEL
@@ -15,7 +17,7 @@ User_Agent= "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gec
 
 
 async def vixcloud(link,client,MFP,MFP_CREDENTIALS,streams,site_name,proxies,ForwardProxy):
-    if MFP == "1":
+    if MFP == "1" and MFP_CREDENTIALS[0]:
         final_url = await build_mfp(MFP_CREDENTIALS, link, "VixCloud",client)
         quality = ""
         mfp_icon = '🕵️‍♂️'
@@ -59,6 +61,19 @@ async def vixcloud(link,client,MFP,MFP_CREDENTIALS,streams,site_name,proxies,For
         final_url = first_part_final_url + "?" + parts_final_url[1]
         streams['streams'].append({"name":f'{Name} {mfp_icon}\n{quality}', 'title': f'{Icon} StreamingCommunity\n▶️ Vixcloud','url': final_url,'behaviorHints': {'proxyHeaders': {"request": {"user-agent": User_Agent}}, 'notWebReady': True, 'bingeGroup': f'{site_name.lower()}{quality}'}})
 
+    # TV clients need all HLS resources to pass through the same proxy.
+    proxy_base = os.getenv("HLS_PROXY_URL", config.GENERAL.get("HLS_PROXY_URL", "")).rstrip("/")
+    if MFP == "1" and not MFP_CREDENTIALS[0] and proxy_base and final_url:
+        proxy_url = proxy_base + "/proxy/hls/manifest.m3u8?" + urlencode({
+            "d": final_url, "h_User-Agent": User_Agent,
+        })
+        streams["streams"].pop()
+        streams["streams"].insert(0, {
+            "name": f"{Name} TV Proxy",
+            "title": f"{Icon} StreamingCommunity\n▶️ Vixcloud via HLS Proxy",
+            "url": proxy_url,
+            "behaviorHints": {"bingeGroup": f"{site_name.lower()}-tv-proxy"},
+        })
     return streams
 
 

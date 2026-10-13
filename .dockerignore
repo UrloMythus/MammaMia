@@ -1,0 +1,11 @@
+.git
+.env
+.env.*
+config.local.json
+**/__pycache__
+**/*.pyc
+**/*.before-*
+*.tar
+*.tar.gz
+*.pem
+*.key
