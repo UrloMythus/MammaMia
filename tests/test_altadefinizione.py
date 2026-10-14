@@ -33,6 +33,15 @@ class Response:
 
 
 class AltaTests(unittest.IsolatedAsyncioTestCase):
+    def test_home_and_config_share_the_provider_form(self):
+        homepage=run.root(request('/'))
+        configured=run.addon_configure(request('/configure'))
+        self.assertEqual(homepage.body,configured.body)
+        self.assertIn(b'AltaDefinizione (Vidxgo)',homepage.body)
+        self.assertIn(b'AD_OFF',homepage.body)
+        self.assertEqual(homepage.headers['cache-control'],'no-store')
+        self.assertEqual(configured.headers['cache-control'],'no-store')
+
     def test_player_metadata(self):
         source=b'window.currentSrc="https://cdn.example/hls/42/master.m3u8?t=secret&e=99&b=5";'
         key=b'ab';data=base64.b64encode(bytes(v^key[i%2] for i,v in enumerate(source))).decode()

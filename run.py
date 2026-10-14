@@ -131,7 +131,7 @@ def addon_configure(request: Request):
     scheme = forwarded_proto if forwarded_proto else request.url.scheme
     instance_url = f"{scheme}://{request.url.netloc}"
     html_content = CONFIGURE.replace("{instance_url}", instance_url)
-    return html_content
+    return HTMLResponse(html_content, headers={"Cache-Control": "no-store"})
 @app.get('/{config:path}/configure', response_class=HTMLResponse)
 def configured_addon_configure(request: Request, config: str):
     return addon_configure(request)
@@ -166,7 +166,7 @@ def root(request: Request):
     scheme = forwarded_proto if forwarded_proto else request.url.scheme
     instance_url = f"{scheme}://{request.url.netloc}"
     html_content = HTML.replace("{instance_url}", instance_url)
-    return html_content
+    return HTMLResponse(html_content, headers={"Cache-Control": "no-store"})
 async def addon_catalog(type: str, id: str, genre: str = None):
     if type != "tv":
         raise HTTPException(status_code=404)
