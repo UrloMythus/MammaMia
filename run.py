@@ -16,6 +16,7 @@ from Src.API.guardoserie import guardoserie
 from Src.API.eurostreaming import eurostreaming
 from  Src.API.onlineserietv import onlineserietv
 from  Src.API.vidxgoalta import vidxgoalta
+from Src.API.altadefinizione import router as alta_router
 from Src.API.toonitalia import toonitalia
 from Src.API.realtime import search_catalog as realtime
 from Src.API.realtime import meta_catalog as meta_catalog_realtime
@@ -71,6 +72,7 @@ Icon = config.Icon
 Name = config.Name
 app = FastAPI()
 app.include_router(clone)
+app.include_router(alta_router)
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_middleware(SlowAPIMiddleware)
@@ -80,7 +82,7 @@ static = Jinja2Templates(directory="static")
 
 MANIFEST = {
     "id": "org.stremio.mammamia",
-    "version": "2.0.1",
+    "version": "2.1.0",
     "behaviorHints": {"configurable": True, "configurationRequired": False},
     "catalogs": [
         {
@@ -255,10 +257,9 @@ async def addon_stream(request: Request,config, type, id,):
         raise HTTPException(status_code=404)
     streams = {'streams': []}
     config = base64.b64decode(config).decode('utf-8')
-    if "|" in config:
-        config_providers = config.split('|')
-    elif "%7C" in config:
-        config_providers = config.split('%7C')
+    config_providers = config.replace('%7C','|').split('|')
+    if 'SC' in config_providers and 'AD_OFF' not in config_providers and not any(p in config_providers for p in ('AD','VD')):
+        config_providers.append('AD')
     provider_maps = {name: "0" for name in provider_map.values()}
     for provider in config_providers:
             if provider in provider_map:
@@ -300,49 +301,69 @@ async def addon_stream(request: Request,config, type, id,):
                             streams['streams'].append({'title':f"{Icon}Server {i} " + channel['title'],'url': item})
             if not streams['streams']:
                 raise HTTPException(status_code=404)
+            for stream in streams['streams']:
+                stream.setdefault('name',f'{Name} · LiveTV')
+                stream.setdefault('description',stream.get('title',''))
             return respond_with_streams(streams, request, type, id)
         elif "realtime" in id and RT == '1':
-            streams = await streams_realtime(streams,id,client)
+            streams = await labelled_provider('Realtime', streams_realtime, streams,id,client)
             return respond_with_streams(streams, request, type, id)
         elif "tt" in id or "tmdb" in id or "kitsu" in id:
             logger.info(f"Handling movie or series: {id}")
             if "kitsu" in id:
                 if provider_maps['ANIMEWORLD'] == "1" and AW == "1":
-                    streams = await animeworld(streams,id,client)
+                    streams = await labelled_provider('AnimeWorld', animeworld, streams,id,client)
             else:
                 if provider_maps['STREAMINGCOMMUNITY'] == "1" and SC == "1":
                     if provider_maps['SC_MFP'] != "0":
                         SC_MFP = "1"
                     else:
                         SC_MFP = '0'
-                    streams = await streaming_community(streams,id,client,SC_MFP,MFP_CREDENTIALS)
+                    streams = await labelled_provider('StreamingCommunity', streaming_community, streams,id,client,SC_MFP,MFP_CREDENTIALS)
 
                 if provider_maps['CB01'] == "1" and CB == "1":
-                    streams = await cb01(streams,id,MFP,MFP_CREDENTIALS,client)
+                    streams = await labelled_provider('CB01', cb01, streams,id,MFP,MFP_CREDENTIALS,client)
                 if provider_maps['GUARDASERIE'] == "1" and GS == "1":
-                    streams = await guardaserie(streams,id,client)
+                    streams = await labelled_provider('Guardaserie', guardaserie, streams,id,client)
                 if provider_maps['GUARDAHD'] == "1" and GHD == "1":
-                    streams = await guardahd(streams,id,client,MFP,MFP_CREDENTIALS)
+                    streams = await labelled_provider('GuardaHD', guardahd, streams,id,client,MFP,MFP_CREDENTIALS)
                 if provider_maps['EUROSTREAMING'] == "1" and ES == "1":
-                    streams = await eurostreaming(streams,id,client,MFP,MFP_CREDENTIALS)
+                    streams = await labelled_provider('Eurostreaming', eurostreaming, streams,id,client,MFP,MFP_CREDENTIALS)
                 if provider_maps['GUARDAFLIX'] == "1" and GF == "1":
-                    streams = await guardaflix(streams,id,client,MFP,MFP_CREDENTIALS)
+                    streams = await labelled_provider('Guardaflix', guardaflix, streams,id,client,MFP,MFP_CREDENTIALS)
                 if provider_maps['GUARDOSERIE'] == "1" and GO == "1":
-                    streams = await guardoserie(streams,id,client,MFP,MFP_CREDENTIALS)
+                    streams = await labelled_provider('Guardoserie', guardoserie, streams,id,client,MFP,MFP_CREDENTIALS)
                 if provider_maps['REALTIME'] == '1' and RT == '1':
-                    streams = await streams_realtime(streams,id,client)
+                    streams = await labelled_provider('Realtime', streams_realtime, streams,id,client)
                 if provider_maps['TOONITALIA'] == '1' and TI == '1':
-                    streams = await toonitalia(streams,id,client,MFP,MFP_CREDENTIALS)
+                    streams = await labelled_provider('Toonitalia', toonitalia, streams,id,client,MFP,MFP_CREDENTIALS)
                 if provider_maps['ONLINESERIETV'] == '1' and OST == '1':
-                    streams = await onlineserietv(streams,id,client)
+                    streams = await labelled_provider('OnlineSerieTV', onlineserietv, streams,id,client)
                 if provider_maps['VIDXGO'] == '1' and VD == '1':
-                    streams = await vidxgoalta(streams,id,client,instance_url)
+                    streams = await labelled_provider('AltaDefinizione', vidxgoalta, streams,id,client,instance_url)
 
             return respond_with_streams(streams, request, type, id)
         if not streams['streams']:
             raise HTTPException(status_code=404)
 
     return respond_with_streams(streams, request, type, id)
+
+async def labelled_provider(label, function, streams, *args):
+    previous={id(stream) for stream in streams.get('streams',[])}
+    streams=await function(streams,*args)
+    for stream in streams.get('streams',[]):
+        if id(stream) in previous:continue
+        original=stream.get('name','')
+        if label.lower() not in original.lower():
+            suffix=original.removeprefix(Name)
+            if suffix and not suffix[0].isspace():suffix='\n'+suffix
+            stream['name']=f'{Name} · {label}' + suffix
+        title=stream.get('title') or stream.get('description') or ''
+        if label.lower() not in title.lower():title=label+'\n'+title
+        stream['title']=title
+        stream['description']=title
+    return streams
+
 
 def respond_with_streams(streams, request, type, id):
     if not request.url.path.startswith('/vlc/'):
@@ -358,7 +379,7 @@ async def vlc_stream(request: Request, type: str, id: str):
     # Keep the iOS handoff URL free of nested, percent-encoded proxy queries.
     if type not in ('movie', 'series'):
         raise HTTPException(status_code=404)
-    response = await addon_stream(request=request, config='fFNDfFNDX01GUHw=', type=type, id=id)
+    response = await addon_stream(request=request, config=base64.b64encode(b'|SC|SC_MFP|AD_OFF|').decode(), type=type, id=id)
     candidates = json.loads(response.body).get('streams', [])
     stream = next((s for s in candidates if s.get('name', '').endswith(' TV Proxy') and s.get('url')), None)
     if stream is None:

@@ -13,3 +13,4 @@ pycryptodome
 rich
 python-multipart
 jinja2
+httpx==0.28.1

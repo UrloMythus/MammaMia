@@ -460,5 +460,6 @@ provider_map = {
         "TI": "TOONITALIA",
         "GF": "GUARDAFLIX",
         "OST": "ONLINESERIETV",
-        "VD": "VIDXGO"
+        "VD": "VIDXGO",
+        "AD": "VIDXGO"
     }

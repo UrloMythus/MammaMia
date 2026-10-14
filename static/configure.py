@@ -226,7 +226,7 @@ CONFIGURE = """
             </div>
             <div class="provider-group">
                 <label for="vidxgo" class="provider-label">
-                    <input type="checkbox" id="vidxgo"> Vidxgo
+                    <input type="checkbox" id="vidxgo" checked> AltaDefinizione (Vidxgo)
                 </label>
             </div>
             <div class="provider-group">
@@ -292,10 +292,10 @@ CONFIGURE = """
             streamingcommunity: 'SC', animeworld: 'AW', livetv: 'LIVETV', cb01: 'CB',
             guardaserie: 'GS', guardahd: 'GHD', guardoserie: 'GO', guardaflix: 'GF',
             eurostreaming: 'ES', realtime: 'RT', toonitalia: 'TI', onlineserietv: 'OST',
-            vidxgo: 'VD', streamingcommunity_mfp: 'SC_MFP', mediaflowproxy: 'MFP'
+            vidxgo: 'AD', streamingcommunity_mfp: 'SC_MFP', mediaflowproxy: 'MFP'
         };
         for (const [id, code] of Object.entries(fields)) {
-            document.getElementById(id).checked = codes.includes(code);
+            document.getElementById(id).checked = codes.includes(code) || (id === 'vidxgo' && (codes.includes('VD') || (codes.includes('SC') && !codes.includes('AD_OFF'))));
         }
         if (proxy) {
             const separator = proxy[1].indexOf(',');
@@ -322,11 +322,12 @@ CONFIGURE = """
             "realtime": "RT",
             "toonitalia": "TI",
             "onlineserietv": "OST",
-            "vidxgo": "VD",
+            "vidxgo": "AD",
             "streamingcommunity_mfp": "SC_MFP",
             "mediaflowproxy": "MFP"
         };
 
+        if (!document.getElementById('vidxgo').checked) manifest += 'AD_OFF|';
         // Loop through providers and add selected ones to the manifest
         for (const id in providers) {
             if (document.getElementById(id).checked) {
