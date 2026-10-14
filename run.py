@@ -158,7 +158,8 @@ def addon_manifest(config: str):
 
 @app.get('/manifest.json')
 def manifest():
-    return RedirectResponse(url="/|SC|LC|/manifest.json")
+    default_config = base64.b64encode(b'|SC|SC_MFP|AD|LIVETV|').decode()
+    return RedirectResponse(url=f"/{default_config}/manifest.json", headers={"Cache-Control": "no-store"})
 
 @app.get('/', response_class=HTMLResponse)
 def root(request: Request):
@@ -372,7 +373,11 @@ def respond_with_streams(streams, request, type, id):
         for stream in streams.get('streams', []):
             if stream.get('name', '').endswith(' TV Proxy') and stream.get('url'):
                 stream['url'] = endpoint
-    return respond_with(streams)
+    # Availability changes between requests; do not retain an empty provider result.
+    payload = {**streams, 'cacheMaxAge': 0, 'staleRevalidate': 0, 'staleError': 0}
+    response = respond_with(payload)
+    response.headers['Cache-Control'] = 'no-store, max-age=0'
+    return response
 
 @app.get('/vlc/{type}/{id}.m3u8')
 async def vlc_stream(request: Request, type: str, id: str):

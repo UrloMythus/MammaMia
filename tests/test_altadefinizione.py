@@ -33,6 +33,29 @@ class Response:
 
 
 class AltaTests(unittest.IsolatedAsyncioTestCase):
+    async def test_default_manifest_redirect_is_installable(self):
+        redirect=run.manifest()
+        target=redirect.headers['location']
+        codes=base64.b64decode(target.split('/')[1]).decode()
+        self.assertIn('|SC|',codes)
+        self.assertIn('|AD|',codes)
+        status,data=await call_app(target)
+        self.assertEqual(status,200)
+        self.assertEqual(data['id'],'org.stremio.mammamia')
+        self.assertIn('movie',data['types'])
+        self.assertIn('stream',data['resources'])
+
+    def test_stream_availability_is_not_cached(self):
+        for streams in ([],[{'name':'MammaMia · AltaDefinizione','url':'https://example.test/master.m3u8'}]):
+            response=run.respond_with_streams({'streams':streams},request(),'movie','tt42')
+            data=json.loads(response.body)
+            self.assertEqual(data['streams'],streams)
+            self.assertEqual(data['cacheMaxAge'],0)
+            self.assertEqual(data['staleRevalidate'],0)
+            self.assertEqual(data['staleError'],0)
+            self.assertEqual(response.headers['cache-control'],'no-store, max-age=0')
+            self.assertEqual(response.headers['access-control-allow-origin'],'*')
+
     def test_home_and_config_share_the_provider_form(self):
         homepage=run.root(request('/'))
         configured=run.addon_configure(request('/configure'))
