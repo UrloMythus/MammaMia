@@ -367,6 +367,12 @@ async def labelled_provider(label, function, streams, *args):
 
 
 def respond_with_streams(streams, request, type, id):
+    # Stremio treats legacy `title` as an alias of `description`: emitting both
+    # causes its Rust decoder to reject the entire provider response.
+    for stream in streams.get('streams', []):
+        if 'title' in stream:
+            stream.setdefault('description', stream['title'])
+            stream.pop('title')
     if not request.url.path.startswith('/vlc/'):
         scheme = request.headers.get('x-forwarded-proto', request.url.scheme)
         endpoint = f"{scheme}://{request.url.netloc}/vlc/{type}/{quote(id, safe=':')}.m3u8"

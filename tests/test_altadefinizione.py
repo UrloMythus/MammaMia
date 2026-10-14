@@ -56,6 +56,15 @@ class AltaTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(response.headers['cache-control'],'no-store, max-age=0')
             self.assertEqual(response.headers['access-control-allow-origin'],'*')
 
+    def test_stream_description_has_no_legacy_alias_duplicate(self):
+        sources=[{'url':'https://example.test/a.m3u8','title':'Legacy'},
+                 {'url':'https://example.test/b.m3u8','title':'Legacy','description':'Current'},
+                 {'url':'https://example.test/c.m3u8','description':'Modern'}]
+        response=run.respond_with_streams({'streams':sources},request(),'series','tt42:3:2')
+        items=json.loads(response.body)['streams']
+        self.assertEqual([s['description'] for s in items],['Legacy','Current','Modern'])
+        self.assertTrue(all('title' not in s for s in items))
+
     def test_home_and_config_share_the_provider_form(self):
         homepage=run.root(request('/'))
         configured=run.addon_configure(request('/configure'))
@@ -153,9 +162,9 @@ class AltaTests(unittest.IsolatedAsyncioTestCase):
                 self.assertEqual(status,200)
                 self.assertEqual(len(data['streams']),expected)
                 for stream in data['streams']:
-                    label='StreamingCommunity' if 'StreamingCommunity' in stream['title'] else 'AltaDefinizione'
+                    label='StreamingCommunity' if 'StreamingCommunity' in stream['description'] else 'AltaDefinizione'
                     self.assertIn(label,stream['name'])
-                    self.assertEqual(stream['description'],stream['title'])
+                    self.assertNotIn('title',stream)
                     if label=='StreamingCommunity':
                         self.assertTrue(stream['name'].endswith(' TV Proxy'))
                         self.assertIn('/vlc/movie/tt42.m3u8',stream['url'])
