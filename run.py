@@ -28,6 +28,7 @@ import logging
 from urllib.parse import unquote
 from curl_cffi.requests import AsyncSession
 import base64
+import copy
 import  Src.Utilities.config as config
 from Src.Utilities.config import setup_logging
 level = config.LEVEL
@@ -133,7 +134,7 @@ def config(request: Request):
     return html_content
 @app.get('/{config:path}/manifest.json')
 def addon_manifest(config: str): 
-    manifest_copy = MANIFEST.copy() 
+    manifest_copy = copy.deepcopy(MANIFEST)
     config = base64.b64decode(config).decode('utf-8')
     if "LIVETV" not in config:
         if "catalog" in manifest_copy["resources"]:
@@ -153,7 +154,8 @@ def addon_manifest(config: str):
 
 @app.get('/manifest.json')
 def manifest():
-    return RedirectResponse(url="/|SC|LC|/manifest.json")
+    default_config = base64.b64encode(b"|SC|LC|").decode("ascii")
+    return RedirectResponse(url=f"/{default_config}/manifest.json")
 
 @app.get('/', response_class=HTMLResponse)
 def root(request: Request):
