@@ -96,7 +96,7 @@ async def get_mp4(anime_url,ismovie,episode,client,i,streams):
             language = "Original"
         elif i == 1:
             language = "Italian"
-        streams['streams'].append({'title': f'{Icon}Animeworld {language}', 'url': url,'behaviorHints': {'bingeGroup': 'animeworld'}})
+        streams['streams'].append({'title': f'{Icon}Animeworld {language}', 'url': url,'behaviorHints': {'bingeGroup': f'animeworld-{language}'}})
     return streams
 
 
