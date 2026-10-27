@@ -1,4 +1,12 @@
 .env
+.env.*
+!.env.example
+config.local.json
+*.before-*
+*.tar
+*.tar.gz
+*.pem
+*.key
 __pycache__/
 .vercel
 beamup.json

@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException,Request, Form,Cookie
-from fastapi.responses import JSONResponse,RedirectResponse,HTMLResponse
+from fastapi.responses import JSONResponse,RedirectResponse,HTMLResponse,Response
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from slowapi.middleware import SlowAPIMiddleware
@@ -16,6 +16,7 @@ from Src.API.guardoserie import guardoserie
 from Src.API.eurostreaming import eurostreaming
 from  Src.API.onlineserietv import onlineserietv
 from  Src.API.vidxgoalta import vidxgoalta
+from Src.API.altadefinizione import router as alta_router
 from Src.API.toonitalia import toonitalia
 from Src.API.realtime import search_catalog as realtime
 from Src.API.realtime import meta_catalog as meta_catalog_realtime
@@ -25,9 +26,11 @@ from Src.Utilities.update_config import update_all_sites
 from Src.API.epg import tivu, tivu_get,epg_guide,convert_bho_1,convert_bho_2,convert_bho_3
 from Src.API.extractors.uprot import get_uprot_numbers,generate_uprot_txt
 import logging
-from urllib.parse import unquote
+from urllib.parse import unquote, quote
 from curl_cffi.requests import AsyncSession
 import base64
+from copy import deepcopy
+import json
 import  Src.Utilities.config as config
 from Src.Utilities.config import setup_logging
 level = config.LEVEL
@@ -40,7 +43,7 @@ from Src.Utilities.manifest import router as clone
 Global_Proxy = config.Global_Proxy
 if Global_Proxy == "1":
     PROXY_CREDENTIALS = env_vars.get('PROXY_CREDENTIALS')
-        
+
     proxies = {
     "http": PROXY_CREDENTIALS,
     "https": PROXY_CREDENTIALS
@@ -69,6 +72,7 @@ Icon = config.Icon
 Name = config.Name
 app = FastAPI()
 app.include_router(clone)
+app.include_router(alta_router)
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_middleware(SlowAPIMiddleware)
@@ -78,17 +82,14 @@ static = Jinja2Templates(directory="static")
 
 MANIFEST = {
     "id": "org.stremio.mammamia",
-    "version": "2.0.0",
+    "version": "2.1.0",
+    "behaviorHints": {"configurable": True, "configurationRequired": False},
     "catalogs": [
         {
             "type": "tv",
             "id": "tv_channels",
             "name": "MammaMia",
-            "behaviorHints": {
-                "configurable": True,
-                "configurationRequired": True
-                },
-            "extra": [
+"extra": [
                 {
                     "name": "genre",
                     "isRequired": False,
@@ -112,7 +113,7 @@ MANIFEST = {
     "types": ["movie", "series", "tv"],
     "name": Name,
     "description": "Addon providing HTTPS Streams for Italian Movies, Series, and Live TV! Note that you need to have Kitsu Addon installed in order to watch Anime",
-    "logo": "https://creazilla-store.fra1.digitaloceanspaces.com/emojis/49647/pizza-emoji-clipart-md.png"
+    "logo": "https://raw.githubusercontent.com/dllfpp/MammaMia/main/static/mammamia-logo.png"
 }
 
 
@@ -125,15 +126,19 @@ def respond_with(data):
 
 
 @app.get('/configure',response_class=HTMLResponse)
-def config(request: Request):
+def addon_configure(request: Request):
     forwarded_proto = request.headers.get("x-forwarded-proto")
     scheme = forwarded_proto if forwarded_proto else request.url.scheme
     instance_url = f"{scheme}://{request.url.netloc}"
     html_content = CONFIGURE.replace("{instance_url}", instance_url)
-    return html_content
+    return HTMLResponse(html_content, headers={"Cache-Control": "no-store"})
+@app.get('/{config:path}/configure', response_class=HTMLResponse)
+def configured_addon_configure(request: Request, config: str):
+    return addon_configure(request)
+
 @app.get('/{config:path}/manifest.json')
-def addon_manifest(config: str): 
-    manifest_copy = MANIFEST.copy() 
+def addon_manifest(config: str):
+    manifest_copy = deepcopy(MANIFEST)
     config = base64.b64decode(config).decode('utf-8')
     if "LIVETV" not in config:
         if "catalog" in manifest_copy["resources"]:
@@ -153,7 +158,8 @@ def addon_manifest(config: str):
 
 @app.get('/manifest.json')
 def manifest():
-    return RedirectResponse(url="/|SC|LC|/manifest.json")
+    default_config = base64.b64encode(b'|SC|SC_MFP|AD|LIVETV|').decode()
+    return RedirectResponse(url=f"/{default_config}/manifest.json", headers={"Cache-Control": "no-store"})
 
 @app.get('/', response_class=HTMLResponse)
 def root(request: Request):
@@ -161,17 +167,17 @@ def root(request: Request):
     scheme = forwarded_proto if forwarded_proto else request.url.scheme
     instance_url = f"{scheme}://{request.url.netloc}"
     html_content = HTML.replace("{instance_url}", instance_url)
-    return html_content
+    return HTMLResponse(html_content, headers={"Cache-Control": "no-store"})
 async def addon_catalog(type: str, id: str, genre: str = None):
     if type != "tv":
         raise HTTPException(status_code=404)
-    
+
     catalogs = {"metas": []}
-    
+
     for channel in STREAM["channels"]:
         if genre and genre not in channel.get("genres", []):
             continue  # Skip channels that don't match the selected genre
-        
+
         description = f'Watch {channel["title"]}'
         catalogs["metas"].append({
             "id": channel["id"],
@@ -207,7 +213,7 @@ async def realtime_catalog(type:str,id:str,query: str = None):
 async def addon_meta(request: Request,id: str):
     # Find the channel by ID
     channel = next((ch for ch in STREAM['channels'] if ch['id'] == id), None)
-    
+
     if not channel:
         raise HTTPException(status_code=404, detail="Channel not found")
     async with AsyncSession(proxies = proxies) as client:
@@ -252,10 +258,9 @@ async def addon_stream(request: Request,config, type, id,):
         raise HTTPException(status_code=404)
     streams = {'streams': []}
     config = base64.b64decode(config).decode('utf-8')
-    if "|" in config:
-        config_providers = config.split('|')
-    elif "%7C" in config:
-        config_providers = config.split('%7C')
+    config_providers = config.replace('%7C','|').split('|')
+    if 'SC' in config_providers and 'AD_OFF' not in config_providers and not any(p in config_providers for p in ('AD','VD')):
+        config_providers.append('AD')
     provider_maps = {name: "0" for name in provider_map.values()}
     for provider in config_providers:
             if provider in provider_map:
@@ -263,7 +268,7 @@ async def addon_stream(request: Request,config, type, id,):
                 provider_maps[provider_name] = "1"
     if "MFP[" in config:
     # Extract proxy data between "MFP(" and ")"
-        mfp_data = config.split("MFP[")[1].split(")")[0]  
+        mfp_data = config.split("MFP[")[1].split(")")[0]
     # Split the data by comma to get proxy URL and password
         MFP_url, MFP_password = mfp_data.split(",")
         MFP_password = MFP_password[:-2]
@@ -274,7 +279,7 @@ async def addon_stream(request: Request,config, type, id,):
         MFP_CREDENTIALS = [MFP_url, MFP_password]
         if MFP_url and MFP_password:
             MFP = "1"
-            
+
     else:
         MFP = "0"
         MFP_CREDENTIALS = ['','']
@@ -289,7 +294,7 @@ async def addon_stream(request: Request,config, type, id,):
                     i = 0
                     if 'url' in channel:
                         i = i+1
-                        streams['streams'].append({'title': f"{Icon}Server {i} " + f" "+ channel['name'] + " " + channel['title'] ,'url': channel['url']})     
+                        streams['streams'].append({'title': f"{Icon}Server {i} " + f" "+ channel['name'] + " " + channel['title'] ,'url': channel['url']})
                     if id in extra_sources:
                         list_sources = extra_sources[id]
                         for item in list_sources:
@@ -297,49 +302,109 @@ async def addon_stream(request: Request,config, type, id,):
                             streams['streams'].append({'title':f"{Icon}Server {i} " + channel['title'],'url': item})
             if not streams['streams']:
                 raise HTTPException(status_code=404)
-            return respond_with(streams)
+            for stream in streams['streams']:
+                stream.setdefault('name',f'{Name} · LiveTV')
+                stream.setdefault('description',stream.get('title',''))
+            return respond_with_streams(streams, request, type, id)
         elif "realtime" in id and RT == '1':
-            streams = await streams_realtime(streams,id,client)
-            return respond_with(streams)
+            streams = await labelled_provider('Realtime', streams_realtime, streams,id,client)
+            return respond_with_streams(streams, request, type, id)
         elif "tt" in id or "tmdb" in id or "kitsu" in id:
             logger.info(f"Handling movie or series: {id}")
             if "kitsu" in id:
                 if provider_maps['ANIMEWORLD'] == "1" and AW == "1":
-                    streams = await animeworld(streams,id,client)
+                    streams = await labelled_provider('AnimeWorld', animeworld, streams,id,client)
             else:
                 if provider_maps['STREAMINGCOMMUNITY'] == "1" and SC == "1":
                     if provider_maps['SC_MFP'] != "0":
                         SC_MFP = "1"
                     else:
                         SC_MFP = '0'
-                    streams = await streaming_community(streams,id,client,SC_MFP,MFP_CREDENTIALS)
-                
+                    streams = await labelled_provider('StreamingCommunity', streaming_community, streams,id,client,SC_MFP,MFP_CREDENTIALS)
+
                 if provider_maps['CB01'] == "1" and CB == "1":
-                    streams = await cb01(streams,id,MFP,MFP_CREDENTIALS,client)
+                    streams = await labelled_provider('CB01', cb01, streams,id,MFP,MFP_CREDENTIALS,client)
                 if provider_maps['GUARDASERIE'] == "1" and GS == "1":
-                    streams = await guardaserie(streams,id,client)
+                    streams = await labelled_provider('Guardaserie', guardaserie, streams,id,client)
                 if provider_maps['GUARDAHD'] == "1" and GHD == "1":
-                    streams = await guardahd(streams,id,client,MFP,MFP_CREDENTIALS)
+                    streams = await labelled_provider('GuardaHD', guardahd, streams,id,client,MFP,MFP_CREDENTIALS)
                 if provider_maps['EUROSTREAMING'] == "1" and ES == "1":
-                    streams = await eurostreaming(streams,id,client,MFP,MFP_CREDENTIALS)
+                    streams = await labelled_provider('Eurostreaming', eurostreaming, streams,id,client,MFP,MFP_CREDENTIALS)
                 if provider_maps['GUARDAFLIX'] == "1" and GF == "1":
-                    streams = await guardaflix(streams,id,client,MFP,MFP_CREDENTIALS)
+                    streams = await labelled_provider('Guardaflix', guardaflix, streams,id,client,MFP,MFP_CREDENTIALS)
                 if provider_maps['GUARDOSERIE'] == "1" and GO == "1":
-                    streams = await guardoserie(streams,id,client,MFP,MFP_CREDENTIALS)
+                    streams = await labelled_provider('Guardoserie', guardoserie, streams,id,client,MFP,MFP_CREDENTIALS)
                 if provider_maps['REALTIME'] == '1' and RT == '1':
-                    streams = await streams_realtime(streams,id,client)
+                    streams = await labelled_provider('Realtime', streams_realtime, streams,id,client)
                 if provider_maps['TOONITALIA'] == '1' and TI == '1':
-                    streams = await toonitalia(streams,id,client,MFP,MFP_CREDENTIALS)
+                    streams = await labelled_provider('Toonitalia', toonitalia, streams,id,client,MFP,MFP_CREDENTIALS)
                 if provider_maps['ONLINESERIETV'] == '1' and OST == '1':
-                    streams = await onlineserietv(streams,id,client)
+                    streams = await labelled_provider('OnlineSerieTV', onlineserietv, streams,id,client)
                 if provider_maps['VIDXGO'] == '1' and VD == '1':
-                    streams = await vidxgoalta(streams,id,client,instance_url)
-                
-            return respond_with(streams)
+                    streams = await labelled_provider('AltaDefinizione', vidxgoalta, streams,id,client,instance_url)
+
+            return respond_with_streams(streams, request, type, id)
         if not streams['streams']:
             raise HTTPException(status_code=404)
 
-    return respond_with(streams)
+    return respond_with_streams(streams, request, type, id)
+
+async def labelled_provider(label, function, streams, *args):
+    previous={id(stream) for stream in streams.get('streams',[])}
+    streams=await function(streams,*args)
+    for stream in streams.get('streams',[]):
+        if id(stream) in previous:continue
+        original=stream.get('name','')
+        if label.lower() not in original.lower():
+            suffix=original.removeprefix(Name)
+            if suffix and not suffix[0].isspace():suffix='\n'+suffix
+            stream['name']=f'{Name} · {label}' + suffix
+        title=stream.get('title') or stream.get('description') or ''
+        if label.lower() not in title.lower():title=label+'\n'+title
+        stream['title']=title
+        stream['description']=title
+    return streams
+
+
+def respond_with_streams(streams, request, type, id):
+    # Stremio treats legacy `title` as an alias of `description`: emitting both
+    # causes its Rust decoder to reject the entire provider response.
+    for stream in streams.get('streams', []):
+        if 'title' in stream:
+            stream.setdefault('description', stream['title'])
+            stream.pop('title')
+    if not request.url.path.startswith('/vlc/'):
+        scheme = request.headers.get('x-forwarded-proto', request.url.scheme)
+        endpoint = f"{scheme}://{request.url.netloc}/vlc/{type}/{quote(id, safe=':')}.m3u8"
+        for stream in streams.get('streams', []):
+            if stream.get('name', '').endswith(' TV Proxy') and stream.get('url'):
+                stream['url'] = endpoint
+    # Availability changes between requests; do not retain an empty provider result.
+    payload = {**streams, 'cacheMaxAge': 0, 'staleRevalidate': 0, 'staleError': 0}
+    response = respond_with(payload)
+    response.headers['Cache-Control'] = 'no-store, max-age=0'
+    return response
+
+@app.get('/vlc/{type}/{id}.m3u8')
+async def vlc_stream(request: Request, type: str, id: str):
+    # Keep the iOS handoff URL free of nested, percent-encoded proxy queries.
+    if type not in ('movie', 'series'):
+        raise HTTPException(status_code=404)
+    response = await addon_stream(request=request, config=base64.b64encode(b'|SC|SC_MFP|AD_OFF|').decode(), type=type, id=id)
+    candidates = json.loads(response.body).get('streams', [])
+    stream = next((s for s in candidates if s.get('name', '').endswith(' TV Proxy') and s.get('url')), None)
+    if stream is None:
+        raise HTTPException(status_code=404, detail='No TV Proxy stream available')
+    async with AsyncSession() as client:
+        upstream = await client.get(stream['url'], timeout=30)
+    if upstream.status_code != 200 or not upstream.text.startswith('#EXTM3U'):
+        raise HTTPException(status_code=502, detail='Unable to fetch HLS manifest')
+    manifest = upstream.text
+    if '#EXT-X-VERSION:' not in manifest:
+        manifest = manifest.replace('#EXTM3U', '#EXTM3U\n#EXT-X-VERSION:6', 1)
+    response = Response(content=manifest, media_type='application/vnd.apple.mpegurl')
+    response.headers['Cache-Control'] = 'no-store'
+    return response
 
 @app.get('/uprot')
 async def uprot(request: Request):
@@ -349,7 +414,7 @@ async def uprot(request: Request):
         'request': request,
         'image_url': image
     }
-    
+
     response = static.TemplateResponse(name='uprot.html',context=context,request=request)
     if cookies:
         response.set_cookie(key='PHPSESSID', value=cookies.get('PHPSESSID'),httponly=True)
@@ -388,4 +453,4 @@ async def update(request: Request):
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run("run:app", host=HOST, port=PORT, log_level=level)    
+    uvicorn.run("run:app", host=HOST, port=PORT, log_level=level)

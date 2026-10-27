@@ -1,65 +1,23 @@
-from Src.Utilities.info import  is_movie
-import Src.Utilities.config as config
-from Src.Utilities.loadenv import load_env  
-from Src.API.extractors.vidxgo import vidxgo
-import json, random
-import logging
-from Src.Utilities.config import setup_logging
-level = config.LEVEL
-logger = setup_logging(level)
-env_vars = load_env()
-VD_PROXY = config.VD_PROXY
-proxies = {}
-if VD_PROXY == "1":
-    PROXY_CREDENTIALS = env_vars.get('PROXY_CREDENTIALS')
-    proxy_list = json.loads(PROXY_CREDENTIALS)
-    proxy = random.choice(proxy_list)
-    if proxy == "":
-        proxies = {}
-    else:
-        proxies = {
-            "http": proxy,
-            "https": proxy
-        }   
-VD_ForwardProxy = config.VD_ForwardProxy
-if VD_ForwardProxy == "1":
-    ForwardProxy = env_vars.get('ForwardProxy')
-else:
-    ForwardProxy = ""
-VD_DOMAIN = config.VD_DOMAIN
-
-
+"""Legacy VD entry point: retained for installed Stremio configurations."""
+import re
+from Src.API.altadefinizione import alta_streams
+from Src.Utilities.loadenv import load_env
+from Src.Utilities.config import setup_logging, LEVEL
+logger=setup_logging(LEVEL)
 
 async def vidxgoalta(streams,id,client,instance_url):
     try:
-        general = await is_movie(id)
-        ismovie = general[0]
-        clean_id = general[1]
-        type = "Vidxgo"
-        if "tmdb" in id:
-            clean_id = await get_IMDB_id_from_TMDb_id(clean_id,client)
-        if ismovie == 0 : 
-            season = str(general[2])
-            episode = str(general[3])
-            link = f'{VD_DOMAIN}/{clean_id}/{season}/{episode}'
-        elif ismovie == 1:
-            link = f'{VD_DOMAIN}/{clean_id}'
-        streams = await vidxgo(link,client,streams,instance_url)  
-        return streams 
-    except Exception as e:
-        logger.info("Vidxgo failed due to ")
-        logger.info(e)
+        if id.startswith('tmdb:'):
+            parts=id[5:].split(':')
+            kind='tv' if len(parts)==3 else 'movie'
+            if not all(p.isdigit() for p in parts):return streams
+            response=await client.get(f'https://api.themoviedb.org/3/{kind}/{parts[0]}/external_ids',params={'api_key':load_env().get('TMDB_KEY')},timeout=20)
+            if response.status_code!=200:return streams
+            imdb=response.json().get('imdb_id')
+            if not imdb:return streams
+            id=':'.join([imdb]+parts[1:])
+        if not re.fullmatch(r'tt\d+(?::\d+:\d+)?',id):return streams
+        return await alta_streams(streams,id,client,instance_url)
+    except Exception:
+        logger.warning('AltaDefinizione: flusso non disponibile al momento')
         return streams
-
-async def test_script():
-    from curl_cffi.requests import AsyncSession
-    async with AsyncSession() as client:
-        # Replace with actual id, for example 'anime_id:episode' format
-        test_id = "tt7181546"  # This is an example ID format
-        results = await vidxgoalta({'streams': []},test_id, client)
-        print(results)
-
-if __name__ == "__main__":
-    import asyncio
-    asyncio.run(test_script())
-    
