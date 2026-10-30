@@ -243,7 +243,7 @@ async def search(showname,date,season,episode,MFP,MFP_CREDENTIALS,client,streams
                     if match:
                         year = match.group(0)
             if abs(int(year) - int(date)) <=1:
-                streams = await episodes_find(description,season,episode,MFP,MFP_CREDENTIALS,client,streams)
+                streams = await episodes_find(description,link,headers,season,episode,MFP,MFP_CREDENTIALS,client,streams)
                 return streams
     return streams
 
