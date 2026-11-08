@@ -41,7 +41,7 @@ async def clone_m3u8(d: str = None):
             url = b64decode(d).decode('utf-8')
             m3u8_content,status = await fetch_m3u8(url)
             if status != 200:
-                match = re.search(r'hls[\w/]*/(\d{2}\d*[/]*\d*[/]*\d*)[\w/]+master',url)
+                match = re.search(r'hls/(?:[a-z]+/)?(\d+(?:/\d+/\d+)?)/master',url)
                 if match:
                     id = match.group(1)
                     url = await vidxgo_refresh("",id)
@@ -61,7 +61,7 @@ async def index_route(suffix: str, base: str):
         text = text2.replace("master.m3u8",f'index{suffix}')
 
         m3u8_content,status = await fetch_m3u8(text)
-        match = re.search(r'hls[\w/]*/(\d{2}\d*[/]*\d*[/]*\d*)[\w/]+master',text2)
+        match = re.search(r'hls/(?:[a-z]+/)?(\d+(?:/\d+/\d+)?)/master',text2)
         if match:
                 id = match.group(1)
         else:
